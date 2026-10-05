@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>50 Aniversario - Grupo Scout ACRUX 518</title>
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gold-border {
+            border: 3px solid #D4AF37;
+        }
+
+        .gold-bg {
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+        }
+
+        .gold-shadow {
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .royal-nav {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid #D4AF37;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .royal-nav .nav-logo span {
+            color: #D4AF37 !important;
+        }
+
+        .royal-nav .nav-menu a {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .royal-nav .nav-menu a:hover {
+            color: #D4AF37 !important;
+        }
+
+        .royal-nav .nav-cta {
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%) !important;
+            color: #000 !important;
+            border: 2px solid #D4AF37;
+        }
+
+        .royal-nav .nav-cta:hover {
+            background: linear-gradient(135deg, #FFD700 0%, #D4AF37 100%) !important;
+            transform: scale(1.05);
+        }
+
+        .anniversary-hero {
+            background: linear-gradient(135deg, #8B0000 0%, #000 50%, #8B0000 100%);
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 5px solid #D4AF37;
+        }
+
+        .anniversary-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="%23D4AF37" opacity="0.15"/></svg>');
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50px); }
+        }
+
+        .anniversary-number {
+            font-size: 8rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #8B0000, #D4AF37);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 3rem;
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 3rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: #D4AF37;
+            border-radius: 50%;
+            border: 4px solid #8B0000;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .timeline-item:nth-child(even)::before {
+            right: auto;
+            left: -8px;
+        }
+
+        .timeline-content {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            max-width: 400px;
+            position: relative;
+            border: 2px solid #D4AF37;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 20px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent transparent #D4AF37;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            right: auto;
+            left: -10px;
+            border-color: transparent #D4AF37 transparent transparent;
+        }
+
+        .timeline-year {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #D4AF37;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .timeline-content h3 {
+            color: #FFD700 !important;
+        }
+
+        .timeline-content p {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .quiz-section {
+            background: linear-gradient(135deg, #8B0000 0%, #000 50%, #8B0000 100%);
+            padding: 4rem 0;
+            border-top: 3px solid #D4AF37;
+            border-bottom: 3px solid #D4AF37;
+        }
+
+        .quiz-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #D4AF37;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .quiz-card h3 {
+            color: #FFD700 !important;
+        }
+
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid #D4AF37;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .quiz-option:hover {
+            border-color: #FFD700;
+            background: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #1a0a0a;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #1a0a0a;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .countdown-item {
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #D4AF37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: var(--tracking-elegant);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: #8B0000;
+            border: 2px solid #D4AF37;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .memory-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .memory-card.flipped {
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #FFD700;
+        }
+
+        .memory-card.matched {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border-color: #28a745;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                justify-content: flex-start;
+                padding-left: 3rem;
+                padding-right: 0;
+            }
+
+            .timeline-item::before,
+            .timeline-item:nth-child(even)::before {
+                left: 12px;
+                right: auto;
+            }
+
+            .timeline-content::before,
+            .timeline-item:nth-child(even) .timeline-content::before {
+                left: -10px;
+                right: auto;
+                border-color: transparent #D4AF37 transparent transparent;
+            }
+
+            .memory-game {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .anniversary-number {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar royal-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="images/logo.svg" alt="ACRUX 518 Logo">
+                    <span>ACRUX 518</span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="secciones.html">Secciones</a></li>
+                <li><a href="calendario.html">Calendario</a></li>
+                <li><a href="campamentos.html">Campamentos</a></li>
+                <li><a href="objetos-perdidos.html">Objetos Perdidos</a></li>
+                <li><a href="50-aniversario.html" style="color: #FFD700; font-weight: 700;">🎉 50 Aniversario</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="contacto.html" class="nav-cta">Únete al grupo</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Anniversary Hero -->
+    <section class="anniversary-hero">
+        <div class="container">
+            <div class="anniversary-number gold-gradient">50</div>
+            <h1 class="gold-gradient" style="font-size: 3rem; font-weight: 900; text-transform: uppercase; letter-spacing: var(--tracking-widest); margin-bottom: 1rem;">Años de Aventura</h1>
+            <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                Desde 1977 hasta 2027, 50 años educando en valores, construyendo amistades y creando memorias inolvidables.
+            </p>
+            <div class="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">0</div>
+                    <div class="countdown-label">Días</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">0</div>
+                    <div class="countdown-label">Horas</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">0</div>
+                    <div class="countdown-label">Minutos</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">0</div>
+                    <div class="countdown-label">Segundos</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="section" style="background: linear-gradient(135deg, #8B0000 0%, #000 50%, #8B0000 100%); border-top: 3px solid #D4AF37;">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #FFD700; text-transform: uppercase; letter-spacing: var(--tracking-elegant); text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);">Nuestra Historia</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1977</div>
+                        <h3 style="margin-bottom: 0.5rem; color: var(--dark-gray);">Fundación del Grupo</h3>
+                        <p style="color: var(--light-text);">Un grupo de jóvenes apasionados por la naturaleza y el servicio crea el Grupo Scout ACRUX 518 en Valladolid.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1985</div>
+                        <h3 style="margin-bottom: 0.5rem; color: var(--dark-gray);">Primer Gran Campamento</h3>
+                        <p style="color: var(--light-text);">El primer campamento de verano internacional en los Pinares de Valladolid, marcando el inicio de una tradición.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1997</div>
+                        <h3 style="margin-bottom: 0.5rem; color: var(--dark-gray);">20 Años de Historia</h3>
+                        <p style="color: var(--light-text);">Celebración del 20 aniversario con actividades especiales y la creación del primer Clan de Escultas.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2017</div>
+                        <h3 style="margin-bottom: 0.5rem; color: var(--dark-gray);">40 Años y Jamboree</h3>
+                        <p style="color: var(--light-text);">Celebración del 40 aniversario y participación en el Jamboree Mundial con representación del grupo.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2027</div>
+                        <h3 style="margin-bottom: 0.5rem; color: var(--dark-gray);">50 Aniversario</h3>
+                        <p style="color: var(--light-text);">Medio siglo de aventuras, amistades y servicio. ¡El comienzo de una nueva era!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section class="quiz-section">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: var(--white); text-transform: uppercase; letter-spacing: var(--tracking-elegant);">Quiz Scout</h2>
+            <p style="text-align: center; color: var(--light-text); margin-bottom: 2rem;">¿Cuánto conoces sobre nuestro grupo?</p>
+            
+            <div class="quiz-card">
+                <div id="quiz">
+                    <h3 id="question" style="margin-bottom: 1.5rem; color: var(--dark-gray); font-size: 1.2rem;"></h3>
+                    <div id="options"></div>
+                    <div id="result" style="margin-top: 1rem; font-weight: 700; display: none;"></div>
+                    <button id="nextBtn" onclick="nextQuestion()" style="margin-top: 1.5rem; background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%); color: var(--dark-gray); padding: 0.75rem 2rem; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: none;">Siguiente Pregunta</button>
+                </div>
+                <div id="finalScore" style="display: none; text-align: center;">
+                    <h3 style="font-size: 2rem; color: #D4AF37; margin-bottom: 1rem;">¡Quiz Completado!</h3>
+                    <p style="font-size: 1.5rem; color: var(--dark-gray); margin-bottom: 1rem;">Tu puntuación: <span id="score">0</span>/5</p>
+                    <button onclick="restartQuiz()" style="background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%); color: var(--dark-gray); padding: 0.75rem 2rem; border: none; border-radius: 6px; font-weight: 700; cursor: pointer;">Intentar de Nuevo</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memory Game Section -->
+    <section class="section" style="background: linear-gradient(135deg, #8B0000 0%, #000 50%, #8B0000 100%); border-top: 3px solid #D4AF37;">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: #FFD700; text-transform: uppercase; letter-spacing: var(--tracking-elegant); text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);">Juego de Memoria</h2>
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem;">¡Encuentra los pares de símbolos scouts!</p>
+
+            <div class="memory-game" id="memoryGame"></div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <p style="font-size: 1.2rem; color: #FFD700;">Movimientos: <span id="moves">0</span></p>
+                <button onclick="restartMemory()" style="margin-top: 1rem; background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%); color: #000; padding: 0.75rem 2rem; border: 2px solid #D4AF37; border-radius: 6px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);">Reiniciar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fun Facts Section -->
+    <section class="section" style="background: linear-gradient(135deg, #8B0000 0%, #000 50%, #8B0000 100%); border-top: 3px solid #D4AF37; border-bottom: 3px solid #D4AF37;">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #FFD700; text-transform: uppercase; letter-spacing: var(--tracking-elegant); text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);">Datos Curiosos</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div style="background: rgba(0, 0, 0, 0.8); padding: 2rem; border-radius: 12px; border: 2px solid #D4AF37; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏕️</div>
+                    <h3 style="color: #FFD700; margin-bottom: 0.5rem;">+100 Campamentos</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8);">Más de 100 campamentos de verano realizados desde nuestra fundación.</p>
+                </div>
+                <div style="background: rgba(0, 0, 0, 0.8); padding: 2rem; border-radius: 12px; border: 2px solid #D4AF37; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
+                    <h3 style="color: #FFD700; margin-bottom: 0.5rem;">+1000 Scouts</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8);">Más de 1000 jóvenes han pasado por nuestro grupo en estos 50 años.</p>
+                </div>
+                <div style="background: rgba(0, 0, 0, 0.8); padding: 2rem; border-radius: 12px; border: 2px solid #D4AF37; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🌍</div>
+                    <h3 style="color: #FFD700; margin-bottom: 0.5rem;">5 Continentes</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8);">Nuestros scouts han viajado y participado en actividades en 5 continentes.</p>
+                </div>
+                <div style="background: rgba(0, 0, 0, 0.8); padding: 2rem; border-radius: 12px; border: 2px solid #D4AF37; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔥</div>
+                    <h3 style="color: #FFD700; margin-bottom: 0.5rem;">+500 Fogatas</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8);">Más de 500 fogatas celebradas, cada una con su historia especial.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" style="background: linear-gradient(135deg, #8B0000 0%, #000 50%, #8B0000 100%); border-top: 5px solid #D4AF37;">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="footer-logo-header">
+                        <img src="images/logo.svg" alt="ACRUX 518 Logo">
+                        <span style="color: #D4AF37 !important;">ACRUX 518</span>
+                    </div>
+                    <p class="footer-description" style="color: rgba(255, 255, 255, 0.8);">
+                        Grupo Scout ACRUX 518 de Valladolid. Desde 1977 educando en valores, fomentando la aventura y construyendo un mundo mejor.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/acrux518/?locale=es_ES" target="_blank" aria-label="Facebook" style="background: rgba(212, 175, 55, 0.2); border: 2px solid #D4AF37;">F</a>
+                        <a href="https://instagram.com/gsacrux518" target="_blank" aria-label="Instagram" style="background: rgba(212, 175, 55, 0.2); border: 2px solid #D4AF37;">I</a>
+                        <a href="https://www.tiktok.com/@gsacrux518" target="_blank" aria-label="TikTok" style="background: rgba(212, 175, 55, 0.2); border: 2px solid #D4AF37;">T</a>
+                        <a href="https://twitter.com/gsacrux518" target="_blank" aria-label="Twitter" style="background: rgba(212, 175, 55, 0.2); border: 2px solid #D4AF37;">X</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4 style="color: #FFD700 !important;">Navegación</h4>
+                    <ul>
+                        <li><a href="index.html" style="color: rgba(255, 255, 255, 0.8);">Inicio</a></li>
+                        <li><a href="nosotros.html" style="color: rgba(255, 255, 255, 0.8);">Nosotros</a></li>
+                        <li><a href="secciones.html" style="color: rgba(255, 255, 255, 0.8);">Secciones</a></li>
+                        <li><a href="calendario.html" style="color: rgba(255, 255, 255, 0.8);">Calendario</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 style="color: #FFD700 !important;">Actividades</h4>
+                    <ul>
+                        <li><a href="campamentos.html" style="color: rgba(255, 255, 255, 0.8);">Campamentos</a></li>
+                        <li><a href="calendario.html" style="color: rgba(255, 255, 255, 0.8);">Rutas</a></li>
+                        <li><a href="objetos-perdidos.html" style="color: rgba(255, 255, 255, 0.8);">Objetos Perdidos</a></li>
+                        <li><a href="contacto.html" style="color: rgba(255, 255, 255, 0.8);">Únete al grupo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 style="color: #FFD700 !important;">Contacto</h4>
+                    <div class="footer-contact-item" style="color: rgba(255, 255, 255, 0.8);">
+                        <span>📍</span>
+                        <span>Valladolid, España</span>
+                    </div>
+                    <div class="footer-contact-item" style="color: rgba(255, 255, 255, 0.8);">
+                        <span>📧</span>
+                        <span>info@acrux518.es</span>
+                    </div>
+                    <div class="footer-contact-item" style="color: rgba(255, 255, 255, 0.8);">
+                        <span>📱</span>
+                        <span>+34 XXX XXX XXX</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom" style="border-top-color: rgba(212, 175, 55, 0.3);">
+                <p style="color: rgba(255, 255, 255, 0.8);">&copy; 2025 Grupo Scout ACRUX 518. Todos los derechos reservados.</p>
+                <div class="footer-bottom-links">
+                    <a href="#" style="color: rgba(255, 255, 255, 0.8);">Privacidad</a>
+                    <a href="#" style="color: rgba(255, 255, 255, 0.8);">Términos</a>
+                    <a href="#" style="color: rgba(255, 255, 255, 0.8);">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Countdown to 50th Anniversary (January 1, 2027)
+        function updateCountdown() {
+            const targetDate = new Date('2027-01-01T00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Quiz Game
+        const quizQuestions = [
+            {
+                question: "¿En qué año se fundó el Grupo Scout ACRUX 518?",
+                options: ["1975", "1977", "1980", "1982"],
+                correct: 1
+            },
+            {
+                question: "¿Cuántos años cumplimos en 2027?",
+                options: ["40", "45", "50", "55"],
+                correct: 2
+            },
+            {
+                question: "¿En qué ciudad se encuentra nuestro grupo?",
+                options: ["Madrid", "Barcelona", "Valladolid", "Sevilla"],
+                correct: 2
+            },
+            {
+                question: "¿Cuál es el lema del Movimiento Scout?",
+                options: ["Siempre preparado", "Juntos somos más", "Nunca te rindas", "Aventura sin límites"],
+                correct: 0
+            },
+            {
+                question: "¿Qué significa ACRUX?",
+                options: ["Es el nombre de una estrella", "Son las iniciales del fundador", "Es un acrónimo latino", "Es el nombre del primer campamento"],
+                correct: 0
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const q = quizQuestions[currentQuestion];
+            document.getElementById('question').textContent = q.question;
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option';
+                btn.textContent = option;
+                btn.onclick = () => checkAnswer(index);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function checkAnswer(selected) {
+            const q = quizQuestions[currentQuestion];
+            const options = document.querySelectorAll('.quiz-option');
+            
+            options.forEach((opt, index) => {
+                opt.onclick = null;
+                if (index === q.correct) {
+                    opt.classList.add('correct');
+                } else if (index === selected && selected !== q.correct) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            const resultDiv = document.getElementById('result');
+            if (selected === q.correct) {
+                resultDiv.textContent = '¡Correcto! 🎉';
+                resultDiv.style.color = '#28a745';
+                score++;
+            } else {
+                resultDiv.textContent = 'Incorrecto 😅';
+                resultDiv.style.color = '#dc3545';
+            }
+            resultDiv.style.display = 'block';
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById('quiz').style.display = 'none';
+                document.getElementById('finalScore').style.display = 'block';
+                document.getElementById('score').textContent = score;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('finalScore').style.display = 'none';
+            loadQuestion();
+        }
+
+        loadQuestion();
+
+        // Memory Game
+        const symbols = ['🏕️', '🔥', '⛺', '🧭', '🌲', '⭐', '🦅', '🏔️'];
+        let cards = [...symbols, ...symbols];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initMemoryGame() {
+            const gameDiv = document.getElementById('memoryGame');
+            gameDiv.innerHTML = '';
+            cards = shuffle([...symbols, ...symbols]);
+            flippedCards = [];
+            matchedPairs = 0;
+            moves = 0;
+            document.getElementById('moves').textContent = moves;
+
+            cards.forEach((symbol, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.index = index;
+                card.dataset.symbol = symbol;
+                card.textContent = '?';
+                card.onclick = () => flipCard(card);
+                gameDiv.appendChild(card);
+            });
+        }
+
+        function flipCard(card) {
+            if (flippedCards.length === 2 || card.classList.contains('flipped') || card.classList.contains('matched')) {
+                return;
+            }
+
+            card.classList.add('flipped');
+            card.textContent = card.dataset.symbol;
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
+                moves++;
+                document.getElementById('moves').textContent = moves;
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            
+            if (card1.dataset.symbol === card2.dataset.symbol) {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedPairs++;
+                flippedCards = [];
+
+                if (matchedPairs === symbols.length) {
+                    setTimeout(() => alert('¡Felicidades! Has completado el juego en ' + moves + ' movimientos 🎉'), 300);
+                }
+            } else {
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    card1.textContent = '?';
+                    card2.textContent = '?';
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        function restartMemory() {
+            initMemoryGame();
+        }
+
+        initMemoryGame();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
