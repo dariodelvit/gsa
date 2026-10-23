@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Grupo Scout ACRUX 518 de Valladolid. Educando en valores, naturaleza y tiempo libre desde 1977. Perteneciente a ASDE Exploradores de Castilla y León.">
+    <title>Grupo Scout ACRUX 518 | Valladolid · Aprender Jugando</title>
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Barra de aviso superior -->
+    <div class="top-bar">
+        <div class="container top-bar-inner">
+            <div>
+                🏕️ <strong>Ronda Solar 2025/2026:</strong> Preinscripciones abiertas para niños y jóvenes de 6 a 21 años.
+            </div>
+            <div>
+                ¡Ven a probar un sábado gratis sin compromiso!
+                <a href="#contacto" class="top-bar-link" style="margin-left: 0.5rem;">Preinscríbete aquí →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación Principal -->
+    <header class="site-header">
+        <div class="navbar-container">
+            <a href="index.html" class="nav-brand">
+                <img src="images/logo.svg" alt="Logotipo Grupo Scout ACRUX 518">
+                <span>ACRUX <span class="brand-red">518</span></span>
+            </a>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#inicio" class="nav-link active">Inicio</a></li>
+                <li><a href="#quienes-somos" class="nav-link">Quiénes Somos</a></li>
+                <li><a href="#finder-secciones" class="nav-link">¿Qué rama le toca?</a></li>
+                <li><a href="#mochila-scout" class="nav-link">Mochila</a></li>
+                <li><a href="#campamento-24h" class="nav-link">Campamento 24h</a></li>
+                <li><a href="calendario.html" class="nav-link">Calendario</a></li>
+                <li><a href="#faq" class="nav-link">Dudas</a></li>
+                <li><a href="#contacto" class="nav-cta-btn">¡Probar un Sábado!</a></li>
+            </ul>
+
+            <div class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú" role="button" tabindex="0">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO PRINCIPAL (Luminoso, Cálido, Familiar y de Alto Impacto) -->
+    <section class="hero-sunny" id="inicio">
+        <div class="container">
+            <div class="hero-grid">
+                <!-- Columna Izquierda: Mensaje y llamada a la acción -->
+                <div>
+                    <div class="hero-badge-pill">
+                        <span>⚜️</span> ASDE Exploradores de Castilla y León · Valladolid
+                    </div>
+
+                    <h1 class="hero-title">
+                        Aprender jugando, crecer en valores y <span class="highlight">vivir la naturaleza.</span>
+                    </h1>
+
+                    <p class="hero-desc">
+                        Somos el <strong>Grupo Scout ACRUX 518</strong>. Desde 1977 formamos a niños, niñas y jóvenes de 6 a 21 años en el tiempo libre en Valladolid. Un espacio donde hacer amigos para toda la vida, descubrir el mundo sin pantallas y aprender haciendo.
+                    </p>
+
+                    <!-- Pañoleta oficial Acrux 518 en el Hero -->
+                    <div class="scarf-visual-card">
+                        <div class="scarf-triangle" title="Pañoleta Acrux 518: Carmesí y Blanco"></div>
+                        <div>
+                            <span class="scarf-text-title">Nuestra Pañoleta: Rojo Carmesí y Blanco Nieve</span>
+                            <span class="scarf-text-sub">Símbolo de entrega, hermandad y amor a la montaña en Valladolid desde hace más de 48 años.</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-buttons">
+                        <a href="#contacto" class="btn-primary-scout">
+                            <span>¡Ven a probar un sábado gratis!</span>
+                            <span>→</span>
+                        </a>
+                        <a href="#finder-secciones" class="btn-secondary-scout">
+                            <span>Descubre la sección por edad</span>
+                            <span>🧭</span>
+                        </a>
+                    </div>
+
+                    <div class="hero-checks">
+                        <span><strong>✓</strong> Sábados de 16:30 a 19:00 h</span>
+                        <span><strong>✓</strong> Sede en Crtra. de Rueda, 53</span>
+                        <span><strong>✓</strong> 100% Voluntarios titulados</span>
+                    </div>
+
+                    <!-- Estadísticas en vivo del grupo -->
+                    <div class="hero-stats-row">
+                        <div class="hero-stat-box">
+                            <span class="hero-stat-num">+48</span>
+                            <span class="hero-stat-label">Años de Historia</span>
+                        </div>
+                        <div class="hero-stat-box">
+                            <span class="hero-stat-num">120+</span>
+                            <span class="hero-stat-label">Scouts Activos</span>
+                        </div>
+                        <div class="hero-stat-box">
+                            <span class="hero-stat-num">15</span>
+                            <span class="hero-stat-label">Días Campamento</span>
+                        </div>
+                        <div class="hero-stat-box">
+                            <span class="hero-stat-num">5</span>
+                            <span class="hero-stat-label">Ramas Educativas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Foto alegre de campamento -->
+                <div class="hero-photo-wrap">
+                    <img src="images/DSC_04051.jpg" alt="Scouts del Acrux 518 de campamento en la naturaleza" class="hero-main-photo">
+                    <div class="hero-floating-card">
+                        <div class="floating-icon">🏕️</div>
+                        <div>
+                            <strong style="color: var(--c-text); font-size: 0.95rem; display: block;">Grupo Scout ACRUX 518</strong>
+                            <span style="color: var(--c-text-muted); font-size: 0.82rem;">Educando en el tiempo libre en Valladolid desde 1977</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 1: QUIÉNES SOMOS & LOS 4 PILARES SCOUT -->
+    <section class="section" id="quienes-somos">
+        <div class="container">
+            <div class="section-head">
+                <span class="kicker">NUESTRA ESENCIA</span>
+                <h2 class="section-title">¿Qué es el Escultismo en el Acrux?</h2>
+                <p class="section-subtitle">
+                    El escultismo es el movimiento educativo juvenil más grande del mundo. No somos una guardería ni una extraescolar al uso: somos una hermandad donde los chavales crecen seguros, autónomos y comprometidos.
+                </p>
+            </div>
+
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <span class="pillar-icon">🏕️</span>
+                    <h3>Vida en la Naturaleza</h3>
+                    <p>Campamentos de verano de 15 días en tiendas, acampadas de otoño y primavera, rutas senderistas y respeto absoluto por el medio ambiente.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <span class="pillar-icon">🤝</span>
+                    <h3>Amistad y Valores</h3>
+                    <p>Fomentamos el compañerismo, la solidaridad, el respeto mutuo y la empatía en un ambiente sano, alegre y completamente libre de pantallas.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <span class="pillar-icon">🎯</span>
+                    <h3>Aprender Haciendo</h3>
+                    <p>La pedagogía activa es nuestra seña: construcciones con troncos, cabuyería, orientación con mapa, juegos cooperativos y proyectos reales.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <span class="pillar-icon">❤️</span>
+                    <h3>Scouters Voluntarios</h3>
+                    <p>Un equipo de monitores altruistas con titulación oficial de la Escuela de Tiempo Libre de la Junta de Castilla y León dedicados a cuidar y educar.</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2.5rem;">
+                <a href="nosotros.html" class="btn-secondary-scout">
+                    <span>📖 Conoce nuestra historia desde 1977 y el Kraal de Scouters</span>
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN INTERACTIVA WOW 1: FINDER / CALCULADORA DE SECCIÓN POR EDAD -->
+    <section class="section section-alt" id="finder-secciones">
+        <div class="container">
+            <div class="section-head">
+                <span class="kicker">SIMULADOR INTERACTIVO</span>
+                <h2 class="section-title">¿Qué rama le toca a tu hijo o hija?</h2>
+                <p class="section-subtitle">
+                    En el Escultismo cada edad vive su propia aventura con pedagogía, juegos y marco simbólico adaptados a su desarrollo:
+                </p>
+            </div>
+
+            <div class="finder-section-wrapper">
+                <div class="finder-controls">
+                    <div style="margin-bottom: 0.5rem; font-weight: 700; color: var(--c-text);">
+                        Selecciona la edad de tu peque o joven:
+                    </div>
+                    <div class="age-display-bubble" id="ageBubble">8 años</div>
+
+                    <div class="finder-slider-box">
+                        <input type="range" min="6" max="20" value="8" class="finder-slider" id="ageSlider" aria-label="Selector de edad">
+                    </div>
+
+                    <div class="quick-age-btns">
+                        <button type="button" class="quick-age-btn" onclick="setAge(6)">6-8 años (Castores)</button>
+                        <button type="button" class="quick-age-btn active" onclick="setAge(8)">8-11 años (Lobatos)</button>
+                        <button type="button" class="quick-age-btn" onclick="setAge(12)">11-14 años (Scouts)</button>
+                        <button type="button" class="quick-age-btn" onclick="setAge(15)">14-17 años (Escultas)</button>
+                        <button type="button" class="quick-age-btn" onclick="setAge(18)">17-21 años (Rovers)</button>
+                    </div>
+                </div>
+
+                <!-- Tarjeta interactiva del Finder -->
+                <div class="finder-result-card" id="finderCard">
+                    <div class="finder-avatar-icon" id="finderIcon" style="background: #FEF3C7; color: #D97706;">
+                        🐺
+                    </div>
+
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                            <span class="finder-motto-tag" id="finderMottoTag" style="background: #FEF3C7; color: #92400E;">
+                                Lema: «Haremos lo mejor»
+                            </span>
+                            <span style="font-weight: 700; font-size: 0.85rem; color: #64748B;" id="finderAgesTag">
+                                8 a 11 años · 3º a 5º de Primaria
+                            </span>
+                        </div>
+
+                        <h3 class="finder-info-title" id="finderTitle">
+                            Manada Khanhiwara <span style="font-weight: 500; font-size: 1.2rem; color: #64748B;">(Lobatos)</span>
+                        </h3>
+
+                        <p style="color: var(--c-text-muted); font-size: 0.95rem; line-height: 1.6;" id="finderDesc">
+                            Inspirada en El Libro de la Selva de Kipling. Los lobatos cazan en seisenas, aprenden las Máximas de Baloo y desarrollan su autonomía jugando en plena naturaleza.
+                        </p>
+
+                        <ul class="finder-features-list" id="finderFeatures">
+                            <li><span>🌿</span> Marco simbólico de la Selva de Seeonee</li>
+                            <li><span>🐾</span> Trabajo en Seisenas cooperativas</li>
+                            <li><span>⛺</span> Primeras noches en tienda y acampadas</li>
+                            <li><span>🎒</span> Autonomía con su propia mochila</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <button type="button" class="btn-primary-scout" id="finderCtaBtn" onclick="selectSectionInForm('manada')">
+                            <span>Preinscribir en Manada</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2: LAS 5 SECCIONES COMPLETAS -->
+    <section class="section" id="secciones">
+        <div class="container">
+            <div class="section-head">
+                <span class="kicker">UN LUGAR PARA CADA EDAD</span>
+                <h2 class="section-title">Nuestras 5 Ramas Educativas</h2>
+                <p class="section-subtitle">
+                    Descubre el itinerario pedagógico completo por el que pasa cada scout en el Acrux 518:
+                </p>
+            </div>
+
+            <div class="branches-cards-grid">
+                <!-- 1. Castores -->
+                <div class="branch-family-card branch-castores">
+                    <div class="branch-header-top">
+                        <span class="branch-symbol">🦫</span>
+                        <span class="branch-age-tag tag-castores">6 a 8 años</span>
+                    </div>
+                    <div class="branch-real-name">Colonia Ohiensis</div>
+                    <h3 class="branch-unit-title">Castores</h3>
+                    <div class="branch-motto-quote">«Compartir»</div>
+                    <p class="branch-unit-desc">
+                        1º y 2º de Primaria. Sus primeros pasos en el grupo. A través de cuentos, juegos cooperativos y manualidades en el bosque aprenden a convivir y a compartir con alegría.
+                    </p>
+                    <a href="#contacto" onclick="selectSectionInForm('castores')" class="branch-details-link">Preguntar por Castores →</a>
+                </div>
+
+                <!-- 2. Manada -->
+                <div class="branch-family-card branch-manada">
+                    <div class="branch-header-top">
+                        <span class="branch-symbol">🐺</span>
+                        <span class="branch-age-tag tag-manada">8 a 11 años</span>
+                    </div>
+                    <div class="branch-real-name">Manada Khanhiwara</div>
+                    <h3 class="branch-unit-title">Lobatos</h3>
+                    <div class="branch-motto-quote">«Haremos lo mejor»</div>
+                    <p class="branch-unit-desc">
+                        3º a 5º de Primaria. El marco simbólico de <em>El Libro de las Tierras Vírgenes</em> (Mowgli). Aprenden a ser autónomos, cuidan de su mochila y duermen en tiendas de campaña.
+                    </p>
+                    <a href="#contacto" onclick="selectSectionInForm('manada')" class="branch-details-link">Preguntar por Lobatos →</a>
+                </div>
+
+                <!-- 3. Tropa -->
+                <div class="branch-family-card branch-tropa">
+                    <div class="branch-header-top">
+                        <span class="branch-symbol">⚜️</span>
+                        <span class="branch-age-tag tag-tropa">11 a 14 años</span>
+                    </div>
+                    <div class="branch-real-name">Tropa Lohengrin</div>
+                    <h3 class="branch-unit-title">Scouts</h3>
+                    <div class="branch-motto-quote">«Siempre Listos»</div>
+                    <p class="branch-unit-desc">
+                        6º de Primaria a 2º de ESO. El corazón del escultismo. Se organizan en Patrullas autónomas con cargos propios, hacen construcciones de madera, cabuyería y marchas de montaña.
+                    </p>
+                    <a href="#contacto" onclick="selectSectionInForm('tropa')" class="branch-details-link">Preguntar por Scouts →</a>
+                </div>
+
+                <!-- 4. Escultas -->
+                <div class="branch-family-card branch-esculta">
+                    <div class="branch-header-top">
+                        <span class="branch-symbol">🥾</span>
+                        <span class="branch-age-tag tag-esculta">14 a 17 años</span>
+                    </div>
+                    <div class="branch-real-name">Unidad Trea</div>
+                    <h3 class="branch-unit-title">Escultas</h3>
+                    <div class="branch-motto-quote">«Unidad»</div>
+                    <p class="branch-unit-desc">
+                        3º-4º ESO y 1º Bachillerato. Jóvenes pioneros que gestionan y financian sus propias «Empresas»: expediciones de aventura, viajes de impacto social y causas solidarias.
+                    </p>
+                    <a href="#contacto" onclick="selectSectionInForm('esculta')" class="branch-details-link">Preguntar por Escultas →</a>
+                </div>
+
+                <!-- 5. Clan -->
+                <div class="branch-family-card branch-clan">
+                    <div class="branch-header-top">
+                        <span class="branch-symbol">🌿</span>
+                        <span class="branch-age-tag tag-clan">17 a 21 años</span>
+                    </div>
+                    <div class="branch-real-name">Clan Ama Dablam</div>
+                    <h3 class="branch-unit-title">Rovers</h3>
+                    <div class="branch-motto-quote">«Servir»</div>
+                    <p class="branch-unit-desc">
+                        Jóvenes adultos comprometidos. Realizan voluntariado en asociaciones y ONGs, debaten sobre la sociedad y se forman como futuros educadores de tiempo libre.
+                    </p>
+                    <a href="#contacto" onclick="selectSectionInForm('clan')" class="branch-details-link">Preguntar por Clan →</a>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2.5rem;">
+                <a href="secciones.html" class="btn-secondary-scout">
+                    <span>🔍 Ver lemas, metodología, uniformes y actividades de cada sección</span>
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN INTERACTIVA WOW 2: SIMULADOR DE MOCHILA SCOUT -->
+    <section class="section section-alt" id="mochila-scout">
+        <div class="container">
+            <div class="section-head">
+                <span class="kicker">CHECKLIST INTERACTIVA</span>
+                <h2 class="section-title">¿Qué metemos en la mochila scout?</h2>
+                <p class="section-subtitle">
+                    Prueba nuestro empaquetador interactivo: selecciona el tipo de salida y marca los elementos que vas guardando:
+                </p>
+            </div>
+
+            <div class="backpack-section-card">
+                <!-- Selector de tipo de salida -->
+                <div class="backpack-type-nav">
+                    <button type="button" class="backpack-type-btn active" onclick="switchBackpackType('sabado', this)">
+                        <span>🎒</span> Salida de Sábado
+                    </button>
+                    <button type="button" class="backpack-type-btn" onclick="switchBackpackType('acampada', this)">
+                        <span>⛺</span> Acampada Fin de Semana
+                    </button>
+                    <button type="button" class="backpack-type-btn" onclick="switchBackpackType('campamento', this)">
+                        <span>🏔️</span> Campamento de Verano (15 Días)
+                    </button>
+                </div>
+
+                <div class="backpack-grid">
+                    <!-- Lista de checklist táctil -->
+                    <div>
+                        <div class="gear-checklist" id="gearChecklist">
+                            <!-- Inyectado por JS -->
+                        </div>
+                    </div>
+
+                    <!-- Panel de estado y progreso -->
+                    <div class="backpack-status-panel">
+                        <div class="backpack-meter-circle" id="meterCircle">
+                            <span class="meter-pct" id="meterPct">0%</span>
+                            <span class="meter-sub">Empacado</span>
+                        </div>
+
+                        <h4 style="font-family: var(--font-heading); font-size: 1.15rem; color: var(--c-text); margin-bottom: 0.35rem;" id="meterStatusTitle">
+                            Mochila vacía
+                        </h4>
+                        <p style="font-size: 0.86rem; color: var(--c-text-muted);" id="meterStatusSubtitle">
+                            Haz clic en los elementos de la izquierda para guardarlos.
+                        </p>
+
+                        <div class="backpack-progress-bar-wrap">
+                            <div class="backpack-progress-bar-fill" id="meterBar"></div>
+                        </div>
+
+                        <div class="scouter-pro-tip" id="scouterTip">
+                            <strong>💡 Consejo del Scouter:</strong> El saco de dormir va siempre en el fondo de la mochila, y el chubasquero o capelina en la seta superior por si empieza a llover.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN INTERACTIVA WOW 3: UN DÍA EN EL CAMPAMENTO (24H INTERACTIVAS) -->
+    <section class="section" id="campamento-24h">
+        <div class="container">
+            <div class="section-head">
+                <span class="kicker">LA GRAN AVENTURA</span>
+                <h2 class="section-title">24 Horas en el Campamento de Verano</h2>
+                <p class="section-subtitle">
+                    15 días en plena naturaleza sin pantallas. Haz clic en las horas del día para descubrir el ritmo de vida scout:
+                </p>
+            </div>
+
+            <div class="camp-timeline-wrapper">
+                <!-- Botones horarios -->
+                <div class="time-slots-container" id="timeSlotsBar">
+                    <button type="button" class="time-slot-pill active" onclick="showCampHour(0, this)">🌅 08:30 Diana</button>
+                    <button type="button" class="time-slot-pill" onclick="showCampHour(1, this)">⚜️ 09:15 Izada</button>
+                    <button type="button" class="time-slot-pill" onclick="showCampHour(2, this)">🪵 10:30 Construcciones</button>
+                    <button type="button" class="time-slot-pill" onclick="showCampHour(3, this)">🍲 14:00 El Rancho</button>
+                    <button type="button" class="time-slot-pill" onclick="showCampHour(4, this)">🌊 16:30 Rutas & Pozas</button>
+                    <button type="button" class="time-slot-pill" onclick="showCampHour(5, this)">🏕️ 20:30 Arriada</button>
+                    <button type="button" class="time-slot-pill" onclick="showCampHour(6, this)">🔥 22:00 Fuego Campamento</button>
+                </div>
+
+                <!-- Tarjeta interactiva del momento -->
+                <div class="timeline-content-card">
+                    <div>
+                        <img src="images/DSC_04051.jpg" alt="Momento del campamento" class="timeline-card-photo" id="campPhoto">
+                    </div>
+                    <div class="timeline-card-body">
+                        <span class="timeline-hour-tag" id="campHourTag">08:30 h · ¡Arriba el campamento!</span>
+                        <h3 class="timeline-title" id="campTitle">Diana y Saludo al Sol</h3>
+                        <p class="timeline-desc" id="campDesc">
+                            Suena la canción de diana o el silbato scouter entre los pinos. Salimos de las tiendas canadienses, estiramientos al aire fresco de la montaña y aseo personal antes de un desayuno reconfortante con galletas y leche caliente.
+                        </p>
+                        <div class="timeline-scout-quote" id="campQuote">
+                            «Un scout se levanta con alegría y agradece el nuevo día en la naturaleza.»
+                        </div>
+
+                        <!-- Botón de sonido ambiental de fuego de campamento -->
+                        <div id="campfireSoundBox" style="display: none;">
+                            <button type="button" class="campfire-sound-pill" id="campfireAudioBtn" onclick="toggleCampfireSound()">
+                                <span>🔥</span> <span id="campfireAudioText">Escuchar el crepitar del fuego</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3: CAMPAMENTOS & GALERÍA DE FOTOS -->
+    <section class="section section-alt" id="campamentos">
+        <div class="container">
+            <div class="camps-banner">
+                <div class="camps-banner-body">
+                    <span class="kicker">CAMPAMENTOS DE VERANO E INVIERNO</span>
+                    <h2 class="section-title">El Momento Cumbre de la Ronda</h2>
+                    <p style="color: var(--c-text-muted); font-size: 1.05rem; line-height: 1.65; margin-bottom: 1.5rem;">
+                        <strong>15 días cada mes de julio</strong> en tiendas de campaña en valles alpinos (Pirineos, Picos de Europa, Sistema Central). Cocina propia, baños en pozas, fuegos de campamento bajo las estrellas y rutas de montaña.
+                    </p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <a href="campamentos.html" class="btn-primary-scout">Descubre la guía de campamentos →</a>
+                        <a href="#contacto" class="btn-secondary-scout">Consultar plazas disponibles</a>
+                    </div>
+                </div>
+                <div class="camps-banner-img">
+                    <img src="images/DSC_064012.jpg" alt="Construcciones y vida de campamento scout">
+                </div>
+            </div>
+
+            <!-- Galería de fotos limpia -->
+            <div class="section-head" style="margin-bottom: 2rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--c-text);">Momentos de Nuestro Grupo</h3>
+            </div>
+            <div class="photo-gallery-clean">
+                <div class="photo-card">
+                    <img src="images/DSC_04051.jpg" alt="Ruta por la montaña">
+                    <div class="photo-tag-over">Rutas de Montaña</div>
+                </div>
+                <div class="photo-card">
+                    <img src="images/DSC_058812.jpg" alt="Actividades scouts en equipo">
+                    <div class="photo-tag-over">Trabajo en Equipo</div>
+                </div>
+                <div class="photo-card">
+                    <img src="images/DSC_059812.jpg" alt="Juegos y dinámicas scouts">
+                    <div class="photo-tag-over">Aprender Jugando</div>
+                </div>
+                <div class="photo-card">
+                    <img src="images/DSC_066412.jpg" alt="Fuego de campamento">
+                    <div class="photo-tag-over">Velada y Hermandad</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4: DUDAS FRECUENTES DE LAS FAMILIAS (FAQ ACORDEÓN MODERNO) -->
+    <section class="section" id="faq">
+        <div class="container">
+            <div class="section-head">
+                <span class="kicker">INFORMACIÓN PRÁCTICA</span>
+                <h2 class="section-title">Preguntas Frecuentes de Familias</h2>
+                <p class="section-subtitle">
+                    ¿Es la primera vez que os acercáis al mundo scout? Aquí resolvemos las dudas más habituales:
+                </p>
+            </div>
+
+            <div class="accordion-wrapper" id="faqAccordion">
+                <!-- 1 -->
+                <div class="accordion-item open">
+                    <button class="accordion-header" type="button">
+                        <span>❓ ¿A qué edad puede empezar mi hijo o hija?</span>
+                        <span class="icon">▼</span>
+                    </button>
+                    <div class="accordion-body">
+                        En el ACRUX 518 acogemos a niños y niñas desde los <strong>6 años</strong> (1º de Primaria) en la Colonia de Castores Ohiensis, hasta los <strong>21 años</strong> en el Clan Rover Ama Dablam. Si ya tienen más de 21 años y quieren colaborar como monitores voluntarios (scouters), ¡también sois bienvenidos!
+                    </div>
+                </div>
+
+                <!-- 2 -->
+                <div class="accordion-item">
+                    <button class="accordion-header" type="button">
+                        <span>🤝 ¿Se puede ir a probar un sábado gratis sin compromiso?</span>
+                        <span class="icon">▼</span>
+                    </button>
+                    <div class="accordion-body">
+                        <strong>¡Totalmente!</strong> Siempre invitamos a cualquier chaval y familia a acudir a una reunión de sábado por la tarde (de 16:30 a 19:00 h). Juegan, conocen a sus monitores y compañeros, y deciden con total tranquilidad si les gusta antes de formalizar la cuota.
+                    </div>
+                </div>
+
+                <!-- 3 -->
+                <div class="accordion-item">
+                    <button class="accordion-header" type="button">
+                        <span>📍 ¿Dónde y cuándo os reunís habitualmente?</span>
+                        <span class="icon">▼</span>
+                    </button>
+                    <div class="accordion-body">
+                        Nuestra base scout está en <strong>Carretera de Rueda, 53 (47008 Valladolid)</strong>. Nos reunimos todos los sábados lectivos del curso de <strong>16:30 a 19:00 h</strong>. Además, realizamos salidas al campo los fines de semana, acampadas con pernocta y el campamento de verano de 15 días en julio.
+                    </div>
+                </div>
+
+                <!-- 4 -->
+                <div class="accordion-item">
+                    <button class="accordion-header" type="button">
+                        <span>🏕️ ¿Quién cuida a los chavales en salidas y campamentos?</span>
+                        <span class="icon">▼</span>
+                    </button>
+                    <div class="accordion-body">
+                        Todos nuestros scouters son <strong>jóvenes voluntarios mayores de edad</strong> con titulación oficial homologada por la Junta de Castilla y León (Monitor y Coordinador de Tiempo Libre), formación en primeros auxilios y certificado negativo de delitos sexuales obligatorio por ley. Muchos de ellos han sido educados en el propio grupo desde pequeños.
+                    </div>
+                </div>
+
+                <!-- 5 -->
+                <div class="accordion-item">
+                    <button class="accordion-header" type="button">
+                        <span>💰 ¿Cuánto cuesta y cómo se financia el grupo?</span>
+                        <span class="icon">▼</span>
+                    </button>
+                    <div class="accordion-body">
+                        Somos una asociación juvenil sin ánimo de lucro. La cuota anual del grupo es muy accesible (cubre el seguro de accidentes y responsabilidad civil obligatorio de ASDE, materiales educativos y mantenimiento del local). Los campamentos se pagan por separado a precio de coste real sin margen de beneficio.
+                    </div>
+                </div>
+
+                <!-- 6 -->
+                <div class="accordion-item">
+                    <button class="accordion-header" type="button">
+                        <span>🥗 ¿Qué ocurre si mi hijo tiene alergias, celiaquía o toma medicación?</span>
+                        <span class="icon">▼</span>
+                    </button>
+                    <div class="accordion-body">
+                        En la ficha de inscripción médica se detalla exhaustivamente cada caso. En los campamentos disponemos de equipo propio de cocina con menús especiales adaptados a celiaquías, intolerancias a la lactosa, alergias a frutos secos y opciones vegetarianas. La medicación se custodia y administra rigurosamente por los scouters según prescripción médica firmada.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 5: FORMULARIO DE PREINSCRIPCIÓN & CONTACTO DIRECTO -->
+    <section class="section section-alt" id="contacto">
+        <div class="container">
+            <div class="section-head">
+                <span class="kicker">FORMA PARTE DEL ACRUX 518</span>
+                <h2 class="section-title">Preinscripción y Contacto Directo</h2>
+                <p class="section-subtitle">
+                    ¿Quieres que tu hijo o hija venga a probar un sábado? Escríbenos o habla directamente con nosotros por WhatsApp:
+                </p>
+            </div>
+
+            <div class="contact-grid">
+                <!-- Info directa de contacto -->
+                <div class="contact-info-card">
+                    <h3 style="font-family: var(--font-heading); font-size: 1.4rem; margin-bottom: 1rem; color: var(--c-text);">
+                        Habla con Nosotros
+                    </h3>
+                    <p style="color: var(--c-text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+                        Estaremos encantados de resolver cualquier duda sobre edades, horarios o material.
+                    </p>
+
+                    <div class="contact-detail-item">
+                        <div class="contact-icon-pill">📍</div>
+                        <div>
+                            <strong>Nuestra Sede Scout:</strong>
+                            <p style="margin: 0; color: var(--c-text-muted); font-size: 0.9rem;">
+                                Carretera de Rueda, 53<br>47008 Valladolid
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <div class="contact-icon-pill">⏰</div>
+                        <div>
+                            <strong>Horario de Reuniones:</strong>
+                            <p style="margin: 0; color: var(--c-text-muted); font-size: 0.9rem;">
+                                Sábados de 16:30 a 19:00 h (Curso escolar)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <div class="contact-icon-pill">📱</div>
+                        <div>
+                            <strong>Marta (Secretaría y Familias):</strong>
+                            <p style="margin: 0;">
+                                <a href="tel:+34619202068" style="color: var(--c-primary); font-weight: 700;">619 20 20 68</a>
+                                <a href="https://wa.me/34619202068?text=Hola%20Marta!%20Quisiera%20información%20para%20inscribir%20a%20mi%20hijo/a%20en%20el%20Grupo%20Scout%20Acrux%20518" target="_blank" rel="noopener" style="margin-left: 0.5rem; color: #16A34A; font-weight: 700;">
+                                    (WhatsApp directo)
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <div class="contact-icon-pill">⚜️</div>
+                        <div>
+                            <strong>Jota Jota (Coordinador de Grupo):</strong>
+                            <p style="margin: 0;">
+                                <a href="tel:+34616289119" style="color: var(--c-primary); font-weight: 700;">616 28 91 19</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <div class="contact-icon-pill">📧</div>
+                        <div>
+                            <strong>Email Oficial:</strong>
+                            <p style="margin: 0;">
+                                <a href="mailto:info@acrux518.es" style="color: var(--c-primary); font-weight: 700;">info@acrux518.es</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario interactivo -->
+                <div class="contact-form-card">
+                    <h3 style="font-family: var(--font-heading); font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--c-text);">
+                        Preinscribe a tu hijo/a para probar gratis
+                    </h3>
+                    <p style="color: var(--c-text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">
+                        Rellena estos breves datos y Secretaría contactará contigo para confirmar el sábado de prueba:
+                    </p>
+
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <label for="name">Nombre del padre, madre o tutor:</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="Tu nombre completo" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="childName">Nombre y edad del niño/a:</label>
+                            <input type="text" id="childName" name="childName" class="form-input" placeholder="Ej: Lucas, 9 años" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="phone">Teléfono de contacto (WhatsApp):</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" placeholder="600 000 000" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="email">Correo electrónico:</label>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="tucorreo@ejemplo.com" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="sectionSelect">Sección de interés por edad:</label>
+                            <select id="sectionSelect" name="section" class="form-input">
+                                <option value="castores">Castores (6 a 8 años · Colonia Ohiensis)</option>
+                                <option value="manada" selected>Lobatos (8 a 11 años · Manada Khanhiwara)</option>
+                                <option value="tropa">Scouts (11 a 14 años · Tropa Lohengrin)</option>
+                                <option value="esculta">Escultas (14 a 17 años · Unidad Trea)</option>
+                                <option value="clan">Rovers (17 a 21 años · Clan Ama Dablam)</option>
+                                <option value="scouter">Quiero ser Scouter / Monitor Voluntario (+18)</option>
+                                <option value="dudas">Consulta general</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="message">Mensaje o comentarios adicionales:</label>
+                            <textarea id="message" name="message" rows="3" class="form-input" placeholder="Cuéntanos cualquier duda o detalle que quieras compartir..."></textarea>
+                        </div>
+
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                            <button type="submit" class="btn-primary-scout" style="flex: 1; justify-content: center;">
+                                Enviar Solicitud por Web →
+                            </button>
+                            <button type="button" class="btn-secondary-scout" style="justify-content: center; border-color: #25D366; color: #16A34A !important;" onclick="sendFormByWhatsApp()">
+                                <span>📲 Enviar por WhatsApp</span>
+                            </button>
+                        </div>
+
+                        <div id="formSuccess" style="display: none; background: #DEF7EC; border: 1px solid #31C48D; color: #03543F; padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: center; font-weight: 700;">
+                            ✅ ¡Muchas gracias! Tu solicitud ha sido recibida con éxito. Contactaremos contigo muy pronto.
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Mapa embebido de la sede en Carretera de Rueda, 53 -->
+            <div style="margin-top: 2.5rem; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--c-border); box-shadow: var(--shadow-subtle);">
+                <iframe 
+                    title="Ubicación Grupo Scout ACRUX 518 Valladolid"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2982.7236511110756!2d-4.7368661!3d41.6185854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd476d05f3e494a5%3A0x6b1ec114ad2b8ebc!2sCarretera%20de%20Rueda%2C%2053%2C%2047008%20Valladolid!5e0!3m2!1ses!2ses!4v1680000000000!5m2!1ses!2ses" 
+                    width="100%" 
+                    height="280" 
+                    style="border:0; display: block;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="clean-footer">
+        <div class="container">
+            <div class="footer-main-grid">
+                <div class="footer-brand">
+                    <h4>
+                        <img src="images/logo.svg" alt="Logotipo Acrux 518" style="height: 32px; width: auto;">
+                        ACRUX 518
+                    </h4>
+                    <p>
+                        Grupo Scout ACRUX 518 de Valladolid. Miembro de ASDE Exploradores de Castilla y León y Scouts de España. Educando en valores, aventura y servicio a la comunidad desde 1977.
+                    </p>
+                    <div class="footer-social-links">
+                        <a href="https://www.facebook.com/acrux518/?locale=es_ES" target="_blank" rel="noopener" aria-label="Facebook">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="https://instagram.com/gsacrux518" target="_blank" rel="noopener" aria-label="Instagram">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="https://www.tiktok.com/@gsacrux518" target="_blank" rel="noopener" class="footer-social-links a" aria-label="TikTok">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.49 6.27 6.27 0 0 0 1.86-4.49V8.69a8.18 8.18 0 0 0 4.91 1.63v-3.63z"/></svg>
+                        </a>
+                        <a href="https://twitter.com/gsacrux518" target="_blank" rel="noopener" class="footer-social-links a" aria-label="Twitter">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="footer-heading">Las 5 Ramas</h5>
+                    <ul class="footer-list">
+                        <li><a href="#secciones" onclick="selectSectionInForm('castores')">Colonia Ohiensis (Castores)</a></li>
+                        <li><a href="#secciones" onclick="selectSectionInForm('manada')">Manada Khanhiwara (Lobatos)</a></li>
+                        <li><a href="#secciones" onclick="selectSectionInForm('tropa')">Tropa Lohengrin (Scouts)</a></li>
+                        <li><a href="#secciones" onclick="selectSectionInForm('esculta')">Unidad Trea (Escultas)</a></li>
+                        <li><a href="#secciones" onclick="selectSectionInForm('clan')">Clan Ama Dablam (Rovers)</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="footer-heading">Guías y Documentos</h5>
+                    <ul class="footer-list">
+                        <li><a href="campamentos.html">Campamento de Verano</a></li>
+                        <li><a href="secciones.html">Pedagogía por Edades</a></li>
+                        <li><a href="calendario.html">Calendario de Ronda</a></li>
+                        <li><a href="nosotros.html">Kraal de Scouters</a></li>
+                        <li><a href="objetos-perdidos.html">Objetos Perdidos</a></li>
+                        <li><a href="50-aniversario.html">50 Aniversario</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="footer-heading">Contacto y Sede</h5>
+                    <p style="font-size: 0.88rem; color: #94A3B8; margin-bottom: 0.5rem;">
+                        📍 Crtra. de Rueda, 53<br>47008 Valladolid
+                    </p>
+                    <p style="font-size: 0.88rem; color: #94A3B8; margin-bottom: 0.5rem;">
+                        📱 Marta: <a href="tel:+34619202068" style="color: #FFFFFF; font-weight: 700;">619 20 20 68</a>
+                    </p>
+                    <p style="font-size: 0.88rem; color: #94A3B8;">
+                        📧 <a href="mailto:info@acrux518.es" style="color: #FFFFFF;">info@acrux518.es</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-bottom-copy">
+                <div>&copy; 2025 Grupo Scout ACRUX 518 · Valladolid · Siempre Listos para Servir.</div>
+                <div>ASDE Exploradores de Castilla y León</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+    <a href="https://wa.me/34619202068?text=Hola%20Marta!%20He%20visto%20la%20web%20del%20Acrux%20518%20y%20me%20gustaría%20información%20para%20probar%20un%20sábado." target="_blank" rel="noopener" class="whatsapp-float" aria-label="Hablar por WhatsApp con Secretaría">
+        <span class="whatsapp-float-pulse"></span>
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.164.577 4.195 1.583 5.952l-1.583 5.792 5.976-1.567c1.704.939 3.666 1.475 5.753 1.475 6.627 0 12-5.373 12-12 0-6.627-5.373-12-12-12zm0 21.782c-1.847 0-3.578-.506-5.064-1.388l-.363-.215-3.543.929.945-3.453-.235-.374c-.958-1.523-1.467-3.298-1.467-5.131 0-5.376 4.374-9.75 9.75-9.75 5.376 0 9.75 4.374 9.75 9.75 0 5.376-4.374 9.75-9.75 9.75z"/></svg>
+        <span>¿Dudas? WhatsApp</span>
+    </a>
+
+    <!-- SCRIPTS INTERACTIVOS (Vanilla JS puro y rápido) -->
+    <script>
+        // 1. Menú Móvil
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        if (menuBtn && navMenu) {
+            menuBtn.addEventListener('click', () => navMenu.classList.toggle('open'));
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => navMenu.classList.remove('open'));
+            });
+        }
+
+        // 2. BUSCADOR / FINDER DE SECCIONES INTERACTIVO
+        const branchData = {
+            castores: {
+                name: 'Colonia Ohiensis',
+                unit: 'Castores',
+                ages: '6 a 8 años · 1º y 2º Primaria',
+                icon: '🦫',
+                motto: 'Lema: «Compartir»',
+                colorBg: '#E0F2FE',
+                colorText: '#0369A1',
+                desc: '1º y 2º de Primaria. Sus primeros pasos en el grupo. A través de cuentos del Gran Castor, juegos cooperativos y manualidades en el bosque aprenden a convivir y compartir con alegría.',
+                features: ['🪵 El Gran Dique y la Colonia', '🎨 Juegos cooperativos y risas', '🌳 Primer contacto con la naturaleza', '🧸 Aprender a compartir con otros']
+            },
+            manada: {
+                name: 'Manada Khanhiwara',
+                unit: 'Lobatos',
+                ages: '8 a 11 años · 3º a 5º Primaria',
+                icon: '🐺',
+                motto: 'Lema: «Haremos lo mejor»',
+                colorBg: '#FEF3C7',
+                colorText: '#92400E',
+                desc: 'Inspirada en El Libro de la Selva de Kipling. Los lobatos cazan en seisenas, aprenden las Máximas de Baloo y desarrollan su autonomía jugando en plena naturaleza.',
+                features: ['🌿 Marco simbólico de la Selva de Seeonee', '🐾 Trabajo en Seisenas cooperativas', '⛺ Primeras noches en tienda y acampadas', '🎒 Autonomía con su propia mochila']
+            },
+            tropa: {
+                name: 'Tropa Lohengrin',
+                unit: 'Scouts',
+                ages: '11 a 14 años · 6º Primaria a 2º ESO',
+                icon: '⚜️',
+                motto: 'Lema: «Siempre Listos»',
+                colorBg: '#DCFCE7',
+                colorText: '#166534',
+                desc: '6º Primaria a 2º ESO. El corazón del escultismo. Se organizan en Patrullas autónomas con cargos propios, hacen construcciones de madera, cabuyería y marchas de montaña.',
+                features: ['🏕️ Sistema de Patrullas autónomas', '🪢 Construcciones de pionerismo y cabuyería', '🏔️ Vivac al aire libre y cumbres', '🧭 Orientación con brújula y mapa IGN']
+            },
+            esculta: {
+                name: 'Unidad Trea',
+                unit: 'Escultas',
+                ages: '14 a 17 años · 3º-4º ESO y 1º Bach',
+                icon: '🥾',
+                motto: 'Lema: «Unidad»',
+                colorBg: '#FEE2E2',
+                colorText: '#991B1B',
+                desc: '3º-4º ESO y 1º Bachillerato. Jóvenes pioneros que gestionan y financian sus propias «Empresas»: expediciones de aventura, viajes de impacto social y causas solidarias.',
+                features: ['🗺️ Autogestión de «Empresas» y proyectos', '🧗 Alta montaña y travesías invernales', '🤝 Compromiso social y voluntariado', '⛺ Supervivencia y autonomía real']
+            },
+            clan: {
+                name: 'Clan Ama Dablam',
+                unit: 'Rovers',
+                ages: '17 a 21 años · Universidad y Jóvenes',
+                icon: '🌿',
+                motto: 'Lema: «Servir»',
+                colorBg: '#F3E8FF',
+                colorText: '#6B21A8',
+                desc: 'Jóvenes adultos comprometidos. Realizan voluntariado en asociaciones y ONGs, debaten sobre la sociedad y se forman como futuros educadores de tiempo libre.',
+                features: ['🤝 Proyectos de servicio a la comunidad', '🎒 Rutas de descubrimiento (GRs) autónomas', '📜 Formación de monitores de tiempo libre', '⚖️ Debate crítico y ciudadanía activa']
+            }
+        };
+
+        const ageSlider = document.getElementById('ageSlider');
+        const ageBubble = document.getElementById('ageBubble');
+        const finderCard = document.getElementById('finderCard');
+        const finderIcon = document.getElementById('finderIcon');
+        const finderTitle = document.getElementById('finderTitle');
+        const finderAgesTag = document.getElementById('finderAgesTag');
+        const finderMottoTag = document.getElementById('finderMottoTag');
+        const finderDesc = document.getElementById('finderDesc');
+        const finderFeatures = document.getElementById('finderFeatures');
+        const finderCtaBtn = document.getElementById('finderCtaBtn');
+
+        function updateFinderByAge(age) {
+            let key = 'manada';
+            if (age < 8) key = 'castores';
+            else if (age <= 10) key = 'manada';
+            else if (age <= 13) key = 'tropa';
+            else if (age <= 16) key = 'esculta';
+            else key = 'clan';
+
+            const b = branchData[key];
+            if (!b) return;
+
+            ageBubble.textContent = age + ' años';
+            finderIcon.textContent = b.icon;
+            finderIcon.style.background = b.colorBg;
+            finderIcon.style.color = b.colorText;
+
+            finderMottoTag.textContent = b.motto;
+            finderMottoTag.style.background = b.colorBg;
+            finderMottoTag.style.color = b.colorText;
+
+            finderAgesTag.textContent = b.ages;
+            finderTitle.innerHTML = b.name + ' <span style="font-weight: 500; font-size: 1.2rem; color: #64748B;">(' + b.unit + ')</span>';
+            finderDesc.textContent = b.desc;
+
+            finderFeatures.innerHTML = b.features.map(f => '<li><span>✓</span> ' + f + '</li>').join('');
+            finderCtaBtn.innerHTML = '<span>Preinscribir en ' + b.unit + '</span> <span>→</span>';
+            finderCtaBtn.onclick = () => selectSectionInForm(key);
+
+            // Resaltar botón rápido activo
+            document.querySelectorAll('.quick-age-btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        if (ageSlider) {
+            ageSlider.addEventListener('input', (e) => {
+                updateFinderByAge(parseInt(e.target.value, 10));
+            });
+        }
+
+        function setAge(age) {
+            if (ageSlider) {
+                ageSlider.value = age;
+                updateFinderByAge(age);
+            }
+        }
+
+        function selectSectionInForm(secKey) {
+            const select = document.getElementById('sectionSelect');
+            if (select) {
+                select.value = secKey;
+            }
+            const contactSection = document.getElementById('contacto');
+            if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // 3. SIMULADOR DE MOCHILA SCOUT
+        const gearPresets = {
+            sabado: [
+                { id: 'mochila_peq', title: 'Mochila pequeña (15-20L)', tag: 'Cómoda con tirantes' },
+                { id: 'cantimplora', title: 'Cantimplora con agua fresca', tag: 'Mínimo 0.75 L' },
+                { id: 'almuerzo', title: 'Comida de ataque / Merienda', tag: 'Fruta, frutos secos, bocata' },
+                { id: 'chubasquero', title: 'Chubasquero o capelina', tag: 'Por si cambia el tiempo' },
+                { id: 'panoleta', title: 'Pañoleta Acrux 518 al cuello', tag: 'Uniforme scout' },
+                { id: 'gorra', title: 'Gorra o braga de cuello', tag: 'Protección solar' }
+            ],
+            acampada: [
+                { id: 'saco', title: 'Saco de dormir confort 0ºC', tag: 'En el fondo de la mochila' },
+                { id: 'aislante', title: 'Esterilla o aislante térmico', tag: 'Para aislar del frío del suelo' },
+                { id: 'cantimplora', title: 'Cantimplora 1L', tag: 'Hidratación continua' },
+                { id: 'frontal', title: 'Linterna frontal con pilas nuevas', tag: 'Manos libres de noche' },
+                { id: 'neceser', title: 'Neceser biodegradable y toalla', tag: 'Cepillo, pasta, jabón' },
+                { id: 'botas', title: 'Botas de montaña usadas', tag: 'Sujeción de tobillo' },
+                { id: 'ropa_repuesto', title: 'Muda completa y calcetines secos', tag: 'Guardados en bolsa estanca' },
+                { id: 'plato_cubiertos', title: 'Plato hondo, poto y cubiertos', tag: 'De acero o plástico duro' },
+                { id: 'panoleta', title: 'Pañoleta Acrux 518', tag: 'Identidad del grupo' }
+            ],
+            campamento: [
+                { id: 'mochilon', title: 'Mochilón de expedición (50-70L)', tag: 'Bien ajustado a la espalda' },
+                { id: 'saco_camp', title: 'Saco de dormir de montaña (0º a -5ºC)', tag: 'Noches frías en altura' },
+                { id: 'aislante_camp', title: 'Aislante de alta densidad', tag: 'Aislamiento térmico' },
+                { id: 'ropa_15dias', title: 'Ropa para 15 días en rulos', tag: 'Organizada en bolsas de tela' },
+                { id: 'botas_trekking', title: 'Botas de montaña + zapatillas río', tag: 'Doble calzado' },
+                { id: 'chubasquero_pro', title: 'Chubasquero transpirable / Capelina', tag: 'Tormentas de verano' },
+                { id: 'frontal_repuesto', title: 'Frontal + pilas de repuesto', tag: 'Para las veladas' },
+                { id: 'menaje', title: 'Vajilla scout completa en bolsa de tela', tag: 'Plato, poto, tenedor, cuchara' },
+                { id: 'crema_repelente', title: 'Protector solar 50+ y repelente', tag: 'Salud en la montaña' },
+                { id: 'tarjeta_sanitaria', title: 'Tarjeta sanitaria original', tag: 'Custodiada por scouters' },
+                { id: 'panoleta_camisa', title: 'Camisa scout y pañoleta Acrux', tag: 'Uniforme de izada' },
+                { id: 'banyador', title: 'Bañador y toalla de microfibra', tag: 'Para las pozas y ríos' }
+            ]
+        };
+
+        let currentGearPreset = 'sabado';
+        let packedItems = new Set();
+
+        function renderGearList() {
+            const listContainer = document.getElementById('gearChecklist');
+            if (!listContainer) return;
+
+            const items = gearPresets[currentGearPreset] || [];
+            listContainer.innerHTML = items.map(item => {
+                const isPacked = packedItems.has(item.id);
+                return `
+                    <div class="gear-item ${isPacked ? 'packed' : ''}" onclick="toggleGearItem('${item.id}')">
+                        <div class="gear-check">${isPacked ? '✓' : ''}</div>
+                        <div>
+                            <div class="gear-title">${item.title}</div>
+                            <span class="gear-tag">${item.tag}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            updateBackpackProgress();
+        }
+
+        function toggleGearItem(id) {
+            if (packedItems.has(id)) {
+                packedItems.delete(id);
+            } else {
+                packedItems.add(id);
+            }
+            renderGearList();
+        }
+
+        function switchBackpackType(presetKey, btn) {
+            currentGearPreset = presetKey;
+            packedItems.clear();
+            document.querySelectorAll('.backpack-type-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderGearList();
+        }
+
+        function updateBackpackProgress() {
+            const total = (gearPresets[currentGearPreset] || []).length;
+            const packed = packedItems.size;
+            const pct = total > 0 ? Math.round((packed / total) * 100) : 0;
+
+            const pctEl = document.getElementById('meterPct');
+            const barEl = document.getElementById('meterBar');
+            const titleEl = document.getElementById('meterStatusTitle');
+            const subEl = document.getElementById('meterStatusSubtitle');
+            const circleEl = document.getElementById('meterCircle');
+
+            if (pctEl) pctEl.textContent = pct + '%';
+            if (barEl) barEl.style.width = pct + '%';
+
+            if (pct === 0) {
+                if (titleEl) titleEl.textContent = 'Mochila vacía';
+                if (subEl) subEl.textContent = 'Marca los objetos de la lista para empacarlos.';
+                if (circleEl) circleEl.style.borderColor = '#E2E8F0';
+            } else if (pct < 100) {
+                if (titleEl) titleEl.textContent = 'Mochila en preparación...';
+                if (subEl) subEl.textContent = `Llevas ${packed} de ${total} objetos esenciales listos.`;
+                if (circleEl) circleEl.style.borderColor = '#F59E0B';
+            } else {
+                if (titleEl) titleEl.textContent = '🎉 ¡Mochila 100% Lista!';
+                if (subEl) subEl.textContent = '¡Todo guardado y listo para partir a la naturaleza!';
+                if (circleEl) circleEl.style.borderColor = '#16A34A';
+            }
+        }
+
+        // 4. TIMELINE DE 24 HORAS EN EL CAMPAMENTO
+        const campHours = [
+            {
+                hour: '08:30 h · ¡Arriba el campamento!',
+                title: 'Diana y Saludo al Sol',
+                desc: 'Suena la diana o el silbato scouter entre los pinos. Salimos de las tiendas canadienses, estiramientos al aire fresco de la montaña y aseo personal antes de un desayuno reconfortante con galletas y leche caliente.',
+                quote: '«Un scout se levanta con alegría y agradece el nuevo día en la naturaleza.»',
+                photo: 'images/DSC_04051.jpg',
+                isCampfire: false
+            },
+            {
+                hour: '09:15 h · Formación matinal',
+                title: 'Izada de Bandera & Himno del Grupo',
+                desc: 'Todo el campamento formado en herradura con pañoleta y camisa. Izada de la bandera del Acrux 518 y de ASDE, canto del himno scout y reparto de las tareas del día (limpieza, leña, cocina).',
+                quote: '«La formación une a castores, lobatos, tropa, escultas y rovers en una misma hermandad.»',
+                photo: 'images/DSC_058812.jpg',
+                isCampfire: false
+            },
+            {
+                hour: '10:30 h · Pionerismo y aventura',
+                title: 'Construcciones y Grandes Juegos',
+                desc: 'Troncos, cuerdas y cabuyería. Los scouts construyen sus propios refectorios, zapateros, portadas de campamento y mesas de madera sin un solo clavo, seguidos de grandes juegos de estrategia en el bosque.',
+                quote: '«Aprender haciendo: cuando un chaval levanta su propia mesa de patrulla, gana confianza para toda la vida.»',
+                photo: 'images/DSC_064012.jpg',
+                isCampfire: false
+            },
+            {
+                hour: '14:00 h · El Rancho',
+                title: 'Comida Casera y Hermandad',
+                desc: 'Comida caliente cocinada en el campamento: lentejas con verduras, macarrones, ensaladas frescas y fruta de temporada. Tras la comida, tiempo libre para escribir cartas a las familias o jugar a las cartas a la sombra.',
+                quote: '«La mejor comida sabe a campamento, risas entre amigos y aire puro.»',
+                photo: 'images/DSC_059812.jpg',
+                isCampfire: false
+            },
+            {
+                hour: '16:30 h · Actividad de tarde',
+                title: 'Rutas Senderistas & Baño en Pozas',
+                desc: 'Excursiones por senderos de montaña guiados por los scouters, talleres medioambientales de huellas de animales, rastreo y un merecido baño refrescante en las pozas naturales del río de montaña.',
+                quote: '«Deja el mundo en mejores condiciones de como lo encontraste.» — Baden-Powell',
+                photo: 'images/DSC_3166.jpg',
+                isCampfire: false
+            },
+            {
+                hour: '20:30 h · Caída del sol',
+                title: 'Arriada de Bandera & Cena',
+                desc: 'Se recoge la bandera antes de que se oculte el sol. Cena ligera y caliente bajo los chopos mientras la temperatura refresca y el cielo se llena de estrellas.',
+                quote: '«La calma de la montaña al atardecer no tiene precio.»',
+                photo: 'images/DSC_04051.jpg',
+                isCampfire: false
+            },
+            {
+                hour: '22:00 h · El momento mágico',
+                title: '¡El Gran Fuego de Campamento!',
+                desc: 'El momento más recordado del año. Alrededor de las brasas del fuego, cantamos el Ani Kuni, representamos sketches cómicos de patrulla y compartimos reflexiones antes del toque de silencio bajo un manto de millones de estrellas.',
+                quote: '«Las brasas del fuego scout nunca se apagan en el corazón de quien las ha vivido.»',
+                photo: 'images/DSC_066412.jpg',
+                isCampfire: true
+            }
+        ];
+
+        function showCampHour(idx, btn) {
+            const data = campHours[idx];
+            if (!data) return;
+
+            document.getElementById('campHourTag').textContent = data.hour;
+            document.getElementById('campTitle').textContent = data.title;
+            document.getElementById('campDesc').textContent = data.desc;
+            document.getElementById('campQuote').textContent = data.quote;
+            document.getElementById('campPhoto').src = data.photo;
+
+            const soundBox = document.getElementById('campfireSoundBox');
+            if (soundBox) {
+                soundBox.style.display = data.isCampfire ? 'block' : 'none';
+            }
+
+            document.querySelectorAll('.time-slot-pill').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+        }
+
+        // Efecto de sonido del fuego de campamento mediante Web Audio API
+        let audioCtx = null;
+        let isCampfirePlaying = false;
+        let campfireInterval = null;
+
+        function toggleCampfireSound() {
+            const btnText = document.getElementById('campfireAudioText');
+            if (isCampfirePlaying) {
+                stopCampfireSound();
+                if (btnText) btnText.textContent = 'Escuchar el crepitar del fuego';
+                isCampfirePlaying = false;
+            } else {
+                startCampfireSound();
+                if (btnText) btnText.textContent = 'Silenciar fuego';
+                isCampfirePlaying = true;
+            }
+        }
+
+        function startCampfireSound() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                // Generar crepitar suave de brasas mediante impulsos aleatorios filtrados
+                campfireInterval = setInterval(() => {
+                    if (!audioCtx || !isCampfirePlaying) return;
+                    if (Math.random() < 0.35) {
+                        const bufferSize = audioCtx.sampleRate * 0.05;
+                        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                        const data = buffer.getChannelData(0);
+                        for (let i = 0; i < bufferSize; i++) {
+                            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+                        }
+                        const noise = audioCtx.createBufferSource();
+                        noise.buffer = buffer;
+                        const filter = audioCtx.createBiquadFilter();
+                        filter.type = 'bandpass';
+                        filter.frequency.value = 800 + Math.random() * 2000;
+                        const gain = audioCtx.createGain();
+                        gain.gain.value = 0.08 + Math.random() * 0.12;
+                        noise.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        noise.start();
+                    }
+                }, 40);
+            } catch (err) {
+                console.log('Audio no disponible:', err);
+            }
+        }
+
+        function stopCampfireSound() {
+            if (campfireInterval) {
+                clearInterval(campfireInterval);
+                campfireInterval = null;
+            }
+        }
+
+        // 5. ACORDEÓN DE PREGUNTAS FRECUENTES (FAQ)
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+                if (!isOpen) {
+                    item.classList.add('open');
+                }
+            });
+        });
+
+        // 6. FORMULARIO DE CONTACTO & WHATSAPP
+        const contactForm = document.getElementById('contactForm');
+        const formSuccess = document.getElementById('formSuccess');
+
+        if (contactForm && formSuccess) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                formSuccess.style.display = 'block';
+                contactForm.reset();
+                setTimeout(() => {
+                    formSuccess.style.display = 'none';
+                }, 7000);
+            });
+        }
+
+        function sendFormByWhatsApp() {
+            const name = document.getElementById('name').value.trim() || 'Una familia';
+            const childName = document.getElementById('childName').value.trim() || 'mi hijo/a';
+            const phone = document.getElementById('phone').value.trim() || '';
+            const section = document.getElementById('sectionSelect').selectedOptions[0].text;
+            const msg = document.getElementById('message').value.trim();
+
+            const text = `¡Hola Marta! Soy ${name}. Me gustaría recibir información para probar un sábado gratis en el Grupo Scout Acrux 518.%0A%0A` +
+                         `👦👧 Niño/a: ${childName}%0A` +
+                         `⚜️ Rama de interés: ${section}%0A` +
+                         (phone ? `📞 Teléfono: ${phone}%0A` : '') +
+                         (msg ? `💬 Mensaje: ${msg}` : '');
+
+            window.open(`https://wa.me/34619202068?text=${text}`, '_blank');
+        }
+
+        // Inicializar componentes al cargar la página
+        window.addEventListener('DOMContentLoaded', () => {
+            updateFinderByAge(8);
+            renderGearList();
+        });
+    </script>
+</body>
+</html>
