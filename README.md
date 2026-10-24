@@ -1,180 +1,130 @@
-# Grupo Scout ACRUX 518 - Website Template
+# Grupo Scout ACRUX 518 · Mapa Estelar Global Interactivo
 
-A modern, clean website template for Grupo Scout ACRUX 518, designed with a minimalist aesthetic inspired by professional design standards.
+> **Experiencia web astronómica e interactiva conmemorativa para el Grupo Scout ACRUX 518 de Valladolid (ASDE - Exploradores de Castilla y León).**
 
-## Features
+Una interfaz de exploración espacial minimalista y fluida construida en **HTML5 Canvas 2D, JavaScript Vanilla puro y CSS moderno**, con diseño de vanguardia inspirado en estándares internacionales (*Awwwards* / *FWA*).
 
-- **Modern Minimalist Design**: Clean layout with ample whitespace, inspired by contemporary web design
-- **Fully Responsive**: Works perfectly on desktop, tablet, and mobile devices
-- **Smooth Animations**: Subtle scroll animations and hover effects
-- **Contact Form**: Functional contact form with validation
-- **Social Media Integration**: Links to Facebook, Instagram, TikTok, and Twitter
-- **Gallery Section**: Responsive image gallery with hover effects
-- **Easy Navigation**: Fixed navbar with smooth scrolling
+---
 
-## File Structure
+## 🌌 Visión y Concepto
 
-```
+La web se estructura como un **firmamento cósmico navegable**, donde cada área, unidad educativa, campamento y recuerdo del grupo está integrado en constelaciones reales y geométricas conectadas por la estrella guía **Acrux (α Crucis)**.
+
+### Los 5 Sectores del Cosmos:
+1. **Sector I · Cruz del Sur (`Crux Australis`):**
+   - Reproducción astronómicamente fiel de la constelación de la Cruz del Sur: **Acrux** (base meridional), **Gacrux** (cima carmesí), **Mimosa** (brazo izquierdo), **Imai** (brazo derecho) y la **Intrometida** (ε Crucis).
+   - Acceso al Drawer lateral de Identidad Scout (historia desde 1977, pañoleta carmesí y blanca, valores y método educativo).
+2. **Sector II · El Camino de las Unidades:**
+   - Las 5 ramas educativas representadas en una constelación de **línea recta ascendente**:
+     1. **Castores** (6 a 8 años · Colonia Odisea)
+     2. **Manada** (8 a 11 años · Manada Waingunga)
+     3. **Tropa** (11 a 14 años · Tropa Lohengrin)
+     4. **Unidad Esculta** (14 a 17 años · Unidad Esculta Trea)
+     5. **Clan** (17 a 21 años · Clan Rover Ama Dablam)
+   - **Super-Zoom Hiperespacial:** Al pulsar en cualquier unidad, la cámara ejecuta un salto fluido estilo *hiperespacio* que sumerge al usuario dentro de la estrella, abriendo su pestaña exclusiva con pedagogía, lema, colores de rama y el **Kraalete específico (scouters asignados a esa unidad)**.
+3. **Sector III · Constelación de Campamentos:**
+   - Constelación geométrica en estrellas blancas puras que representan las grandes aventuras del grupo: *Campamento de Verano*, *Campamento de Invierno*, *Acampada de Primavera* y *Senda de Vivac / Raids*.
+   - Super-Zoom hacia la ficha de cada campamento con crónica, ubicación geográfica, 3 fotos destacadas y botón directo a la carpeta comunitaria de Google Drive.
+4. **Sector IV · «El Baúl» (Objetos Perdidos):**
+   - Constelación de aspecto astronómico natural presidida por la estrella central «El Baúl» (con fulgor carmesí Acrux).
+   - Conectada a 4 mini-estrellas secundarias («Cajones»), sincronizadas con las carpetas de Google Drive donde las familias pueden localizar prendas y material extraviado.
+5. **Sector V · Bases y Contacto:**
+   - Información de la sede física en Carretera de Rueda 53 (Valladolid), calendario de sábados lectivos, preguntas frecuentes y canales oficiales de comunicación.
+
+---
+
+## 🌟 Modo 50º Aniversario (1976 – 2026)
+
+Conmemoración del medio siglo de historia del grupo mediante una transformación estética en **Negro Obsidiana y Oro Puro**:
+
+- **El Cometa Dorado (Easter Egg Celeste):**
+  - Un bólido dorado de núcleo blanco puro y estela de partículas de polvo de oro que cruza periódicamente el firmamento (cada ~8–12 segundos).
+  - Cruza la pantalla a alta velocidad (~3.6s de vuelo) con trayectoria diagonal. Al hacer clic sobre él en pleno vuelo, se desbloquea el modo conmemorativo.
+- **Supernova Shockwave:**
+  - Onda expansiva circular a 60 fps con 80 partículas de polvo dorado que tiñe toda la interfaz.
+- **Paleta de Lujo:**
+  - El espacio se vuelve Negro Obsidiana (`#030304`).
+  - Líneas estelares, halos, tipografías y cursor transicionan a tonos **Oro Imperial (`#D4AF37`)**, **Champán (`#F3E5AB`)** y **Bronce Antiguo (`#AA771C`)**.
+- **La Espiral del Tiempo (50 Estrellas · 1976 a 2026):**
+  - Emerge una espiral logarítmica de Fibonacci con exactamente 50 estrellas doradas alrededor de la Cruz del Sur.
+  - Cada estrella representa un año scout. Las estrellas con recuerdos desbloqueados palpitan en oro y abren un **Modal de Cristal Conmemorativo** con foto histórica, año en tipografía display y conector a la carpeta `05_50_ANIVERSARIO` de Google Drive.
+  - **Rendimiento:** Las imágenes históricas utilizan *Lazy Loading* estricto y se descargan únicamente al abrir ese recuerdo puntual, liberando memoria de inmediato al cerrar.
+
+---
+
+## 📁 Estructura del Proyecto
+
+```text
 GSA/
-├── index.html          # Main HTML file
-├── styles.css          # CSS styling
-├── script.js           # JavaScript functionality
-├── images/             # Image folder (add your images here)
-└── README.md           # This file
+├── index.html              # Estructura semántica, canvas de navegación, HUD y modales
+├── styles.css              # Arquitectura CSS moderna (variables, temas, obsidian/gold, responsive)
+├── script.js               # Motor astronómico en Canvas 2D, física de partículas, cámara y eventos
+├── images/                 # Fotografías de campamentos, unidades y recuerdos históricos
+│   ├── castores/
+│   ├── manada/
+│   ├── tropa/
+│   ├── escultas/
+│   ├── clan/
+│   └── campamentos/
+├── _archivo_legacy/        # Archivo seguro de versiones y páginas multi-página descartadas
+└── README.md               # Documentación oficial del proyecto (este archivo)
 ```
 
-## Setup Instructions
+---
 
-### 1. Add Your Images
+## 🚀 Puesta en Marcha en Local
 
-Place your images in the `images/` folder with the following names:
+No requiere NodeJS, npm, Webpack ni dependencias externas. Se ejecuta directamente en cualquier navegador moderno:
 
-**Unit Images:**
-- `castores.jpg` - Castores unit image
-- `manada.jpg` - Manada unit image  
-- `scouts.jpg` - Scouts unit image
-- `escultas.jpg` - Escultas unit image
-- `clan.jpg` - Clan unit image
+1. **Abrir directamente:**
+   - Haz doble clic en [`index.html`](index.html) para abrirlo en Edge, Chrome, Firefox, Safari u Opera.
+2. **Servidor local (opcional / recomendado):**
+   - Mediante la extensión *Live Server* de Visual Studio Code o cualquier servidor HTTP estático:
+     ```bash
+     # Con Python 3
+     python -m http.server 8080
+     
+     # Con PHP
+     php -S localhost:8080
+     ```
+   - Accede a `http://localhost:8080`.
 
-**Team Images:**
-- `jj.jpg` - JJ (Coordinator)
-- `marta.jpg` - Marta (Coordinator)
-- `hugo.jpg` - Hugo (Coordinator)
-- `malak.jpg` - Malak (Scouter)
-- `keeo.jpg` - Keeo (Scouter)
-- `burbuja.jpg` - Burbuja (Scouter)
-- `tictac.jpg` - Tic tac (Scouter)
-- `baloo.jpg` - Baloo (Scouter)
-- `hathi.jpg` - Hathi (Scouter)
-- `raksha.jpg` - Raksha (Scouter)
-- `bagheera.jpg` - Bagheera (Scouter)
-- `akela.jpg` - Akela (Scouter)
-- `hermano-gris.jpg` - Hermano gris (Scouter)
+---
 
-**Gallery Images:**
-- `jamboree2017.jpg` - Jamboree 2017
-- `campamento-verano-2018.jpg` - Campamento de verano 2018
-- `campamento-verano-2019.jpg` - Campamento de verano 2019
-- `inicio-ronda-17-18.jpg` - Inicio de Ronda 17/18
-- `inicio-ronda-18-19.jpg` - Inicio de Ronda 18/19
-- `campamento-primavera-2018.jpg` - Campamento de primavera 2018
-- `campamento-primavera-2019.jpg` - Campamento de primavera 2019
+## 🔗 Parámetros de Prueba y Navegación Rápida (URL / Hash)
 
-**Image Recommendations:**
-- Use high-quality images (at least 800x600px)
-- Optimize images for web (compress to reduce file size)
-- Use consistent aspect ratios where possible
-- For team photos, use square or circular images (1:1 ratio)
+Puedes testear estados específicos añadiendo parámetros al final de la URL:
 
-### 2. Customize Content
+- `#anniversary=1` → Inicia la web con el **Modo 50º Aniversario** activado.
+- `#annivModal=1976` → Abre directamente el modal conmemorativo del año fundacional 1976.
+- `#sector=1` → Salta de inmediato al Sector II (**El Camino de las Unidades**).
+- `#sector=2` → Salta de inmediato al Sector III (**Constelación de Campamentos**).
+- `#sector=3` → Salta de inmediato al Sector IV (**El Baúl · Objetos Perdidos**).
+- `#testComet=1` → Fuerza la trayectoria del cometa dorado a mitad de pantalla para pruebas.
 
-Edit `index.html` to update:
-- Contact information (phone numbers, address)
-- Social media links
-- Text content as needed
-- Add or remove team members
+---
 
-### 3. Test the Website
+## 🛠️ Conexión con Google Drive
 
-Simply open `index.html` in your web browser to test the website locally.
+Las rutas a carpetas de Google Drive están centralizadas en constantes en la cabecera de [`script.js`](script.js):
 
-## Wix Import Instructions
+- `DRIVE_ANNIVERSARY_FOLDER`: Nombre de la carpeta de recopilación histórica del 50º aniversario (`05_50_ANIVERSARIO`).
+- `DRIVE_ANNIVERSARY_URL`: Enlace público a la carpeta Drive del 50 aniversario.
+- `DRIVE_LOST_BASE_URL`: Enlace raíz para los cajones de Objetos Perdidos.
+- Cada campamento en `CAMPS_DATA` cuenta con su respectivo campo `driveFolder` y `driveUrl`.
 
-### Option 1: Manual Recreation in Wix
+---
 
-1. **Create a new Wix site**
-   - Go to wix.com and create a new account/site
-   - Choose a blank template or a clean, minimal template
+## 📐 Convenciones y Directrices de Estilo
 
-2. **Recreate the sections**
-   - **Hero Section**: Use Wix's banner/hero section with the gradient background
-   - **About Section**: Use a text section with the "Quiénes Somos" content
-   - **Units Section**: Use a gallery or repeater to display the 5 units
-   - **Team Section**: Use a team members gallery or profile cards
-   - **Gallery Section**: Use Wix's Pro Gallery for the photo gallery
-   - **Contact Section**: Use Wix's contact form and add your contact info
-   - **Footer**: Add footer with social links and copyright
+1. **Lenguaje y Terminología:**
+   - Eliminación total de la expresión *"Ronda Solar"*; se utiliza en su lugar *"año scout"* o *"etapa scout"*.
+2. **Optimización Gráfica:**
+   - El Canvas 2D se ejecuta a **60 fps estables** adaptando su resolución a `window.devicePixelRatio`.
+   - Limpieza automática de búferes de partículas e interpolación suave (Lerp) en cámara y cursor magnético.
+3. **Compatibilidad:**
+   - Totalmente adaptable a pantallas de escritorio, portátiles, tablets y dispositivos táctiles.
 
-3. **Apply the styling**
-   - Use the color scheme from this template:
-     - Primary: #2c3e50 (dark blue)
-     - Secondary: #3498db (blue)
-     - Accent: #e74c3c (red)
-     - Background: #ffffff (white)
-     - Alt Background: #f8f9fa (light gray)
-   - Use a clean, modern font (like Open Sans, Roboto, or Lato)
-   - Maintain generous whitespace between sections
+---
 
-4. **Upload your images**
-   - Upload all your images to Wix Media Manager
-   - Replace placeholder images with your actual photos
-
-### Option 2: HTML Embed in Wix
-
-1. **Upload files to Wix**
-   - Upload `index.html`, `styles.css`, and `script.js` to Wix
-   - Upload your images to Wix Media Manager
-
-2. **Use HTML iframe**
-   - Add an HTML iframe element to your Wix page
-   - Point it to your hosted HTML file
-   - Note: You'll need to host the HTML file elsewhere (like GitHub Pages, Netlify, etc.)
-
-### Option 3: Use as Reference Design
-
-Use this template as a visual reference and recreate the design using Wix's drag-and-drop editor. This gives you the most flexibility and Wix-specific features.
-
-## Customization Tips
-
-### Colors
-Edit the CSS variables in `styles.css`:
-```css
-:root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --accent-color: #e74c3c;
-    /* ... other variables */
-}
-```
-
-### Fonts
-Change the font family in the CSS:
-```css
-body {
-    font-family: 'Your Font', sans-serif;
-}
-```
-
-### Sections
-Add or remove sections by editing the HTML in `index.html`. Each section is clearly marked with comments.
-
-## Contact Form
-
-The contact form currently shows a success message but doesn't send emails. To make it functional:
-
-1. **Use a form service**: Connect to services like Formspree, Netlify Forms, or EmailJS
-2. **Wix form**: If using Wix, use their built-in contact form instead
-3. **Backend**: Add a backend service to handle form submissions
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## Performance Tips
-
-- Compress images before uploading
-- Use modern image formats (WebP) when possible
-- Enable caching on your hosting service
-- Consider using a CDN for faster loading
-
-## Support
-
-For issues or questions about the template, refer to the code comments or contact your web developer.
-
-## License
-
-This template is provided for the Grupo Scout ACRUX 518 website.
+© 1977 – 2026 **Grupo Scout ACRUX 518** · ASDE Exploradores de Castilla y León · Valladolid, España.
