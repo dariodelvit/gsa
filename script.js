@@ -1258,7 +1258,7 @@
             SECTORS[2].stars = [];
             SECTORS[2].edges = [];
             SECTORS[2].runtimeNodes = [];
-            if (activeSectorIdx === 2) {
+            if (typeof activeSectorIdx !== 'undefined' && activeSectorIdx === 2 && typeof syncSectorUI === 'function') {
                 syncSectorUI(2, 0, true);
             }
             return;
@@ -1343,12 +1343,11 @@
         SECTORS[2].edges = CAMPS_CONSTELLATION_EDGES;
 
         // 5. Refrescar los chips de estrellas si el usuario está viendo el Sector III
-        if (activeSectorIdx === 2) {
+        if (typeof activeSectorIdx !== 'undefined' && activeSectorIdx === 2 && typeof syncSectorUI === 'function') {
             syncSectorUI(2, 0, true);
         }
     }
     window.rebuildCampsConstellation = rebuildCampsConstellation;
-    rebuildCampsConstellation([]);
 
     // =========================================================================
     // 5. CAMPO PROFUNDO DE ESTRELLAS CON PARALLAX (SOLO BLANCO Y TOQUE ROJO SUTIL)
@@ -2278,7 +2277,6 @@
                 if (CAMPS_DATA && CAMPS_DATA.length > 0) {
                     openCampSuperZoom(selectedSubIdx);
                 }
-            }
             } else if (activeSectorIdx === 3) {
                 openLostSuperZoom(selectedSubIdx === 0 ? 0 : selectedSubIdx - 1);
             } else if (activeSectorIdx === 4) {
