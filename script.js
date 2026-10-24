@@ -1,1978 +1,4 @@
 /* ==========================================================================
-   GRUPO SCOUT ACRUX 518 · VALLADOLID
-   Motor 3D Realista WebGL: "De la Explanada de Castores a la Cima del Clan"
-   Incluye: Terreno Continuo PBR con Pradera, Río, Bosque y Cumbre Nevada,
-   Camino 3D Interactivo Paso a Paso con Metodología Scout, Constelaciones
-   3D en el Cielo (Cruz del Sur ★ ACRUX), Lenis Smooth Scroll y GSAP
-   ========================================================================== */
-
-(function () {
-    // 1. Telón de Transición y Barra de Progreso
-    const ropeBar = document.createElement('div');
-    ropeBar.className = 'scroll-progress-rope';
-    ropeBar.id = 'scrollProgressRope';
-
-    const curtain = document.createElement('div');
-    curtain.className = 'acrux-transition-curtain';
-    curtain.id = 'acruxTransitionCurtain';
-
-    const pageTitlesMap = {
-        'index.html': 'PORTADA · SENDA 3D ACRUX',
-        'nosotros.html': 'HISTORIA Y KRAAL · DESDE 1977',
-        'secciones.html': 'LAS 5 SECCIONES EDUCATIVAS',
-        'campamentos.html': 'CAMPAMENTOS Y TALLER SCOUT',
-        'calendario.html': 'AGENDA DE LA RONDA SOLAR',
-        'objetos-perdidos.html': 'BAÚL DE OBJETOS PERDIDOS',
-        'contacto.html': 'CONTACTO Y SÁBADO DE PRUEBA'
-    };
-    const currentFile = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
-    const currentLabel = pageTitlesMap[currentFile] || 'GRUPO SCOUT ACRUX 518';
-
-    curtain.innerHTML = `
-        <div class="curtain-inner">
-            <div class="curtain-emblem" id="curtainEmblem">
-                <img src="images/logo.svg" alt="Flor de Lis Acrux 518">
-            </div>
-            <div class="curtain-title" id="curtainTitle">${currentLabel}</div>
-            <span class="curtain-coords">41°37'N 4°44'W · VALLADOLID · ASDE 518</span>
-        </div>
-    `;
-
-    document.addEventListener('DOMContentLoaded', () => {
-        // Si estamos en la arquitectura "Canvas-First" de Constelaciones (#cosmosCanvas),
-        // solo inicializamos el reloj de cuenta atrás del sábado; el motor espacial gestiona el resto.
-        if (document.getElementById('cosmosCanvas')) {
-            initBaseScoutUI();
-            return;
-        }
-
-        document.body.prepend(curtain);
-        document.body.prepend(ropeBar);
-
-        initBaseScoutUI();
-        initCustomMagneticCursor();
-        init3DCardTiltAndSpotlight();
-        initInteractiveScoutCanvas();
-
-        loadCreativeCodingLibraries().then(() => {
-            initSmoothScrollAndGSAP();
-            initThreeJSScoutWorld();
-        });
-    });
-
-    function loadScript(src) {
-        return new Promise((resolve) => {
-            if (document.querySelector(`script[src="${src}"]`)) {
-                resolve(true);
-                return;
-            }
-            const s = document.createElement('script');
-            s.src = src;
-            s.async = true;
-            s.onload = () => resolve(true);
-            s.onerror = () => resolve(false);
-            document.head.appendChild(s);
-        });
-    }
-
-    async function loadCreativeCodingLibraries() {
-        await Promise.all([
-            loadScript('https://unpkg.com/lenis@1.1.20/dist/lenis.min.js'),
-            loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js'),
-            loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js')
-        ]);
-        if (window.gsap) {
-            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js');
-        }
-    }
-
-    /* ======================================================================
-       2. TRAVESÍA 3D REALISTA: EXPLANADA DE CASTORES → CIMA DEL CLAN ROVER
-       ====================================================================== */
-    const orderedStageKeys = ['hoguera', 'castores', 'manada', 'tropa', 'esculta', 'clan'];
-    let currentStageIdx = 1; // Inicia en Castores (inicio del camino)
-
-    // Datos pedagógicos y metodológicos reales de cada etapa del camino en la montaña
-    const zones3DData = {
-        overview: {
-            progress: 50,
-            kmText: 'Valle Completo · 6.0 Km',
-            altitude: '⛰️ 720 m — 2.250 m',
-            tag: 'VISTA PANORÁMICA · LA MONTAÑA DEL ESCULTISMO',
-            title: '🏔️ El Camino Educativo del Grupo Scout ACRUX 518',
-            desc: 'Observa el recorrido completo desde la pradera del río hasta la alta montaña: un camino pedagógico continuo de los 6 a los 21 años donde cada joven aprende haciendo en plena naturaleza.',
-            methods: [
-                '🧭 <strong>Método Scout:</strong> Educación activa a través de la acción, la naturaleza y la vida en pequeño grupo',
-                '🧣 <strong>Identidad:</strong> Pañoleta Roja Carmesí con borde Blanco Nieve desde 1977 en Valladolid',
-                '📈 <strong>Autonomía progresiva:</strong> De la fantasía guiada en Castores al servicio libre en el Clan'
-            ],
-            linkHref: 'nosotros.html',
-            linkText: 'Conocer el Método Scout',
-            pos: { x: 0, z: 0 },
-            camOffset: { dist: 34, angle: 0.55, height: 15 }
-        },
-        hoguera: {
-            progress: 0,
-            kmText: 'Km 0.0 · Pradera Base',
-            altitude: '⛰️ Altitud: 720 m',
-            tag: 'PUNTO DE PARTIDA · LA EXPLANADA BASE Y LA PROMESA',
-            title: '🔥 Explanada Acrux 518 · El Fuego y la Ley Scout',
-            desc: 'En la explanada principal se alza el mástil con nuestra bandera y el fuego de campamento. Aquí todo el grupo se reúne en círculo para las izadas, las veladas y la ceremonia de la Promesa Scout.',
-            methods: [
-                '⚜️ <strong>La Ley y la Promesa:</strong> Compromiso personal y voluntario con los valores del escultismo',
-                '🏕️ <strong>Educación en la Naturaleza:</strong> El medio natural como aula viva lejos de las pantallas',
-                '❤️ <strong>El Kraal de Scouters:</strong> Monitores voluntarios titulados (JJ, Marta, Hugo y equipo)'
-            ],
-            linkHref: 'nosotros.html',
-            linkText: 'Ver Historia y Kraal',
-            pos: { x: -16.5, z: 13.5 },
-            camOffset: { dist: 10.5, angle: 0.65, height: 3.6 }
-        },
-        castores: {
-            progress: 18,
-            kmText: 'Km 0.8 · El Río',
-            altitude: '⛰️ Altitud: 820 m',
-            tag: 'ETAPA 1 DE 5 · INICIACIÓN (6 A 8 AÑOS · 1º Y 2º PRIMARIA)',
-            title: '🦫 Colonia Ohiensis · Castores («Compartir»)',
-            desc: 'El sendero arranca junto al río y el estanque de la pradera. A través del cuento «Los Amigos del Bosque», los más pequeños construyen juntos el Gran Dique, pierden el miedo a dormir fuera de casa y aprenden a compartir.',
-            methods: [
-                '🎯 <strong>Metodología:</strong> Socialización temprana mediante el juego cooperativo y la fantasía',
-                '🪵 <strong>Vida de grupo:</strong> La Colonia trabaja unida sin competitividad; decisiones en el Estanque',
-                '🧣 <strong>Scouters (Grandes Castores):</strong> Malak, Keeo, Burbuja y Tic Tac acompañan cada paso'
-            ],
-            linkHref: 'secciones.html',
-            linkText: 'Ver Colonia Ohiensis',
-            pos: { x: -10.0, z: 9.0 },
-            camOffset: { dist: 10.0, angle: 0.48, height: 3.4 }
-        },
-        manada: {
-            progress: 38,
-            kmText: 'Km 1.9 · Roca del Consejo',
-            altitude: '⛰️ Altitud: 1.050 m',
-            tag: 'ETAPA 2 DE 5 · INFANCIA (8 A 11 AÑOS · 3º A 5º PRIMARIA)',
-            title: '🐺 Manada Khanhiwara · Lobatos («Haremos lo mejor»)',
-            desc: 'El camino empieza a subir hacia el claro del bosque donde está la Roca del Consejo. Ambientada en «El Libro de las Tierras Vírgenes», la Manada vive grandes cacerías y aprende a cuidar de su propio material.',
-            methods: [
-                '🐾 <strong>Sistema de Seisenas:</strong> Pequeños grupos de 6 lobatos donde asumen sus primeros encargos',
-                '📖 <strong>Marco Simbólico:</strong> La Selva de Seeonee, las Máximas de Baloo y la Ley de la Manada',
-                '🐺 <strong>Viejos Lobos:</strong> Guiados por Akela, Baloo, Bagheera, Raksha, Hathi y Hermano Gris'
-            ],
-            linkHref: 'secciones.html',
-            linkText: 'Ver Manada Khanhiwara',
-            pos: { x: -2.8, z: 4.2 },
-            camOffset: { dist: 10.2, angle: 0.72, height: 3.6 }
-        },
-        tropa: {
-            progress: 60,
-            kmText: 'Km 3.2 · Bosque Pionero',
-            altitude: '⛰️ Altitud: 1.380 m',
-            tag: 'ETAPA 3 DE 5 · PUBERTAD (11 A 14 AÑOS · 6º PRIMARIA A 2º ESO)',
-            title: '⚜️ Tropa Lohengrin · Scouts («Siempre Listos»)',
-            desc: 'A media montaña, entre pinares, se levanta el campamento de la Tropa. Aquí los chicos y chicas viven la aventura en Patrullas autónomas, construyen con madera y cuerda de pita y se orientan con mapa y brújula.',
-            methods: [
-                '⛺ <strong>Sistema de Patrullas:</strong> Autogobierno juvenil con Guía, Subguía, Intendente, Sanitario, etc.',
-                '🪢 <strong>Aprender Haciendo:</strong> Pionerismo, cabuyería, cocina de campo y marchas por etapas',
-                '🧭 <strong>Progresión personal:</strong> Compromiso con la Promesa Scout y especialidades técnicas'
-            ],
-            linkHref: 'campamentos.html#taller',
-            linkText: 'Taller de Nudos y Mochila',
-            pos: { x: 4.5, z: -1.0 },
-            camOffset: { dist: 10.8, angle: 0.52, height: 3.8 }
-        },
-        esculta: {
-            progress: 80,
-            kmText: 'Km 4.6 · Collado Alpino',
-            altitude: '⛰️ Altitud: 1.790 m',
-            tag: 'ETAPA 4 DE 5 · ADOLESCENCIA (14 A 17 AÑOS · 3º ESO A 1º BACH)',
-            title: '🥾 Unidad Trea · Escultas («Unidad»)',
-            desc: 'Superada la línea de bosque, el camino asciende por la cresta rocosa hacia el collado alpino. Los escultas son protagonistas absolutos: diseñan, financian y ejecutan sus grandes proyectos colectivos llamados «Empresas».',
-            methods: [
-                '🚀 <strong>Pedagogía de la Empresa:</strong> Proyectos reales elegidos, planificados y evaluados por ellos',
-                '🏔️ <strong>Superación y Montaña:</strong> Travesías exigentes, vivacs bajo las estrellas y espíritu de equipo',
-                '🌍 <strong>Conciencia crítica:</strong> Debate, participación ciudadana y voluntariado activo'
-            ],
-            linkHref: 'secciones.html',
-            linkText: 'Ver Unidad Trea',
-            pos: { x: 10.5, z: -6.8 },
-            camOffset: { dist: 11.0, angle: 0.4, height: 4.0 }
-        },
-        clan: {
-            progress: 100,
-            kmText: 'Km 6.0 · Cima Ama Dablam',
-            altitude: '⛰️ Altitud: 2.250 m · CUMBRE',
-            tag: 'ETAPA 5 DE 5 · JUVENTUD (17 A 21 AÑOS · UNIVERSIDAD / FP)',
-            title: '🏔️ Clan Ama Dablam · Rovers («Servir»)',
-            desc: '¡Has coronado la cima nevada bajo la constelación de la Cruz del Sur (★ ACRUX)! En la cumbre del camino educativo, los rovers trazan su proyecto personal de vida, hacen voluntariado social y se forman como futuros Scouters.',
-            methods: [
-                '❤️ <strong>Horquilla y Servicio:</strong> Elegir libremente el camino del compromiso social y solidario',
-                '🗺️ <strong>Campamentos Volantes:</strong> Alta montaña en autosuficiencia y encuentros internacionales',
-                '🎓 <strong>Relevo en el Kraal:</strong> Titulación oficial de Monitor de Tiempo Libre para educar a las nuevas generaciones'
-            ],
-            linkHref: 'secciones.html',
-            linkText: 'Ver Clan Ama Dablam',
-            pos: { x: 15.2, z: -13.2 },
-            camOffset: { dist: 11.5, angle: 0.3, height: 4.2 }
-        }
-    };
-
-    let threeSceneState = null;
-
-    // Función matemática determinista de relieve montañoso:
-    // Crea una explanada verde a la izquierda/abajo (x < 0, z > 0) y una gran montaña realista hacia (x = 16, z = -14)
-    function getTerrainHeight(x, z) {
-        // 1. Pendiente principal desde la explanada hacia la cumbre del Clan (15.5, -13.5)
-        const dxPeak = x - 15.8;
-        const dzPeak = z - (-13.8);
-        const distPeak = Math.hypot(dxPeak, dzPeak);
-        const mainPeak = 15.2 * Math.exp(-(distPeak * distPeak) / 145);
-
-        // 2. Cresta secundaria que acompaña el camino (Escultas / Tropa)
-        const dxRidge = x - 7.5;
-        const dzRidge = z - (-4.5);
-        const distRidge = Math.hypot(dxRidge, dzRidge);
-        const ridgeHeight = 6.2 * Math.exp(-(distRidge * distRidge) / 170);
-
-        // 3. Cordilleras laterales de fondo para enmarcar el valle
-        const backWall = z < -15 ? Math.pow(Math.abs(z + 15) * 0.32, 1.45) : 0;
-        const leftHills = x < -20 ? Math.pow(Math.abs(x + 20) * 0.25, 1.3) : 0;
-
-        // 4. Textura natural de roca/colinas (ruido trigonométrico multicapa)
-        const detailNoise =
-            Math.sin(x * 0.35) * Math.cos(z * 0.35) * 0.45 +
-            Math.sin(x * 0.85 + z * 0.6) * 0.22 +
-            Math.cos(x * 1.7 - z * 1.4) * 0.08;
-
-        // Suavizar la explanada de Castores/Hoguera para que sea una pradera habitable
-        const distMeadow = Math.hypot(x - (-12), z - 10);
-        const meadowFlatten = Math.min(1, Math.max(0.15, distMeadow / 14));
-
-        // Cauce del río en la zona de Castores
-        const riverLine = Math.abs((z - 9.5) + (x + 10) * 0.45);
-        const riverCarve = (x < -4 && z > 3 && riverLine < 2.4)
-            ? -0.45 * Math.cos((riverLine / 2.4) * (Math.PI / 2))
-            : 0;
-
-        return Math.max(-0.35, (mainPeak + ridgeHeight) * meadowFlatten + backWall + leftHills + detailNoise * meadowFlatten + riverCarve);
-    }
-
-    // Genera una textura detallada en memoria para el terreno (micro-relieve de hierba, roca y grano natural)
-    function createRealisticDetailTexture() {
-        const c = document.createElement('canvas');
-        c.width = 512;
-        c.height = 512;
-        const ctx = c.getContext('2d');
-        ctx.fillStyle = '#808080';
-        ctx.fillRect(0, 0, 512, 512);
-
-        for (let i = 0; i < 24000; i++) {
-            const x = Math.random() * 512;
-            const y = Math.random() * 512;
-            const v = 105 + Math.floor(Math.random() * 45);
-            ctx.fillStyle = `rgb(${v},${v},${v})`;
-            ctx.fillRect(x, y, 2, 2);
-        }
-        const tex = new window.THREE.CanvasTexture(c);
-        tex.wrapS = window.THREE.RepeatWrapping;
-        tex.wrapT = window.THREE.RepeatWrapping;
-        tex.repeat.set(28, 28);
-        return tex;
-    }
-
-    function initThreeJSScoutWorld() {
-        const canvas = document.getElementById('acruxThreeCanvas');
-        const stage = document.getElementById('world3DStage');
-        const labelsLayer = document.getElementById('world3DLabelsLayer');
-        if (!canvas || !stage || !window.THREE) return;
-
-        const THREE = window.THREE;
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x060a14);
-        scene.fog = new THREE.FogExp2(0x081021, 0.011);
-
-        const camera = new THREE.PerspectiveCamera(44, stage.clientWidth / stage.clientHeight, 0.1, 260);
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
-        renderer.setSize(stage.clientWidth, stage.clientHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.15;
-
-        // Iluminación Atmosférica Realista (Hemisphere + Sol/Luna con Sombras + Luz de Hoguera)
-        const hemiLight = new THREE.HemisphereLight(0x93c5fd, 0x1e293b, 0.75);
-        scene.add(hemiLight);
-
-        const dirLight = new THREE.DirectionalLight(0xdbeafe, 0.95);
-        dirLight.position.set(-28, 42, 26);
-        dirLight.castShadow = true;
-        dirLight.shadow.mapSize.width = 1024;
-        dirLight.shadow.mapSize.height = 1024;
-        scene.add(dirLight);
-
-        const fireLight = new THREE.PointLight(0xff6a00, 3.8, 24);
-        const hogueraY = getTerrainHeight(-16.5, 13.5);
-        fireLight.position.set(-16.5, hogueraY + 1.8, 13.5);
-        scene.add(fireLight);
-
-        // 1. MALLA DE TERRENO DE ALTA DENSIDAD CON COLORACIÓN POR BIOMAS (PRADERA -> BOSQUE -> ROCA -> NIEVE)
-        const terrainGeo = new THREE.PlaneGeometry(76, 76, 150, 150);
-        terrainGeo.rotateX(-Math.PI / 2);
-
-        const posAttr = terrainGeo.attributes.position;
-        const colors = new Float32Array(posAttr.count * 3);
-        const colorTmp = new THREE.Color();
-
-        for (let i = 0; i < posAttr.count; i++) {
-            const vx = posAttr.getX(i);
-            const vz = posAttr.getZ(i);
-            const vy = getTerrainHeight(vx, vz);
-            posAttr.setY(i, vy);
-
-            // Bioma según altitud y pendiente
-            if (vy < 0.02) {
-                // Lecho húmedo del río y orilla de cantos rodados
-                colorTmp.setHex(0x2b5870);
-            } else if (vy < 2.2) {
-                // Explanada / Pradera verde fresca (Castores y Manada)
-                const t = vy / 2.2;
-                colorTmp.setHex(0x254d2b).lerp(new THREE.Color(0x365932), t);
-            } else if (vy < 6.2) {
-                // Ladera de bosque de pino y musgo (Tropa)
-                const t = (vy - 2.2) / 4.0;
-                colorTmp.setHex(0x365932).lerp(new THREE.Color(0x4b493e), t);
-            } else if (vy < 10.6) {
-                // Roca granítica de alta montaña (Escultas)
-                const t = (vy - 6.2) / 4.4;
-                colorTmp.setHex(0x4b493e).lerp(new THREE.Color(0x787c85), t);
-            } else {
-                // Nieve perpetua de la Cima Ama Dablam (Clan Rover)
-                const t = Math.min(1, (vy - 10.6) / 2.5);
-                colorTmp.setHex(0x94a3b8).lerp(new THREE.Color(0xf8fafc), t);
-            }
-
-            colors[i * 3] = colorTmp.r;
-            colors[i * 3 + 1] = colorTmp.g;
-            colors[i * 3 + 2] = colorTmp.b;
-        }
-
-        terrainGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-        terrainGeo.computeVertexNormals();
-
-        const detailTex = createRealisticDetailTexture();
-        const terrainMat = new THREE.MeshStandardMaterial({
-            vertexColors: true,
-            bumpMap: detailTex,
-            bumpScale: 0.18,
-            roughness: 0.86,
-            metalness: 0.04
-        });
-        const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
-        terrainMesh.receiveShadow = true;
-        scene.add(terrainMesh);
-
-        // 2. RÍO Y ESTANQUE DE LA COLONIA OHIENSIS (AGUA REFLECTANTE)
-        const waterGeo = new THREE.PlaneGeometry(18, 5.2, 24, 8);
-        waterGeo.rotateX(-Math.PI / 2);
-        const waterMat = new THREE.MeshStandardMaterial({
-            color: 0x0ea5e9,
-            emissive: 0x0284c7,
-            emissiveIntensity: 0.25,
-            roughness: 0.12,
-            metalness: 0.65,
-            transparent: true,
-            opacity: 0.88
-        });
-        const waterMesh = new THREE.Mesh(waterGeo, waterMat);
-        waterMesh.rotation.y = -0.42;
-        waterMesh.position.set(-10.2, getTerrainHeight(-10.0, 9.0) + 0.12, 9.2);
-        scene.add(waterMesh);
-
-        // 3. EL CAMINO SCOUT (SPLINE 3D CONTINUO DESDE LA EXPLANADA HASTA LA CIMA DEL CLAN)
-        const trailControlPoints = [
-            new THREE.Vector3(-16.5, getTerrainHeight(-16.5, 13.5) + 0.14, 13.5), // 0. Explanada Hoguera
-            new THREE.Vector3(-13.2, getTerrainHeight(-13.2, 11.4) + 0.14, 11.4),
-            new THREE.Vector3(-10.0, getTerrainHeight(-10.0, 9.0) + 0.18, 9.0),   // 1. Castores
-            new THREE.Vector3(-6.2, getTerrainHeight(-6.2, 6.8) + 0.14, 6.8),
-            new THREE.Vector3(-2.8, getTerrainHeight(-2.8, 4.2) + 0.14, 4.2),     // 2. Manada
-            new THREE.Vector3(1.0, getTerrainHeight(1.0, 1.8) + 0.14, 1.8),
-            new THREE.Vector3(4.5, getTerrainHeight(4.5, -1.0) + 0.14, -1.0),     // 3. Tropa
-            new THREE.Vector3(7.6, getTerrainHeight(7.6, -4.0) + 0.16, -4.0),
-            new THREE.Vector3(10.5, getTerrainHeight(10.5, -6.8) + 0.16, -6.8),   // 4. Escultas
-            new THREE.Vector3(13.0, getTerrainHeight(13.0, -10.2) + 0.18, -10.2),
-            new THREE.Vector3(15.2, getTerrainHeight(15.2, -13.2) + 0.2, -13.2)   // 5. Cima Clan Ama Dablam
-        ];
-
-        const trailCurve = new THREE.CatmullRomCurve3(trailControlPoints);
-
-        // Sendero de tierra ocre sobre la montaña
-        const pathTubeGeo = new THREE.TubeGeometry(trailCurve, 140, 0.42, 8, false);
-        pathTubeGeo.scale(1, 0.18, 1);
-        const pathTubeMat = new THREE.MeshStandardMaterial({
-            color: 0xc29b61,
-            roughness: 0.9,
-            emissive: 0x78350f,
-            emissiveIntensity: 0.15
-        });
-        const pathMesh = new THREE.Mesh(pathTubeGeo, pathTubeMat);
-        scene.add(pathMesh);
-
-        // Hilo luminoso guía Carmesí y Oro sobre el sendero
-        const guideTubeGeo = new THREE.TubeGeometry(trailCurve, 140, 0.08, 6, false);
-        const guideTubeMat = new THREE.MeshBasicMaterial({ color: 0xfbbf24 });
-        const guideMesh = new THREE.Mesh(guideTubeGeo, guideTubeMat);
-        guideMesh.position.y = 0.09;
-        scene.add(guideMesh);
-
-        // Hitos de piedra y balizas de sendero GR (Rojo y Blanco como la pañoleta Acrux)
-        for (let t = 0.04; t <= 0.98; t += 0.045) {
-            const pt = trailCurve.getPointAt(t);
-            const cairn = new THREE.Group();
-            const post = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.06, 0.07, 0.55, 6),
-                new THREE.MeshStandardMaterial({ color: 0x78350f })
-            );
-            post.position.y = 0.25;
-            cairn.add(post);
-
-            // Marca GR Blanca y Roja Carmesí
-            const stripeWhite = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.065, 0.065, 0.09, 6),
-                new THREE.MeshBasicMaterial({ color: 0xffffff })
-            );
-            stripeWhite.position.y = 0.44;
-            cairn.add(stripeWhite);
-
-            const stripeRed = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.065, 0.065, 0.09, 6),
-                new THREE.MeshBasicMaterial({ color: 0xb02324 })
-            );
-            stripeRed.position.y = 0.34;
-            cairn.add(stripeRed);
-
-            cairn.position.set(pt.x + 0.55, pt.y, pt.z + 0.35);
-            scene.add(cairn);
-        }
-
-        // Marcador 3D del Caminante Scout (Antorcha / Pionero que avanza por el sendero)
-        const hikerGroup = new THREE.Group();
-        const hikerBody = new THREE.Mesh(
-            new THREE.ConeGeometry(0.32, 0.95, 12),
-            new THREE.MeshStandardMaterial({ color: 0xb02324, emissive: 0x7a1415, emissiveIntensity: 0.5 })
-        );
-        hikerBody.position.y = 0.5;
-        hikerGroup.add(hikerBody);
-
-        const hikerHead = new THREE.Mesh(
-            new THREE.SphereGeometry(0.22, 12, 12),
-            new THREE.MeshBasicMaterial({ color: 0xfef08a })
-        );
-        hikerHead.position.y = 1.15;
-        hikerGroup.add(hikerHead);
-
-        const hikerLight = new THREE.PointLight(0xfde047, 2.2, 8);
-        hikerLight.position.y = 1.4;
-        hikerGroup.add(hikerLight);
-        scene.add(hikerGroup);
-
-        // 4. CONSTRUCCIONES Y CAMPAMENTOS EN CADA ETAPA DEL CAMINO
-        const interactiveMeshes = [];
-
-        function addCampStageTents(cx, cz, colorHex, zoneKey, count) {
-            for (let i = 0; i < count; i++) {
-                const angle = (i / count) * Math.PI * 1.4 - 0.6;
-                const tx = cx + Math.cos(angle) * 2.1;
-                const tz = cz + Math.sin(angle) * 2.1;
-                const ty = getTerrainHeight(tx, tz);
-
-                const tentGroup = new THREE.Group();
-                const tentGeo = new THREE.CylinderGeometry(0.04, 1.05, 1.65, 3);
-                const tentMat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.55 });
-                const tent = new THREE.Mesh(tentGeo, tentMat);
-                tent.rotation.z = Math.PI / 2;
-                tent.rotation.y = Math.PI / 2;
-                tent.position.y = 0.52;
-                tent.userData = { zoneKey };
-                tentGroup.add(tent);
-                interactiveMeshes.push(tent);
-
-                const trim = new THREE.Mesh(
-                    new THREE.BoxGeometry(1.7, 0.1, 1.35),
-                    new THREE.MeshStandardMaterial({ color: 0xffffff })
-                );
-                trim.position.y = 0.05;
-                trim.userData = { zoneKey };
-                tentGroup.add(trim);
-                interactiveMeshes.push(trim);
-
-                tentGroup.position.set(tx, ty, tz);
-                tentGroup.rotation.y = -angle;
-                scene.add(tentGroup);
-            }
-        }
-
-        // Etapa 0: Hoguera Central + Mástil con Bandera Carmesí y Blanca en la Explanada
-        const hx = zones3DData.hoguera.pos.x;
-        const hz = zones3DData.hoguera.pos.z;
-        const hy = getTerrainHeight(hx, hz);
-
-        const fireCore = new THREE.Mesh(
-            new THREE.OctahedronGeometry(0.55, 1),
-            new THREE.MeshBasicMaterial({ color: 0xff6b00 })
-        );
-        fireCore.position.set(hx, hy + 0.5, hz);
-        fireCore.userData = { zoneKey: 'hoguera' };
-        scene.add(fireCore);
-        interactiveMeshes.push(fireCore);
-
-        const pole = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.06, 0.09, 5.2, 8),
-            new THREE.MeshStandardMaterial({ color: 0xe2e8f0 })
-        );
-        pole.position.set(hx - 1.8, hy + 2.6, hz - 1.2);
-        pole.userData = { zoneKey: 'hoguera' };
-        scene.add(pole);
-        interactiveMeshes.push(pole);
-
-        const flagGeo = new THREE.PlaneGeometry(2.1, 1.2, 12, 5);
-        const flagMat = new THREE.MeshStandardMaterial({
-            color: 0xb02324,
-            emissive: 0x4c0b0c,
-            side: THREE.DoubleSide
-        });
-        const flagMesh = new THREE.Mesh(flagGeo, flagMat);
-        flagMesh.position.set(hx - 0.75, hy + 4.5, hz - 1.2);
-        flagMesh.userData = { zoneKey: 'hoguera' };
-        scene.add(flagMesh);
-        interactiveMeshes.push(flagMesh);
-
-        // Etapa 1: Castores (Colonia Ohiensis · Dique de troncos + Tiendas Azules)
-        addCampStageTents(zones3DData.castores.pos.x, zones3DData.castores.pos.z, 0x0284c7, 'castores', 2);
-
-        // Etapa 2: Manada (Manada Khanhiwara · Roca del Consejo + Tiendas Amarillas)
-        addCampStageTents(zones3DData.manada.pos.x, zones3DData.manada.pos.z, 0xd97706, 'manada', 3);
-
-        // Etapa 3: Tropa (Tropa Lohengrin · Tiendas Verdes en el bosque)
-        addCampStageTents(zones3DData.tropa.pos.x, zones3DData.tropa.pos.z, 0x15803d, 'tropa', 3);
-
-        // Etapa 4: Escultas (Unidad Trea · Vivac Rojo Carmesí en el collado)
-        addCampStageTents(zones3DData.esculta.pos.x, zones3DData.esculta.pos.z, 0xb02324, 'esculta', 2);
-
-        // Etapa 5: Cima Clan Ama Dablam (Cumbre Nevada + Bandera de Cumbre y Horquilla Rover)
-        const cx = zones3DData.clan.pos.x;
-        const cz = zones3DData.clan.pos.z;
-        const cy = getTerrainHeight(cx, cz);
-        addCampStageTents(cx, cz, 0x7c3aed, 'clan', 1);
-
-        const summitBeacon = new THREE.Mesh(
-            new THREE.OctahedronGeometry(0.45, 0),
-            new THREE.MeshBasicMaterial({ color: 0xfef08a })
-        );
-        summitBeacon.position.set(cx, cy + 2.2, cz);
-        summitBeacon.userData = { zoneKey: 'clan' };
-        scene.add(summitBeacon);
-        interactiveMeshes.push(summitBeacon);
-
-        // 5. BOSQUE NATURAL DE PINOS Y ABETOS (SOLO POR DEBAJO DE COTA DE NIEVE)
-        for (let i = 0; i < 68; i++) {
-            const tx = (Math.random() - 0.5) * 52;
-            const tz = (Math.random() - 0.5) * 48;
-            const ty = getTerrainHeight(tx, tz);
-
-            // Evitar plantar árboles encima del camino o en la cumbre nevada
-            let nearTrail = false;
-            for (const k of orderedStageKeys) {
-                const p = zones3DData[k].pos;
-                if (Math.hypot(tx - p.x, tz - p.z) < 3.6) nearTrail = true;
-            }
-            if (nearTrail || ty < 0.25 || ty > 8.8) continue;
-
-            const tree = new THREE.Group();
-            const trunk = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.12, 0.2, 0.9, 6),
-                new THREE.MeshStandardMaterial({ color: 0x452715 })
-            );
-            trunk.position.y = 0.45;
-            tree.add(trunk);
-
-            const tier1 = new THREE.Mesh(
-                new THREE.ConeGeometry(0.95, 1.9, 7),
-                new THREE.MeshStandardMaterial({ color: 0x1b4332, roughness: 0.85 })
-            );
-            tier1.position.y = 1.5;
-            tree.add(tier1);
-
-            const tier2 = new THREE.Mesh(
-                new THREE.ConeGeometry(0.7, 1.5, 7),
-                new THREE.MeshStandardMaterial({ color: 0x2d6a4f, roughness: 0.85 })
-            );
-            tier2.position.y = 2.4;
-            tree.add(tier2);
-
-            const sc = 0.75 + Math.random() * 0.55;
-            tree.scale.set(sc, sc, sc);
-            tree.position.set(tx, ty, tz);
-            scene.add(tree);
-        }
-
-        // 6. CONSTELACIONES 3D EN EL CIELO (CRUZ DEL SUR ★ ACRUX + OSA MENOR)
-        const skyGroup = new THREE.Group();
-        scene.add(skyGroup);
-
-        // Fondo de 600 estrellas
-        const starCount = 600;
-        const starGeo = new THREE.BufferGeometry();
-        const starPos = new Float32Array(starCount * 3);
-        for (let i = 0; i < starCount; i++) {
-            const r = 75 + Math.random() * 35;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.random() * Math.PI * 0.44;
-            starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-            starPos[i * 3 + 1] = r * Math.cos(phi) + 12;
-            starPos[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
-        }
-        starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-        const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5, transparent: true, opacity: 0.92 });
-        const starField = new THREE.Points(starGeo, starMat);
-        skyGroup.add(starField);
-
-        // Constelación Oficial: LA CRUZ DEL SUR (★ ACRUX brillando sobre la Cima Ama Dablam)
-        const cruxStars = [
-            new THREE.Vector3(14, 28, -32),  // Acrux (Alpha Crucis · Estrella principal inferior)
-            new THREE.Vector3(14, 37, -32),  // Gacrux (Superior)
-            new THREE.Vector3(9.5, 33, -32), // Mimosa (Izquierda)
-            new THREE.Vector3(18.5, 33.4, -32), // Imai (Derecha)
-            new THREE.Vector3(16.2, 30.8, -32)  // Intrometida (Epsilon Crucis)
-        ];
-
-        cruxStars.forEach((pos, idx) => {
-            const starSphere = new THREE.Mesh(
-                new THREE.SphereGeometry(idx === 0 ? 0.65 : 0.42, 12, 12),
-                new THREE.MeshBasicMaterial({ color: idx === 0 ? 0xff4d4f : 0xfef08a })
-            );
-            starSphere.position.copy(pos);
-            skyGroup.add(starSphere);
-        });
-
-        // Líneas luminosas que trazan la Cruz del Sur en el cielo 3D
-        const cruxLineGeo = new THREE.BufferGeometry().setFromPoints([
-            cruxStars[0], cruxStars[1],
-            cruxStars[2], cruxStars[3]
-        ]);
-        const cruxLineMat = new THREE.LineBasicMaterial({ color: 0xfde047, transparent: true, opacity: 0.75 });
-        const cruxLines = new THREE.LineSegments(cruxLineGeo, cruxLineMat);
-        skyGroup.add(cruxLines);
-
-        // Chispas 3D de la Hoguera
-        const sparkCount = 75;
-        const sparkGeo = new THREE.BufferGeometry();
-        const sparkPositions = new Float32Array(sparkCount * 3);
-        const sparkSpeeds = [];
-        for (let i = 0; i < sparkCount; i++) {
-            sparkPositions[i * 3] = hx + (Math.random() - 0.5) * 1.1;
-            sparkPositions[i * 3 + 1] = hy + Math.random() * 4.5;
-            sparkPositions[i * 3 + 2] = hz + (Math.random() - 0.5) * 1.1;
-            sparkSpeeds.push(0.025 + Math.random() * 0.04);
-        }
-        sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPositions, 3));
-        const sparkMat = new THREE.PointsMaterial({ color: 0xffaa00, size: 0.26, transparent: true, opacity: 0.9 });
-        scene.add(new THREE.Points(sparkGeo, sparkMat));
-
-        // 7. ETIQUETAS 3D PROYECTADAS SOBRE CADA ETAPA DEL CAMINO
-        const pinLabelsMap = {
-            hoguera: '🔥 0. Explanada Base (720m)',
-            castores: '🦫 1. Castores (820m)',
-            manada: '🐺 2. Manada (1.050m)',
-            tropa: '⚜️ 3. Tropa (1.380m)',
-            esculta: '🥾 4. Escultas (1.790m)',
-            clan: '🏔️ 5. Cima Clan (2.250m)'
-        };
-        const pinElements = {};
-        if (labelsLayer) {
-            labelsLayer.innerHTML = '';
-            orderedStageKeys.forEach(k => {
-                const pin = document.createElement('button');
-                pin.type = 'button';
-                pin.className = 'world3d-floating-pin' + (k === 'castores' ? ' active' : '');
-                pin.innerHTML = pinLabelsMap[k];
-                pin.onclick = (e) => {
-                    e.stopPropagation();
-                    window.flyTo3DZone(k);
-                };
-                labelsLayer.appendChild(pin);
-                pinElements[k] = pin;
-            });
-        }
-
-        // Estado inicial de la cámara: centrada en el inicio del camino (Castores)
-        const startZ = zones3DData.castores;
-        const startY = getTerrainHeight(startZ.pos.x, startZ.pos.z);
-        const camState = {
-            trailT: 0.18,
-            targetX: startZ.pos.x,
-            targetY: startY + 0.8,
-            targetZ: startZ.pos.z,
-            dist: startZ.camOffset.dist,
-            angle: startZ.camOffset.angle,
-            height: startZ.camOffset.height,
-            fireBoost: 1.0
-        };
-
-        // Posicionar al caminante 3D en el punto inicial
-        const updateHikerPosition = (tVal) => {
-            const clamped = Math.max(0, Math.min(1, tVal));
-            const pt = trailCurve.getPointAt(clamped);
-            hikerGroup.position.set(pt.x, pt.y, pt.z);
-        };
-        updateHikerPosition(camState.trailT);
-
-        // Interacción de arrastrar para mirar alrededor 360º desde el punto actual del camino
-        let isDragging = false;
-        let prevX = 0;
-        let prevY = 0;
-        let dragDistance = 0;
-
-        stage.addEventListener('pointerdown', (e) => {
-            if (e.target.closest('button, a, input, .world3d-info-card, .trail-scrubber-bar')) return;
-            isDragging = true;
-            prevX = e.clientX;
-            prevY = e.clientY;
-            dragDistance = 0;
-        });
-
-        window.addEventListener('pointermove', (e) => {
-            if (!isDragging) return;
-            const dx = e.clientX - prevX;
-            const dy = e.clientY - prevY;
-            dragDistance += Math.hypot(dx, dy);
-            prevX = e.clientX;
-            prevY = e.clientY;
-
-            camState.angle -= dx * 0.007;
-            camState.height = Math.max(1.5, Math.min(18, camState.height + dy * 0.03));
-        });
-
-        window.addEventListener('pointerup', () => {
-            isDragging = false;
-        });
-
-        stage.addEventListener('wheel', (e) => {
-            if (e.target.closest('.world3d-info-card')) return;
-            e.preventDefault();
-            camState.dist = Math.max(6, Math.min(38, camState.dist + e.deltaY * 0.015));
-        }, { passive: false });
-
-        // Slider interactivo para caminar de forma continua por el sendero (0% -> 100%)
-        const sliderEl = document.getElementById('trailProgressSlider');
-        if (sliderEl) {
-            sliderEl.addEventListener('input', (e) => {
-                const pct = parseFloat(e.target.value) / 100;
-                camState.trailT = pct;
-                const pt = trailCurve.getPointAt(pct);
-                camState.targetX = pt.x;
-                camState.targetY = pt.y + 0.8;
-                camState.targetZ = pt.z;
-                updateHikerPosition(pct);
-
-                // Detectar qué etapa está más cerca para actualizar la explicación metodológica en vivo
-                let closestKey = 'hoguera';
-                let minDiff = 999;
-                orderedStageKeys.forEach((k, idx) => {
-                    const diff = Math.abs((zones3DData[k].progress / 100) - pct);
-                    if (diff < minDiff) {
-                        minDiff = diff;
-                        closestKey = k;
-                        currentStageIdx = idx;
-                    }
-                });
-                updateHUDCardOnly(closestKey);
-            });
-        }
-
-        // Raycasting sobre las tiendas 3D
-        const raycaster = new THREE.Raycaster();
-        const mouseVec = new THREE.Vector2();
-        canvas.addEventListener('click', (e) => {
-            if (dragDistance > 8) return;
-            const rect = canvas.getBoundingClientRect();
-            mouseVec.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-            mouseVec.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-            raycaster.setFromCamera(mouseVec, camera);
-            const hits = raycaster.intersectObjects(interactiveMeshes, false);
-            if (hits.length > 0 && hits[0].object.userData.zoneKey) {
-                window.flyTo3DZone(hits[0].object.userData.zoneKey);
-            }
-        });
-
-        // Bucle de animación 3D
-        const flagPosAttr = flagGeo.attributes.position;
-        const projVec = new THREE.Vector3();
-        let clock = 0;
-
-        function animate3D() {
-            requestAnimationFrame(animate3D);
-            clock += 0.035;
-
-            const cx = camState.targetX + Math.sin(camState.angle) * camState.dist;
-            const cy = camState.targetY + camState.height;
-            const cz = camState.targetZ + Math.cos(camState.angle) * camState.dist;
-            camera.position.set(cx, cy, cz);
-            camera.lookAt(camState.targetX, camState.targetY + 0.4, camState.targetZ);
-
-            // Bandera Acrux ondeando
-            for (let i = 0; i < flagPosAttr.count; i++) {
-                const vx = flagPosAttr.getX(i);
-                const wave = Math.sin(vx * 2.4 + clock * 3.2) * 0.14 * ((vx + 1.05) / 2.1);
-                flagPosAttr.setZ(i, wave);
-            }
-            flagPosAttr.needsUpdate = true;
-
-            // Hoguera y chispas
-            camState.fireBoost += (1.0 - camState.fireBoost) * 0.04;
-            const sFlicker = (0.9 + Math.sin(clock * 7) * 0.14) * camState.fireBoost;
-            fireCore.scale.set(sFlicker, sFlicker * 1.25, sFlicker);
-            fireLight.intensity = (3.4 + Math.sin(clock * 9) * 0.5) * camState.fireBoost;
-
-            const spArr = sparkGeo.attributes.position.array;
-            for (let i = 0; i < sparkCount; i++) {
-                spArr[i * 3 + 1] += sparkSpeeds[i] * camState.fireBoost;
-                if (spArr[i * 3 + 1] > hy + 4.8 * camState.fireBoost) {
-                    spArr[i * 3 + 1] = hy + 0.35;
-                }
-            }
-            sparkGeo.attributes.position.needsUpdate = true;
-
-            summitBeacon.rotation.y += 0.025;
-            updateHikerPosition(camState.trailT);
-
-            renderer.render(scene, camera);
-
-            // Proyectar Pines 3D a coordenadas de pantalla
-            const w = stage.clientWidth;
-            const h = stage.clientHeight;
-            orderedStageKeys.forEach(k => {
-                const pinEl = pinElements[k];
-                const zInfo = zones3DData[k];
-                if (!pinEl || !zInfo) return;
-                const pyTerrain = getTerrainHeight(zInfo.pos.x, zInfo.pos.z);
-                projVec.set(zInfo.pos.x, pyTerrain + 2.1, zInfo.pos.z);
-                projVec.project(camera);
-                if (projVec.z > 1) {
-                    pinEl.style.display = 'none';
-                } else {
-                    const px = (projVec.x * 0.5 + 0.5) * w;
-                    const py = (-(projVec.y * 0.5) + 0.5) * h;
-                    pinEl.style.display = 'flex';
-                    pinEl.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -100%)`;
-                }
-            });
-        }
-
-        animate3D();
-
-        window.addEventListener('resize', () => {
-            if (!stage) return;
-            camera.aspect = stage.clientWidth / stage.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(stage.clientWidth, stage.clientHeight);
-        });
-
-        threeSceneState = {
-            scene,
-            hemiLight,
-            dirLight,
-            starMat,
-            cruxLineMat,
-            camState,
-            pinElements,
-            THREE
-        };
-    }
-
-    function updateHUDCardOnly(zoneKey) {
-        const z = zones3DData[zoneKey];
-        if (!z) return;
-
-        document.querySelectorAll('.waypoint-3d-pill').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.zone === zoneKey);
-        });
-        if (threeSceneState && threeSceneState.pinElements) {
-            Object.keys(threeSceneState.pinElements).forEach(k => {
-                threeSceneState.pinElements[k].classList.toggle('active', k === zoneKey);
-            });
-        }
-
-        const tagEl = document.getElementById('w3dTag');
-        const altEl = document.getElementById('w3dAltitude');
-        const titleEl = document.getElementById('w3dTitle');
-        const descEl = document.getElementById('w3dDesc');
-        const methodListEl = document.getElementById('w3dMethodList');
-        const linkEl = document.getElementById('w3dLink');
-        const linkTextEl = document.getElementById('w3dLinkText');
-        const kmBadge = document.getElementById('trailPctBadge');
-
-        if (tagEl) tagEl.textContent = z.tag;
-        if (altEl) altEl.textContent = z.altitude;
-        if (titleEl) titleEl.textContent = z.title;
-        if (descEl) descEl.textContent = z.desc;
-        if (methodListEl && z.methods) {
-            methodListEl.innerHTML = z.methods.map(m => `<li>${m}</li>`).join('');
-        }
-        if (linkEl) linkEl.setAttribute('href', z.linkHref);
-        if (linkTextEl) linkTextEl.textContent = z.linkText;
-        if (kmBadge) kmBadge.textContent = z.kmText;
-    }
-
-    window.flyTo3DZone = function (zoneKey) {
-        const z = zones3DData[zoneKey];
-        if (!z || !threeSceneState) return;
-
-        const idx = orderedStageKeys.indexOf(zoneKey);
-        if (idx !== -1) currentStageIdx = idx;
-
-        updateHUDCardOnly(zoneKey);
-
-        const sliderEl = document.getElementById('trailProgressSlider');
-        if (sliderEl && z.progress !== undefined) {
-            sliderEl.value = z.progress;
-        }
-
-        const targetTerrainY = zoneKey === 'overview' ? 3.5 : getTerrainHeight(z.pos.x, z.pos.z) + 0.8;
-        const targetTrailT = (z.progress !== undefined ? z.progress : 50) / 100;
-
-        if (window.gsap) {
-            gsap.to(threeSceneState.camState, {
-                trailT: targetTrailT,
-                targetX: z.pos.x,
-                targetY: targetTerrainY,
-                targetZ: z.pos.z,
-                dist: z.camOffset.dist,
-                angle: z.camOffset.angle,
-                height: z.camOffset.height,
-                duration: 1.4,
-                ease: 'power3.inOut'
-            });
-        } else {
-            Object.assign(threeSceneState.camState, {
-                trailT: targetTrailT,
-                targetX: z.pos.x,
-                targetY: targetTerrainY,
-                targetZ: z.pos.z,
-                dist: z.camOffset.dist,
-                angle: z.camOffset.angle,
-                height: z.camOffset.height
-            });
-        }
-    };
-
-    window.stepTrailStage = function (delta) {
-        currentStageIdx = (currentStageIdx + delta + orderedStageKeys.length) % orderedStageKeys.length;
-        window.flyTo3DZone(orderedStageKeys[currentStageIdx]);
-    };
-
-    window.set3DAtmosphere = function (mode, btn) {
-        if (!threeSceneState) return;
-        document.querySelectorAll('.world3d-hud-top .world3d-btn').forEach(b => {
-            if (!b.classList.contains('world3d-btn-fire')) b.classList.remove('active');
-        });
-        if (btn) btn.classList.add('active');
-
-        const { scene, hemiLight, dirLight, starMat, cruxLineMat, THREE } = threeSceneState;
-        if (mode === 'night') {
-            scene.background = new THREE.Color(0x060a14);
-            scene.fog.color.setHex(0x081021);
-            hemiLight.intensity = 0.75;
-            dirLight.color.setHex(0xdbeafe);
-            dirLight.intensity = 0.95;
-            starMat.opacity = 0.95;
-            cruxLineMat.opacity = 0.75;
-        } else if (mode === 'sunset') {
-            scene.background = new THREE.Color(0x28101c);
-            scene.fog.color.setHex(0x361522);
-            hemiLight.intensity = 1.05;
-            dirLight.color.setHex(0xfb923c);
-            dirLight.intensity = 1.65;
-            starMat.opacity = 0.55;
-            cruxLineMat.opacity = 0.5;
-        } else if (mode === 'day') {
-            scene.background = new THREE.Color(0x38bdf8);
-            scene.fog.color.setHex(0x7dd3fc);
-            hemiLight.intensity = 1.3;
-            dirLight.color.setHex(0xfef9c3);
-            dirLight.intensity = 1.9;
-            starMat.opacity = 0.0;
-            cruxLineMat.opacity = 0.0;
-        }
-    };
-
-    window.stoke3DCampfire = function () {
-        if (!threeSceneState) return;
-        threeSceneState.camState.fireBoost = 2.6;
-        window.flyTo3DZone('hoguera');
-
-        try {
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            const ctx = new AudioCtx();
-            const bufferSize = ctx.sampleRate * 0.45;
-            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-            const data = buffer.getChannelData(0);
-            for (let i = 0; i < bufferSize; i++) {
-                data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.15));
-            }
-            const noise = ctx.createBufferSource();
-            noise.buffer = buffer;
-            const filter = ctx.createBiquadFilter();
-            filter.type = 'bandpass';
-            filter.frequency.value = 1200;
-            const gain = ctx.createGain();
-            gain.gain.value = 0.25;
-            noise.connect(filter);
-            filter.connect(gain);
-            gain.connect(ctx.destination);
-            noise.start();
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    /* ======================================================================
-       3. TRANSICIÓN DE TELÓN + LENIS SMOOTH SCROLL + GSAP SCROLLTRIGGER
-       ====================================================================== */
-    function initSmoothScrollAndGSAP() {
-        const curtainEl = document.getElementById('acruxTransitionCurtain');
-        const emblemEl = document.getElementById('curtainEmblem');
-
-        if (window.gsap && curtainEl) {
-            gsap.to(emblemEl, {
-                rotation: 360,
-                scale: 1.08,
-                duration: 0.55,
-                ease: 'power2.out'
-            });
-            gsap.to(curtainEl, {
-                yPercent: -100,
-                duration: 0.85,
-                delay: 0.15,
-                ease: 'expo.inOut',
-                onComplete: () => {
-                    curtainEl.style.display = 'none';
-                }
-            });
-        } else if (curtainEl) {
-            curtainEl.style.transition = 'transform 0.6s cubic-bezier(0.76, 0, 0.24, 1)';
-            curtainEl.style.transform = 'translateY(-100%)';
-        }
-
-        document.querySelectorAll('a[href]').forEach(link => {
-            const href = link.getAttribute('href');
-            if (!href) return;
-            const isInternalHtml =
-                !href.startsWith('http') &&
-                !href.startsWith('mailto:') &&
-                !href.startsWith('tel:') &&
-                !href.startsWith('#') &&
-                !link.hasAttribute('target') &&
-                href.includes('.html');
-
-            if (isInternalHtml) {
-                link.addEventListener('click', (e) => {
-                    const targetFile = href.split('#')[0].split('/').pop().toLowerCase();
-                    if (targetFile === currentFile && href.includes('#')) return;
-
-                    e.preventDefault();
-                    const nextTitle = pageTitlesMap[targetFile] || 'GRUPO SCOUT ACRUX 518';
-                    const titleEl = document.getElementById('curtainTitle');
-                    if (titleEl) titleEl.textContent = nextTitle;
-
-                    if (window.gsap && curtainEl) {
-                        curtainEl.style.display = 'flex';
-                        gsap.fromTo(
-                            curtainEl,
-                            { yPercent: 100 },
-                            {
-                                yPercent: 0,
-                                duration: 0.65,
-                                ease: 'expo.inOut',
-                                onComplete: () => {
-                                    window.location.href = href;
-                                }
-                            }
-                        );
-                    } else {
-                        window.location.href = href;
-                    }
-                });
-            }
-        });
-
-        let lenis = null;
-        if (window.Lenis) {
-            lenis = new Lenis({
-                duration: 1.15,
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                smoothWheel: true,
-                wheelMultiplier: 1.0
-            });
-
-            if (window.gsap && window.ScrollTrigger) {
-                gsap.registerPlugin(ScrollTrigger);
-                lenis.on('scroll', ScrollTrigger.update);
-                gsap.ticker.add((time) => {
-                    lenis.raf(time * 1000);
-                });
-                gsap.ticker.lagSmoothing(0);
-            } else {
-                function raf(time) {
-                    lenis.raf(time);
-                    requestAnimationFrame(raf);
-                }
-                requestAnimationFrame(raf);
-            }
-        }
-
-        const updateRope = () => {
-            const rope = document.getElementById('scrollProgressRope');
-            if (!rope) return;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const pct = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
-            rope.style.transform = `scaleX(${pct})`;
-        };
-        window.addEventListener('scroll', updateRope, { passive: true });
-        updateRope();
-
-        if (window.gsap && window.ScrollTrigger) {
-            gsap.registerPlugin(ScrollTrigger);
-            initKineticTypography();
-            initHorizontalPinnedExpedition();
-            initScrollRevealChoreography();
-        }
-    }
-
-    function initKineticTypography() {
-        const headings = document.querySelectorAll('.hero-giant-title, .page-header h1, .heading-xl');
-        headings.forEach((h) => {
-            if (h.dataset.kineticInit) return;
-            h.dataset.kineticInit = 'true';
-
-            const wrapWords = (node) => {
-                if (node.nodeType === Node.TEXT_NODE) {
-                    const text = node.textContent;
-                    if (!text.trim()) return;
-                    const words = text.split(/(\s+)/);
-                    const frag = document.createDocumentFragment();
-                    words.forEach(part => {
-                        if (/^\s+$/.test(part) || !part) {
-                            frag.appendChild(document.createTextNode(part));
-                        } else {
-                            const mask = document.createElement('span');
-                            mask.className = 'kinetic-word-mask';
-                            const inner = document.createElement('span');
-                            inner.className = 'kinetic-word-inner';
-                            inner.textContent = part;
-                            mask.appendChild(inner);
-                            frag.appendChild(mask);
-                        }
-                    });
-                    node.parentNode.replaceChild(frag, node);
-                } else if (node.nodeType === Node.ELEMENT_NODE) {
-                    Array.from(node.childNodes).forEach(wrapWords);
-                }
-            };
-
-            wrapWords(h);
-            const wordInners = h.querySelectorAll('.kinetic-word-inner');
-            if (!wordInners.length) return;
-
-            gsap.fromTo(
-                wordInners,
-                { yPercent: 115, rotateZ: 3, opacity: 0 },
-                {
-                    yPercent: 0,
-                    rotateZ: 0,
-                    opacity: 1,
-                    duration: 0.9,
-                    stagger: 0.04,
-                    ease: 'power4.out',
-                    scrollTrigger: {
-                        trigger: h,
-                        start: 'top 88%',
-                        toggleActions: 'play none none none'
-                    }
-                }
-            );
-        });
-    }
-
-    function initHorizontalPinnedExpedition() {
-        const section = document.getElementById('horizontalExpedition');
-        const pinWrap = document.getElementById('horizontalPinWrap');
-        const track = document.getElementById('horizontalTrack');
-        const marquee = document.getElementById('kineticMarquee');
-        const progressText = document.getElementById('horizontalProgressText');
-
-        if (!section || !pinWrap || !track) return;
-
-        const mm = gsap.matchMedia();
-        mm.add('(min-width: 901px)', () => {
-            const getScrollAmount = () => Math.max(0, track.scrollWidth - window.innerWidth + 80);
-
-            const tween = gsap.to(track, {
-                x: () => -getScrollAmount(),
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: section,
-                    pin: pinWrap,
-                    start: 'top top',
-                    end: () => `+=${getScrollAmount()}`,
-                    scrub: 1,
-                    invalidateOnRefresh: true,
-                    onUpdate: (self) => {
-                        if (progressText) {
-                            const pct = Math.round(self.progress * 100);
-                            const step = Math.min(5, Math.max(1, Math.ceil(self.progress * 5) || 1));
-                            progressText.textContent = `0${step} / 05 · ${pct}%`;
-                        }
-                    }
-                }
-            });
-
-            if (marquee) {
-                gsap.to(marquee, {
-                    xPercent: -35,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: section,
-                        start: 'top bottom',
-                        end: () => `+=${getScrollAmount() + window.innerHeight}`,
-                        scrub: 1.2
-                    }
-                });
-            }
-
-            track.querySelectorAll('.expedition-slide-bg img').forEach((img) => {
-                gsap.fromTo(
-                    img,
-                    { xPercent: -8 },
-                    {
-                        xPercent: 8,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top top',
-                            end: () => `+=${getScrollAmount()}`,
-                            scrub: true
-                        }
-                    }
-                );
-            });
-
-            return () => {
-                if (tween.scrollTrigger) tween.scrollTrigger.kill();
-            };
-        });
-    }
-
-    function initScrollRevealChoreography() {
-        const cardGroups = [
-            '.scout-pages-grid .scout-page-card',
-            '.lost-grid .lost-card',
-            '.kraal-coord-row .coord-card',
-            '.camp-activities-grid .camp-activity-box',
-            '.values-bento-row .value-tile',
-            '.section-detail-card',
-            '.event-card'
-        ];
-
-        cardGroups.forEach(selector => {
-            const items = document.querySelectorAll(selector);
-            if (!items.length) return;
-            gsap.fromTo(
-                items,
-                { y: 48, opacity: 0 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.85,
-                    stagger: 0.08,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: items[0].parentElement,
-                        start: 'top 86%'
-                    }
-                }
-            );
-        });
-
-        document.querySelectorAll('.photo-story-card img, .lightpainting-showcase img, .camp-duo-card img').forEach(img => {
-            gsap.fromTo(
-                img,
-                { scale: 1.08, yPercent: -4 },
-                {
-                    scale: 1.08,
-                    yPercent: 4,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: img.parentElement,
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: true
-                    }
-                }
-            );
-        });
-    }
-
-    function initCustomMagneticCursor() {
-        if (!window.matchMedia('(pointer: fine)').matches) return;
-
-        const dot = document.createElement('div');
-        dot.className = 'acrux-cursor-dot';
-
-        const ring = document.createElement('div');
-        ring.className = 'acrux-cursor-ring';
-        const label = document.createElement('span');
-        label.className = 'acrux-cursor-label';
-        label.textContent = 'EXPLORAR ↗';
-        ring.appendChild(label);
-
-        document.body.appendChild(dot);
-        document.body.appendChild(ring);
-
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        let ringX = mouseX;
-        let ringY = mouseY;
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-        }, { passive: true });
-
-        function renderCursor() {
-            ringX += (mouseX - ringX) * 0.16;
-            ringY += (mouseY - ringY) * 0.16;
-            ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
-            requestAnimationFrame(renderCursor);
-        }
-        requestAnimationFrame(renderCursor);
-
-        const interactiveCards = document.querySelectorAll(
-            '.scout-page-card, .expedition-slide-card, .photo-story-card, .lost-card, .lightpainting-showcase, .world3d-stage-wrap'
-        );
-        interactiveCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                const customText = card.getAttribute('data-cursor') ||
-                    (card.classList.contains('world3d-stage-wrap') ? 'SENDA 3D 🏔️' :
-                     card.classList.contains('lost-card') ? 'RECLAMAR 📲' :
-                     card.classList.contains('photo-story-card') ? 'ACRUX 518 ⚜️' : 'EXPLORAR ↗');
-                label.textContent = customText;
-                document.body.classList.add('cursor-hover-card');
-            });
-            card.addEventListener('mouseleave', () => {
-                document.body.classList.remove('cursor-hover-card');
-            });
-        });
-
-        const magneticButtons = document.querySelectorAll(
-            '.nav-cta, .btn-hero-primary, .btn-hero-glass, .btn-primary, .btn-secondary, .whatsapp-floating-btn'
-        );
-        magneticButtons.forEach(btn => {
-            btn.addEventListener('mouseenter', () => {
-                document.body.classList.add('cursor-hover-link');
-            });
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const relX = e.clientX - rect.left - rect.width / 2;
-                const relY = e.clientY - rect.top - rect.height / 2;
-                btn.style.transform = `translate3d(${relX * 0.22}px, ${relY * 0.22}px, 0)`;
-            });
-            btn.addEventListener('mouseleave', () => {
-                document.body.classList.remove('cursor-hover-link');
-                btn.style.transform = '';
-            });
-        });
-    }
-
-    function init3DCardTiltAndSpotlight() {
-        if (!window.matchMedia('(pointer: fine)').matches) return;
-
-        const tiltCards = document.querySelectorAll(
-            '.scout-page-card, .lost-card, .value-tile, .coord-card, .expedition-slide-card, .section-detail-card'
-        );
-
-        tiltCards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-
-                const rotateY = ((x / rect.width) - 0.5) * 14;
-                const rotateX = ((y / rect.height) - 0.5) * -14;
-                card.style.transform = `perspective(850px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-6px)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-        });
-    }
-
-    function initInteractiveScoutCanvas() {
-        const targetSection = document.querySelector('.hero-cinematic') || document.querySelector('.page-header');
-        if (!targetSection) return;
-
-        const canvas = document.createElement('canvas');
-        canvas.className = 'hero-interactive-canvas';
-        targetSection.appendChild(canvas);
-
-        const ctx = canvas.getContext('2d');
-        let width = 0;
-        let height = 0;
-        let pointer = { x: -999, y: -999 };
-
-        function resize() {
-            width = targetSection.clientWidth;
-            height = targetSection.clientHeight;
-            canvas.width = width;
-            canvas.height = height;
-        }
-        resize();
-        window.addEventListener('resize', resize);
-
-        targetSection.addEventListener('mousemove', (e) => {
-            const rect = targetSection.getBoundingClientRect();
-            pointer.x = e.clientX - rect.left;
-            pointer.y = e.clientY - rect.top;
-        }, { passive: true });
-
-        targetSection.addEventListener('mouseleave', () => {
-            pointer.x = -999;
-            pointer.y = -999;
-        });
-
-        const count = 42;
-        const particles = Array.from({ length: count }, (_, i) => ({
-            x: Math.random() * (width || 1200),
-            y: Math.random() * (height || 600),
-            vx: (Math.random() - 0.5) * 0.45,
-            vy: -Math.random() * 0.55 - 0.15,
-            r: Math.random() * 2.2 + 1,
-            isCrimson: i % 3 === 0
-        }));
-
-        function animateCanvas() {
-            ctx.clearRect(0, 0, width, height);
-
-            for (let i = 0; i < particles.length; i++) {
-                const p = particles[i];
-                p.x += p.vx;
-                p.y += p.vy;
-
-                if (p.y < -10) p.y = height + 10;
-                if (p.x < -10) p.x = width + 10;
-                if (p.x > width + 10) p.x = -10;
-
-                const dx = pointer.x - p.x;
-                const dy = pointer.y - p.y;
-                const dist = Math.hypot(dx, dy);
-                if (dist < 160) {
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(pointer.x, pointer.y);
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${(1 - dist / 160) * 0.35})`;
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-                }
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const p2 = particles[j];
-                    const d = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if (d < 110) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${(1 - d / 110) * 0.14})`;
-                        ctx.lineWidth = 0.7;
-                        ctx.stroke();
-                    }
-                }
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = p.isCrimson ? 'rgba(255, 90, 95, 0.85)' : 'rgba(255, 255, 255, 0.75)';
-                ctx.fill();
-            }
-
-            requestAnimationFrame(animateCanvas);
-        }
-        requestAnimationFrame(animateCanvas);
-    }
-
-    function initBaseScoutUI() {
-        const navToggle = document.querySelector('.nav-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        if (navToggle && navMenu) {
-            navToggle.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-            });
-            navMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    navMenu.classList.remove('active');
-                });
-            });
-        }
-
-        function updateSaturdayCountdown() {
-            const el = document.getElementById('nextSaturdayCountdown');
-            if (!el) return;
-            const now = new Date();
-            const target = new Date(now);
-            const day = now.getDay();
-            const daysUntilSat = (6 - day + 7) % 7;
-
-            target.setDate(now.getDate() + daysUntilSat);
-            target.setHours(16, 30, 0, 0);
-
-            if (daysUntilSat === 0 && now > target) {
-                const endMeeting = new Date(target);
-                endMeeting.setHours(19, 0, 0, 0);
-                if (now <= endMeeting) {
-                    el.textContent = '¡AHORA MISMO EN LA SEDE!';
-                    return;
-                }
-                target.setDate(target.getDate() + 7);
-            }
-
-            const diff = target - now;
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((diff / (1000 * 60)) % 60);
-            el.textContent = `${d}d ${h}h ${m}m`;
-        }
-        updateSaturdayCountdown();
-        setInterval(updateSaturdayCountdown, 30000);
-
-        document.querySelectorAll('.faq-trigger').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const box = btn.parentElement;
-                const isOpen = box.classList.contains('open');
-                document.querySelectorAll('.faq-item-box').forEach(item => item.classList.remove('open'));
-                if (!isOpen) box.classList.add('open');
-            });
-        });
-
-        const ageRange = document.getElementById('ageRange');
-        const ageOutput = document.getElementById('ageOutput');
-        if (ageRange && ageOutput) {
-            ageRange.addEventListener('input', (e) => {
-                const age = parseInt(e.target.value, 10);
-                ageOutput.textContent = age + ' años';
-                if (age < 8) window.selectBranch('castores');
-                else if (age < 11) window.selectBranch('manada');
-                else if (age < 14) window.selectBranch('tropa');
-                else if (age < 17) window.selectBranch('esculta');
-                else window.selectBranch('clan');
-            });
-        }
-
-        if (document.getElementById('packItemsGrid')) {
-            window.renderPackSimulator();
-        }
-        if (document.getElementById('cipherInput')) {
-            window.updateCipher();
-        }
-
-        const contactForm = document.getElementById('contactForm');
-        const formSuccess = document.getElementById('formSuccess');
-        if (contactForm && formSuccess) {
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                formSuccess.style.display = 'block';
-                contactForm.reset();
-                setTimeout(() => {
-                    formSuccess.style.display = 'none';
-                }, 6000);
-            });
-        }
-    }
-})();
-
-/* ==========================================================================
-   FUNCIONES GLOBALES: 5 SECCIONES EDUCATIVAS (SECCIONES.HTML)
-   ========================================================================== */
-const branchesInfo = {
-    castores: {
-        ageText: '6 a 8 años · 1º y 2º de Primaria',
-        ageBg: 'var(--castores-bg)',
-        ageColor: 'var(--castores)',
-        motto: 'Lema: «Compartir»',
-        title: 'Colonia Ohiensis · Castores',
-        desc: 'La etapa de iniciación en el escultismo. A través del cuento de «Los Amigos del Bosque», los castores construyen juntos el Gran Dique, aprenden a compartir jugando, hacen manualidades y viven sus primeras salidas y acampadas en la naturaleza con sus scouters (Malak, Keeo, Burbuja, Tic Tac).',
-        pillars: [
-            '🦫 Marco simbólico: El Bosque y el Estanque',
-            '🎨 Juegos cooperativos y creatividad',
-            '🤝 Aprender a compartir en la Colonia',
-            '🌱 Primer contacto con las acampadas'
-        ],
-        emoji: '🦫',
-        symbolTitle: 'El Estanque y la Colonia',
-        shirt: 'Polo / Camisa Azul Celeste · Pañoleta Carmesí y Blanca',
-        visualGrad: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
-        labelColor: '#0369A1',
-        ctaText: 'Inscribir en Colonia Ohiensis (Castores)'
-    },
-    manada: {
-        ageText: '8 a 11 años · 3º a 5º de Primaria',
-        ageBg: 'var(--manada-bg)',
-        ageColor: 'var(--manada)',
-        motto: 'Lema: «Haremos lo mejor»',
-        title: 'Manada Khanhiwara · Lobatos',
-        desc: 'Ambientada en «El Libro de las Tierras Vírgenes» de Rudyard Kipling. Como Mowgli en la Selva de Seeonee, los lobatos viven en Seisenas, aprenden de los Viejos Lobos (Akela, Baloo, Bagheera, Raksha, Hathi y Hermano Gris), desarrollan su autonomía y viven grandes juegos de acecho y naturaleza.',
-        pillars: [
-            '🐾 Organización en Seisenas',
-            '📖 Las Máximas de Baloo y Ley de la Manada',
-            '⛺ Acampadas y campamento en tienda',
-            '🎒 Cuidado autónomo de su mochila'
-        ],
-        emoji: '🐺',
-        symbolTitle: 'La Selva de Seeonee',
-        shirt: 'Camisa Amarilla · Pañoleta Carmesí y Blanca',
-        visualGrad: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)',
-        labelColor: '#92400E',
-        ctaText: 'Inscribir en Manada Khanhiwara (Lobatos)'
-    },
-    tropa: {
-        ageText: '11 a 14 años · 6º Primaria a 2º ESO',
-        ageBg: 'var(--tropa-bg)',
-        ageColor: 'var(--tropa)',
-        motto: 'Lema: «Siempre Listos»',
-        title: 'Tropa Lohengrin · Sección Scout',
-        desc: 'El corazón de la aventura scout. Los chicos y chicas se organizan en Patrullas con identidad propia, eligen a sus guías, asumen responsabilidades reales, aprenden orientación con mapa y brújula, cabuyería, construcciones de madera y realizan marchas por etapas.',
-        pillars: [
-            '⚜️ Sistema de Patrullas autónomas',
-            '🪢 Pionerismo, nudos y construcciones',
-            '🧭 Orientación, topografía y rutas',
-            '🔥 Compromiso con la Promesa y Ley Scout'
-        ],
-        emoji: '⚜️',
-        symbolTitle: 'La Aventura en Patrulla',
-        shirt: 'Camisa Verde · Pañoleta Carmesí y Blanca',
-        visualGrad: 'linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%)',
-        labelColor: '#166534',
-        ctaText: 'Inscribir en Tropa Lohengrin (Scouts)'
-    },
-    esculta: {
-        ageText: '14 a 17 años · 3º-4º ESO y 1º Bachillerato',
-        ageBg: 'var(--esculta-bg)',
-        ageColor: 'var(--esculta)',
-        motto: 'Lema: «Unidad»',
-        title: 'Unidad Trea · Escultas / Pioneros',
-        desc: 'Jóvenes con iniciativa que diseñan, organizan y financian sus propios proyectos llamados «Empresas». Viven travesías de montaña más exigentes, acciones de voluntariado e implicación activa en el grupo y en su entorno.',
-        pillars: [
-            '🥾 Creación y autogestión de «Empresas»',
-            '🏔️ Rutas de montaña y vivacs',
-            '🤝 Cohesión de grupo y espíritu crítico',
-            '🌍 Proyectos de impacto y servicio'
-        ],
-        emoji: '🥾',
-        symbolTitle: 'El Reto y La Empresa',
-        shirt: 'Camisa Roja · Pañoleta Carmesí y Blanca',
-        visualGrad: 'linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%)',
-        labelColor: '#991B1B',
-        ctaText: 'Inscribir en Unidad Trea (Escultas)'
-    },
-    clan: {
-        ageText: '17 a 21 años · Bachillerato, FP y Universidad',
-        ageBg: 'var(--clan-bg)',
-        ageColor: 'var(--clan)',
-        motto: 'Lema: «Servir»',
-        title: 'Clan Ama Dablam · Rovers',
-        desc: 'La etapa cumbre del recorrido educativo scout. Los rovers trazan su propio proyecto personal de vida, realizan voluntariado social, rutas autónomas de montaña y se forman en la Escuela de Tiempo Libre para convertirse en futuros scouters del grupo.',
-        pillars: [
-            '🌿 Servicio activo a la comunidad',
-            '🏔️ Grandes travesías y campamentos volantes',
-            '🎓 Formación como Monitores de Tiempo Libre',
-            '⚖️ Ciudadanía comprometida y libre'
-        ],
-        emoji: '🌿',
-        symbolTitle: 'El Camino y el Servicio',
-        shirt: 'Camisa Granate / Verde · Pañoleta Carmesí y Blanca',
-        visualGrad: 'linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%)',
-        labelColor: '#6B21A8',
-        ctaText: 'Inscribir en Clan Ama Dablam (Rovers)'
-    }
-};
-
-window.selectBranch = function (key) {
-    const b = branchesInfo[key];
-    if (!b) return;
-
-    document.querySelectorAll('.branch-tab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.branch === key);
-    });
-
-    const spAge = document.getElementById('spAge');
-    if (!spAge) return;
-
-    spAge.textContent = b.ageText;
-    spAge.style.background = b.ageBg;
-    spAge.style.color = b.ageColor;
-
-    document.getElementById('spMotto').textContent = b.motto;
-    document.getElementById('spTitle').textContent = b.title;
-    document.getElementById('spDesc').textContent = b.desc;
-
-    const spPillars = document.getElementById('spPillars');
-    spPillars.innerHTML = b.pillars.map(p => `<li>${p}</li>`).join('');
-
-    const spCta = document.getElementById('spCta');
-    if (spCta) {
-        spCta.innerHTML = `<span>${b.ctaText}</span><span>→</span>`;
-    }
-
-    const spVisualBox = document.getElementById('spVisualBox');
-    spVisualBox.style.background = b.visualGrad;
-    document.getElementById('spBigEmoji').textContent = b.emoji;
-    const spSymbolLabel = document.getElementById('spSymbolLabel');
-    spSymbolLabel.style.color = b.labelColor;
-    document.getElementById('spSymbolTitle').textContent = b.symbolTitle;
-    document.getElementById('spShirtInfo').textContent = b.shirt;
-};
-
-/* ==========================================================================
-   FUNCIONES GLOBALES: SIMULADOR DE MOCHILA + MORSE + NUDOS (CAMPAMENTOS.HTML)
-   ========================================================================== */
-const packData = {
-    sabado: {
-        tip: '💡 Consejo Scouter: Para los sábados en Carretera de Rueda basta ropa cómoda que se pueda manchar jugando y tu pañoleta al cuello.',
-        items: [
-            { id: 's1', title: 'Pañoleta Carmesí y Blanca', zone: 'Al cuello · Identidad' },
-            { id: 's2', title: 'Cantimplora con agua', zone: 'Hidratación' },
-            { id: 's3', title: 'Ropa cómoda de juego', zone: 'Vestimenta' },
-            { id: 's4', title: 'Zapatillas deportivas', zone: 'Calzado' },
-            { id: 's5', title: 'Cuaderno de caza / libreta y boli', zone: 'Material de rama' },
-            { id: 's6', title: 'Chubasquero ligero (si llueve)', zone: 'Bolsillo exterior' }
-        ]
-    },
-    acampada: {
-        tip: '💡 Consejo Scouter: El saco de dormir va siempre abajo del todo, lo pesado pegado a la espalda, y el chubasquero y frontal arriba en la seta.',
-        items: [
-            { id: 'a1', title: 'Saco de dormir de montaña', zone: 'Fondo de la mochila' },
-            { id: 'a2', title: 'Esterilla / Aislante térmico', zone: 'Sujeto sin colgar' },
-            { id: 'a3', title: 'Botas de montaña ya domadas', zone: 'Puestas al salir' },
-            { id: 'a4', title: 'Linterna frontal con pilas', zone: 'Seta superior' },
-            { id: 'a5', title: 'Plato, poto y cubiertos en bolsa', zone: 'Zona media' },
-            { id: 'a6', title: 'Cantimplora de 1 litro', zone: 'Bolsillo lateral' },
-            { id: 'a7', title: 'Muda completa y calcetines extra', zone: 'En bolsas de tela' },
-            { id: 'a8', title: 'Forro polar y chubasquero', zone: 'Acceso rápido' },
-            { id: 'a9', title: 'Neceser pequeño y toalla ligera', zone: 'Zona media' },
-            { id: 'a10', title: 'Camisa de rama y Pañoleta Acrux', zone: 'Puestas al salir' }
-        ]
-    },
-    verano: {
-        tip: '💡 Consejo Scouter: Para los 15 días de julio organiza la ropa por conjuntos en bolsas de tela marcadas con tu nombre y nunca lleves cosas colgando por fuera.',
-        items: [
-            { id: 'v1', title: 'Mochilón de 50L - 65L ajustado', zone: 'Espalda regulada' },
-            { id: 'v2', title: 'Saco de dormir (confort 0ºC - 5ºC)', zone: 'Fondo de la mochila' },
-            { id: 'v3', title: 'Esterilla aislante', zone: 'Interior o lateral' },
-            { id: 'v4', title: 'Botas de trekking + escarpines río', zone: 'Calzado de ruta y pozas' },
-            { id: 'v5', title: 'Mochila pequeña de ataque (marchas)', zone: 'Plegada dentro' },
-            { id: 'v6', title: 'Vajilla scout (plato, poto, cubiertos)', zone: 'En bolsa de tela con nombre' },
-            { id: 'v7', title: 'Ropa para 15 días enrollada', zone: 'Zona central' },
-            { id: 'v8', title: 'Bañador, toalla, gorra y crema solar', zone: 'Días de río y montaña' },
-            { id: 'v9', title: 'Neceser con jabón biodegradable', zone: 'Respeto al medio ambiente' },
-            { id: 'v10', title: 'Linterna frontal + pilas de repuesto', zone: 'Seta superior' },
-            { id: 'v11', title: 'Tarjeta sanitaria y autorización', zone: 'Entregar a su Scouter' },
-            { id: 'v12', title: 'Uniforme completo (Camisa y Pañoleta)', zone: 'Para izadas y ceremonias' }
-        ]
-    }
-};
-
-let currentPackMode = 'acampada';
-const checkedPackIds = new Set();
-
-window.setPackMode = function (mode, btn) {
-    currentPackMode = mode;
-    checkedPackIds.clear();
-    document.querySelectorAll('.pack-mode-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    window.renderPackSimulator();
-};
-
-window.togglePackItem = function (id) {
-    if (checkedPackIds.has(id)) checkedPackIds.delete(id);
-    else checkedPackIds.add(id);
-    window.renderPackSimulator();
-};
-
-window.renderPackSimulator = function () {
-    const modeObj = packData[currentPackMode];
-    if (!modeObj) return;
-    const grid = document.getElementById('packItemsGrid');
-    const tipBox = document.getElementById('packTipBox');
-    if (tipBox) tipBox.innerHTML = modeObj.tip;
-
-    if (grid) {
-        grid.innerHTML = modeObj.items.map(item => {
-            const isChecked = checkedPackIds.has(item.id);
-            return `
-                <div class="pack-item-card ${isChecked ? 'checked' : ''}" onclick="togglePackItem('${item.id}')">
-                    <div class="pack-check-box">${isChecked ? '✓' : ''}</div>
-                    <div>
-                        <span class="pack-item-title">${item.title}</span>
-                        <span class="pack-item-zone">${item.zone}</span>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    const total = modeObj.items.length;
-    const done = checkedPackIds.size;
-    const pct = total ? Math.round((done / total) * 100) : 0;
-
-    const pctEl = document.getElementById('packPctText');
-    const barEl = document.getElementById('packBarFill');
-    const ring = document.getElementById('packRing');
-    const title = document.getElementById('packStatusTitle');
-    const sub = document.getElementById('packStatusSub');
-
-    if (!pctEl || !barEl || !ring || !title || !sub) return;
-
-    pctEl.textContent = pct + '%';
-    barEl.style.width = pct + '%';
-
-    if (pct === 0) {
-        ring.style.borderColor = 'var(--wood-border)';
-        title.textContent = 'Mochila vacía';
-        sub.textContent = 'Pulsa cada objeto para meterlo en la mochila.';
-    } else if (pct < 100) {
-        ring.style.borderColor = '#F59E0B';
-        title.textContent = `Empacando (${done}/${total})`;
-        sub.textContent = '¡Sigue así, ya queda menos para estar listo!';
-    } else {
-        ring.style.borderColor = '#16A34A';
-        title.textContent = '⚜️ ¡Siempre Listos!';
-        sub.textContent = 'Mochila 100% completa y equilibrada para salir.';
-    }
-};
-
-const morseMap = {
-    'A': '·−', 'B': '−···', 'C': '−·−·', 'D': '−··', 'E': '·', 'F': '··−·',
-    'G': '−−·', 'H': '····', 'I': '··', 'J': '·−−−', 'K': '−·−', 'L': '·−··',
-    'M': '−−', 'N': '−·', 'O': '−−−', 'P': '·−−·', 'Q': '−−·−', 'R': '·−·',
-    'S': '···', 'T': '−', 'U': '··−', 'V': '···−', 'W': '·−−', 'X': '−··−',
-    'Y': '−·−−', 'Z': '−−··', '0': '−−−−−', '1': '·−−−−', '2': '··−−−',
-    '3': '···−−', '4': '····−', '5': '·····', '6': '−····', '7': '−−···',
-    '8': '−−−··', '9': '−−−−·'
-};
-const murcielagoMap = {
-    'M': '0', 'U': '1', 'R': '2', 'C': '3', 'I': '4',
-    'E': '5', 'L': '6', 'A': '7', 'G': '8', 'O': '9'
-};
-
-window.updateCipher = function () {
-    const inputEl = document.getElementById('cipherInput');
-    if (!inputEl) return;
-    const raw = (inputEl.value || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    const morseArr = [];
-    let murcStr = '';
-
-    for (const ch of raw) {
-        if (ch === ' ') {
-            morseArr.push('/');
-            murcStr += ' ';
-        } else {
-            if (morseMap[ch]) morseArr.push(morseMap[ch]);
-            murcStr += (murcielagoMap[ch] !== undefined ? murcielagoMap[ch] : ch);
-        }
-    }
-    const mOut = document.getElementById('morseOutput');
-    const cOut = document.getElementById('murcielagoOutput');
-    if (mOut) mOut.textContent = morseArr.join('  ') || '···';
-    if (cOut) cOut.textContent = murcStr || '---';
-};
-
-let whistleCtx = null;
-window.playMorseWhistle = function () {
-    const mOut = document.getElementById('morseOutput');
-    if (!mOut) return;
-    const morseStr = mOut.textContent;
-    try {
-        if (!whistleCtx) whistleCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (whistleCtx.state === 'suspended') whistleCtx.resume();
-
-        let t = whistleCtx.currentTime + 0.05;
-        const dotDur = 0.09;
-        for (const sym of morseStr) {
-            if (sym === '·' || sym === '−') {
-                const dur = sym === '·' ? dotDur : dotDur * 3;
-                const osc = whistleCtx.createOscillator();
-                const gain = whistleCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(2650, t);
-                gain.gain.setValueAtTime(0.001, t);
-                gain.gain.exponentialRampToValueAtTime(0.15, t + 0.01);
-                gain.gain.setValueAtTime(0.15, t + dur - 0.01);
-                gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
-                osc.connect(gain);
-                gain.connect(whistleCtx.destination);
-                osc.start(t);
-                osc.stop(t + dur);
-                t += dur + 0.06;
-            } else if (sym === ' ') {
-                t += 0.08;
-            } else if (sym === '/') {
-                t += 0.2;
-            }
-        }
-    } catch (e) {
-        console.log(e);
-    }
-};
-
-const knotsInfo = {
-    rizo: {
-        title: 'Nudo Rizo o Llano · El Nudo de la Hermandad',
-        diff: 'Nivel: Básico',
-        desc: 'Sirve para unir dos cabos del mismo grosor que no vayan a soportar gran tensión. Es el nudo más simbólico del escultismo: representa la unión mundial de los scouts y se utiliza en vendajes de primeros auxilios porque queda plano y no molesta.',
-        formula: 'Regla: «Derecha sobre izquierda, e izquierda sobre derecha».'
-    },
-    ballestrinque: {
-        title: 'Ballestrinque · El inicio de toda construcción',
-        diff: 'Nivel: Pionerismo',
-        desc: 'Es el nudo rey de los campamentos para iniciar y terminar amarres cuadrados y diagonales sobre troncos de madera (mesas de patrulla, portadas, mochileros y trípodes). Aguanta muy bien la tensión constante sobre el palo.',
-        formula: 'Regla: «Dos vueltas cruzadas abrazando el tronco y el cabo pasa por el centro».'
-    },
-    asdeguia: {
-        title: 'As de Guía · El nudo de rescate que no se corre',
-        diff: 'Nivel: Esencial',
-        desc: 'Forma una gaza fija al final de una cuerda que jamás se aprieta ni se desliza por mucho peso que soporte, y además es muy fácil de deshacer después. Imprescindible en salvamento, montaña y aseguramiento.',
-        formula: 'Regla clásica: «La serpiente sale del lago, rodea el árbol y vuelve a entrar en el lago».'
-    },
-    ocho: {
-        title: 'Nudo en Ocho (Lasca) · El nudo de tope y montaña',
-        diff: 'Nivel: Montaña',
-        desc: 'Se realiza en el extremo de una cuerda para evitar que se escape por una polea o anilla, y en su versión doble es el nudo estándar de encordamiento en escalada y alpinismo por su altísima resistencia.',
-        formula: 'Regla: «Bucle sencillo, rodeo completo por detrás y paso por el ojo superior».'
-    }
-};
-
-window.showKnot = function (key, btn) {
-    const k = knotsInfo[key];
-    if (!k) return;
-    document.querySelectorAll('.knot-pill-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    document.getElementById('knotTitle').textContent = k.title;
-    document.getElementById('knotDifficulty').textContent = k.diff;
-    document.getElementById('knotDesc').textContent = k.desc;
-    document.getElementById('knotFormula').textContent = k.formula;
-};
-
-
-/* ==========================================================================
    MOTOR DEL MAPA ESTELAR GLOBAL INTERACTIVO · GRUPO SCOUT ACRUX 518
    - Estética minimalista monocromática: Blanco puro (#FFFFFF) y Rojo sutil (#D9383A)
    - Sector I: Constelación real y exacta de la Cruz del Sur (Crux)
@@ -1982,16 +8,14 @@ window.showKnot = function (key, btn) {
    - Sector III: Constelación Conectada de Campamentos
                  (Cada estrella es un Campamento; clic = Super-Zoom hacia la estrella
                  que abre su Nueva Tab con recuerdos, hitos y galería fotográfica)
-   - Sector IV: Objetos Perdidos (Agencia Espacial de Rescate de Mochilas)
+   - Sector IV: «El Baúl» de Objetos Perdidos (Cajones = carpetas de Google Drive)
    - Sector V: Bases y Contacto (Bases operativas en Valladolid y contacto directo)
+   - Modo 50 Aniversario (1976–2026): cometa dorado + espiral áurea de 50 estrellas
    ========================================================================== */
 (function initAcruxGlobalStarMapEngine() {
     const canvas = document.getElementById('cosmosCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-
-    document.getElementById('acruxTransitionCurtain')?.remove();
-    document.getElementById('scrollProgressRope')?.remove();
 
     const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
     const lerp = (a, b, t) => a + (b - a) * t;
@@ -2688,8 +712,209 @@ window.showKnot = function (key, btn) {
     ];
 
     // =========================================================================
-    // 3. DEFINICIÓN DE LOS 5 SECTORES DEL MAPA ESTELAR GLOBAL
+    // 2C. MODO 50 ANIVERSARIO (1976 - 2026) · ESPIRAL ÁUREA Y CONECTOR GOOGLE DRIVE
     // =========================================================================
+    const DRIVE_ANNIVERSARY_FOLDER = '05_50_ANIVERSARIO';
+    const DRIVE_ANNIVERSARY_URL = 'https://drive.google.com/drive/u/0/my-drive';
+
+    // Archivo de recuerdos históricos representativos (con fotos reales y mock data lista para Drive)
+    const ANNIVERSARY_HIGHLIGHTS = {
+        1976: {
+            title: 'Los Primeros Pasos · La Semilla de Acrux',
+            desc: 'Primeros encuentros y campamento experimental en Valladolid para fundar un nuevo grupo scout basado en la autonomía de patrullas, el voluntariado juvenil y el contacto vivo con la naturaleza.',
+            photoUrl: 'images/DSC_066412.jpg'
+        },
+        1977: {
+            title: 'Fundación Oficial del Grupo Scout ACRUX 518',
+            desc: 'Constitución oficial del grupo e inscripción en ASDE Exploradores de Castilla y León. Nace nuestra insignia estelar inspirada en la Cruz del Sur y la pañoleta carmesí (#B02324) con borde blanco nieve.',
+            photoUrl: 'images/DSC_059812.jpg'
+        },
+        1980: {
+            title: 'I Gran Campamento de Verano en Alta Montaña',
+            desc: 'Quince días de vida comunitaria en tiendas cónicas en la Cordillera Cantábrica. Primeras construcciones de pionerismo en troncos de madera y sisal levantadas por los troperos.',
+            photoUrl: 'images/DSC_064012.jpg'
+        },
+        1983: {
+            title: 'La Travesía del Espigüete y Raids de Patrulla',
+            desc: 'Primer gran ascenso alpino del grupo en la Montaña Palentina. Se instaura la tradición de los cuadernos de caza de patrulla y las veladas de estrellas.',
+            photoUrl: 'images/DSC_3166.jpg'
+        },
+        1987: {
+            title: 'Bautismo del Refugio de Montaña e Invierno Blanco',
+            desc: 'Se consolida la base de campamentos de invierno en refugios forestales de Castilla y León, con juegos de rastreo en nieve y canciones tradicionales.',
+            photoUrl: 'images/DSC_04051.jpg'
+        },
+        1991: {
+            title: 'Expansión de la Manada Khanhiwara',
+            desc: 'La rama de lobatos (8 a 11 años) alcanza las cuatro seisenas completas en torno a la Roca del Consejo bajo el marco del Libro de las Tierras Vírgenes.',
+            photoUrl: 'images/DSC_058812.jpg'
+        },
+        1995: {
+            title: 'Nacimiento de la Colonia de Castores Ohiensis',
+            desc: 'Apertura de la rama menor (6 a 8 años) ambientada en «La Vida en el Estanque». Se construye la primera Presa simbólica sobre el río Gran Hermano.',
+            photoUrl: 'images/DSC_066412.jpg'
+        },
+        1999: {
+            title: 'Gran Campamento Fin de Siglo en Pirineos',
+            desc: 'Convivencia histórica de todo el grupo a los pies del Aneto y Monte Perdido, combinando marchas volantes de pionerismo con talleres ambientales.',
+            photoUrl: 'images/DSC_3166.jpg'
+        },
+        2003: {
+            title: 'Apertura de la Ruta Esculta por la Canal de Trea',
+            desc: 'Bautismo oficial de la Unidad Esculta Trea tras completar la exigente ascensión de la Canal de Trea en los Picos de Europa.',
+            photoUrl: 'images/DSC_059812.jpg'
+        },
+        2007: {
+            title: 'Centenario Mundial del Escultismo',
+            desc: 'Amanecer Scout simultáneo en la Plaza Mayor de Valladolid para renovar la Promesa Scout junto a miles de scouts de todo el planeta.',
+            photoUrl: 'images/DSC_064012.jpg'
+        },
+        2011: {
+            title: 'Pionerismo y Puentes Levadizos de Tropa',
+            desc: 'Construcción récord de una torre de vigía de 6 metros y puente basculante en madera sin un solo clavo, solo cuerdas y amarres de técnica scout.',
+            photoUrl: 'images/DSC_04051.jpg'
+        },
+        2016: {
+            title: 'Inauguración de la Base Central · Crtra. de Rueda, 53',
+            desc: 'Apertura de nuestro centro neurálgico definitivo en Valladolid, con almacén de intendencia, salas de ramas y patio de actividades.',
+            photoUrl: 'images/DSC_058812.jpg'
+        },
+        2020: {
+            title: 'El Gran Fuego Virtual y Resiliencia Acruxiana',
+            desc: 'Durante los meses de confinamiento, el Kraalete mantuvo actividades scouts online cada sábado, demostrando que el escultismo vive en las personas.',
+            photoUrl: 'images/DSC_066412.jpg'
+        },
+        2024: {
+            title: 'Campamento Cumbres del Norte · Familia Acrux',
+            desc: 'Más de 130 acruxianos acampados en pradera alpina con el círculo general de pañoletas carmesí y la gran fiesta comunitaria de familias.',
+            photoUrl: 'images/DSC_059812.jpg'
+        },
+        2026: {
+            title: '50º Aniversario de Oro (1976 - 2026) · Medio Siglo de Vida',
+            desc: 'Medio siglo educando en valores, construyendo hermandad y dejando el mundo en mejores condiciones de cómo lo encontramos. ¡Siempre Listos!',
+            photoUrl: 'images/DSC_066412.jpg'
+        }
+    };
+
+    // Estructura de Datos de exactamente 50 Estrellas (1976 a 2026)
+    // Conector preparado para leer de la carpeta Google Drive 05_50_ANIVERSARIO
+    const aniversarioFotos = [];
+    const ANNIVERSARY_TOTAL_STARS = 50;
+
+    for (let i = 0; i < ANNIVERSARY_TOTAL_STARS; i++) {
+        const year = Math.round(1976 + (i * 50 / (ANNIVERSARY_TOTAL_STARS - 1)));
+        const highlight = ANNIVERSARY_HIGHLIGHTS[year];
+        const isUnlocked = Boolean(highlight && highlight.photoUrl);
+
+        // Geometría de espiral áurea armónica y compacta alrededor de la Cruz del Sur (Sector I)
+        const spiralProgress = i / (ANNIVERSARY_TOTAL_STARS - 1);
+        const theta = -1.25 + spiralProgress * (3.15 * Math.PI);
+        const radius = 155 * Math.pow(420 / 155, spiralProgress);
+        const wx = Math.round(Math.cos(theta) * radius);
+        const wy = Math.round(Math.sin(theta) * radius);
+
+        aniversarioFotos.push({
+            index: i,
+            year,
+            title: highlight ? highlight.title : `Crónica Scout del Año ${year}`,
+            desc: highlight ? highlight.desc : `Recuerdo histórico del Grupo Scout ACRUX 518 correspondiente al año scout ${year}. Archivo fotográfico y testimonios en fase de catalogación comunitaria en Google Drive.`,
+            photoUrl: highlight ? highlight.photoUrl : null,
+            driveFolder: DRIVE_ANNIVERSARY_FOLDER,
+            driveUrl: DRIVE_ANNIVERSARY_URL,
+            isUnlocked,
+            wx,
+            wy,
+            sx: 0,
+            sy: 0,
+            r: isUnlocked ? 5.6 : 4.2,
+            hover: 0
+        });
+    }
+
+    // =========================================================================
+    // 2D. MOTOR DEL COMETA DORADO Y ESTADO DEL 50º ANIVERSARIO (ORO Y OBSIDIANA)
+    // =========================================================================
+    let anniversaryMode = false;
+    let anniversaryLerp = 0.0;
+    let targetAnniversaryLerp = 0.0;
+
+    const COMET_TRAJECTORIES = [
+        { x0: 680, y0: -420, x1: -620, y1: 380 },   // Superior-Derecha a Inferior-Izquierda
+        { x0: -640, y0: -360, x1: 650, y1: 390 },   // Superior-Izquierda a Inferior-Derecha
+        { x0: 550, y0: 380, x1: -580, y1: -360 },   // Inferior-Derecha a Superior-Izquierda
+        { x0: -560, y0: 400, x1: 620, y1: -320 }    // Inferior-Izquierda a Superior-Derecha
+    ];
+
+    const goldenComet = {
+        state: 'waiting',          // 'waiting' | 'flying'
+        waitTimer: 2.2,            // Primer pase a los 2.2s de cargar
+        flightDuration: 3.6,       // Duración del cruce: 3.6s (fluido, majestuoso y accesible como easter egg)
+        flightProgress: 0,
+        currentTraj: null,
+        wx: -9999,
+        wy: -9999,
+        sx: -9999,
+        sy: -9999,
+        vx: 0,
+        vy: 0,
+        r: 3.2,
+        alpha: 0,
+        hover: 0,
+        isHovered: false,
+        trail: [],
+        sparks: []
+    };
+
+    const supernovaShockwave = {
+        active: false,
+        originX: 0,
+        originY: 0,
+        radius: 0,
+        maxRadius: 1000,
+        startTime: 0,
+        duration: 850,
+        particles: []
+    };
+
+    let hoveredAnniversaryStar = null;
+
+    function toggleAnniversaryMode(fromClick = true, originScreenX = 0, originScreenY = 0) {
+        anniversaryMode = !anniversaryMode;
+        targetAnniversaryLerp = anniversaryMode ? 1.0 : 0.0;
+
+        // Disparar onda expansiva de supernova circular de polvo de oro a 60fps
+        supernovaShockwave.active = true;
+        supernovaShockwave.originX = originScreenX || (vw * 0.5);
+        supernovaShockwave.originY = originScreenY || (vh * 0.5);
+        supernovaShockwave.radius = 0;
+        supernovaShockwave.maxRadius = Math.hypot(vw, vh) * 1.25;
+        supernovaShockwave.startTime = performance.now();
+        supernovaShockwave.duration = 1100;
+        supernovaShockwave.particles = [];
+
+        // Generar partículas de polvo de oro que viajan con el frente de onda
+        for (let p = 0; p < 80; p++) {
+            const angle = (p / 80) * Math.PI * 2 + (Math.random() - 0.5) * 0.08;
+            const speed = 0.85 + Math.random() * 0.45;
+            supernovaShockwave.particles.push({
+                angle,
+                speed,
+                distFactor: 0.85 + Math.random() * 0.3,
+                size: 1.4 + Math.random() * 2.8,
+                alpha: 0.65 + Math.random() * 0.35,
+                color: Math.random() > 0.4 ? '#FFF3B0' : (Math.random() > 0.5 ? '#D4AF37' : '#F3E5AB')
+            });
+        }
+
+        document.body.classList.toggle('anniversary-50-mode', anniversaryMode);
+        if (elCoordsReadout) {
+            elCoordsReadout.textContent = anniversaryMode
+                ? 'EDICIÓN DE ORO · 50 ANIVERSARIO (1976 - 2026)'
+                : 'VALLADOLID · DESDE 1977';
+        }
+    }
+    window.toggleAnniversaryMode = toggleAnniversaryMode;
+    window.aniversarioFotos = aniversarioFotos;
     const SECTORS = [
         {
             index: 0,
@@ -2703,7 +928,6 @@ window.showKnot = function (key, btn) {
             worldY: 0,
             baseZoom: 1.06,
             primaryBtnText: 'Ir a la Constelación de Unidades',
-            modalBtnText: 'Ver Identidad y Colores',
             stars: [
                 {
                     id: 'acrux',
@@ -2792,8 +1016,7 @@ window.showKnot = function (key, btn) {
             worldX: UNITS_ORIGIN_X,
             worldY: UNITS_ORIGIN_Y,
             baseZoom: 1.0,
-            primaryBtnText: '✦ Entrar en la Estrella de esta Unidad (Super-Zoom)',
-            modalBtnText: 'Ir a Constelación de Campamentos →'
+            primaryBtnText: '✦ Entrar en la Estrella de esta Unidad (Super-Zoom)'
         },
         {
             index: 2,
@@ -2806,8 +1029,7 @@ window.showKnot = function (key, btn) {
             worldX: CAMPS_ORIGIN_X,
             worldY: CAMPS_ORIGIN_Y,
             baseZoom: 1.02,
-            primaryBtnText: '✦ Entrar en la Estrella del Campamento (Super-Zoom)',
-            modalBtnText: 'Ir a Objetos Perdidos →'
+            primaryBtnText: '✦ Entrar en la Estrella del Campamento (Super-Zoom)'
         },
         {
             index: 3,
@@ -2821,7 +1043,6 @@ window.showKnot = function (key, btn) {
             worldY: 1580,
             baseZoom: 1.04,
             primaryBtnText: '✦ Entrar en «El Baúl» (Super-Zoom)',
-            modalBtnText: 'Ir a Bases y Contacto →',
             stars: [
                 {
                     id: 'estrella-el-baul',
@@ -2915,7 +1136,6 @@ window.showKnot = function (key, btn) {
             worldY: 480,
             baseZoom: 1.05,
             primaryBtnText: '⚜️ Abrir Panel de Bases y Solicitar Sábado de Prueba',
-            modalBtnText: 'Volver al Inicio (Cruz del Sur α) ↻',
             stars: [
                 {
                     id: 'base-central',
@@ -3195,8 +1415,6 @@ window.showKnot = function (key, btn) {
         lerpX: vw * 0.6,
         lerpY: vh * 0.5,
         isDown: false,
-        dragStartX: 0,
-        dragStartY: 0,
         dragMoved: 0,
         hoveredNode: null
     };
@@ -3210,20 +1428,10 @@ window.showKnot = function (key, btn) {
     const elHeading = document.getElementById('stageHeading');
     const elDescription = document.getElementById('stageDescription');
     const elStarNodesWrap = document.getElementById('stageStarNodes');
-    const elStarDesignation = document.getElementById('starDesignation');
-    const elStarBadge = document.getElementById('starBadgePill');
-    const elStarTitle = document.getElementById('starReadoutTitle');
-    const elStarBody = document.getElementById('starReadoutBody');
-    const elStarPillars = document.getElementById('starReadoutPillars');
     const elPrimaryBtn = document.getElementById('btnStagePrimaryAction');
     const elPrimaryBtnText = document.getElementById('btnStagePrimaryText');
-    const elModalBtn = document.getElementById('btnStageModalAction');
-    const elModalBtnText = document.getElementById('btnStageModalText');
 
     const elCoordsReadout = document.getElementById('hudCoordsReadout');
-    const elTelSector = document.getElementById('telemetryConstellationName');
-    const elTelStar = document.getElementById('telemetryStarName');
-    const elTelZoom = document.getElementById('telemetryZoomValue');
     const elProgressFill = document.getElementById('hudScrollFill');
     const elProgressPercent = document.getElementById('hudProgressPercent');
     const elOverviewBtn = document.getElementById('btnToggleOverview');
@@ -3250,56 +1458,15 @@ window.showKnot = function (key, btn) {
         });
     }
 
+    // Selecciona una estrella del sector: resalta su chip y desplaza suavemente la cámara hacia ella
     function renderSubSelection(sIdx, subIdx) {
         selectedSubIdx = subIdx;
-        const sec = SECTORS[sIdx];
-        if (!sec) return;
+        if (!SECTORS[sIdx]) return;
 
-        if (sIdx === 1) {
-            const u = UNITS_DATA[subIdx] || UNITS_DATA[0];
-            if (elStarDesignation) elStarDesignation.textContent = u.constellationTitle;
-            if (elStarBadge) elStarBadge.textContent = `${u.age} · ${u.motto}`;
-            if (elStarTitle) elStarTitle.textContent = u.fullName;
-            if (elStarBody) elStarBody.textContent = u.lead;
-            if (elStarPillars) {
-                elStarPillars.innerHTML = u.kraaletes
-                    .map(k => `<span class="star-pillar-tag">★ ${k.name}</span>`)
-                    .join('');
-            }
-            if (elTelStar) elTelStar.textContent = u.fullName;
-            if (!superZoomState) {
-                targetFreePanX = u.dx * 0.45;
-                targetFreePanY = u.dy * 0.45;
-            }
-        } else if (sIdx === 2) {
-            const c = CAMPS_DATA[subIdx] || CAMPS_DATA[0];
-            if (elStarDesignation) elStarDesignation.textContent = `ESTRELLA 0${c.index + 1} · CONSTELACIÓN DE CAMPAMENTOS`;
-            if (elStarBadge) elStarBadge.textContent = c.location;
-            if (elStarTitle) elStarTitle.textContent = c.name;
-            if (elStarBody) elStarBody.textContent = c.desc;
-            if (elStarPillars) {
-                elStarPillars.innerHTML = `
-                    <span class="star-pillar-tag">📸 3 Fotos de Ejemplo</span>
-                    <span class="star-pillar-tag">📁 Drive: ${c.driveFolderName}</span>
-                `;
-            }
-            if (elTelStar) elTelStar.textContent = c.name;
-            if (!superZoomState) {
-                targetFreePanX = c.dx * 0.45;
-                targetFreePanY = c.dy * 0.45;
-            }
-        } else {
-            const st = sec.stars[subIdx] || sec.stars[0];
-            if (elStarDesignation) elStarDesignation.textContent = st.symbol;
-            if (elStarBadge) elStarBadge.textContent = st.badge;
-            if (elStarTitle) elStarTitle.textContent = st.title;
-            if (elStarBody) elStarBody.textContent = st.body;
-            if (elStarPillars) {
-                elStarPillars.innerHTML = (st.pillars || [])
-                    .map(p => `<span class="star-pillar-tag">✦ ${p}</span>`)
-                    .join('');
-            }
-            if (elTelStar) elTelStar.textContent = st.symbol;
+        const focus = sIdx === 1 ? UNITS_DATA[subIdx] : (sIdx === 2 ? CAMPS_DATA[subIdx] : null);
+        if (focus && !superZoomState) {
+            targetFreePanX = focus.dx * 0.45;
+            targetFreePanY = focus.dy * 0.45;
         }
 
         if (elStarNodesWrap) {
@@ -3320,9 +1487,7 @@ window.showKnot = function (key, btn) {
             if (elHeading) elHeading.innerHTML = sec.headingHTML;
             if (elDescription) elDescription.textContent = sec.desc;
             if (elCoordsReadout) elCoordsReadout.textContent = sec.coords;
-            if (elTelSector) elTelSector.textContent = `${sec.roman} · ${sec.code.split('·')[1]?.trim() || ''}`;
             if (elPrimaryBtnText) elPrimaryBtnText.textContent = sec.primaryBtnText;
-            if (elModalBtnText) elModalBtnText.textContent = sec.modalBtnText;
 
             if (elStarNodesWrap) {
                 let items = [];
@@ -3775,7 +1940,7 @@ window.showKnot = function (key, btn) {
     document.getElementById('btnCloseCampZoom')?.addEventListener('click', () => closeAllSuperZooms(true));
     document.getElementById('btnCloseLostZoom')?.addEventListener('click', () => closeAllSuperZooms(true));
 
-    function goToSector(sIdx, subIdx = 0) {
+    function goToSector(sIdx, subIdx = 0, immediate = false) {
         const clamped = clamp(sIdx, 0, SECTORS.length - 1);
         closeAllSuperZooms(true);
         isOverviewMode = false;
@@ -3787,9 +1952,19 @@ window.showKnot = function (key, btn) {
         targetFreePanX = 0;
         targetFreePanY = 0;
 
+        if (immediate) {
+            currentSectorProgress = clamped;
+            camera.x = SECTORS[clamped].worldX;
+            camera.y = SECTORS[clamped].worldY;
+            camera.targetX = camera.x;
+            camera.targetY = camera.y;
+            camera.zoom = SECTORS[clamped].baseZoom;
+            camera.targetZoom = camera.zoom;
+        }
+
         if (activeSectorIdx !== clamped) {
             activeSectorIdx = clamped;
-            syncSectorUI(clamped, subIdx, false);
+            syncSectorUI(clamped, subIdx, immediate);
         } else {
             renderSubSelection(clamped, subIdx);
         }
@@ -3798,126 +1973,17 @@ window.showKnot = function (key, btn) {
     syncSectorUI(0, 0, true);
 
     // =========================================================================
-    // 9. MODAL CREATIVO DE OBJETOS PERDIDOS + PANEL PROFESIONAL DE BASES
+    // 9. MODAL DE IDENTIDAD (CRUZ DEL SUR) Y PANEL DE BASES Y CONTACTO
     // =========================================================================
     const drawerBackdrop = document.getElementById('cosmosDrawerBackdrop');
     const drawerKicker = document.getElementById('drawerModalKicker');
     const drawerTitle = document.getElementById('drawerModalTitle');
     const drawerBody = document.getElementById('drawerModalBody');
 
-    const ORPHAN_ITEMS_DB = [
-        {
-            name: 'Forro Polar Quechua Azul Marino (Talla 10)',
-            cat: 'abrigo',
-            planet: 'Avistado en el Albergue de Invierno',
-            humor: 'Iniciales «M.G.» escritas con boli casi borrado. Nivel de nostalgia: 98%. Busca desesperadamente a su dueño antes de que llegue el frío.',
-            survival: 'Sobreviviendo doblado en la balda 2'
-        },
-        {
-            name: 'Cantimplora Laken Roja de Aluminio (1 Litro)',
-            cat: 'menaje',
-            planet: 'Órbita del Pinar de Antequera',
-            humor: 'Con mosquetón plateado de combate y pegatina de un lobo aullando. Todavía conserva medio trago de agua fresca del manantial.',
-            survival: 'Intacta y lista para otra ruta'
-        },
-        {
-            name: 'Sudadera Roja Oficial Acrux 518 (Talla S)',
-            cat: 'abrigo',
-            planet: 'Base Central · Crtra. de Rueda, 53',
-            humor: 'Huérfana de etiqueta con nombre. Si la miras fijamente a contraluz huele a humo de hoguera de campamento y gloria scout.',
-            survival: 'En perfecto estado de revista'
-        },
-        {
-            name: 'Pañoleta Carmesí y Blanca + Pasador de Cuero',
-            cat: 'reliquia',
-            planet: 'Explanada tras el Círculo de Despedida',
-            humor: '¡Alerta Roja! Un acruxiano anda suelto sin su pañoleta. Custodiada con honores de estado en la sala de los Kraaletes.',
-            survival: 'Máxima prioridad de rescate'
-        },
-        {
-            name: 'Poto Metálico de Acampada + Tenedor Rebelde',
-            cat: 'menaje',
-            planet: 'Sector Fregaderos del Campamento',
-            humor: 'Marcado con cinta aislante roja en el asa. Ha sobrevivido a tres raciones de macarrones con chorizo y sigue brillando.',
-            survival: 'Veterano de mil batallas'
-        },
-        {
-            name: 'Chubasquero Cortavientos Amarillo (Talla 12)',
-            cat: 'abrigo',
-            planet: 'Asiento 14 del Autobús de Vuelta',
-            humor: 'Plegado dentro de su propio bolsillo como un auténtico profesional del camuflaje.',
-            survival: '100% impermeable'
-        },
-        {
-            name: 'Linterna Frontal LED Negra Kalenji',
-            cat: 'menaje',
-            planet: 'Pradera del Juego Nocturno',
-            humor: 'Con pilas aún vivas. Ideal para encontrar el baño a las 3 de la mañana sin tropezar con los vientos de la tienda.',
-            survival: 'Operativa al 100%'
-        }
-    ];
-
     function openDrawerModal(mode) {
         if (!drawerBackdrop) return;
 
-        if (mode === 'lost') {
-            drawerKicker.textContent = 'AGENCIA ESPACIAL DE RESCATE DE MOCHILAS (A.E.R.M. 518)';
-            drawerTitle.innerHTML = '🛸 Radar de <span class="ice-italic">Objetos Perdidos</span>';
-            drawerBody.innerHTML = `
-                <p>Bienvenido al centro de control del <strong>Gran Baúl de Intendencia</strong>. Si reconoces a alguno de estos exploradores extraviados, pulsa <strong>«Lanzar Bengala de Rescate»</strong> y pásate a adoptarlo de vuelta cualquier <strong>sábado a las 16:30 h o 19:00 h</strong> por nuestra Base de Carretera de Rueda, 53:</p>
-                <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin: 1.1rem 0;">
-                    <input type="text" id="lostRadarSearch" class="dossier-form-input" placeholder="🔎 Escanear por nombre (polar, cantimplora, poto, pañoleta...)" style="flex:1; margin-bottom:0;">
-                    <select id="lostRadarCat" class="dossier-form-input" style="width:auto; margin-bottom:0;">
-                        <option value="all">✦ Toda la Nebulosa (7 objetos)</option>
-                        <option value="abrigo">🧥 Abrigos y Sudaderas Fugitivas</option>
-                        <option value="menaje">🥣 Menaje de Combate y Luz</option>
-                        <option value="reliquia">⚜️ Reliquias Scouts (Pañoletas)</option>
-                    </select>
-                </div>
-                <div id="lostFlareBanner" style="display:none; margin-bottom:1rem; padding:0.95rem 1.2rem; border-radius:12px; background:rgba(176,35,36,0.22); border:1px solid rgba(217,56,58,0.55); color:#FFFFFF;"></div>
-                <div class="dossier-grid" id="lostRadarGrid"></div>
-            `;
-
-            const renderRadar = () => {
-                const grid = document.getElementById('lostRadarGrid');
-                const q = (document.getElementById('lostRadarSearch')?.value || '').toLowerCase().trim();
-                const cat = document.getElementById('lostRadarCat')?.value || 'all';
-                if (!grid) return;
-
-                const list = ORPHAN_ITEMS_DB.filter(item => {
-                    const matchCat = cat === 'all' || item.cat === cat;
-                    const matchQ = !q || item.name.toLowerCase().includes(q) || item.planet.toLowerCase().includes(q) || item.humor.toLowerCase().includes(q);
-                    return matchCat && matchQ;
-                });
-
-                grid.innerHTML = list.map((item) => `
-                    <div class="dossier-card">
-                        <span class="dossier-tag">📡 ${item.planet}</span>
-                        <h3>${item.name}</h3>
-                        <p>${item.humor}</p>
-                        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; margin-top:0.75rem;">
-                            <span class="star-pillar-tag">⚡ ${item.survival}</span>
-                            <button type="button" class="rescue-flare-btn" data-flare-item="${item.name}">🚀 ¡Es Mío! Lanzar Bengala</button>
-                        </div>
-                    </div>
-                `).join('') || `<p>¡Órbita despejada! No hay objetos con esa descripción en el baúl.</p>`;
-
-                grid.querySelectorAll('[data-flare-item]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const itemName = btn.getAttribute('data-flare-item');
-                        const banner = document.getElementById('lostFlareBanner');
-                        if (banner) {
-                            banner.style.display = 'block';
-                            banner.innerHTML = `<strong>🎆 ¡Bengala de Rescate enviada por «${itemName}»!</strong> Los Kraaletes de Intendencia te lo guardan en primera fila. Pásate este sábado a las 16:30 h o a las 19:00 h por la <strong>Base de Crtra. de Rueda, 53</strong> para el reencuentro.`;
-                        }
-                    });
-                });
-            };
-            renderRadar();
-            document.getElementById('lostRadarSearch')?.addEventListener('input', renderRadar);
-            document.getElementById('lostRadarCat')?.addEventListener('change', renderRadar);
-
-        } else if (mode === 'bases') {
+        if (mode === 'bases') {
             drawerKicker.textContent = 'SECTOR V · COORDENADAS OPERATIVAS E INSCRIPCIÓN';
             drawerTitle.innerHTML = 'Nuestras <span class="ice-italic">Bases y Contacto</span>';
             drawerBody.innerHTML = `
@@ -4009,17 +2075,80 @@ window.showKnot = function (key, btn) {
         if (e.target === drawerBackdrop) closeDrawerModal();
     });
 
-    document.getElementById('btnOpenLostFoundCreative')?.addEventListener('click', () => {
-        openLostSuperZoom(0);
+    // =========================================================================
+    // 9B. VISOR MODAL DE CRISTAL · RECUERDO DEL 50º ANIVERSARIO (LAZY LOADING)
+    // =========================================================================
+    const elAnniversaryModal = document.getElementById('anniversaryModal');
+    const elAnYearTag = document.getElementById('anYearTag');
+    const elAnYearNumber = document.getElementById('anYearNumber');
+    const elAnYearTitle = document.getElementById('anYearTitle');
+    const elAnYearDesc = document.getElementById('anYearDesc');
+    const elAnPhotoFrame = document.getElementById('anPhotoFrame');
+    const elAnDriveBadge = document.getElementById('anDriveBadge');
+    const elAnDriveBtn = document.getElementById('anDriveBtn');
+
+    function openAnniversaryModal(starData) {
+        if (!elAnniversaryModal || !starData) return;
+
+        // Soporte si se invoca con el año (número o string)
+        if (typeof starData === 'number' || typeof starData === 'string') {
+            const yr = parseInt(starData, 10);
+            const found = aniversarioFotos.find(s => s.year === yr);
+            if (found) starData = found;
+            else return;
+        }
+
+        if (elAnYearTag) {
+            elAnYearTag.textContent = starData.isUnlocked
+                ? `✦ 50º ANIVERSARIO · RECUERDO HISTÓRICO (${starData.year})`
+                : `✦ 50º ANIVERSARIO · ARCHIVO EN DIGITALIZACIÓN (${starData.year})`;
+        }
+        if (elAnYearNumber) elAnYearNumber.textContent = starData.year;
+        if (elAnYearTitle) elAnYearTitle.textContent = starData.title;
+        if (elAnYearDesc) elAnYearDesc.textContent = starData.desc;
+        if (elAnDriveBadge) elAnDriveBadge.textContent = `📁 Google Drive: ${starData.driveFolder}`;
+        if (elAnDriveBtn) elAnDriveBtn.href = starData.driveUrl || DRIVE_ANNIVERSARY_URL;
+
+        // RENDIMIENTO: Lazy Loading estricto (la imagen se descarga e inyecta única y exclusivamente en este instante)
+        if (elAnPhotoFrame) {
+            if (starData.isUnlocked && starData.photoUrl) {
+                elAnPhotoFrame.innerHTML = `
+                    <img src="${starData.photoUrl}" alt="${starData.title}" loading="lazy">
+                `;
+            } else {
+                elAnPhotoFrame.innerHTML = `
+                    <div class="anniversary-photo-locked">
+                        <span class="locked-icon">📜</span>
+                        <strong style="font-family:'Outfit',sans-serif; font-size:1.15rem; color:#F3E5AB; margin-bottom:0.4rem;">
+                            Archivo Histórico del Año ${starData.year}
+                        </strong>
+                        <p style="margin:0; font-size:0.85rem; max-width:400px; line-height:1.5;">
+                            Este recuerdo está en fase de catalogación comunitaria. Si conservas fotografías o testimonios de este año, puedes aportarlos a la carpeta de Google Drive <strong>${starData.driveFolder}</strong>.
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        elAnniversaryModal.classList.add('is-open');
+        elAnniversaryModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeAnniversaryModal() {
+        if (!elAnniversaryModal) return;
+        elAnniversaryModal.classList.remove('is-open');
+        elAnniversaryModal.setAttribute('aria-hidden', 'true');
+        // Liberar la imagen de memoria inmediatamente
+        if (elAnPhotoFrame) elAnPhotoFrame.innerHTML = '';
+    }
+
+    document.getElementById('btnCloseAnniversaryModal')?.addEventListener('click', closeAnniversaryModal);
+    elAnniversaryModal?.addEventListener('click', (e) => {
+        if (e.target === elAnniversaryModal) closeAnniversaryModal();
     });
-    document.getElementById('btnOpenBasesCreative')?.addEventListener('click', () => {
-        goToSector(4, 0);
-        openDrawerModal('bases');
-    });
-    document.getElementById('btnTopBasesCTA')?.addEventListener('click', () => {
-        goToSector(4, 0);
-        openDrawerModal('bases');
-    });
+
+    window.openAnniversaryModal = openAnniversaryModal;
+    window.closeAnniversaryModal = closeAnniversaryModal;
 
     if (elPrimaryBtn) {
         elPrimaryBtn.addEventListener('click', () => {
@@ -4033,22 +2162,6 @@ window.showKnot = function (key, btn) {
                 openLostSuperZoom(selectedSubIdx === 0 ? 0 : selectedSubIdx - 1);
             } else if (activeSectorIdx === 4) {
                 openDrawerModal('bases');
-            }
-        });
-    }
-
-    if (elModalBtn) {
-        elModalBtn.addEventListener('click', () => {
-            if (activeSectorIdx === 0) {
-                openDrawerModal('identity');
-            } else if (activeSectorIdx === 1) {
-                goToSector(2, 0);
-            } else if (activeSectorIdx === 2) {
-                goToSector(3, 0);
-            } else if (activeSectorIdx === 3) {
-                goToSector(4, 0);
-            } else {
-                goToSector(0, 0);
             }
         });
     }
@@ -4089,10 +2202,8 @@ window.showKnot = function (key, btn) {
         }
     });
 
-    canvas.addEventListener('pointerdown', (e) => {
+    canvas.addEventListener('pointerdown', () => {
         pointer.isDown = true;
-        pointer.dragStartX = e.clientX;
-        pointer.dragStartY = e.clientY;
         pointer.dragMoved = 0;
     });
 
@@ -4101,6 +2212,35 @@ window.showKnot = function (key, btn) {
         pointer.isDown = false;
 
         if (pointer.dragMoved < 10) {
+            // 1. Detección de clic en el Cometa Dorado (Easter Egg 50º Aniversario)
+            if (goldenComet.state === 'flying' && goldenComet.alpha > 0.15) {
+                const dComet = Math.hypot(e.clientX - goldenComet.sx, e.clientY - goldenComet.sy);
+                if (dComet < 44) {
+                    toggleAnniversaryMode(true, goldenComet.sx, goldenComet.sy);
+                    return;
+                }
+            }
+
+            // 2. Detección de clic en una de las 50 estrellas de la Espiral del 50º Aniversario
+            if (anniversaryLerp > 0.08) {
+                let hitAnniv = hoveredAnniversaryStar;
+                if (!hitAnniv) {
+                    let bestAnnivD = 28;
+                    for (let a = 0; a < aniversarioFotos.length; a++) {
+                        const st = aniversarioFotos[a];
+                        const d = Math.hypot(e.clientX - st.sx, e.clientY - st.sy);
+                        if (d < bestAnnivD) {
+                            bestAnnivD = d;
+                            hitAnniv = st;
+                        }
+                    }
+                }
+                if (hitAnniv) {
+                    openAnniversaryModal(hitAnniv);
+                    return;
+                }
+            }
+
             let hitNode = pointer.hoveredNode;
             if (!hitNode) {
                 let bestD = 68;
@@ -4138,12 +2278,6 @@ window.showKnot = function (key, btn) {
     });
 
     document.getElementById('btnHomeConstellation')?.addEventListener('click', () => goToSector(0, 0));
-    document.getElementById('btnPrevSector')?.addEventListener('click', () => {
-        goToSector((activeSectorIdx - 1 + SECTORS.length) % SECTORS.length, 0);
-    });
-    document.getElementById('btnNextSector')?.addEventListener('click', () => {
-        goToSector((activeSectorIdx + 1) % SECTORS.length, 0);
-    });
 
     if (elOverviewBtn) {
         elOverviewBtn.addEventListener('click', () => {
@@ -4170,11 +2304,15 @@ window.showKnot = function (key, btn) {
 
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            if (elAnniversaryModal?.classList.contains('is-open')) {
+                closeAnniversaryModal();
+                return;
+            }
             if (superZoomState) closeAllSuperZooms(true);
             if (drawerBackdrop?.classList.contains('is-open')) closeDrawerModal();
             return;
         }
-        if (superZoomState || drawerBackdrop?.classList.contains('is-open')) return;
+        if (superZoomState || drawerBackdrop?.classList.contains('is-open') || elAnniversaryModal?.classList.contains('is-open')) return;
 
         if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
             goToSector(Math.min(SECTORS.length - 1, activeSectorIdx + 1), 0);
@@ -4189,9 +2327,9 @@ window.showKnot = function (key, btn) {
     const cursorRing = document.getElementById('cosmosCursorRing');
     const cursorLabel = document.getElementById('cosmosCursorLabel');
 
-    document.querySelectorAll('button, a, input, select').forEach(el => {
-        el.addEventListener('mouseenter', () => cursorRing?.classList.add('is-ui-hover'));
-        el.addEventListener('mouseleave', () => cursorRing?.classList.remove('is-ui-hover'));
+    // Delegación única: cubre también los chips y botones que se generan dinámicamente
+    document.addEventListener('pointerover', (e) => {
+        cursorRing?.classList.toggle('is-ui-hover', Boolean(e.target.closest?.('button, a, input, select')));
     });
 
     // =========================================================================
@@ -4207,8 +2345,11 @@ window.showKnot = function (key, btn) {
     }
 
     const startTime = performance.now();
+    let lastFrameTime = performance.now();
 
     function animate(now) {
+        const dt = clamp((now - lastFrameTime) * 0.001, 0.001, 0.05);
+        lastFrameTime = now;
         const elapsed = (now - startTime) * 0.001;
 
         pointer.lerpX += (pointer.x - pointer.lerpX) * 0.14;
@@ -4275,12 +2416,6 @@ window.showKnot = function (key, btn) {
         camera.vx = camera.x - prevCamX;
         camera.vy = camera.y - prevCamY;
 
-        if (elTelZoom) {
-            elTelZoom.textContent = superZoomState
-                ? `${camera.zoom.toFixed(1)}x · HIPERESPACIO`
-                : `${camera.zoom.toFixed(2)}x · Órbita Estelar`;
-        }
-
         // Progreso del salto al Hiperespacio (estilo Star Wars ligero)
         let hyperIntensity = 0;
         let hyperOrigin = { x: vw * 0.5, y: vh * 0.5 };
@@ -4297,38 +2432,37 @@ window.showKnot = function (key, btn) {
         }
 
         // ---------------------------------------------------------------------
-        // A. FONDO ABISAL MONOCROMÁTICO (#040406 + #08090D) Y SACO DE CARBÓN
+        // A. FONDO ABISAL MONOCROMÁTICO (#040406 / #030304 OBSIDIANA)
         // ---------------------------------------------------------------------
-        ctx.fillStyle = '#040406';
+        anniversaryLerp += (targetAnniversaryLerp - anniversaryLerp) * 0.055;
+
+        // En Modo 50 Aniversario: Negro Obsidiana ultra sobrio y profundo (#030304)
+        ctx.fillStyle = anniversaryLerp > 0.4 ? '#030304' : '#040406';
         ctx.fillRect(0, 0, vw, vh);
 
+        // Halo del cursor: sutil, compacto y contenido (cero resplandor desbordante)
+        const cursorGlowRadius = 140;
         const gradCursor = ctx.createRadialGradient(
             pointer.lerpX,
             pointer.lerpY,
-            10,
+            0,
             pointer.lerpX,
             pointer.lerpY,
-            Math.max(vw, vh) * 0.7
+            cursorGlowRadius
         );
-        gradCursor.addColorStop(0, '#0D0F15');
-        gradCursor.addColorStop(0.55, '#07080C');
-        gradCursor.addColorStop(1, 'rgba(4, 4, 6, 0)');
-        ctx.fillStyle = gradCursor;
-        ctx.fillRect(0, 0, vw, vh);
-
-        // Nebulosa Oscura del Saco de Carbón junto a Acrux en Sector I
-        const coalScreen = worldToScreen(-155, 135);
-        const coalR = 135 * Math.min(2, camera.zoom);
-        if (coalScreen.x + coalR > 0 && coalScreen.x - coalR < vw && coalScreen.y + coalR > 0 && coalScreen.y - coalR < vh) {
-            const coalGrad = ctx.createRadialGradient(coalScreen.x, coalScreen.y, coalR * 0.15, coalScreen.x, coalScreen.y, coalR);
-            coalGrad.addColorStop(0, 'rgba(1, 1, 2, 0.92)');
-            coalGrad.addColorStop(0.7, 'rgba(2, 2, 4, 0.65)');
-            coalGrad.addColorStop(1, 'rgba(4, 4, 6, 0)');
-            ctx.fillStyle = coalGrad;
-            ctx.beginPath();
-            ctx.ellipse(coalScreen.x, coalScreen.y, coalR * 0.92, coalR * 1.15, -0.22, 0, Math.PI * 2);
-            ctx.fill();
+        if (anniversaryLerp > 0.4) {
+            gradCursor.addColorStop(0, 'rgba(212, 175, 55, 0.045)');
+            gradCursor.addColorStop(0.5, 'rgba(212, 175, 55, 0.012)');
+            gradCursor.addColorStop(1, 'rgba(3, 3, 4, 0)');
+        } else {
+            gradCursor.addColorStop(0, 'rgba(255, 255, 255, 0.03)');
+            gradCursor.addColorStop(0.5, 'rgba(255, 255, 255, 0.008)');
+            gradCursor.addColorStop(1, 'rgba(4, 4, 6, 0)');
         }
+        ctx.fillStyle = gradCursor;
+        ctx.beginPath();
+        ctx.arc(pointer.lerpX, pointer.lerpY, cursorGlowRadius, 0, Math.PI * 2);
+        ctx.fill();
 
         // ---------------------------------------------------------------------
         // B. HILO SUTIL ENTRE SECTORES DEL MAPA ESTELAR
@@ -4544,11 +2678,17 @@ window.showKnot = function (key, btn) {
             ctx.beginPath();
             ctx.moveTo(ax, ay);
             ctx.quadraticCurveTo(mx + ed.ctrlX, my + ed.ctrlY, bx, by);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
+            ctx.strokeStyle = anniversaryLerp > 0.2
+                ? `rgba(212, 175, 55, ${alpha.toFixed(3)})`
+                : `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
             ctx.lineWidth = (isFocusedSector ? 1.35 : 0.85) + ed.glow * 1.1;
             if (ed.glow > 0.08 || isFocusedSector) {
-                const isPureWhiteSector = ed.sectorIndex === 1 || ed.sectorIndex === 2 || ed.sectorIndex === 3;
-                ctx.shadowColor = (!isPureWhiteSector && ed.glow > 0.2) ? 'rgba(217, 56, 58, 0.55)' : 'rgba(255, 255, 255, 0.55)';
+                if (anniversaryLerp > 0.2) {
+                    ctx.shadowColor = 'rgba(212, 175, 55, 0.65)';
+                } else {
+                    const isPureWhiteSector = ed.sectorIndex === 1 || ed.sectorIndex === 2 || ed.sectorIndex === 3;
+                    ctx.shadowColor = (!isPureWhiteSector && ed.glow > 0.2) ? 'rgba(217, 56, 58, 0.55)' : 'rgba(255, 255, 255, 0.55)';
+                }
                 ctx.shadowBlur = 8 + ed.glow * 10;
             }
             ctx.stroke();
@@ -4583,18 +2723,20 @@ window.showKnot = function (key, btn) {
             // Halo radial
             const glowR = r * (nd.isMainCross || nd.isClusterHub || isHovered ? 4.8 : 3.2);
             const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, glowR);
-            g.addColorStop(0, '#FFFFFF');
+            g.addColorStop(0, anniversaryLerp > 0.3 ? '#FFF3B0' : '#FFFFFF');
             g.addColorStop(
                 0.35,
-                nd.isBaulMain
-                    ? (isHovered || isSelectedInSector ? 'rgba(217, 56, 58, 0.30)' : 'rgba(217, 56, 58, 0.16)')
-                    : (nd.clusterType === 'unit'
-                        ? (isHovered || isSelectedInSector ? (nd.ringColor || 'rgba(255, 255, 255, 0.22)') : (nd.halo || 'rgba(255, 255, 255, 0.12)'))
-                        : (isPureWhiteStar
-                            ? (isHovered || isSelectedInSector ? 'rgba(255, 255, 255, 0.28)' : 'rgba(255, 255, 255, 0.16)')
-                            : ((isHovered || isSelectedInSector)
-                                ? 'rgba(217, 56, 58, 0.30)'
-                                : (nd.halo || 'rgba(255, 255, 255, 0.18)'))))
+                anniversaryLerp > 0.35
+                    ? (isHovered || isSelectedInSector ? 'rgba(212, 175, 55, 0.42)' : 'rgba(212, 175, 55, 0.22)')
+                    : (nd.isBaulMain
+                        ? (isHovered || isSelectedInSector ? 'rgba(217, 56, 58, 0.30)' : 'rgba(217, 56, 58, 0.16)')
+                        : (nd.clusterType === 'unit'
+                            ? (isHovered || isSelectedInSector ? (nd.ringColor || 'rgba(255, 255, 255, 0.22)') : (nd.halo || 'rgba(255, 255, 255, 0.12)'))
+                            : (isPureWhiteStar
+                                ? (isHovered || isSelectedInSector ? 'rgba(255, 255, 255, 0.28)' : 'rgba(255, 255, 255, 0.16)')
+                                : ((isHovered || isSelectedInSector)
+                                    ? 'rgba(217, 56, 58, 0.30)'
+                                    : (nd.halo || 'rgba(255, 255, 255, 0.18)')))))
             );
             g.addColorStop(1, 'rgba(255, 255, 255, 0)');
             ctx.fillStyle = g;
@@ -4606,7 +2748,9 @@ window.showKnot = function (key, btn) {
             if ((nd.isClusterHub || isHovered) && !superZoomState) {
                 const ringR = r * 1.95 + Math.sin(elapsed * 2.6 + i) * 1.2;
                 let ringStroke;
-                if (nd.isBaulMain) {
+                if (anniversaryLerp > 0.35) {
+                    ringStroke = (isHovered || isSelectedInSector) ? 'rgba(243, 229, 171, 0.85)' : 'rgba(212, 175, 55, 0.45)';
+                } else if (nd.isBaulMain) {
                     ringStroke = (isHovered || isSelectedInSector) ? 'rgba(224, 82, 84, 0.70)' : 'rgba(217, 56, 58, 0.40)';
                 } else if (nd.clusterType === 'unit') {
                     // Colores sutiles y elegantes para las ramas
@@ -4639,15 +2783,355 @@ window.showKnot = function (key, btn) {
                     ? '600 12px "JetBrains Mono", monospace'
                     : '400 10.5px "JetBrains Mono", monospace';
                 ctx.fillStyle = (isHovered || isSelectedInSector)
-                    ? '#FFFFFF'
-                    : 'rgba(255, 255, 255, 0.74)';
+                    ? (anniversaryLerp > 0.35 ? '#FFF3B0' : '#FFFFFF')
+                    : (anniversaryLerp > 0.35 ? 'rgba(243, 229, 171, 0.75)' : 'rgba(255, 255, 255, 0.74)');
                 ctx.fillText(nd.symbol, sx + r * 1.35 + 7, sy + 4);
                 ctx.restore();
             }
         }
 
+        // ---------------------------------------------------------------------
+        // G. LA ESPIRAL DEL TIEMPO: 50 ESTRELLAS DORADAS (1976 - 2026)
+        // ---------------------------------------------------------------------
+        if (anniversaryLerp > 0.005) {
+            hoveredAnniversaryStar = null;
+
+            // 1. Proyectar coordenadas y verificar hover magnético de las 50 estrellas
+            for (let a = 0; a < aniversarioFotos.length; a++) {
+                const st = aniversarioFotos[a];
+                const sc = worldToScreen(st.wx, st.wy);
+                st.sx = sc.x;
+                st.sy = sc.y;
+
+                if (!superZoomState) {
+                    const d = Math.hypot(pointer.lerpX - sc.x, pointer.lerpY - sc.y);
+                    if (d < 26 && !hoveredAnniversaryStar) {
+                        hoveredAnniversaryStar = st;
+                        st.hover += (1.0 - st.hover) * 0.22;
+                    } else {
+                        st.hover += (0.0 - st.hover) * 0.14;
+                    }
+                } else {
+                    st.hover = 0;
+                }
+            }
+
+            // 2. Filamento áureo de la espiral logarítmica (conecta los 50 años)
+            ctx.save();
+            ctx.beginPath();
+            let firstDrawn = false;
+            for (let a = 0; a < aniversarioFotos.length; a++) {
+                const st = aniversarioFotos[a];
+                if (!firstDrawn) {
+                    ctx.moveTo(st.sx, st.sy);
+                    firstDrawn = true;
+                } else {
+                    ctx.lineTo(st.sx, st.sy);
+                }
+            }
+            ctx.strokeStyle = `rgba(212, 175, 55, ${(0.22 * anniversaryLerp).toFixed(3)})`;
+            ctx.lineWidth = 1.0;
+            ctx.setLineDash([3, 6]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.restore();
+
+            // 3. Renderizar cada una de las 50 estrellas doradas
+            for (let a = 0; a < aniversarioFotos.length; a++) {
+                const st = aniversarioFotos[a];
+                if (st.sx < -120 || st.sx > vw + 120 || st.sy < -120 || st.sy > vh + 120) continue;
+
+                const starScale = clamp(camera.zoom, 0.55, 2.2);
+                const r = (st.r * starScale) + st.hover * 3.2;
+
+                if (st.isUnlocked) {
+                    // Estrellas con fotografía asignada: brillo intenso, pulso dorado y halo
+                    const pulse = 1.0 + Math.sin(elapsed * 2.8 + a * 0.38) * 0.22;
+                    const glowR = r * 3.8 * pulse;
+                    const g = ctx.createRadialGradient(st.sx, st.sy, 0, st.sx, st.sy, glowR);
+                    g.addColorStop(0, '#FFFFFF');
+                    g.addColorStop(0.25, `rgba(255, 243, 176, ${(0.72 * anniversaryLerp).toFixed(3)})`);
+                    g.addColorStop(0.65, `rgba(212, 175, 55, ${(0.32 * anniversaryLerp).toFixed(3)})`);
+                    g.addColorStop(1, 'rgba(212, 175, 55, 0)');
+                    ctx.fillStyle = g;
+                    ctx.beginPath();
+                    ctx.arc(st.sx, st.sy, glowR, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Núcleo blanco brillante
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.beginPath();
+                    ctx.arc(st.sx, st.sy, r * 0.52, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Anillo orbital sutil al hacer hover
+                    if (st.hover > 0.05) {
+                        ctx.strokeStyle = 'rgba(255, 243, 176, 0.88)';
+                        ctx.lineWidth = 1.25;
+                        ctx.beginPath();
+                        ctx.arc(st.sx, st.sy, r * 1.95, 0, Math.PI * 2);
+                        ctx.stroke();
+                    }
+
+                    // Tipografía del año cronológico
+                    ctx.save();
+                    ctx.font = '600 9.5px "JetBrains Mono", monospace';
+                    ctx.fillStyle = `rgba(243, 229, 171, ${(0.88 * anniversaryLerp).toFixed(3)})`;
+                    ctx.fillText(st.year.toString(), st.sx + r * 1.2 + 5, st.sy + 3.5);
+                    ctx.restore();
+                } else {
+                    // Estrellas sin foto todavía: menor opacidad (0.35) manteniendo la geometría perfecta
+                    ctx.save();
+                    ctx.globalAlpha = 0.35 * anniversaryLerp;
+                    ctx.fillStyle = '#D4AF37';
+                    ctx.beginPath();
+                    ctx.arc(st.sx, st.sy, r * 0.45, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.font = '400 8.5px "JetBrains Mono", monospace';
+                    ctx.fillStyle = '#AA771C';
+                    ctx.fillText(st.year.toString(), st.sx + r * 1.1 + 4, st.sy + 3);
+                    ctx.restore();
+                }
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // H. EL COMETA DORADO · EASTER EGG DE PASO RÁPIDO Y CELESTIAL
+        // ---------------------------------------------------------------------
+        if (goldenComet.state === 'waiting') {
+            goldenComet.waitTimer -= dt;
+            if (goldenComet.waitTimer <= 0 && activeSectorIdx === 0 && !superZoomState) {
+                goldenComet.state = 'flying';
+                goldenComet.flightProgress = 0;
+                goldenComet.flightDuration = 3.4 + Math.random() * 0.8; // 3.4s a 4.2s (ritmo majestuoso y alcanzable)
+                const traj = COMET_TRAJECTORIES[Math.floor(Math.random() * COMET_TRAJECTORIES.length)];
+                goldenComet.currentTraj = {
+                    x0: traj.x0 + (Math.random() - 0.5) * 60,
+                    y0: traj.y0 + (Math.random() - 0.5) * 50,
+                    x1: traj.x1 + (Math.random() - 0.5) * 60,
+                    y1: traj.y1 + (Math.random() - 0.5) * 50
+                };
+            }
+        } else if (goldenComet.state === 'flying') {
+            goldenComet.flightProgress += dt / goldenComet.flightDuration;
+            if (goldenComet.flightProgress >= 1.0) {
+                // Termina su cruce y desaparece en el cosmos profundo
+                goldenComet.state = 'waiting';
+                goldenComet.waitTimer = 7.5 + Math.random() * 4.5; // Próximo paso en 7-12 segundos
+                goldenComet.wx = -9999;
+                goldenComet.wy = -9999;
+                goldenComet.sx = -9999;
+                goldenComet.sy = -9999;
+                goldenComet.alpha = 0;
+                goldenComet.hover = 0;
+                goldenComet.isHovered = false;
+            } else {
+                const tr = goldenComet.currentTraj;
+                const p = goldenComet.flightProgress;
+                goldenComet.wx = tr.x0 + (tr.x1 - tr.x0) * p;
+                goldenComet.wy = tr.y0 + (tr.y1 - tr.y0) * p;
+
+                const scComet = worldToScreen(goldenComet.wx, goldenComet.wy);
+                goldenComet.sx = scComet.x;
+                goldenComet.sy = scComet.y;
+
+                // Transición sutil de visibilidad (fade in / fade out fluido)
+                let cAlpha = 1.0;
+                if (p < 0.12) cAlpha = p / 0.12;
+                else if (p > 0.85) cAlpha = (1.0 - p) / 0.15;
+                goldenComet.alpha = clamp(cAlpha, 0, 1);
+
+                // Vector direccional del cometa
+                const dxV = tr.x1 - tr.x0;
+                const dyV = tr.y1 - tr.y0;
+                const vLen = Math.hypot(dxV, dyV) || 1;
+                const normVx = dxV / vLen;
+                const normVy = dyV / vLen;
+                const tailX = -normVx;
+                const tailY = -normVy;
+
+                // Reto Easter Egg: detección de proximidad
+                const distToComet = Math.hypot(pointer.lerpX - scComet.x, pointer.lerpY - scComet.y);
+                if (distToComet < 42 && !superZoomState) {
+                    goldenComet.hover += (1.0 - goldenComet.hover) * 0.28;
+                    goldenComet.isHovered = true;
+                } else {
+                    goldenComet.hover += (0.0 - goldenComet.hover) * 0.22;
+                    goldenComet.isHovered = false;
+                }
+
+                // Generación de micro-polvo de oro en la estela
+                if (goldenComet.alpha > 0.08) {
+                    for (let sp = 0; sp < 2; sp++) {
+                        const pSpd = 1.6 + Math.random() * 2.2;
+                        goldenComet.trail.push({
+                            x: goldenComet.sx + (Math.random() - 0.5) * 3,
+                            y: goldenComet.sy + (Math.random() - 0.5) * 3,
+                            vx: tailX * pSpd + (Math.random() - 0.5) * 0.8,
+                            vy: tailY * pSpd + (Math.random() - 0.5) * 0.8,
+                            life: 1.0,
+                            decay: 0.024 + Math.random() * 0.024, // Desvanecimiento fluido (~0.5s)
+                            size: 1.2 + Math.random() * 2.0,
+                            color: Math.random() > 0.4 ? '#FFF3B0' : '#D4AF37'
+                        });
+                    }
+                }
+
+                // Dibujar el trazo de estela luminoso del cometa (aerodinámico, fino y elegante)
+                const cometScale = clamp(camera.zoom, 0.65, 1.8);
+                const tailLen = (52 + goldenComet.hover * 15) * cometScale;
+                const tailEndX = goldenComet.sx + tailX * tailLen;
+                const tailEndY = goldenComet.sy + tailY * tailLen;
+
+                ctx.save();
+                const tailGrad = ctx.createLinearGradient(goldenComet.sx, goldenComet.sy, tailEndX, tailEndY);
+                tailGrad.addColorStop(0, `rgba(255, 255, 255, ${(0.92 * goldenComet.alpha).toFixed(3)})`);
+                tailGrad.addColorStop(0.25, `rgba(255, 243, 176, ${(0.75 * goldenComet.alpha).toFixed(3)})`);
+                tailGrad.addColorStop(0.7, `rgba(212, 175, 55, ${(0.25 * goldenComet.alpha).toFixed(3)})`);
+                tailGrad.addColorStop(1, 'rgba(212, 175, 55, 0)');
+
+                ctx.beginPath();
+                ctx.moveTo(goldenComet.sx, goldenComet.sy);
+                ctx.lineTo(tailEndX, tailEndY);
+                ctx.strokeStyle = tailGrad;
+                ctx.lineWidth = Math.max(1, 2.2 * cometScale);
+                ctx.stroke();
+
+                // Cabeza y núcleo compacto (Cero halo/aro sobredimensionado)
+                const coreR = (goldenComet.r * cometScale);
+                const miniGlowR = coreR * 2.4;
+
+                const headGrad = ctx.createRadialGradient(goldenComet.sx, goldenComet.sy, 0, goldenComet.sx, goldenComet.sy, miniGlowR);
+                headGrad.addColorStop(0, `rgba(255, 255, 255, ${(0.98 * goldenComet.alpha).toFixed(3)})`);
+                headGrad.addColorStop(0.4, `rgba(255, 243, 176, ${(0.7 * goldenComet.alpha).toFixed(3)})`);
+                headGrad.addColorStop(1, 'rgba(212, 175, 55, 0)');
+                ctx.fillStyle = headGrad;
+                ctx.beginPath();
+                ctx.arc(goldenComet.sx, goldenComet.sy, miniGlowR, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Punto central blanco puro brillante
+                ctx.fillStyle = `rgba(255, 255, 255, ${(goldenComet.alpha).toFixed(3)})`;
+                ctx.beginPath();
+                ctx.arc(goldenComet.sx, goldenComet.sy, 1.8 * cometScale, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Destello fino en cruz
+                const sparkLen = 4.2 * cometScale;
+                ctx.strokeStyle = `rgba(255, 243, 176, ${(0.8 * goldenComet.alpha).toFixed(3)})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(goldenComet.sx - sparkLen, goldenComet.sy);
+                ctx.lineTo(goldenComet.sx + sparkLen, goldenComet.sy);
+                ctx.moveTo(goldenComet.sx, goldenComet.sy - sparkLen);
+                ctx.lineTo(goldenComet.sx, goldenComet.sy + sparkLen);
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        // Renderizar partículas vivas de la estela
+        for (let t = goldenComet.trail.length - 1; t >= 0; t--) {
+            const pt = goldenComet.trail[t];
+            pt.x += pt.vx;
+            pt.y += pt.vy;
+            pt.life -= pt.decay;
+            if (pt.life <= 0) {
+                goldenComet.trail.splice(t, 1);
+                continue;
+            }
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, pt.size * pt.life, 0, Math.PI * 2);
+            ctx.fillStyle = pt.color;
+            ctx.globalAlpha = pt.life * 0.75;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // ---------------------------------------------------------------------
+        // I. LA SUPERNOVA (ONDA EXPANSIVA CIRCULAR DE POLVO DORADO A 60FPS)
+        // ---------------------------------------------------------------------
+        if (supernovaShockwave.active) {
+            const p = (now - supernovaShockwave.startTime) / supernovaShockwave.duration;
+            if (p >= 1.0) {
+                supernovaShockwave.active = false;
+            } else {
+                const waveR = smoothstep(0, 1, p) * supernovaShockwave.maxRadius;
+                const alpha = (1.0 - p);
+
+                ctx.save();
+                // Anillo de choque dorado
+                ctx.beginPath();
+                ctx.arc(supernovaShockwave.originX, supernovaShockwave.originY, waveR, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, 243, 176, ${(alpha * 0.82).toFixed(3)})`;
+                ctx.lineWidth = Math.max(1, 3.6 * alpha);
+                ctx.shadowColor = '#D4AF37';
+                ctx.shadowBlur = 18 * alpha;
+                ctx.stroke();
+
+                // Partículas de polvo de oro en la cresta de la onda
+                for (let k = 0; k < supernovaShockwave.particles.length; k++) {
+                    const sp = supernovaShockwave.particles[k];
+                    const pr = waveR * sp.distFactor;
+                    const px = supernovaShockwave.originX + Math.cos(sp.angle) * pr;
+                    const py = supernovaShockwave.originY + Math.sin(sp.angle) * pr;
+
+                    ctx.beginPath();
+                    ctx.arc(px, py, sp.size * alpha, 0, Math.PI * 2);
+                    ctx.fillStyle = sp.color;
+                    ctx.globalAlpha = sp.alpha * alpha;
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+        }
+
+        // Contextualizar cursor en hover sobre cometa o estrella de aniversario
+        if (goldenComet.isHovered && goldenComet.state === 'flying') {
+            if (cursorRing) cursorRing.classList.add('is-star-hover');
+            if (cursorLabel) cursorLabel.textContent = anniversaryMode
+                ? '✦ ¡ATRÁPALO! (REVERTIR)'
+                : '✦ ¡ATRÁPALO! (50º ANIVERSARIO)';
+        } else if (hoveredAnniversaryStar) {
+            if (cursorRing) cursorRing.classList.add('is-star-hover');
+            if (cursorLabel) {
+                cursorLabel.textContent = hoveredAnniversaryStar.isUnlocked
+                    ? `★ ${hoveredAnniversaryStar.year} · ${hoveredAnniversaryStar.title}`
+                    : `Año ${hoveredAnniversaryStar.year} · Recuerdo histórico por desbloquear`;
+            }
+        }
+
         requestAnimationFrame(animate);
     }
+
+    try {
+        const search = window.location.search || (window.location.hash ? window.location.hash.substring(1) : '');
+        const urlParams = new URLSearchParams(search.startsWith('?') ? search : '?' + search);
+        if (urlParams.has('anniversary')) {
+            toggleAnniversaryMode(true);
+        }
+        if (urlParams.has('testComet')) {
+            goldenComet.state = 'flying';
+            goldenComet.flightProgress = 0.45;
+            goldenComet.flightDuration = 1.85;
+            goldenComet.currentTraj = COMET_TRAJECTORIES[0];
+            goldenComet.alpha = 1.0;
+        }
+        if (urlParams.has('annivModal')) {
+            toggleAnniversaryMode(true);
+            openAnniversaryModal(urlParams.get('annivModal'));
+        }
+        if (urlParams.has('sector')) {
+            goToSector(parseInt(urlParams.get('sector'), 10), 0, true);
+        }
+        if (urlParams.has('unit')) {
+            setTimeout(() => {
+                openUnitModal(parseInt(urlParams.get('unit'), 10));
+            }, 50);
+        }
+    } catch (_) {}
 
     requestAnimationFrame(animate);
 })();
