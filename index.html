@@ -214,10 +214,16 @@
                     <span class="camp-drive-kicker">☁️ CONECTADO A CARPETA DE GOOGLE DRIVE</span>
                     <strong id="czDriveFolderTitle">Álbum Completo del Campamento</strong>
                     <p>Estas 3 fotografías son una muestra automática de la carpeta. Accede al Drive para ver y descargar todas las fotos.</p>
-                    <a href="https://drive.google.com" target="_blank" rel="noopener" class="btn-cosmos-primary camp-drive-btn" id="czDriveLinkBtn">
-                        <span>📂 Ir al Google Drive de este Campamento</span>
-                        <span class="btn-arrow">↗</span>
-                    </a>
+                    <div class="camp-unlock-form" id="czUnlockForm">
+                        <div class="camp-unlock-input-wrap">
+                            <input type="password" id="czDrivePassInput" class="dossier-form-input" placeholder="🔑 Contraseña para ver el álbum completo...">
+                            <button type="button" class="btn-cosmos-primary camp-drive-btn" id="czUnlockDriveBtn">
+                                <span>📂 Desbloquear Google Drive</span>
+                                <span class="btn-arrow">↗</span>
+                            </button>
+                        </div>
+                        <small id="czUnlockFeedback" class="camp-unlock-feedback"></small>
+                    </div>
                 </div>
             </div>
 

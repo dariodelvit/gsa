@@ -17,6 +17,8 @@
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
+    const DRIVE_API_URL = "https://script.google.com/macros/s/AKfycbwqriYYi3qdBRlNFXwYTpcCTeNn6WJUF5P8Mkwyy1YEPMCM57SVZoYin1GHbvi2A18H/exec";
+
     const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
     const lerp = (a, b, t) => a + (b - a) * t;
     const smoothstep = (e0, e1, x) => {
@@ -513,97 +515,14 @@
     ];
 
     // =========================================================================
-    // 2. CAMPAMENTOS CONECTADOS COMO UNA CONSTELACIÓN (3 FOTOS DE EJEMPLO + DESCRIPCIÓN + LUGAR + DRIVE)
+    // 2. CAMPAMENTOS CONECTADOS COMO UNA CONSTELACIÓN (100% DINÁMICOS DESDE GOOGLE DRIVE)
     // =========================================================================
     const CAMPS_ORIGIN_X = 2520;
     const CAMPS_ORIGIN_Y = 980;
 
-    const CAMPS_DATA = [
-        {
-            id: 'verano-cumbres',
-            index: 0,
-            starSymbol: 'α Campamento de Verano',
-            name: 'Campamento de Verano · Cumbres del Norte',
-            season: '15 Días en Julio · Alta Montaña',
-            location: '📍 Picos de Europa / Pirineos / Cordillera Cantábrica',
-            driveFolderName: '2025_07_Campamento_Verano_Acrux518',
-            driveUrl: 'https://drive.google.com/drive/u/0/my-drive',
-            dx: -210,
-            dy: 45,
-            r: 8.4,
-            desc: 'El momento culminante del año scout: quince días de convivencia en plena naturaleza virgen donde levantamos nuestra aldea en madera y cuerda, recorremos las cumbres en los raids por unidades y celebramos el Fuego de Campamento.',
-            photos: [
-                { src: 'images/DSC_066412.jpg', title: 'Familia del Grupo Scout ACRUX 518 con la bandera oficial', meta: 'Muestra 01/03 · Carpeta Google Drive Verano' },
-                { src: 'images/DSC_059812.jpg', title: 'Formación del círculo general en la pradera del campamento', meta: 'Muestra 02/03 · Carpeta Google Drive Verano' },
-                { src: 'images/DSC_064012.jpg', title: 'Actividades y grandes juegos por ramas en el valle', meta: 'Muestra 03/03 · Carpeta Google Drive Verano' }
-            ]
-        },
-        {
-            id: 'invierno-albergue',
-            index: 1,
-            starSymbol: 'β Campamento de Invierno',
-            name: 'Campamento de Invierno · Estrella de Diciembre',
-            season: '4 Días en Diciembre · Montaña Invernal',
-            location: '📍 Sierras de Castilla y León · Refugio y Pinar',
-            driveFolderName: '2025_12_Campamento_Invierno_Acrux518',
-            driveUrl: 'https://drive.google.com/drive/u/0/my-drive',
-            dx: -75,
-            dy: -95,
-            r: 7.6,
-            desc: 'Cuatro días de acampada invernal en refugio de montaña y bosque antes de terminar el año, con rutas entre pinares, grandes juegos nocturnos y la tradicional velada de invierno de todo el grupo.',
-            photos: [
-                { src: 'images/DSC_04051.jpg', title: 'Ruta y exploración invernal entre pinares', meta: 'Muestra 01/03 · Carpeta Google Drive Invierno' },
-                { src: 'images/DSC_058812.jpg', title: 'Juegos de cohesión y trabajo en equipo', meta: 'Muestra 02/03 · Carpeta Google Drive Invierno' },
-                { src: 'images/DSC_3166.jpg', title: 'Velada y hermandad con la pañoleta carmesí y blanca', meta: 'Muestra 03/03 · Carpeta Google Drive Invierno' }
-            ]
-        },
-        {
-            id: 'primavera-sanjorge',
-            index: 2,
-            starSymbol: 'γ Acampada de Primavera',
-            name: 'Valle de San Jorge · Acampada de Primavera',
-            season: 'Abril y Mayo · Tiendas y Encuentro Autonómico',
-            location: '📍 Praderas de Castilla y León',
-            driveFolderName: '2025_04_Acampada_Primavera_SanJorge',
-            driveUrl: 'https://drive.google.com/drive/u/0/my-drive',
-            dx: 85,
-            dy: -35,
-            r: 7.8,
-            desc: 'Las primeras noches del año en tienda de campaña y el gran encuentro con cientos de scouts de toda Castilla y León para celebrar San Jorge y el Festival de la Canción Scout.',
-            photos: [
-                { src: 'images/DSC_058812.jpg', title: 'Alegría y cánticos en el Festival de la Canción Scout', meta: 'Muestra 01/03 · Carpeta Google Drive Primavera' },
-                { src: 'images/DSC_064012.jpg', title: 'Acampada de primavera en plena pradera verde', meta: 'Muestra 02/03 · Carpeta Google Drive Primavera' },
-                { src: 'images/DSC_066412.jpg', title: 'Unión de todas las unidades junto a nuestros colores', meta: 'Muestra 03/03 · Carpeta Google Drive Primavera' }
-            ]
-        },
-        {
-            id: 'raids-vivac',
-            index: 3,
-            starSymbol: 'δ Senda de Vivac y Raids',
-            name: 'Senda de Vivac · Raids de Montaña',
-            season: 'Travesías de Rama · Mochila al Hombro',
-            location: '📍 Gredos / Urbión / Montaña Palentina',
-            driveFolderName: '2025_Raids_Y_Vivacs_Acrux518',
-            driveUrl: 'https://drive.google.com/drive/u/0/my-drive',
-            dx: 220,
-            dy: -140,
-            r: 8.0,
-            desc: 'Las marchas a pie por etapas donde cada unidad pone a prueba su orientación con mapa y brújula, autonomía y compañerismo, durmiendo en vivac bajo el manto de estrellas.',
-            photos: [
-                { src: 'images/DSC_3166.jpg', title: 'Marcha por etapas y orientación en ruta', meta: 'Muestra 01/03 · Carpeta Google Drive Raids' },
-                { src: 'images/DSC_04051.jpg', title: 'Descanso de patrulla en el collado', meta: 'Muestra 02/03 · Carpeta Google Drive Raids' },
-                { src: 'images/DSC_059812.jpg', title: 'Llegada conjunta a la meta tras la ruta', meta: 'Muestra 03/03 · Carpeta Google Drive Raids' }
-            ]
-        }
-    ];
-
-    // Conexiones geométricas que unen las estrellas de los Campamentos como una sola Constelación
-    const CAMPS_CONSTELLATION_EDGES = [
-        [0, 1],
-        [1, 2],
-        [2, 3],
-        [0, 2]
-    ];
+    // Inicialmente vacío: cero campamentos hardcodeados; solo se puebla con carpetas reales de Drive
+    let CAMPS_DATA = [];
+    let CAMPS_CONSTELLATION_EDGES = [];
 
     // =========================================================================
     // 2B. ESTRELLA DE OBJETOS PERDIDOS («EL BAÚL») Y SUS MINI-ESTRELLAS (CAJONES = CARPETAS DE DRIVE)
@@ -1025,11 +944,13 @@
             subtitle: 'CADA ESTRELLA ES UN CAMPAMENTO · CLIC PARA SUPER-ZOOM A SU TAB',
             coords: 'RA 19h 12m · DEC -24° 50\'',
             headingHTML: 'Constelación de <span class="ice-italic">Campamentos</span>',
-            desc: 'Cada estrella conectada en esta constelación guarda un campamento del grupo. Haz clic sobre cualquier estrella para que el Super-Zoom te sumerja en su pestaña dedicada con su historia, vivencias y galería de fotos reales.',
+            desc: 'Actualmente no hay carpetas de campamentos publicadas en el Google Drive del grupo.',
             worldX: CAMPS_ORIGIN_X,
             worldY: CAMPS_ORIGIN_Y,
             baseZoom: 1.02,
-            primaryBtnText: '✦ Entrar en la Estrella del Campamento (Super-Zoom)'
+            primaryBtnText: '✦ Entrar en la Estrella del Campamento (Super-Zoom)',
+            stars: [],
+            edges: []
         },
         {
             index: 3,
@@ -1313,34 +1234,121 @@
         u.worldY = UNITS_ORIGIN_Y + u.dy;
     });
 
-    // 3. Registrar Sector III: CONSTELACIÓN DE CAMPAMENTOS CONECTADOS
-    //    Estrellas en blanco puro sin color en el mapa estelar.
-    const campConstellationStars = CAMPS_DATA.map((camp, cIdx) => ({
-        id: `camp-star-${camp.id}`,
-        symbol: camp.starSymbol,
-        dx: camp.dx,
-        dy: camp.dy,
-        r: camp.r,
-        color: '#FFFFFF',
-        halo: 'rgba(255, 255, 255, 0.24)',
-        isClusterHub: true,
-        campIndex: cIdx
-    }));
-    const createdCampNodes = registerStarCluster(
-        campConstellationStars,
-        CAMPS_CONSTELLATION_EDGES,
-        CAMPS_ORIGIN_X,
-        CAMPS_ORIGIN_Y,
-        {
-            sectorIndex: 2,
-            clusterType: 'camp'
+    // 3. Registrar Sector III: CONSTELACIÓN DE CAMPAMENTOS CONECTADOS (100% DINÁMICO DESDE GOOGLE DRIVE)
+    const GREEK_ALPHABET = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'];
+
+    function rebuildCampsConstellation(campsFromDrive) {
+        // 1. Elimina de worldNodes y worldEdges todos los elementos que tengan clusterType === 'camp'
+        for (let i = worldNodes.length - 1; i >= 0; i--) {
+            if (worldNodes[i].clusterType === 'camp') {
+                worldNodes.splice(i, 1);
+            }
         }
-    );
-    CAMPS_DATA.forEach((c, idx) => {
-        c.runtimeNode = createdCampNodes[idx];
-        c.worldX = CAMPS_ORIGIN_X + c.dx;
-        c.worldY = CAMPS_ORIGIN_Y + c.dy;
-    });
+        for (let i = worldEdges.length - 1; i >= 0; i--) {
+            if (worldEdges[i].clusterType === 'camp') {
+                worldEdges.splice(i, 1);
+            }
+        }
+
+        // Estado vacío limpio si no hay campamentos en Drive
+        if (!campsFromDrive || !Array.isArray(campsFromDrive) || campsFromDrive.length === 0) {
+            CAMPS_DATA = [];
+            CAMPS_CONSTELLATION_EDGES = [];
+            SECTORS[2].desc = 'Actualmente no hay carpetas de campamentos publicadas en el Google Drive del grupo.';
+            SECTORS[2].stars = [];
+            SECTORS[2].edges = [];
+            SECTORS[2].runtimeNodes = [];
+            if (activeSectorIdx === 2) {
+                syncSectorUI(2, 0, true);
+            }
+            return;
+        }
+
+        // 2. Construir CAMPS_DATA únicamente con los elementos recibidos de Drive
+        SECTORS[2].desc = 'Cada estrella conectada en esta constelación guarda un campamento del grupo. Haz clic sobre cualquier estrella para que el Super-Zoom te sumerja en su pestaña dedicada con su historia, vivencias y galería de fotos reales.';
+
+        const N = campsFromDrive.length;
+        CAMPS_DATA = campsFromDrive.map((c, idx) => {
+            const letter = GREEK_ALPHABET[idx] || `★${idx + 1}`;
+            let dx = 0;
+            let dy = 0;
+            if (N === 1) {
+                dx = 0;
+                dy = 0;
+            } else {
+                const spanX = Math.min(500, Math.max(260, (N - 1) * 115));
+                const t = idx / (N - 1);
+                dx = Math.round(-spanX / 2 + t * spanX);
+                dy = Math.round(Math.sin(t * Math.PI) * -85 + Math.cos(t * Math.PI * 1.5) * 35);
+            }
+
+            return {
+                id: c.id || `camp-${idx}`,
+                index: idx,
+                starSymbol: `${letter} ${c.name || 'Campamento'}`,
+                name: c.name || `Campamento ${idx + 1}`,
+                season: c.season || 'Campamento Scout',
+                location: c.location || '📍 Ubicación en naturaleza',
+                driveFolderName: c.driveFolderName || c.name || 'Carpeta Google Drive',
+                driveUrl: c.driveUrl || '',
+                dx,
+                dy,
+                r: 7.5 + (idx % 3) * 0.4,
+                desc: c.desc || 'Campamento oficial del Grupo Scout ACRUX 518 sincronizado con Google Drive.',
+                photos: (c.photos || []).map(p => typeof p === 'string' ? { src: p, title: c.name, meta: 'Carpeta Google Drive' } : p)
+            };
+        });
+
+        // 3. Aristas [[0,1], [1,2], ...]
+        CAMPS_CONSTELLATION_EDGES = [];
+        for (let i = 0; i < N - 1; i++) {
+            CAMPS_CONSTELLATION_EDGES.push([i, i + 1]);
+        }
+        if (N >= 4) {
+            CAMPS_CONSTELLATION_EDGES.push([0, 2]);
+        }
+
+        // 4. Registrar las nuevas estrellas con registerStarCluster
+        const campConstellationStars = CAMPS_DATA.map((camp, cIdx) => ({
+            id: `camp-star-${camp.id}`,
+            symbol: camp.starSymbol,
+            dx: camp.dx,
+            dy: camp.dy,
+            r: camp.r,
+            color: '#FFFFFF',
+            halo: 'rgba(255, 255, 255, 0.24)',
+            isClusterHub: true,
+            campIndex: cIdx
+        }));
+
+        const createdCampNodes = registerStarCluster(
+            campConstellationStars,
+            CAMPS_CONSTELLATION_EDGES,
+            CAMPS_ORIGIN_X,
+            CAMPS_ORIGIN_Y,
+            {
+                sectorIndex: 2,
+                clusterType: 'camp'
+            }
+        );
+
+        CAMPS_DATA.forEach((c, idx) => {
+            c.runtimeNode = createdCampNodes[idx];
+            c.worldX = CAMPS_ORIGIN_X + c.dx;
+            c.worldY = CAMPS_ORIGIN_Y + c.dy;
+        });
+
+        SECTORS[2].runtimeNodes = createdCampNodes;
+        SECTORS[2].stars = campConstellationStars;
+        SECTORS[2].edges = CAMPS_CONSTELLATION_EDGES;
+
+        // 5. Refrescar los chips de estrellas si el usuario está viendo el Sector III
+        if (activeSectorIdx === 2) {
+            syncSectorUI(2, 0, true);
+        }
+    }
+    window.rebuildCampsConstellation = rebuildCampsConstellation;
+    rebuildCampsConstellation([]);
 
     // =========================================================================
     // 5. CAMPO PROFUNDO DE ESTRELLAS CON PARALLAX (SOLO BLANCO Y TOQUE ROJO SUTIL)
@@ -1488,6 +1496,13 @@
             if (elDescription) elDescription.textContent = sec.desc;
             if (elCoordsReadout) elCoordsReadout.textContent = sec.coords;
             if (elPrimaryBtnText) elPrimaryBtnText.textContent = sec.primaryBtnText;
+
+            // Ocultar botón primario en Sector III si no hay campamentos en Drive
+            if (sIdx === 2 && CAMPS_DATA.length === 0) {
+                if (elPrimaryBtn) elPrimaryBtn.style.display = 'none';
+            } else {
+                if (elPrimaryBtn) elPrimaryBtn.style.display = '';
+            }
 
             if (elStarNodesWrap) {
                 let items = [];
@@ -1645,8 +1660,13 @@
         const kraalWrap = document.getElementById('uzKraaletesGrid');
         if (kraalWrap) {
             kraalWrap.innerHTML = unit.kraaletes.map(k => `
-                <div class="kraalete-card">
-                    <span class="kraalete-star">${k.star}</span>
+                <div class="kraalete-card ${k.cromoUrl ? 'has-cromo' : ''}">
+                    ${k.cromoUrl ? `
+                        <div class="kraalete-cromo-wrap">
+                            <img src="${k.cromoUrl}" alt="${k.name}" loading="lazy" referrerpolicy="no-referrer">
+                        </div>
+                    ` : ''}
+                    <span class="kraalete-star">${k.star || '✦ KRAALETE'}</span>
                     <strong class="kraalete-name">${k.name}</strong>
                     <span class="kraalete-role">${k.role}</span>
                 </div>
@@ -1682,8 +1702,79 @@
         }, diveTime);
     }
 
+    let currentCampForUnlock = null;
+
+    async function handleUnlockDrive() {
+        if (!currentCampForUnlock) return;
+        const passInput = document.getElementById('czDrivePassInput');
+        const feedback = document.getElementById('czUnlockFeedback');
+        const unlockBtn = document.getElementById('czUnlockDriveBtn');
+        const pass = passInput ? passInput.value.trim() : '';
+
+        if (!pass) {
+            if (feedback) {
+                feedback.textContent = 'Introduce la contraseña del campamento.';
+                feedback.className = 'camp-unlock-feedback is-error';
+            }
+            return;
+        }
+
+        if (feedback) {
+            feedback.textContent = 'Verificando con Google Drive...';
+            feedback.className = 'camp-unlock-feedback is-loading';
+        }
+        if (unlockBtn) unlockBtn.disabled = true;
+
+        try {
+            const endpoint = `${DRIVE_API_URL}?action=unlock&id=${encodeURIComponent(currentCampForUnlock.id)}&pass=${encodeURIComponent(pass)}`;
+            const res = await fetch(endpoint);
+            const data = await res.json();
+            if (data && data.success && data.url) {
+                if (feedback) {
+                    feedback.textContent = '¡Contraseña correcta! Abriendo Google Drive...';
+                    feedback.className = 'camp-unlock-feedback is-success';
+                }
+                if (passInput) passInput.value = '';
+                window.open(data.url, '_blank', 'noopener');
+            } else {
+                if (feedback) {
+                    feedback.textContent = 'Contraseña incorrecta';
+                    feedback.className = 'camp-unlock-feedback is-error';
+                }
+            }
+        } catch (err) {
+            console.error('Error al desbloquear Drive:', err);
+            if (feedback) {
+                feedback.textContent = 'Error al conectar con el servidor. Inténtalo de nuevo.';
+                feedback.className = 'camp-unlock-feedback is-error';
+            }
+        } finally {
+            if (unlockBtn) unlockBtn.disabled = false;
+        }
+    }
+
+    document.getElementById('czUnlockDriveBtn')?.addEventListener('click', handleUnlockDrive);
+    document.getElementById('czDrivePassInput')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleUnlockDrive();
+        }
+    });
+
     function openCampSuperZoom(campIdx) {
+        if (!CAMPS_DATA || CAMPS_DATA.length === 0) return;
         const camp = CAMPS_DATA[campIdx] || CAMPS_DATA[0];
+        if (!camp) return;
+
+        currentCampForUnlock = camp;
+        const passInput = document.getElementById('czDrivePassInput');
+        const feedback = document.getElementById('czUnlockFeedback');
+        if (passInput) passInput.value = '';
+        if (feedback) {
+            feedback.textContent = '';
+            feedback.className = 'camp-unlock-feedback';
+        }
+
         const wasAlreadyOpen = elCampZoomOverlay?.classList.contains('is-open');
         clearTimeout(diveTabTimer);
         isOverviewMode = false;
@@ -1706,35 +1797,45 @@
         const diveTime = wasAlreadyOpen ? 240 : 1080;
         triggerStarDiveFlash(camp.worldX, camp.worldY, wasAlreadyOpen ? 450 : 1180);
 
-        // 2. Poblar la Nueva Tab del Campamento: Lugar, Descripción, 3 Fotos de Ejemplo y Botón Drive
-        document.getElementById('czSeasonPill').textContent = camp.season;
+        // 2. Poblar la Nueva Tab del Campamento: Lugar, Descripción, 3 Fotos de Muestra y Formulario Drive
+        const seasonPill = document.getElementById('czSeasonPill');
+        if (seasonPill) seasonPill.textContent = camp.season || 'Campamento Scout';
         const locPill = document.getElementById('czLocationPill');
-        if (locPill) locPill.textContent = camp.location;
+        if (locPill) locPill.textContent = camp.location || '📍 Ubicación en naturaleza';
         const folderBadge = document.getElementById('czDriveFolderBadge');
-        if (folderBadge) folderBadge.textContent = `📁 Drive: ${camp.driveFolderName}`;
+        if (folderBadge) folderBadge.textContent = `📁 Drive: ${camp.driveFolderName || camp.name}`;
         document.getElementById('czTitle').textContent = camp.name;
         document.getElementById('czDesc').textContent = camp.desc;
 
         const folderTitle = document.getElementById('czDriveFolderTitle');
-        if (folderTitle) folderTitle.textContent = `Carpeta: ${camp.driveFolderName}`;
-        const driveLinkBtn = document.getElementById('czDriveLinkBtn');
-        if (driveLinkBtn) driveLinkBtn.href = camp.driveUrl || 'https://drive.google.com';
+        if (folderTitle) folderTitle.textContent = `Carpeta: ${camp.driveFolderName || camp.name}`;
 
         const threePhotosGrid = document.getElementById('czThreePhotosGrid');
         if (threePhotosGrid) {
-            const samplePhotos = (camp.photos || []).slice(0, 3);
-            threePhotosGrid.innerHTML = samplePhotos.map((ph, i) => `
-                <article class="camp-photo-card">
-                    <div class="camp-photo-img-wrap">
-                        <span class="camp-photo-badge">FOTO DE EJEMPLO 0${i + 1} / 03</span>
-                        <img src="${ph.src}" alt="${ph.title}" loading="lazy">
+            const photos = camp.photos || [];
+            if (photos.length === 0) {
+                threePhotosGrid.innerHTML = `
+                    <div class="camp-photos-empty-card">
+                        <div class="camp-photos-empty-icon">📁</div>
+                        <h4>Carpeta sincronizada desde Drive</h4>
+                        <p>Aún sin fotos de muestra en esta carpeta de Google Drive.</p>
                     </div>
-                    <div class="camp-photo-caption">
-                        <strong>${ph.title}</strong>
-                        <span>${ph.meta}</span>
-                    </div>
-                </article>
-            `).join('');
+                `;
+            } else {
+                const samplePhotos = photos.slice(0, 3);
+                threePhotosGrid.innerHTML = samplePhotos.map((ph, i) => `
+                    <article class="camp-photo-card">
+                        <div class="camp-photo-img-wrap">
+                            <span class="camp-photo-badge">FOTO DE EJEMPLO 0${i + 1} / 03</span>
+                            <img src="${ph.src}" alt="${ph.title || 'Foto de campamento'}" loading="lazy" referrerpolicy="no-referrer">
+                        </div>
+                        <div class="camp-photo-caption">
+                            <strong>${ph.title || 'Foto de campamento'}</strong>
+                            <span>${ph.meta || `Muestra 0${i + 1}/03 · Carpeta Google Drive`}</span>
+                        </div>
+                    </article>
+                `).join('');
+            }
         }
 
         const campSw = document.getElementById('czCampSwitcher');
@@ -2004,11 +2105,28 @@
                         <span class="dossier-tag">COORDINACIÓN GENERAL</span>
                         <h3>Canal Directo con el Grupo</h3>
                         <p>Atención directa a familias y jóvenes por teléfono, WhatsApp, correo electrónico o redes oficiales:</p>
-                        <div style="display:flex; flex-direction:column; gap:0.3rem; margin-top:0.5rem;">
-                            <span class="star-pillar-tag">📞 JJ: 616 28 91 19</span>
-                            <span class="star-pillar-tag">📞 Marta: 619 20 20 68 · Hugo</span>
-                            <span class="star-pillar-tag">✉️ gruposcoutacrux518@gmail.com · @gsacrux518</span>
-                        </div>
+                        ${(coordinadoresDrive && coordinadoresDrive.length > 0) ? `
+                            <div class="coordinators-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.65rem; margin-top: 0.75rem; margin-bottom: 0.5rem;">
+                                ${coordinadoresDrive.map(c => `
+                                    <div class="coordinator-card" style="background: rgba(8,9,13,0.7); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:0.65rem; text-align:center;">
+                                        ${(c.fotoUrl || c.cromoUrl) ? `
+                                            <div style="width:60px; height:60px; margin:0 auto 0.45rem auto; border-radius:50%; overflow:hidden; border:2px solid var(--accent-red, #D9383A);">
+                                                <img src="${c.fotoUrl || c.cromoUrl}" alt="${c.name}" referrerpolicy="no-referrer" style="width:100%; height:100%; object-fit:cover;">
+                                            </div>
+                                        ` : ''}
+                                        <strong style="display:block; color:#FFF; font-size:0.88rem;">${c.name}</strong>
+                                        <span style="display:block; font-size:0.72rem; color:var(--ice-muted);">${c.cargo || c.role || 'Coordinación'}</span>
+                                        ${(c.telefono || c.phone) ? `<a href="tel:${(c.telefono || c.phone).replace(/\s+/g, '')}" style="display:inline-block; margin-top:0.3rem; font-family:'JetBrains Mono',monospace; font-size:0.74rem; color:#F3E5AB; text-decoration:none;">📞 ${c.telefono || c.phone}</a>` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : `
+                            <div style="display:flex; flex-direction:column; gap:0.3rem; margin-top:0.5rem;">
+                                <span class="star-pillar-tag">📞 JJ: 616 28 91 19</span>
+                                <span class="star-pillar-tag">📞 Marta: 619 20 20 68 · Hugo</span>
+                            </div>
+                        `}
+                        <span class="star-pillar-tag" style="margin-top:0.5rem;">✉️ gruposcoutacrux518@gmail.com · @gsacrux518</span>
                     </div>
                 </div>
 
@@ -2157,7 +2275,10 @@
             } else if (activeSectorIdx === 1) {
                 openUnitSuperZoom(selectedSubIdx);
             } else if (activeSectorIdx === 2) {
-                openCampSuperZoom(selectedSubIdx);
+                if (CAMPS_DATA && CAMPS_DATA.length > 0) {
+                    openCampSuperZoom(selectedSubIdx);
+                }
+            }
             } else if (activeSectorIdx === 3) {
                 openLostSuperZoom(selectedSubIdx === 0 ? 0 : selectedSubIdx - 1);
             } else if (activeSectorIdx === 4) {
@@ -3106,6 +3227,129 @@
         requestAnimationFrame(animate);
     }
 
+    // =========================================================================
+    // 12. SINCRONIZACIÓN EN TIEMPO REAL CON GOOGLE DRIVE (GAS WEB APP API)
+    // =========================================================================
+    function syncUnitsFromDrive(unidadesData) {
+        if (!unidadesData || typeof unidadesData !== 'object') return;
+        UNITS_DATA.forEach(unit => {
+            const driveKraal = unidadesData[unit.id];
+            if (Array.isArray(driveKraal) && driveKraal.length > 0) {
+                unit.kraaletes = driveKraal.map((k, i) => ({
+                    star: k.star || `★ ${i + 1} · ${unit.shortName}`,
+                    name: k.name || 'Scouter',
+                    role: k.role || 'Kraalete',
+                    cromoUrl: k.cromoUrl || k.fotoUrl || null
+                }));
+            }
+        });
+    }
+
+    function syncCoordinacionFromDrive(coordData) {
+        if (!Array.isArray(coordData) || coordData.length === 0) return;
+        coordinadoresDrive = coordData;
+        const starCoord = SECTORS[4]?.stars?.find(s => s.id === 'canal-coordinacion');
+        if (starCoord) {
+            const names = coordData.map(c => c.name).join(', ');
+            starCoord.title = `Contacto Directo: ${names}`;
+            starCoord.pillars = coordData.slice(0, 3).map(c => `📞 ${c.name}: ${c.telefono || c.phone || ''} (${c.cargo || c.role || 'Coordinación'})`);
+            if (activeSectorIdx === 4) {
+                syncSectorUI(4, selectedSubIdx, true);
+            }
+        }
+    }
+
+    function syncCajonesFromDrive(cajonesData) {
+        if (!Array.isArray(cajonesData) || cajonesData.length === 0) return;
+        LOST_CAJONES_DATA.length = 0;
+        cajonesData.forEach((cajon, idx) => {
+            LOST_CAJONES_DATA.push({
+                id: cajon.id || `cajon-${idx}`,
+                index: idx,
+                starSymbol: cajon.starSymbol || `✦ Cajón 0${idx + 1} · ${cajon.folderName || cajon.name || 'Drive'}`,
+                folderName: cajon.folderName || cajon.name || `Cajón 0${idx + 1}`,
+                drivePath: cajon.drivePath || `Google Drive / Objetos Perdidos / ${cajon.folderName || cajon.name}`,
+                driveUrl: cajon.driveUrl || 'https://drive.google.com',
+                subtitle: cajon.subtitle || 'Objetos perdidos sincronizados desde Google Drive',
+                items: (cajon.items || []).map((it, itIdx) => ({
+                    file: it.file || `item_${itIdx + 1}.jpg`,
+                    name: it.name || 'Prenda u objeto',
+                    desc: it.desc || 'Recogido en actividades del grupo.',
+                    status: it.status || 'En Base · Rueda 53',
+                    photoUrl: it.photoUrl || it.src || null,
+                    svg: it.svg || null
+                }))
+            });
+        });
+
+        const secLost = SECTORS[3];
+        if (secLost && secLost.stars) {
+            LOST_CAJONES_DATA.forEach((cj, i) => {
+                if (secLost.stars[i + 1]) {
+                    secLost.stars[i + 1].symbol = cj.starSymbol;
+                    secLost.stars[i + 1].title = `Cajón 0${i + 1} · Carpeta Drive «${cj.folderName}»`;
+                    secLost.stars[i + 1].pillars = [`📁 ${cj.folderName}`, `${cj.items.length} Fotos en Drive`, `Clic para entrar al Cajón 0${i + 1}`];
+                }
+            });
+            if (activeSectorIdx === 3) {
+                syncSectorUI(3, selectedSubIdx, true);
+            }
+        }
+    }
+
+    function syncAnniversaryFromDrive(annivData) {
+        if (!annivData) return;
+        const items = Array.isArray(annivData)
+            ? annivData
+            : Object.entries(annivData).map(([year, val]) => ({ year, ...(typeof val === 'object' ? val : {}) }));
+
+        items.forEach(item => {
+            const y = parseInt(item.year, 10);
+            const star = aniversarioFotos.find(s => s.year === y);
+            if (star) {
+                star.isUnlocked = true;
+                if (item.title) star.title = item.title;
+                if (item.desc) star.desc = item.desc;
+                if (item.photoUrl) star.photoUrl = item.photoUrl;
+                if (item.driveUrl) star.driveUrl = item.driveUrl;
+                star.r = 5.6;
+            }
+        });
+    }
+
+    async function fetchDriveData() {
+        try {
+            const res = await fetch(DRIVE_API_URL);
+            if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+            const data = await res.json();
+            if (data) {
+                if (data.campamentos !== undefined) {
+                    rebuildCampsConstellation(data.campamentos);
+                }
+                if (data.unidades) {
+                    syncUnitsFromDrive(data.unidades);
+                }
+                if (data.coordinacion && data.coordinacion.length > 0) {
+                    syncCoordinacionFromDrive(data.coordinacion);
+                }
+                if (data.cajones && data.cajones.length > 0) {
+                    syncCajonesFromDrive(data.cajones);
+                }
+                if (data.aniversario) {
+                    syncAnniversaryFromDrive(data.aniversario);
+                }
+            }
+        } catch (err) {
+            console.warn('Google Drive Sync: operando en modo offline / fallback.', err);
+        }
+    }
+
+    window.fetchDriveData = fetchDriveData;
+    window.syncUnitsFromDrive = syncUnitsFromDrive;
+    window.syncCoordinacionFromDrive = syncCoordinacionFromDrive;
+    window.syncCajonesFromDrive = syncCajonesFromDrive;
+    window.syncAnniversaryFromDrive = syncAnniversaryFromDrive;
+
     try {
         const search = window.location.search || (window.location.hash ? window.location.hash.substring(1) : '');
         const urlParams = new URLSearchParams(search.startsWith('?') ? search : '?' + search);
@@ -3132,6 +3376,9 @@
             }, 50);
         }
     } catch (_) {}
+
+    // Iniciar sincronización en tiempo real con Google Drive
+    fetchDriveData();
 
     requestAnimationFrame(animate);
 })();

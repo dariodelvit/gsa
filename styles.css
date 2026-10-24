@@ -1170,6 +1170,127 @@ body.cosmos-body {
     justify-content: center;
     width: 100%;
     box-sizing: border-box;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.camp-unlock-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin-top: 0.45rem;
+}
+
+.camp-unlock-input-wrap {
+    display: flex;
+    gap: 0.55rem;
+    align-items: center;
+}
+
+.camp-unlock-input-wrap .dossier-form-input {
+    margin-bottom: 0;
+    flex: 1;
+    font-size: 0.85rem;
+}
+
+.camp-unlock-input-wrap .camp-drive-btn {
+    width: auto;
+    flex-shrink: 0;
+    padding: 0.65rem 1.15rem;
+    font-size: 0.84rem;
+}
+
+@media (max-width: 680px) {
+    .camp-unlock-input-wrap {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .camp-unlock-input-wrap .camp-drive-btn {
+        width: 100%;
+    }
+}
+
+.camp-unlock-feedback {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    letter-spacing: 0.04em;
+    min-height: 1.1rem;
+    color: var(--ice-muted);
+    transition: color 0.2s ease;
+}
+
+.camp-unlock-feedback.is-error {
+    color: #EF4444;
+}
+
+.camp-unlock-feedback.is-success {
+    color: #22C55E;
+}
+
+.camp-unlock-feedback.is-loading {
+    color: #F3E5AB;
+}
+
+.camp-photos-empty-card {
+    grid-column: 1 / -1;
+    background: rgba(8, 9, 13, 0.65);
+    border: 1px dashed rgba(255, 255, 255, 0.22);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--ice-muted);
+}
+
+.camp-photos-empty-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.65rem;
+    opacity: 0.85;
+}
+
+.camp-photos-empty-card h4 {
+    font-family: 'Outfit', sans-serif;
+    color: #FFFFFF;
+    font-size: 1.15rem;
+    margin: 0 0 0.35rem 0;
+}
+
+.camp-photos-empty-card p {
+    font-size: 0.88rem;
+    margin: 0;
+    color: var(--ice-grey);
+}
+
+/* Kraaletes con cromo vertical */
+.kraalete-card.has-cromo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0.85rem;
+}
+
+.kraalete-cromo-wrap {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.kraalete-cromo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kraalete-card:hover .kraalete-cromo-wrap img {
+    transform: scale(1.05);
 }
 
 .camp-three-photos-grid {
