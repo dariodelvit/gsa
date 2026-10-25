@@ -525,110 +525,10 @@
     let CAMPS_CONSTELLATION_EDGES = [];
 
     // =========================================================================
-    // 2B. ESTRELLA DE OBJETOS PERDIDOS («EL BAÚL») Y SUS MINI-ESTRELLAS (CAJONES = CARPETAS DE DRIVE)
+    // 2B. ESTRELLA DE OBJETOS PERDIDOS («EL BAÚL») Y SUS MINI-ESTRELLAS (CAJONES DRIVE 100% DINÁMICOS)
     // =========================================================================
-    const LOST_CAJONES_DATA = [
-        {
-            id: 'cajon-verano',
-            index: 0,
-            starSymbol: '✦ Cajón 01 · Campa Verano',
-            folderName: 'Cajón 01 · Campamento_Verano_Drive',
-            drivePath: 'Google Drive / Objetos Perdidos / 01_Cajon_Campamento_Verano',
-            driveUrl: 'https://drive.google.com/drive/u/0/my-drive',
-            subtitle: 'Prendas, cantimploras y menaje recogidos al desmontar el Campamento de Verano',
-            items: [
-                {
-                    file: 'IMG_Polar_Azul_T10.jpg',
-                    name: 'Forro Polar Quechua Azul Marino (Talla 10)',
-                    desc: 'Encontrado en la tienda de intendencia. Tiene las iniciales «M.G.» borrosas en la etiqueta interior.',
-                    status: 'En Cajón 01 · Rueda 53',
-                    svg: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0B1325"/><path d="M110,42 L140,32 L180,32 L210,42 L238,95 L212,108 L196,74 L196,162 L124,162 L124,74 L108,108 L82,95 Z" fill="#1E3A8A" stroke="#60A5FA" stroke-width="2.5"/><line x1="160" y1="38" x2="160" y2="162" stroke="#93C5FD" stroke-width="2"/><text x="16" y="26" fill="#93C5FD" font-family="JetBrains Mono" font-size="10">📁 01_Cajon_Campamento_Verano</text></svg>`
-                },
-                {
-                    file: 'IMG_Cantimplora_Laken_1L.jpg',
-                    name: 'Cantimplora Laken Roja de Aluminio (1L)',
-                    desc: 'Con mosquetón plateado en el tapón y pegatina de un lobo. Recogida junto a la fuente de la pradera.',
-                    status: 'En Cajón 01 · Rueda 53',
-                    svg: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#120B10"/><rect x="128" y="56" width="64" height="108" rx="18" fill="#B91C1C" stroke="#FCA5A5" stroke-width="2.5"/><rect x="146" y="34" width="28" height="22" rx="4" fill="#374151"/><circle cx="182" cy="42" r="10" fill="none" stroke="#E5E7EB" stroke-width="3"/><text x="16" y="26" fill="#FCA5A5" font-family="JetBrains Mono" font-size="10">📁 01_Cajon_Campamento_Verano</text></svg>`
-                },
-                {
-                    file: 'IMG_Poto_Aluminio_CintaRoja.jpg',
-                    name: 'Poto Metálico + Tenedor con Cinta Aislante Roja',
-                    desc: 'Olvidado en la zona de fregaderos el último día de campamento. Marcado con cinta roja en el asa.',
-                    status: 'En Cajón 01 · Rueda 53',
-                    svg: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0B1116"/><rect x="112" y="68" width="84" height="82" rx="10" fill="#64748B" stroke="#E2E8F0" stroke-width="2.5"/><path d="M196,82 L218,82 L218,132 L196,132" fill="none" stroke="#EF4444" stroke-width="5"/><text x="16" y="26" fill="#CBD5E1" font-family="JetBrains Mono" font-size="10">📁 01_Cajon_Campamento_Verano</text></svg>`
-                }
-            ]
-        },
-        {
-            id: 'cajon-invierno',
-            index: 1,
-            starSymbol: '✦ Cajón 02 · Campa Invierno',
-            folderName: 'Cajón 02 · Campamento_Invierno_Drive',
-            drivePath: 'Google Drive / Objetos Perdidos / 02_Cajon_Campamento_Invierno',
-            driveUrl: 'https://drive.google.com/drive/u/0/my-drive',
-            subtitle: 'Sudaderas, frontales, guantes y abrigos recogidos en el albergue de invierno',
-            items: [
-                {
-                    file: 'IMG_Sudadera_Acrux_TallaS.jpg',
-                    name: 'Sudadera Roja Oficial Acrux 518 (Talla S)',
-                    desc: 'Apareció doblada sobre una litera del refugio al terminar la acampada de diciembre. Sin nombre en la etiqueta.',
-                    status: 'En Cajón 02 · Rueda 53',
-                    svg: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#18090B"/><path d="M108,44 L142,34 L178,34 L212,44 L240,98 L214,110 L198,76 L198,162 L122,162 L122,76 L106,110 L80,98 Z" fill="#991B1B" stroke="#FFFFFF" stroke-width="2.5"/><circle cx="160" cy="92" r="14" fill="none" stroke="#FFFFFF" stroke-width="2"/><text x="16" y="26" fill="#FECACA" font-family="JetBrains Mono" font-size="10">📁 02_Cajon_Campamento_Invierno</text></svg>`
-                },
-                {
-                    file: 'IMG_Frontal_LED_Kalenji.jpg',
-                    name: 'Linterna Frontal LED Negra Kalenji',
-                    desc: 'Encontrada tras el Gran Juego Nocturno del pinar. Funciona perfectamente y tiene cinta elástica gris.',
-                    status: 'En Cajón 02 · Rueda 53',
-                    svg: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#090D16"/><ellipse cx="160" cy="110" rx="62" ry="32" fill="none" stroke="#475569" stroke-width="10"/><rect x="134" y="68" width="52" height="30" rx="8" fill="#1E293B" stroke="#F8FAFC" stroke-width="2"/><circle cx="160" cy="83" r="9" fill="#FEF08A"/><text x="16" y="26" fill="#FEF08A" font-family="JetBrains Mono" font-size="10">📁 02_Cajon_Campamento_Invierno</text></svg>`
-                }
-            ]
-        },
-        {
-            id: 'cajon-primavera',
-            index: 2,
-            starSymbol: '✦ Cajón 03 · Acampada Primavera',
-            folderName: 'Cajón 03 · Acampada_Primavera_Drive',
-            drivePath: 'Google Drive / Objetos Perdidos / 03_Cajon_Acampada_Primavera',
-            driveUrl: 'https://drive.google.com/drive/u/0/my-drive',
-            subtitle: 'Chubasqueros, fundas y objetos hallados en el autobús y pradera de primavera',
-            items: [
-                {
-                    file: 'IMG_Chubasquero_Amarillo_T12.jpg',
-                    name: 'Chubasquero Cortavientos Amarillo (Talla 12)',
-                    desc: 'Plegado en su propio bolsillo en el asiento 14 del autobús de regreso a Valladolid.',
-                    status: 'En Cajón 03 · Rueda 53',
-                    svg: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#141107"/><path d="M112,44 L144,34 L176,34 L208,44 L236,96 L210,108 L194,76 L194,160 L126,160 L126,76 L110,108 L84,96 Z" fill="#CA8A04" stroke="#FEF08A" stroke-width="2.5"/><text x="16" y="26" fill="#FEF08A" font-family="JetBrains Mono" font-size="10">📁 03_Cajon_Acampada_Primavera</text></svg>`
-                },
-                {
-                    file: 'IMG_Funda_Saco_Forclaz.jpg',
-                    name: 'Funda Compresora Negra de Saco Forclaz',
-                    desc: 'Con correas naranjas de compresión. Apareció al recoger las tiendas de campaña.',
-                    status: 'En Cajón 03 · Rueda 53',
-                    svg: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#0B0D13"/><rect x="122" y="52" width="76" height="104" rx="22" fill="#1F2937" stroke="#F97316" stroke-width="2.5"/><line x1="122" y1="84" x2="198" y2="84" stroke="#F97316" stroke-width="3"/><line x1="122" y1="124" x2="198" y2="124" stroke="#F97316" stroke-width="3"/><text x="16" y="26" fill="#FDBA74" font-family="JetBrains Mono" font-size="10">📁 03_Cajon_Acampada_Primavera</text></svg>`
-                }
-            ]
-        },
-        {
-            id: 'cajon-local',
-            index: 3,
-            starSymbol: '✦ Cajón 04 · Local Sábados',
-            folderName: 'Cajón 04 · Local_Sabados_Rueda53_Drive',
-            drivePath: 'Google Drive / Objetos Perdidos / 04_Cajon_Sabados_Local_Rueda53',
-            driveUrl: 'https://drive.google.com/drive/u/0/my-drive',
-            subtitle: 'Pañoletas, pasadores y prendas olvidadas en las reuniones de los sábados (16:30 – 19:00 h)',
-            items: [
-                {
-                    file: 'IMG_Panoleta_Turco_Cuero.jpg',
-                    name: 'Pañoleta Carmesí y Blanca + Turco de Cuero',
-                    desc: 'Encontrada tras el círculo de despedida del sábado en nuestra Base de Carretera de Rueda, 53.',
-                    status: 'Custodiada en Coordinación',
-                    svg: `<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#140809"/><polygon points="75,55 245,55 160,162" fill="#B02324" stroke="#FFFFFF" stroke-width="6"/><circle cx="160" cy="95" r="13" fill="#78350F" stroke="#FDE68A" stroke-width="2.5"/><text x="16" y="26" fill="#FFFFFF" font-family="JetBrains Mono" font-size="10">📁 04_Cajon_Sabados_Local_Rueda53</text></svg>`
-                }
-            ]
-        }
-    ];
+    // Inicialmente vacío: cero cajones inventados; solo se puebla con carpetas reales de Drive
+    let LOST_CAJONES_DATA = [];
 
     // =========================================================================
     // 2C. MODO 50 ANIVERSARIO (1976 - 2026) · ESPIRAL ÁUREA Y CONECTOR GOOGLE DRIVE
@@ -968,82 +868,22 @@
                 {
                     id: 'estrella-el-baul',
                     symbol: '✦ El Baúl',
-                    dx: -18,
-                    dy: 24,
+                    dx: 0,
+                    dy: 0,
                     r: 7.6,
                     color: '#FFFFFF',
                     halo: 'rgba(217, 56, 58, 0.20)',
                     isBaulMain: true,
                     isClusterHub: true,
                     cajonIndex: 0,
-                    badge: '✦ Estrella Principal · 4 Cajones Drive',
+                    starIdx: 0,
+                    badge: '✦ Estrella Principal · Objetos Perdidos',
                     title: '✦ El Baúl · Estrella de Objetos Perdidos (Google Drive)',
-                    body: 'Haz clic en «El Baúl» para adentrarte en su interior y explorar sus 4 Mini-Estrellas («Cajones»), donde se muestran las fotos de cada carpeta de Google Drive.',
-                    pillars: ['✦ Cajón 01: Campa Verano', '✦ Cajón 02: Campa Invierno', '✦ Cajón 03 y 04: Primavera y Sábados']
-                },
-                {
-                    id: 'cajon-star-0',
-                    symbol: '✦ Cajón 01 · Campa Verano',
-                    dx: -225,
-                    dy: -62,
-                    r: 6.2,
-                    color: '#FFFFFF',
-                    halo: 'rgba(255, 255, 255, 0.24)',
-                    isClusterHub: true,
-                    cajonIndex: 0,
-                    badge: 'Mini-Estrella · Carpeta Drive 01',
-                    title: 'Cajón 01 · Carpeta Drive «01_Cajon_Campamento_Verano»',
-                    body: 'Contiene las fotografías de los objetos perdidos recogidos en el Campamento de Verano (forro polar Quechua azul, cantimplora Laken roja y poto con cinta roja).',
-                    pillars: ['📁 01_Cajon_Campamento_Verano', '3 Fotos en Carpeta Drive', 'Clic para entrar al Cajón 01']
-                },
-                {
-                    id: 'cajon-star-1',
-                    symbol: '✦ Cajón 02 · Campa Invierno',
-                    dx: -95,
-                    dy: -128,
-                    r: 6.0,
-                    color: '#FFFFFF',
-                    halo: 'rgba(255, 255, 255, 0.24)',
-                    isClusterHub: true,
-                    cajonIndex: 1,
-                    badge: 'Mini-Estrella · Carpeta Drive 02',
-                    title: 'Cajón 02 · Carpeta Drive «02_Cajon_Campamento_Invierno»',
-                    body: 'Contiene las fotografías de las prendas y materiales olvidados en el albergue de invierno (sudadera oficial Acrux 518 y linterna frontal LED).',
-                    pillars: ['📁 02_Cajon_Campamento_Invierno', '2 Fotos en Carpeta Drive', 'Clic para entrar al Cajón 02']
-                },
-                {
-                    id: 'cajon-star-2',
-                    symbol: '✦ Cajón 03 · Acampada Primavera',
-                    dx: 112,
-                    dy: -48,
-                    r: 6.2,
-                    color: '#FFFFFF',
-                    halo: 'rgba(255, 255, 255, 0.24)',
-                    isClusterHub: true,
-                    cajonIndex: 2,
-                    badge: 'Mini-Estrella · Carpeta Drive 03',
-                    title: 'Cajón 03 · Carpeta Drive «03_Cajon_Acampada_Primavera»',
-                    body: 'Contiene las fotografías de los objetos recogidos tras la acampada de primavera (chubasquero amarillo plegable y funda compresora de saco).',
-                    pillars: ['📁 03_Cajon_Acampada_Primavera', '2 Fotos en Carpeta Drive', 'Clic para entrar al Cajón 03']
-                },
-                {
-                    id: 'cajon-star-3',
-                    symbol: '✦ Cajón 04 · Local Sábados',
-                    dx: 235,
-                    dy: 58,
-                    r: 6.0,
-                    color: '#FFFFFF',
-                    halo: 'rgba(255, 255, 255, 0.24)',
-                    isClusterHub: true,
-                    cajonIndex: 3,
-                    badge: 'Mini-Estrella · Carpeta Drive 04',
-                    title: 'Cajón 04 · Carpeta Drive «04_Cajon_Sabados_Local_Rueda53»',
-                    body: 'Contiene las fotografías de las prendas y pañoletas encontradas los sábados en nuestra Base de Carretera de Rueda, 53.',
-                    pillars: ['📁 04_Cajon_Sabados_Local_Rueda53', 'Custodia en Base Central', 'Clic para entrar al Cajón 04']
+                    body: 'Haz clic en «El Baúl» para adentrarte en su interior y explorar los cajones sincronizados con Google Drive.',
+                    pillars: ['📁 Google Drive / Objetos Perdidos', 'Sincronizado en tiempo real', 'Clic para entrar a «El Baúl»']
                 }
             ],
-            // Trazado astronómico orgánico (arco celeste natural pasando por ★ El Baúl)
-            edges: [[1, 2], [2, 0], [0, 3], [3, 4]]
+            edges: []
         },
         {
             index: 4,
@@ -1264,22 +1104,62 @@
             return;
         }
 
-        // 2. Construir CAMPS_DATA únicamente con los elementos recibidos de Drive
-        SECTORS[2].desc = 'Cada estrella conectada en esta constelación guarda un campamento del grupo. Haz clic sobre cualquier estrella para que el Super-Zoom te sumerja en su pestaña dedicada con su historia, vivencias y galería de fotos reales.';
+        // 2. Ordenar campamentos estrictamente por orden cronológico de años
+        const sortedCamps = [...campsFromDrive].sort((a, b) => {
+            const getYear = (str) => {
+                const m = (str || '').match(/\b(19\d\d|20\d\d)\b/);
+                return m ? parseInt(m[1], 10) : 0;
+            };
+            const yA = getYear(a.name || a.driveFolderName || '');
+            const yB = getYear(b.name || b.driveFolderName || '');
+            if (yA !== yB) return yA - yB;
+            return (a.name || '').localeCompare(b.name || '');
+        });
 
-        const N = campsFromDrive.length;
-        CAMPS_DATA = campsFromDrive.map((c, idx) => {
+        const N = sortedCamps.length;
+
+        // Secuencia astronómica armónica de alturas y orientación de etiquetas
+        // Alterna valles (dy > 0, etiqueta abajo) y crestas (dy < 0, etiqueta arriba)
+        // para dar una constelación orgánica, dispersa y evitar que las etiquetas colapsen.
+        const CELESTIAL_OFFSETS = [
+            { dy: 70, labelPos: 'bottom' },
+            { dy: -125, labelPos: 'top' },
+            { dy: 45, labelPos: 'bottom' },
+            { dy: -140, labelPos: 'top' },
+            { dy: 85, labelPos: 'bottom' },
+            { dy: -100, labelPos: 'top' },
+            { dy: 50, labelPos: 'bottom' },
+            { dy: -115, labelPos: 'top' },
+            { dy: 75, labelPos: 'bottom' },
+            { dy: -130, labelPos: 'top' },
+            { dy: 60, labelPos: 'bottom' },
+            { dy: -105, labelPos: 'top' }
+        ];
+
+        // Ancho generoso del sector para que las estrellas respiren con holgura
+        const spanX = Math.min(1080, Math.max(380, (N - 1) * 140));
+
+        CAMPS_DATA = sortedCamps.map((c, idx) => {
             const letter = GREEK_ALPHABET[idx] || `★${idx + 1}`;
+            const isLast = (idx === N - 1);
             let dx = 0;
             let dy = 0;
+            let labelPos = 'bottom';
+
             if (N === 1) {
                 dx = 0;
-                dy = 0;
+                dy = -15;
+                labelPos = 'top';
             } else {
-                const spanX = Math.min(500, Math.max(260, (N - 1) * 115));
-                const t = idx / (N - 1);
-                dx = Math.round(-spanX / 2 + t * spanX);
-                dy = Math.round(Math.sin(t * Math.PI) * -85 + Math.cos(t * Math.PI * 1.5) * 35);
+                const t = idx / (N - 1); // 0 .. 1 progresando en años
+                const baseX = -spanX / 2 + t * spanX;
+                // Desplazamiento orgánico en X para romper la rigidez lineal
+                const jitterX = Math.sin(idx * 2.15 + 1.2) * 16;
+                dx = Math.round(baseX + jitterX);
+
+                const offsetCfg = CELESTIAL_OFFSETS[idx % CELESTIAL_OFFSETS.length];
+                dy = Math.round(offsetCfg.dy + Math.sin(idx * 1.6) * 12);
+                labelPos = offsetCfg.labelPos;
             }
 
             return {
@@ -1293,19 +1173,19 @@
                 driveUrl: c.driveUrl || '',
                 dx,
                 dy,
-                r: 7.5 + (idx % 3) * 0.4,
+                r: isLast ? 8.8 : (7.4 + (idx % 3) * 0.4),
+                labelPos: labelPos,
+                isRedStar: isLast,
+                isLastCamp: isLast,
                 desc: c.desc || 'Campamento oficial del Grupo Scout ACRUX 518 sincronizado con Google Drive.',
                 photos: (c.photos || []).map(p => typeof p === 'string' ? { src: p, title: c.name, meta: 'Carpeta Google Drive' } : p)
             };
         });
 
-        // 3. Aristas [[0,1], [1,2], ...]
+        // 3. Aristas cronológicas que unen los campamentos por orden de años
         CAMPS_CONSTELLATION_EDGES = [];
         for (let i = 0; i < N - 1; i++) {
             CAMPS_CONSTELLATION_EDGES.push([i, i + 1]);
-        }
-        if (N >= 4) {
-            CAMPS_CONSTELLATION_EDGES.push([0, 2]);
         }
 
         // 4. Registrar las nuevas estrellas con registerStarCluster
@@ -1315,10 +1195,15 @@
             dx: camp.dx,
             dy: camp.dy,
             r: camp.r,
-            color: '#FFFFFF',
-            halo: 'rgba(255, 255, 255, 0.24)',
+            color: camp.isRedStar ? '#EF4444' : '#FFFFFF',
+            halo: camp.isRedStar ? 'rgba(217, 56, 58, 0.45)' : 'rgba(255, 255, 255, 0.24)',
+            ringColor: camp.isRedStar ? 'rgba(217, 56, 58, 0.65)' : 'rgba(255, 255, 255, 0.35)',
+            hoverRingColor: camp.isRedStar ? 'rgba(239, 68, 68, 0.95)' : 'rgba(255, 255, 255, 0.75)',
             isClusterHub: true,
-            campIndex: cIdx
+            campIndex: cIdx,
+            isRedStar: camp.isRedStar,
+            isLastCamp: camp.isLastCamp,
+            labelPos: camp.labelPos
         }));
 
         const createdCampNodes = registerStarCluster(
@@ -1348,6 +1233,159 @@
         }
     }
     window.rebuildCampsConstellation = rebuildCampsConstellation;
+
+    // =========================================================================
+    // 4C. RECONSTRUCCIÓN DINÁMICA DE LA CONSTELACIÓN «EL BAÚL» (OBJETOS PERDIDOS DRIVE)
+    // =========================================================================
+    function rebuildLostConstellation(cajonesFromDrive) {
+        // 1. Limpiar de worldNodes y worldEdges los nodos y aristas de sectorIndex === 3 y clusterType === 'sector'
+        for (let i = worldNodes.length - 1; i >= 0; i--) {
+            if (worldNodes[i].sectorIndex === 3 && worldNodes[i].clusterType === 'sector') {
+                worldNodes.splice(i, 1);
+            }
+        }
+        for (let i = worldEdges.length - 1; i >= 0; i--) {
+            if (worldEdges[i].sectorIndex === 3 && worldEdges[i].clusterType === 'sector') {
+                worldEdges.splice(i, 1);
+            }
+        }
+
+        const baulMainStar = {
+            id: 'estrella-el-baul',
+            symbol: '✦ El Baúl',
+            dx: 0,
+            dy: 0,
+            r: 7.6,
+            color: '#FFFFFF',
+            halo: 'rgba(217, 56, 58, 0.20)',
+            isBaulMain: true,
+            isClusterHub: true,
+            cajonIndex: 0,
+            starIdx: 0,
+            badge: '✦ Estrella Principal · Objetos Perdidos',
+            title: '✦ El Baúl · Estrella de Objetos Perdidos (Google Drive)',
+            body: 'Haz clic en «El Baúl» para adentrarte en su interior y explorar los cajones sincronizados con Google Drive.',
+            pillars: ['📁 Google Drive / Objetos Perdidos', 'Sincronizado en tiempo real', 'Clic para entrar a «El Baúl»']
+        };
+
+        // Estado vacío limpio si no hay cajones en Drive
+        if (!cajonesFromDrive || !Array.isArray(cajonesFromDrive) || cajonesFromDrive.length === 0) {
+            LOST_CAJONES_DATA = [];
+            SECTORS[3].stars = [baulMainStar];
+            SECTORS[3].edges = [];
+            SECTORS[3].runtimeNodes = registerStarCluster(
+                SECTORS[3].stars,
+                SECTORS[3].edges,
+                SECTORS[3].worldX,
+                SECTORS[3].worldY,
+                {
+                    sectorIndex: 3,
+                    clusterType: 'sector'
+                }
+            );
+            if (typeof activeSectorIdx !== 'undefined' && activeSectorIdx === 3 && typeof syncSectorUI === 'function') {
+                syncSectorUI(3, 0, true);
+            }
+            return;
+        }
+
+        // 2. Reconstruir LOST_CAJONES_DATA exclusivamente con los elementos recibidos
+        LOST_CAJONES_DATA = cajonesFromDrive.map((cajon, idx) => {
+            const rawName = cajon.folderName || cajon.name || `Cajón ${idx + 1}`;
+            const parts = rawName.split('|').map(s => s.trim());
+            const folderTitle = parts[0];
+            const subtitle = parts.length > 1 ? parts[1] : (cajon.subtitle || 'Objetos perdidos sincronizados desde Google Drive');
+            const starSymbol = parts[0].startsWith('✦') ? parts[0] : `✦ ${parts[0]}`;
+
+            return {
+                id: cajon.id || `cajon-${idx}`,
+                index: idx,
+                starSymbol,
+                folderName: folderTitle,
+                drivePath: cajon.drivePath || `Google Drive / 04_OBJETOS_PERDIDOS / ${rawName}`,
+                driveUrl: cajon.driveUrl || 'https://drive.google.com',
+                subtitle,
+                items: (cajon.items || []).map((it, itIdx) => ({
+                    file: it.file || `item_${itIdx + 1}.jpg`,
+                    name: it.name || 'Prenda u objeto',
+                    desc: it.desc || 'Recogido en actividades del grupo.',
+                    status: it.status || 'En Base · Rueda 53',
+                    photoUrl: it.photoUrl || it.src || it.img || null,
+                    img: it.photoUrl || it.src || it.img || null
+                }))
+            };
+        });
+
+        // 3. Generar dinámicamente SECTORS[3].stars y SECTORS[3].edges
+        const N = LOST_CAJONES_DATA.length;
+        const miniStars = [];
+        const edges = [];
+
+        for (let i = 0; i < N; i++) {
+            const cj = LOST_CAJONES_DATA[i];
+            let dx = 0;
+            let dy = 0;
+
+            if (N === 1) {
+                dx = -120;
+                dy = -60;
+            } else {
+                const startAngle = -Math.PI * 0.85; // ~ -153°
+                const endAngle = Math.PI * 0.15;   // ~ +27°
+                const angle = startAngle + (i / (N - 1)) * (endAngle - startAngle);
+                const rad = 175 + Math.sin(i * 2.2) * 22;
+                dx = Math.round(Math.cos(angle) * rad);
+                dy = Math.round(Math.sin(angle) * rad);
+            }
+
+            miniStars.push({
+                id: `cajon-star-${cj.id}`,
+                symbol: cj.starSymbol,
+                dx,
+                dy,
+                r: 4.8,
+                color: '#38BDF8',
+                halo: 'rgba(56, 189, 248, 0.28)',
+                ringColor: 'rgba(56, 189, 248, 0.40)',
+                hoverRingColor: 'rgba(56, 189, 248, 0.85)',
+                cajonIndex: i,
+                starIdx: i + 1,
+                badge: `✦ Mini-Estrella · Cajón 0${i + 1}`,
+                title: `${cj.starSymbol} · ${cj.folderName}`,
+                body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
+                pillars: [
+                    `📁 ${cj.folderName}`,
+                    `${cj.items.length} objetos registrados`,
+                    'Clic para abrir cajón'
+                ]
+            });
+
+            // Conectar la estrella central 0 con cada mini-estrella (índice i + 1)
+            edges.push([0, i + 1]);
+        }
+
+        SECTORS[3].stars = [baulMainStar, ...miniStars];
+        SECTORS[3].edges = edges;
+
+        // 4. Vuelva a registrar el clúster en el Canvas
+        const createdNodes = registerStarCluster(
+            SECTORS[3].stars,
+            SECTORS[3].edges,
+            SECTORS[3].worldX,
+            SECTORS[3].worldY,
+            {
+                sectorIndex: 3,
+                clusterType: 'sector'
+            }
+        );
+        SECTORS[3].runtimeNodes = createdNodes;
+
+        // 5. Si el usuario está en el Sector IV (activeSectorIdx === 3), refresque la interfaz
+        if (typeof activeSectorIdx !== 'undefined' && activeSectorIdx === 3 && typeof syncSectorUI === 'function') {
+            syncSectorUI(3, 0, true);
+        }
+    }
+    window.rebuildLostConstellation = rebuildLostConstellation;
 
     // =========================================================================
     // 5. CAMPO PROFUNDO DE ESTRELLAS CON PARALLAX (SOLO BLANCO Y TOQUE ROJO SUTIL)
@@ -1508,13 +1546,13 @@
                 if (sIdx === 1) {
                     items = UNITS_DATA.map((u, idx) => ({ label: u.shortName, idx }));
                 } else if (sIdx === 2) {
-                    items = CAMPS_DATA.map((c, idx) => ({ label: c.starSymbol, idx }));
+                    items = CAMPS_DATA.map((c, idx) => ({ label: c.starSymbol, idx, isRed: c.isRedStar }));
                 } else {
                     items = sec.stars.map((st, idx) => ({ label: st.symbol, idx }));
                 }
 
                 elStarNodesWrap.innerHTML = items.map(it => `
-                    <button type="button" class="star-node-chip ${it.idx === subIdx ? 'active' : ''}" data-sub-idx="${it.idx}">
+                    <button type="button" class="star-node-chip ${it.isRed ? 'is-red-chip' : ''} ${it.idx === subIdx ? 'active' : ''}" data-sub-idx="${it.idx}">
                         ${it.label}
                     </button>
                 `).join('');
@@ -1797,6 +1835,13 @@
         triggerStarDiveFlash(camp.worldX, camp.worldY, wasAlreadyOpen ? 450 : 1180);
 
         // 2. Poblar la Nueva Tab del Campamento: Lugar, Descripción, 3 Fotos de Muestra y Formulario Drive
+        const kicker = document.getElementById('czKicker');
+        if (kicker) {
+            kicker.textContent = camp.isRedStar
+                ? '✦ ÚLTIMO CAMPAMENTO · ESTRELLA ROJA'
+                : '✦ ESTRELLA DE CAMPAMENTO';
+        }
+
         const seasonPill = document.getElementById('czSeasonPill');
         if (seasonPill) seasonPill.textContent = camp.season || 'Campamento Scout';
         const locPill = document.getElementById('czLocationPill');
@@ -1840,7 +1885,7 @@
         const campSw = document.getElementById('czCampSwitcher');
         if (campSw) {
             campSw.innerHTML = CAMPS_DATA.map((c, i) => `
-                <button type="button" class="star-node-chip ${i === campIdx ? 'active' : ''}" data-jump-camp="${i}">
+                <button type="button" class="star-node-chip ${c.isRedStar ? 'is-red-chip' : ''} ${i === campIdx ? 'active' : ''}" data-jump-camp="${i}">
                     ${c.starSymbol}
                 </button>
             `).join('');
@@ -1871,21 +1916,40 @@
     let activeLostCajonIdx = 0;
 
     function renderLostCajonView(cajonIdx) {
+        const folderPill = document.getElementById('lzActiveFolderPill');
+        const cajonTitle = document.getElementById('lzCurrentCajonTitle');
+        const cajonSub = document.getElementById('lzCurrentCajonSub');
+        const openDriveBtn = document.getElementById('lzOpenDriveFolderBtn');
+        const sw = document.getElementById('lzCajonSwitcher');
+        const miniMap = document.getElementById('lzMiniStarsMap');
+        const grid = document.getElementById('lzPhotosGrid');
+
+        // Estado vacío limpio si no hay cajones en Drive
+        if (!LOST_CAJONES_DATA || LOST_CAJONES_DATA.length === 0) {
+            if (folderPill) folderPill.textContent = '📁 Google Drive / 04_OBJETOS_PERDIDOS';
+            if (cajonTitle) cajonTitle.textContent = 'El Baúl está vacío';
+            if (cajonSub) cajonSub.textContent = 'Actualmente no hay ningún cajón ni objeto perdido registrado.';
+            if (openDriveBtn) openDriveBtn.style.display = 'none';
+            if (sw) sw.innerHTML = '';
+            const emptyText = 'Actualmente no hay ningún cajón ni objeto perdido registrado en el Google Drive del grupo. ¡Todo el material está en casa!';
+            if (miniMap) miniMap.innerHTML = `<p class="empty-cajones-msg" style="padding: 24px; color: rgba(255,255,255,0.72); font-size: 0.95rem; text-align: center;">${emptyText}</p>`;
+            if (grid) grid.innerHTML = `<div class="empty-cajones-msg" style="grid-column: 1 / -1; padding: 50px 20px; text-align: center; color: rgba(255,255,255,0.75); font-size: 1.05rem;">${emptyText}</div>`;
+            return;
+        }
+
         activeLostCajonIdx = clamp(cajonIdx, 0, LOST_CAJONES_DATA.length - 1);
         const cajon = LOST_CAJONES_DATA[activeLostCajonIdx];
         if (!cajon) return;
 
-        const folderPill = document.getElementById('lzActiveFolderPill');
         if (folderPill) folderPill.textContent = `📁 ${cajon.drivePath}`;
-        const cajonTitle = document.getElementById('lzCurrentCajonTitle');
         if (cajonTitle) cajonTitle.textContent = cajon.folderName;
-        const cajonSub = document.getElementById('lzCurrentCajonSub');
         if (cajonSub) cajonSub.textContent = `${cajon.subtitle} · (${cajon.items.length} fotos en esta carpeta de Google Drive)`;
-        const openDriveBtn = document.getElementById('lzOpenDriveFolderBtn');
-        if (openDriveBtn) openDriveBtn.href = cajon.driveUrl || 'https://drive.google.com';
+        if (openDriveBtn) {
+            openDriveBtn.style.display = '';
+            openDriveBtn.href = cajon.driveUrl || 'https://drive.google.com';
+        }
 
         // Actualizar selector superior de Mini-Estrellas (Cajones)
-        const sw = document.getElementById('lzCajonSwitcher');
         if (sw) {
             sw.innerHTML = LOST_CAJONES_DATA.map((cj, i) => `
                 <button type="button" class="star-node-chip ${i === activeLostCajonIdx ? 'active' : ''}" data-cajon-switch="${i}">
@@ -1900,7 +1964,6 @@
         }
 
         // Actualizar mapa interior de Mini-Estrellas (Cajones de Google Drive)
-        const miniMap = document.getElementById('lzMiniStarsMap');
         if (miniMap) {
             miniMap.innerHTML = LOST_CAJONES_DATA.map((cj, i) => `
                 <button type="button" class="cajon-ministar-node ${i === activeLostCajonIdx ? 'active' : ''}" data-cajon-node="${i}">
@@ -1921,20 +1984,31 @@
         // Renderizar galería de fotos de objetos perdidos del Cajón seleccionado
         const renderPhotos = () => {
             const q = (document.getElementById('lzPhotoSearch')?.value || '').toLowerCase().trim();
-            const grid = document.getElementById('lzPhotosGrid');
             if (!grid) return;
+
+            if (!cajon.items || cajon.items.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: rgba(255,255,255,0.7); font-size: 1rem;">Este cajón está vacío actualmente en Google Drive.</p>`;
+                return;
+            }
 
             const filtered = cajon.items.filter(it =>
                 !q ||
-                it.name.toLowerCase().includes(q) ||
-                it.desc.toLowerCase().includes(q) ||
-                it.file.toLowerCase().includes(q)
+                (it.name && it.name.toLowerCase().includes(q)) ||
+                (it.desc && it.desc.toLowerCase().includes(q)) ||
+                (it.file && it.file.toLowerCase().includes(q))
             );
 
-            grid.innerHTML = filtered.map(it => `
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: rgba(255,255,255,0.7); font-size: 1rem;">No hay fotos que coincidan con esa búsqueda en este Cajón de Google Drive.</p>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(it => {
+                const imgSrc = it.img || it.photoUrl || '';
+                return `
                 <article class="lost-photo-card">
                     <div class="lost-photo-art">
-                        ${it.svg ? it.svg : `<img src="${it.img}" alt="${it.name}" loading="lazy">`}
+                        ${it.svg ? it.svg : `<img src="${imgSrc}" alt="${it.name}" loading="lazy" referrerpolicy="no-referrer">`}
                         <span class="lost-drive-file-chip">📄 ${it.file}</span>
                     </div>
                     <div class="lost-photo-body">
@@ -1948,7 +2022,8 @@
                         </div>
                     </div>
                 </article>
-            `).join('') || `<p>No hay fotos que coincidan con esa búsqueda en este Cajón de Google Drive.</p>`;
+            `;
+            }).join('');
 
             grid.querySelectorAll('[data-claim-item]').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -1980,9 +2055,17 @@
         selectedSubIdx = 0;
 
         const secLost = SECTORS[3];
-        const baulMainStar = secLost.stars[0];
-        const targetWx = secLost.worldX + (baulMainStar ? baulMainStar.dx : 0);
-        const targetWy = secLost.worldY + (baulMainStar ? baulMainStar.dy : 0);
+        const baulMainStar = secLost && secLost.stars ? secLost.stars[0] : null;
+        let targetWx = secLost.worldX + (baulMainStar ? baulMainStar.dx : 0);
+        let targetWy = secLost.worldY + (baulMainStar ? baulMainStar.dy : 0);
+
+        if (LOST_CAJONES_DATA.length > 0 && typeof cajonIdx === 'number' && cajonIdx >= 0 && cajonIdx < LOST_CAJONES_DATA.length) {
+            const star = secLost.stars[cajonIdx + 1];
+            if (star) {
+                targetWx = secLost.worldX + star.dx;
+                targetWy = secLost.worldY + star.dy;
+            }
+        }
 
         superZoomState = {
             type: 'lost',
@@ -2831,8 +2914,8 @@
                 (nd.clusterType === 'sector' && nd.starIdx === selectedSubIdx)
             );
 
-            // Campamentos (2) y las mini-estrellas de Cajones (sector 3 pero no El Baúl) van en blanco puro sin color
-            const isPureWhiteStar = nd.sectorIndex === 2 || (nd.sectorIndex === 3 && !nd.isBaulMain);
+            // Campamentos (2) y las mini-estrellas de Cajones (sector 3 pero no El Baúl) van en blanco puro sin color, salvo la última estrella que es roja
+            const isPureWhiteStar = (nd.sectorIndex === 2 && !nd.isRedStar) || (nd.sectorIndex === 3 && !nd.isBaulMain);
 
             const scale = superZoomState
                 ? clamp(camera.zoom * 0.72, 1.0, 22.0)
@@ -2842,20 +2925,22 @@
             // Halo radial
             const glowR = r * (nd.isMainCross || nd.isClusterHub || isHovered ? 4.8 : 3.2);
             const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, glowR);
-            g.addColorStop(0, anniversaryLerp > 0.3 ? '#FFF3B0' : '#FFFFFF');
+            g.addColorStop(0, anniversaryLerp > 0.3 ? '#FFF3B0' : (nd.isRedStar ? '#FFA39E' : '#FFFFFF'));
             g.addColorStop(
                 0.35,
                 anniversaryLerp > 0.35
                     ? (isHovered || isSelectedInSector ? 'rgba(212, 175, 55, 0.42)' : 'rgba(212, 175, 55, 0.22)')
-                    : (nd.isBaulMain
-                        ? (isHovered || isSelectedInSector ? 'rgba(217, 56, 58, 0.30)' : 'rgba(217, 56, 58, 0.16)')
-                        : (nd.clusterType === 'unit'
-                            ? (isHovered || isSelectedInSector ? (nd.ringColor || 'rgba(255, 255, 255, 0.22)') : (nd.halo || 'rgba(255, 255, 255, 0.12)'))
-                            : (isPureWhiteStar
-                                ? (isHovered || isSelectedInSector ? 'rgba(255, 255, 255, 0.28)' : 'rgba(255, 255, 255, 0.16)')
-                                : ((isHovered || isSelectedInSector)
-                                    ? 'rgba(217, 56, 58, 0.30)'
-                                    : (nd.halo || 'rgba(255, 255, 255, 0.18)')))))
+                    : (nd.isRedStar
+                        ? (isHovered || isSelectedInSector ? 'rgba(239, 68, 68, 0.55)' : 'rgba(217, 56, 58, 0.38)')
+                        : (nd.isBaulMain
+                            ? (isHovered || isSelectedInSector ? 'rgba(217, 56, 58, 0.30)' : 'rgba(217, 56, 58, 0.16)')
+                            : (nd.clusterType === 'unit'
+                                ? (isHovered || isSelectedInSector ? (nd.ringColor || 'rgba(255, 255, 255, 0.22)') : (nd.halo || 'rgba(255, 255, 255, 0.12)'))
+                                : (isPureWhiteStar
+                                    ? (isHovered || isSelectedInSector ? 'rgba(255, 255, 255, 0.28)' : 'rgba(255, 255, 255, 0.16)')
+                                    : ((isHovered || isSelectedInSector)
+                                        ? 'rgba(217, 56, 58, 0.30)'
+                                        : (nd.halo || 'rgba(255, 255, 255, 0.18)'))))))
             );
             g.addColorStop(1, 'rgba(255, 255, 255, 0)');
             ctx.fillStyle = g;
@@ -2869,6 +2954,8 @@
                 let ringStroke;
                 if (anniversaryLerp > 0.35) {
                     ringStroke = (isHovered || isSelectedInSector) ? 'rgba(243, 229, 171, 0.85)' : 'rgba(212, 175, 55, 0.45)';
+                } else if (nd.isRedStar) {
+                    ringStroke = (isHovered || isSelectedInSector) ? 'rgba(239, 68, 68, 0.95)' : 'rgba(217, 56, 58, 0.65)';
                 } else if (nd.isBaulMain) {
                     ringStroke = (isHovered || isSelectedInSector) ? 'rgba(224, 82, 84, 0.70)' : 'rgba(217, 56, 58, 0.40)';
                 } else if (nd.clusterType === 'unit') {
@@ -2888,8 +2975,8 @@
                 ctx.stroke();
             }
 
-            // Núcleo blanco puro
-            ctx.fillStyle = '#FFFFFF';
+            // Núcleo
+            ctx.fillStyle = nd.isRedStar ? '#EF4444' : '#FFFFFF';
             ctx.beginPath();
             ctx.arc(sx, sy, r * 0.5, 0, Math.PI * 2);
             ctx.fill();
@@ -2901,10 +2988,28 @@
                 ctx.font = (nd.isBaulMain || nd.isClusterHub || nd.isMainCross || isHovered)
                     ? '600 12px "JetBrains Mono", monospace'
                     : '400 10.5px "JetBrains Mono", monospace';
-                ctx.fillStyle = (isHovered || isSelectedInSector)
-                    ? (anniversaryLerp > 0.35 ? '#FFF3B0' : '#FFFFFF')
-                    : (anniversaryLerp > 0.35 ? 'rgba(243, 229, 171, 0.75)' : 'rgba(255, 255, 255, 0.74)');
-                ctx.fillText(nd.symbol, sx + r * 1.35 + 7, sy + 4);
+
+                if (nd.isRedStar) {
+                    ctx.fillStyle = (isHovered || isSelectedInSector) ? '#FFA39E' : '#FF6B6B';
+                } else {
+                    ctx.fillStyle = (isHovered || isSelectedInSector)
+                        ? (anniversaryLerp > 0.35 ? '#FFF3B0' : '#FFFFFF')
+                        : (anniversaryLerp > 0.35 ? 'rgba(243, 229, 171, 0.75)' : 'rgba(255, 255, 255, 0.74)');
+                }
+
+                if (nd.labelPos === 'top') {
+                    ctx.textAlign = 'center';
+                    ctx.fillText(nd.symbol, sx, sy - r * 1.35 - 8);
+                } else if (nd.labelPos === 'bottom') {
+                    ctx.textAlign = 'center';
+                    ctx.fillText(nd.symbol, sx, sy + r * 1.35 + 16);
+                } else if (nd.labelPos === 'left') {
+                    ctx.textAlign = 'right';
+                    ctx.fillText(nd.symbol, sx - r * 1.35 - 8, sy + 4);
+                } else {
+                    ctx.textAlign = 'left';
+                    ctx.fillText(nd.symbol, sx + r * 1.35 + 7, sy + 4);
+                }
                 ctx.restore();
             }
         }
@@ -3258,40 +3363,8 @@
     }
 
     function syncCajonesFromDrive(cajonesData) {
-        if (!Array.isArray(cajonesData) || cajonesData.length === 0) return;
-        LOST_CAJONES_DATA.length = 0;
-        cajonesData.forEach((cajon, idx) => {
-            LOST_CAJONES_DATA.push({
-                id: cajon.id || `cajon-${idx}`,
-                index: idx,
-                starSymbol: cajon.starSymbol || `✦ Cajón 0${idx + 1} · ${cajon.folderName || cajon.name || 'Drive'}`,
-                folderName: cajon.folderName || cajon.name || `Cajón 0${idx + 1}`,
-                drivePath: cajon.drivePath || `Google Drive / Objetos Perdidos / ${cajon.folderName || cajon.name}`,
-                driveUrl: cajon.driveUrl || 'https://drive.google.com',
-                subtitle: cajon.subtitle || 'Objetos perdidos sincronizados desde Google Drive',
-                items: (cajon.items || []).map((it, itIdx) => ({
-                    file: it.file || `item_${itIdx + 1}.jpg`,
-                    name: it.name || 'Prenda u objeto',
-                    desc: it.desc || 'Recogido en actividades del grupo.',
-                    status: it.status || 'En Base · Rueda 53',
-                    photoUrl: it.photoUrl || it.src || null,
-                    svg: it.svg || null
-                }))
-            });
-        });
-
-        const secLost = SECTORS[3];
-        if (secLost && secLost.stars) {
-            LOST_CAJONES_DATA.forEach((cj, i) => {
-                if (secLost.stars[i + 1]) {
-                    secLost.stars[i + 1].symbol = cj.starSymbol;
-                    secLost.stars[i + 1].title = `Cajón 0${i + 1} · Carpeta Drive «${cj.folderName}»`;
-                    secLost.stars[i + 1].pillars = [`📁 ${cj.folderName}`, `${cj.items.length} Fotos en Drive`, `Clic para entrar al Cajón 0${i + 1}`];
-                }
-            });
-            if (activeSectorIdx === 3) {
-                syncSectorUI(3, selectedSubIdx, true);
-            }
+        if (typeof rebuildLostConstellation === 'function') {
+            rebuildLostConstellation(cajonesData);
         }
     }
 
@@ -3319,7 +3392,12 @@
         try {
             const res = await fetch(DRIVE_API_URL);
             if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-            const data = await res.json();
+            const text = await res.text();
+            if (text.trim().startsWith('<')) {
+                console.warn('Google Drive Sync: El endpoint devolvió HTML (pantalla de login de Google). En Google Apps Script ve a Implementar > Gestionar implementaciones > Editar > Quién tiene acceso: "Cualquier persona" (Anyone).');
+                return;
+            }
+            const data = JSON.parse(text);
             if (data) {
                 if (data.campamentos !== undefined) {
                     rebuildCampsConstellation(data.campamentos);
@@ -3330,8 +3408,8 @@
                 if (data.coordinacion && data.coordinacion.length > 0) {
                     syncCoordinacionFromDrive(data.coordinacion);
                 }
-                if (data.cajones && data.cajones.length > 0) {
-                    syncCajonesFromDrive(data.cajones);
+                if (data.cajones !== undefined) {
+                    rebuildLostConstellation(data.cajones);
                 }
                 if (data.aniversario) {
                     syncAnniversaryFromDrive(data.aniversario);
@@ -3346,6 +3424,7 @@
     window.syncUnitsFromDrive = syncUnitsFromDrive;
     window.syncCoordinacionFromDrive = syncCoordinacionFromDrive;
     window.syncCajonesFromDrive = syncCajonesFromDrive;
+    window.rebuildLostConstellation = rebuildLostConstellation;
     window.syncAnniversaryFromDrive = syncAnniversaryFromDrive;
 
     try {

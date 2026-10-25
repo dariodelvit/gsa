@@ -531,6 +531,29 @@ body.cosmos-body {
     color: #E05254;
 }
 
+/* Estrella Roja Destacada (Último Campamento Activo) */
+.star-node-chip.is-red-chip {
+    border-color: rgba(217, 56, 58, 0.45);
+    color: #FFA39E;
+}
+
+.star-node-chip.is-red-chip::before {
+    color: #EF4444;
+}
+
+.star-node-chip.is-red-chip:hover {
+    border-color: #EF4444;
+    color: #FFFFFF;
+    box-shadow: 0 0 12px rgba(217, 56, 58, 0.35);
+}
+
+.star-node-chip.is-red-chip.active {
+    background: rgba(217, 56, 58, 0.22);
+    border-color: #EF4444;
+    color: #FFFFFF;
+    box-shadow: 0 0 16px rgba(217, 56, 58, 0.45);
+}
+
 .star-focus-readout {
     background: linear-gradient(145deg, rgba(14, 16, 22, 0.8) 0%, rgba(8, 9, 13, 0.68) 100%);
     backdrop-filter: blur(18px);
