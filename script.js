@@ -1090,6 +1090,35 @@
 
     // 3. Registrar Sector III: CONSTELACIÓN DE CAMPAMENTOS CONECTADOS (100% DINÁMICO DESDE GOOGLE DRIVE)
     const GREEK_ALPHABET = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'];
+    let hasBothCampsConstellations = false;
+
+    // Clasificador inteligente para diferenciar Campamentos de Verano vs Semana Santa / Primavera
+    function detectCampSeason(camp) {
+        const raw = `${camp.name || ''} ${camp.driveFolderName || ''} ${camp.desc || ''} ${camp.location || ''} ${camp.season || ''}`.toLowerCase();
+
+        // 1. Detección explícita por palabras clave de Semana Santa / Primavera
+        if (/(semana\s*santa|\bss\b|pascua|primavera|acampada)/i.test(raw)) {
+            return 'easter';
+        }
+        // 2. Detección explícita por palabras clave de Verano
+        if (/(verano|estival|julio|agosto|campamento\s*de\s*verano)/i.test(raw)) {
+            return 'summer';
+        }
+
+        // 3. Lugares icónicos conocidos del Grupo Scout Acrux 518
+        const easterPlaces = ['barbadillo', 'cofiñal', 'cofial', 'arija', 'alcalá de moncayo', 'alcala de moncayo', 'moncayo'];
+        const summerPlaces = ['prioro', 'cóbreces', 'cobreces', 'valdeavellano', 'vilviestre', 'vilvuestre', 'priaranza'];
+
+        for (const p of easterPlaces) {
+            if (raw.includes(p)) return 'easter';
+        }
+        for (const p of summerPlaces) {
+            if (raw.includes(p)) return 'summer';
+        }
+
+        // 4. Por defecto, campamento de verano
+        return 'summer';
+    }
 
     function rebuildCampsConstellation(campsFromDrive) {
         // 1. Elimina de worldNodes y worldEdges todos los elementos que tengan clusterType === 'camp'
@@ -1108,6 +1137,7 @@
         if (!campsFromDrive || !Array.isArray(campsFromDrive) || campsFromDrive.length === 0) {
             CAMPS_DATA = [];
             CAMPS_CONSTELLATION_EDGES = [];
+            hasBothCampsConstellations = false;
             SECTORS[2].desc = 'Actualmente no hay carpetas de campamentos publicadas en el Google Drive del grupo.';
             SECTORS[2].stars = [];
             SECTORS[2].edges = [];
@@ -1119,130 +1149,166 @@
         }
 
         // 2. Ordenar campamentos estrictamente por orden cronológico de años
+        const getYear = (str) => {
+            const m = (str || '').match(/\b(19\d\d|20\d\d)\b/);
+            return m ? parseInt(m[1], 10) : 0;
+        };
         const sortedCamps = [...campsFromDrive].sort((a, b) => {
-            const getYear = (str) => {
-                const m = (str || '').match(/\b(19\d\d|20\d\d)\b/);
-                return m ? parseInt(m[1], 10) : 0;
-            };
             const yA = getYear(a.name || a.driveFolderName || '');
             const yB = getYear(b.name || b.driveFolderName || '');
             if (yA !== yB) return yA - yB;
             return (a.name || '').localeCompare(b.name || '');
         });
 
-        const N = sortedCamps.length;
+        // 3. Separar en dos constelaciones distintas: Verano y Semana Santa
+        const rawSummer = [];
+        const rawEaster = [];
 
-        // Ancho generoso del sector y ajuste automático de zoom para encuadre astronómico perfecto
-        const spanX = Math.min(1260, Math.max(460, (N - 1) * 165));
-        if (N > 5) {
-            SECTORS[2].baseZoom = Math.min(1.02, Math.max(0.82, 940 / spanX));
+        sortedCamps.forEach(c => {
+            const sType = detectCampSeason(c);
+            if (sType === 'easter') {
+                rawEaster.push(c);
+            } else {
+                rawSummer.push(c);
+            }
+        });
+
+        const N_s = rawSummer.length;
+        const N_e = rawEaster.length;
+        hasBothCampsConstellations = (N_s > 0 && N_e > 0);
+
+        // Ajuste dinámico del encuadre astronómico del Sector III
+        if (hasBothCampsConstellations) {
+            SECTORS[2].baseZoom = 0.94;
+            SECTORS[2].desc = 'En este sector brillan dos constelaciones independientes: arriba, la Constelación Estival (campamentos de verano); abajo, la Constelación Equinoccial (campamentos de Semana Santa y primavera). Haz clic en cualquier estrella para entrar en ella.';
         } else {
             SECTORS[2].baseZoom = 1.02;
+            SECTORS[2].desc = 'Constelación oficial de campamentos del Grupo Scout ACRUX 518 sincronizada con Google Drive.';
         }
 
-        CAMPS_DATA = sortedCamps.map((c, idx) => {
+        // 4. Construcción geométrica de la Constelación de Verano (Hemisferio Superior)
+        const baseY_s = hasBothCampsConstellations ? -115 : 0;
+        const spanX_s = Math.min(1240, Math.max(420, (N_s - 1) * 175));
+
+        const summerCamps = rawSummer.map((c, idx) => {
             const letter = GREEK_ALPHABET[idx] || `★${idx + 1}`;
-            const isLast = (idx === N - 1);
+            const isLast = (idx === N_s - 1);
             let dx = 0;
-            let dy = 0;
-            let labelPos = 'bottom';
+            let dy = baseY_s;
 
-            if (N === 1) {
+            if (N_s === 1) {
                 dx = 0;
-                dy = -15;
-                labelPos = 'bottom';
-            } else if (N === 2) {
-                dx = idx === 0 ? -160 : 160;
-                dy = idx === 0 ? 30 : -45;
-                labelPos = idx === 0 ? 'bottom' : 'top';
-            } else if (N === 3) {
-                const coords = [
-                    { dx: -210, dy: 45, lp: 'bottom' },
-                    { dx: 0, dy: -55, lp: 'top' },
-                    { dx: 210, dy: 25, lp: 'bottom' }
-                ];
-                dx = coords[idx].dx;
-                dy = coords[idx].dy;
-                labelPos = coords[idx].lp;
-            } else if (N === 4) {
-                const coords = [
-                    { dx: -260, dy: 40, lp: 'bottom' },
-                    { dx: -90, dy: -65, lp: 'top' },
-                    { dx: 90, dy: -25, lp: 'bottom' },
-                    { dx: 260, dy: 50, lp: 'top' }
-                ];
-                dx = coords[idx].dx;
-                dy = coords[idx].dy;
-                labelPos = coords[idx].lp;
+                dy = baseY_s - 15;
             } else {
-                // Curva armónica celestial continua (como la constelación del Río / Senda de las Estrellas)
-                const t = idx / (N - 1); // 0 .. 1 progresando en años
-                const baseX = -spanX * 0.5 + t * spanX;
-                const primaryArch = Math.sin(t * Math.PI) * -85;
-                const naturalUndulation = Math.sin(t * Math.PI * 2.0 - 0.3) * 65;
-                const timeAscent = (t - 0.5) * -70;
-                const seedJitterY = Math.sin(idx * 3.14 + 0.8) * 16;
-                const seedJitterX = Math.cos(idx * 2.37 + 1.4) * 12;
+                const t = idx / (N_s - 1);
+                const baseX = -spanX_s * 0.5 + t * spanX_s;
+                const jitterX = Math.cos(idx * 2.3 + 1.2) * 14;
+                dx = Math.round(baseX + jitterX);
 
-                dx = Math.round(baseX + seedJitterX);
-                dy = Math.round(primaryArch + naturalUndulation + timeAscent + seedJitterY);
-
-                if (dy < -35) {
-                    labelPos = 'top';
-                } else if (dy > 15) {
-                    labelPos = 'bottom';
-                } else {
-                    labelPos = (idx % 2 === 0) ? 'top' : 'bottom';
-                }
+                const arcY = -Math.sin(t * Math.PI) * 45;
+                const waveY = Math.sin(t * Math.PI * 2.2) * 18;
+                dy = Math.round(baseY_s + arcY + waveY);
             }
 
-            // Magnitudes astronómicas realistas
-            let r = 7.0;
-            if (isLast) {
-                r = 9.4; // Gran Supergigante Roja (el campamento más reciente)
-            } else if (idx === 0) {
-                r = 8.2; // Estrella Alfa de la Constelación
-            } else {
-                r = 6.4 + ((idx * 3 + 1) % 5) * 0.28;
-            }
+            const r = isLast ? 9.4 : (idx === 0 ? 8.2 : 6.6 + ((idx * 3 + 1) % 4) * 0.3);
 
             return {
-                id: c.id || `camp-${idx}`,
-                index: idx,
-                starSymbol: `${letter} ${c.name || 'Campamento'}`,
-                name: c.name || `Campamento ${idx + 1}`,
-                season: c.season || 'Campamento Scout',
-                location: c.location || '📍 Ubicación en naturaleza',
-                driveFolderName: c.driveFolderName || c.name || 'Carpeta Google Drive',
+                id: c.id || `camp-summer-${idx}`,
+                seasonType: 'summer',
+                seasonBadge: '☀️ Campamento de Verano',
+                starSymbol: `☀️ ${letter} ${c.name || 'Verano'}`,
+                name: c.name || `Campamento de Verano ${idx + 1}`,
+                season: c.season || 'Campamento de Verano',
+                location: c.location || '📍 Ubicación estival',
+                driveFolderName: c.driveFolderName || c.name || 'Carpeta Drive',
                 driveUrl: c.driveUrl || '',
                 dx,
                 dy,
                 r,
-                labelPos,
+                labelPos: 'top',
                 isRedStar: isLast,
                 isLastCamp: isLast,
-                desc: c.desc || 'Campamento oficial del Grupo Scout ACRUX 518 sincronizado con Google Drive.',
+                desc: c.desc || 'Campamento oficial de verano del Grupo Scout ACRUX 518 sincronizado con Google Drive.',
                 photos: (c.photos || []).map(p => typeof p === 'string' ? { src: p, title: c.name, meta: 'Carpeta Google Drive' } : p)
             };
         });
 
-        // 3. Aristas cronológicas que unen los campamentos por orden de años
+        // 5. Construcción geométrica de la Constelación de Semana Santa (Hemisferio Inferior)
+        const baseY_e = hasBothCampsConstellations ? +115 : 0;
+        const spanX_e = Math.min(1160, Math.max(400, (N_e - 1) * 180));
+
+        const easterCamps = rawEaster.map((c, idx) => {
+            const letter = GREEK_ALPHABET[idx] || `✦${idx + 1}`;
+            const isLast = (idx === N_e - 1);
+            let dx = 0;
+            let dy = baseY_e;
+
+            if (N_e === 1) {
+                dx = 0;
+                dy = baseY_e + 15;
+            } else {
+                const t = idx / (N_e - 1);
+                const baseX = -spanX_e * 0.5 + t * spanX_e;
+                const jitterX = Math.sin(idx * 2.1 + 0.8) * 14;
+                dx = Math.round(baseX + jitterX);
+
+                const arcY = Math.sin(t * Math.PI) * 35;
+                const waveY = Math.cos(t * Math.PI * 2.0) * 16;
+                dy = Math.round(baseY_e + arcY + waveY);
+            }
+
+            const r = isLast ? 9.2 : (idx === 0 ? 8.0 : 6.5 + ((idx * 2 + 1) % 4) * 0.3);
+
+            return {
+                id: c.id || `camp-easter-${idx}`,
+                seasonType: 'easter',
+                seasonBadge: '🌸 Semana Santa y Primavera',
+                starSymbol: `🌸 ${letter} ${c.name || 'Semana Santa'}`,
+                name: c.name || `Campamento de Semana Santa ${idx + 1}`,
+                season: c.season || 'Campamento de Semana Santa',
+                location: c.location || '📍 Ubicación de acampada',
+                driveFolderName: c.driveFolderName || c.name || 'Carpeta Drive',
+                driveUrl: c.driveUrl || '',
+                dx,
+                dy,
+                r,
+                labelPos: 'bottom',
+                isRedStar: isLast,
+                isLastCamp: isLast,
+                desc: c.desc || 'Acampada o campamento oficial de Semana Santa del Grupo Scout ACRUX 518 sincronizado con Google Drive.',
+                photos: (c.photos || []).map(p => typeof p === 'string' ? { src: p, title: c.name, meta: 'Carpeta Google Drive' } : p)
+            };
+        });
+
+        // 6. Unificar CAMPS_DATA ordenado e indexado
+        CAMPS_DATA = [...summerCamps, ...easterCamps];
+        CAMPS_DATA.forEach((c, i) => {
+            c.index = i;
+        });
+
+        // 7. Aristas independientes: CADA CONSTELACIÓN TIENE SUS PROPIAS LÍNEAS (CERO CRUCES ENTRE ELLAS)
         CAMPS_CONSTELLATION_EDGES = [];
-        for (let i = 0; i < N - 1; i++) {
+        // Aristas de Verano (índices 0 a N_s - 1)
+        for (let i = 0; i < N_s - 1; i++) {
             CAMPS_CONSTELLATION_EDGES.push([i, i + 1]);
         }
+        // Aristas de Semana Santa (índices N_s a N_s + N_e - 1)
+        for (let j = 0; j < N_e - 1; j++) {
+            CAMPS_CONSTELLATION_EDGES.push([N_s + j, N_s + j + 1]);
+        }
 
-        // 4. Registrar las nuevas estrellas con registerStarCluster
+        // 8. Registrar estrellas con registerStarCluster
         const campConstellationStars = CAMPS_DATA.map((camp, cIdx) => ({
             id: `camp-star-${camp.id}`,
             symbol: camp.starSymbol,
             dx: camp.dx,
             dy: camp.dy,
             r: camp.r,
+            seasonType: camp.seasonType,
             color: camp.isRedStar ? '#EF4444' : '#FFFFFF',
-            halo: camp.isRedStar ? 'rgba(217, 56, 58, 0.45)' : 'rgba(255, 255, 255, 0.24)',
-            ringColor: camp.isRedStar ? 'rgba(217, 56, 58, 0.65)' : 'rgba(255, 255, 255, 0.35)',
-            hoverRingColor: camp.isRedStar ? 'rgba(239, 68, 68, 0.95)' : 'rgba(255, 255, 255, 0.75)',
+            halo: camp.isRedStar ? 'rgba(217, 56, 58, 0.45)' : (camp.seasonType === 'easter' ? 'rgba(167, 243, 208, 0.30)' : 'rgba(255, 235, 180, 0.30)'),
+            ringColor: camp.isRedStar ? 'rgba(217, 56, 58, 0.65)' : (camp.seasonType === 'easter' ? 'rgba(167, 243, 208, 0.45)' : 'rgba(255, 235, 180, 0.45)'),
+            hoverRingColor: camp.isRedStar ? 'rgba(239, 68, 68, 0.95)' : (camp.seasonType === 'easter' ? 'rgba(110, 231, 183, 0.90)' : 'rgba(255, 255, 255, 0.85)'),
             isClusterHub: true,
             campIndex: cIdx,
             isRedStar: camp.isRedStar,
@@ -1270,6 +1336,12 @@
         SECTORS[2].runtimeNodes = createdCampNodes;
         SECTORS[2].stars = campConstellationStars;
         SECTORS[2].edges = CAMPS_CONSTELLATION_EDGES;
+
+        // 9. Refrescar UI si el usuario está en Sector III
+        if (typeof activeSectorIdx !== 'undefined' && activeSectorIdx === 2 && typeof syncSectorUI === 'function') {
+            syncSectorUI(2, 0, true);
+        }
+    }
 
         // 5. Refrescar los chips de estrellas si el usuario está viendo el Sector III
         if (typeof activeSectorIdx !== 'undefined' && activeSectorIdx === 2 && typeof syncSectorUI === 'function') {
@@ -1710,16 +1782,49 @@
                 if (sIdx === 1) {
                     items = UNITS_DATA.map((u, idx) => ({ label: u.shortName, idx }));
                 } else if (sIdx === 2) {
-                    items = CAMPS_DATA.map((c, idx) => ({ label: c.starSymbol, idx, isRed: c.isRedStar }));
+                    items = CAMPS_DATA.map((c, idx) => ({
+                        label: c.starSymbol,
+                        idx,
+                        isRed: c.isRedStar,
+                        seasonType: c.seasonType
+                    }));
                 } else {
                     items = sec.stars.map((st, idx) => ({ label: st.symbol, idx }));
                 }
 
-                elStarNodesWrap.innerHTML = items.map(it => `
-                    <button type="button" class="star-node-chip ${it.isRed ? 'is-red-chip' : ''} ${it.idx === subIdx ? 'active' : ''}" data-sub-idx="${it.idx}">
-                        ${it.label}
-                    </button>
-                `).join('');
+                if (sIdx === 2 && hasBothCampsConstellations) {
+                    const summerItems = items.filter(it => it.seasonType === 'summer');
+                    const easterItems = items.filter(it => it.seasonType === 'easter');
+
+                    elStarNodesWrap.innerHTML = `
+                        <div class="camps-constellation-group">
+                            <span class="camps-group-title">☀️ Constelación Estival · Verano</span>
+                            <div class="camps-group-chips">
+                                ${summerItems.map(it => `
+                                    <button type="button" class="star-node-chip ${it.isRed ? 'is-red-chip' : ''} ${it.idx === subIdx ? 'active' : ''}" data-sub-idx="${it.idx}">
+                                        ${it.label}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="camps-constellation-group" style="margin-top: 0.6rem;">
+                            <span class="camps-group-title">🌸 Constelación Equinoccial · Semana Santa</span>
+                            <div class="camps-group-chips">
+                                ${easterItems.map(it => `
+                                    <button type="button" class="star-node-chip ${it.isRed ? 'is-red-chip' : ''} ${it.idx === subIdx ? 'active' : ''}" data-sub-idx="${it.idx}">
+                                        ${it.label}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    elStarNodesWrap.innerHTML = items.map(it => `
+                        <button type="button" class="star-node-chip ${it.isRed ? 'is-red-chip' : ''} ${it.idx === subIdx ? 'active' : ''}" data-sub-idx="${it.idx}">
+                            ${it.label}
+                        </button>
+                    `).join('');
+                }
 
                 elStarNodesWrap.querySelectorAll('.star-node-chip').forEach(btn => {
                     btn.addEventListener('click', (e) => {
@@ -2001,13 +2106,18 @@
         // 2. Poblar la Nueva Tab del Campamento: Lugar, Descripción, 3 Fotos de Muestra y Formulario Drive
         const kicker = document.getElementById('czKicker');
         if (kicker) {
+            const seasonName = camp.seasonType === 'easter' ? 'SEMANA SANTA Y PRIMAVERA' : 'CAMPAMENTO DE VERANO';
             kicker.textContent = camp.isRedStar
-                ? '✦ ÚLTIMO CAMPAMENTO · ESTRELLA ROJA'
-                : '✦ ESTRELLA DE CAMPAMENTO';
+                ? `✦ ÚLTIMO ${seasonName} · ESTRELLA ROJA`
+                : `✦ ${seasonName}`;
         }
 
         const seasonPill = document.getElementById('czSeasonPill');
-        if (seasonPill) seasonPill.textContent = camp.season || 'Campamento Scout';
+        if (seasonPill) {
+            seasonPill.textContent = camp.seasonType === 'easter'
+                ? '🌸 CONSTELACIÓN EQUINOCCIAL (SEMANA SANTA)'
+                : '☀️ CONSTELACIÓN ESTIVAL (VERANO)';
+        }
         const locPill = document.getElementById('czLocationPill');
         if (locPill) locPill.textContent = camp.location || '📍 Ubicación en naturaleza';
         const folderBadge = document.getElementById('czDriveFolderBadge');
@@ -3056,9 +3166,16 @@
                 edgeStroke = `rgba(186, 230, 253, ${alpha.toFixed(3)})`;
                 edgeShadow = 'rgba(56, 189, 248, 0.55)';
             } else if (ed.sectorIndex === 2 || ed.clusterType === 'camp') {
-                // Destello plateado de alta pureza con halo estelar para Campamentos
-                edgeStroke = `rgba(240, 246, 255, ${alpha.toFixed(3)})`;
-                edgeShadow = 'rgba(200, 225, 255, 0.60)';
+                const isEasterEdge = (ed.nodeA && ed.nodeA.seasonType === 'easter') || (ed.nodeB && ed.nodeB.seasonType === 'easter');
+                if (isEasterEdge) {
+                    // Resplandor primaveral / Pascua (jade estelar fresco / aguamarina)
+                    edgeStroke = `rgba(167, 243, 208, ${alpha.toFixed(3)})`;
+                    edgeShadow = 'rgba(110, 231, 183, 0.65)';
+                } else {
+                    // Resplandor estival de verano (dorado estelar / blanco puro)
+                    edgeStroke = `rgba(255, 246, 230, ${alpha.toFixed(3)})`;
+                    edgeShadow = 'rgba(255, 215, 140, 0.60)';
+                }
             } else if (ed.sectorIndex === 0) {
                 edgeShadow = 'rgba(217, 56, 58, 0.45)';
             }
@@ -3070,6 +3187,31 @@
                 ctx.shadowBlur = 8 + ed.glow * 10;
             }
             ctx.stroke();
+            ctx.restore();
+        }
+
+        // ---------------------------------------------------------------------
+        // E2. TÍTULOS EN EL CIELO PARA LAS DOS CONSTELACIONES DEL SECTOR III
+        // ---------------------------------------------------------------------
+        if (activeSectorIdx === 2 && !superZoomState && hasBothCampsConstellations) {
+            ctx.save();
+            ctx.font = '600 11px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+
+            // Título de la Constelación Estival (arriba)
+            const scSummerTitle = worldToScreen(CAMPS_ORIGIN_X, CAMPS_ORIGIN_Y - 200);
+            ctx.fillStyle = 'rgba(255, 235, 180, 0.52)';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+            ctx.shadowBlur = 6;
+            ctx.fillText('☀️ CONSTELACIÓN ESTIVAL · CAMPAMENTOS DE VERANO', scSummerTitle.x, scSummerTitle.y);
+
+            // Título de la Constelación de Semana Santa (abajo)
+            const scEasterTitle = worldToScreen(CAMPS_ORIGIN_X, CAMPS_ORIGIN_Y + 215);
+            ctx.fillStyle = 'rgba(167, 243, 208, 0.52)';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+            ctx.shadowBlur = 6;
+            ctx.fillText('🌸 CONSTELACIÓN EQUINOCCIAL · SEMANA SANTA Y PRIMAVERA', scEasterTitle.x, scEasterTitle.y);
+
             ctx.restore();
         }
 

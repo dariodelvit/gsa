@@ -493,6 +493,28 @@ body.cosmos-body {
     margin-bottom: 0.85rem;
 }
 
+.camps-constellation-group {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.camps-group-title {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.60);
+    margin-bottom: 0.35rem;
+}
+
+.camps-group-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.38rem;
+}
+
 .star-node-chip {
     background: rgba(8, 9, 13, 0.76);
     backdrop-filter: blur(12px);
