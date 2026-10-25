@@ -42,8 +42,9 @@
             constellationTitle: 'ESTRELLA I · «LA VIDA EN EL ESTANQUE»',
             age: '6 a 8 años (1º y 2º de Primaria)',
             motto: 'Lema: «Compartir»',
-            socialUrl: 'https://www.instagram.com/coloniaohiensis518/',
-            socialLabel: '@coloniaohiensis518',
+            bannerImg: 'images/DSC_04051.jpg',
+            socialUrl: null,
+            socialLabel: null,
             accentColor: '#38BDF8',
             glowColor: 'rgba(56, 189, 248, 0.12)',
             ringColor: 'rgba(56, 189, 248, 0.38)',
@@ -130,8 +131,9 @@
             constellationTitle: 'ESTRELLA II · SELVA DE SEEONEE Y RÍO WAIGUNGA',
             age: '8 a 11 años (3º, 4º y 5º de Primaria)',
             motto: 'Lema: «Haremos lo mejor»',
-            socialUrl: 'https://www.instagram.com/manadakhanhiwara/',
-            socialLabel: '@manadakhanhiwara',
+            bannerImg: 'images/DSC_058812.jpg',
+            socialUrl: null,
+            socialLabel: null,
             accentColor: '#FBBF24',
             glowColor: 'rgba(251, 191, 36, 0.12)',
             ringColor: 'rgba(251, 191, 36, 0.38)',
@@ -188,8 +190,9 @@
             constellationTitle: 'ESTRELLA III · TROPA LOHENGRIN',
             age: '11 a 14 años (6º Primaria, 1º y 2º de ESO)',
             motto: 'Lema: «Siempre Listos»',
-            socialUrl: 'https://www.instagram.com/tropalohengrin518/',
-            socialLabel: '@tropalohengrin518',
+            bannerImg: 'images/DSC_059812.jpg',
+            socialUrl: null,
+            socialLabel: null,
             accentColor: '#34D399',
             glowColor: 'rgba(52, 211, 153, 0.12)',
             ringColor: 'rgba(52, 211, 153, 0.38)',
@@ -244,6 +247,7 @@
             constellationTitle: 'ESTRELLA IV · UNIDAD ESCULTA TREA',
             age: '14 a 17 años (3º, 4º de ESO y 1º de Bachillerato)',
             motto: 'Lema: «Unidad»',
+            bannerImg: 'images/DSC_064012.jpg',
             socialUrl: 'https://www.instagram.com/unidadtrea518/',
             socialLabel: '@unidadtrea518',
             accentColor: '#A67B5B',
@@ -294,6 +298,7 @@
             constellationTitle: 'ESTRELLA V · CLAN ROVER AMA DABLAM',
             age: '17 a 21 años (2º Bachillerato, FP y Universidad)',
             motto: 'Lema: «Servir»',
+            bannerImg: 'images/DSC_066412.jpg',
             socialUrl: 'https://www.instagram.com/clan_amadablam518/',
             socialLabel: '@clan_amadablam518',
             accentColor: '#D9383A',
@@ -713,70 +718,70 @@
         {
             index: 4,
             roman: 'V',
-            code: 'SECTOR V / V · BASES OPERATIVAS Y CONTACTO',
-            subtitle: 'COORDENADAS EN VALLADOLID · CANAL DIRECTO E INSCRIPCIÓN',
+            code: 'SECTOR V / V · BASES, COORDINACIÓN Y REDES',
+            subtitle: 'COORDENADAS EN VALLADOLID · EQUIPO Y CANALES OFICIALES',
             coords: '41° 37\' N · 4° 44\' W (VALLADOLID)',
             headingHTML: 'Nuestras <span class="ice-italic">Bases y Contacto</span>',
-            desc: 'Nuestras Bases de operaciones en Valladolid y en la naturaleza son el punto de encuentro de las cinco unidades cada sábado. Contacta con Coordinación o solicita venir a probar un sábado gratis.',
+            desc: 'Nuestra Base oficial en Valladolid es el punto de encuentro de las cinco unidades cada sábado. Contacta con Coordinación, ven a probar un sábado gratis o síguenos en nuestras redes sociales.',
             worldX: -1380,
             worldY: 480,
             baseZoom: 1.05,
-            primaryBtnText: '⚜️ Abrir Panel de Bases y Solicitar Sábado de Prueba',
+            primaryBtnText: '⚜️ Abrir Panel de Bases, Coordinación y Redes',
             stars: [
                 {
                     id: 'base-central',
-                    symbol: 'α Base Central · Rueda 53',
-                    dx: 0,
-                    dy: -155,
+                    symbol: 'α Bases del Grupo',
+                    dx: -130,
+                    dy: -90,
                     r: 8.6,
                     color: '#FFFFFF',
                     halo: 'rgba(217, 56, 58, 0.36)',
                     badge: 'Base Principal · CP 47008',
-                    title: 'Base Principal: Carretera de Rueda, 53 (Valladolid)',
-                    body: 'Nuestro local y centro de intendencia en Valladolid. Aquí arrancan y terminan nuestras actividades ordinarias todos los sábados de 16:30 a 19:00 h.',
-                    pillars: ['📍 Carretera de Rueda, 53 (47008)', '🕓 Sábados de 16:30 a 19:00 h', '🚌 Conexión directa Auvasa']
-                },
-                {
-                    id: 'bases-campo',
-                    symbol: 'β Bases de Campo',
-                    dx: -165,
-                    dy: 18,
-                    r: 6.8,
-                    color: '#FFFFFF',
-                    halo: 'rgba(255, 255, 255, 0.28)',
-                    badge: 'Entornos Naturales',
-                    title: 'Bases de Campo: Pinar de Antequera, Contiendas y Montaña',
-                    body: 'Además de nuestra Base en Crtra. de Rueda, desarrollamos nuestros juegos de pista, construcciones y acampadas en el Pinar de Antequera, la Ribera del Pisuerga y parajes de montaña de Castilla y León.',
-                    pillars: ['🌲 Pinar de Antequera', '🏞️ Ribera y Parques de Valladolid', '🏔️ Bases de Acampada en CyL']
+                    title: 'Bases del Grupo: Carretera de Rueda, 53 (Valladolid)',
+                    body: 'Nuestro local y centro de intendencia en Valladolid. Aquí nos reunimos todos los sábados lectivos de 16:30 a 19:00 h para juegos, talleres y asambleas.',
+                    pillars: ['📍 Carretera de Rueda, 53', '🕓 Sábados de 16:30 a 19:00 h', '🚌 Auvasa Líneas 1 y 2']
                 },
                 {
                     id: 'canal-coordinacion',
-                    symbol: 'γ Coordinación Directa',
-                    dx: 165,
-                    dy: 18,
-                    r: 6.8,
+                    symbol: 'β Coordinación',
+                    dx: 130,
+                    dy: -90,
+                    r: 8.0,
                     color: '#FFFFFF',
                     halo: 'rgba(255, 255, 255, 0.28)',
                     badge: 'Atención a Familias',
-                    title: 'Contacto Directo: JJ, Marta y Hugo',
+                    title: 'Equipo de Coordinación: JJ, Marta y Hugo',
                     body: 'Habla directamente por teléfono, WhatsApp o correo electrónico con los coordinadores de grupo para consultar plazas por año de nacimiento o cualquier duda.',
-                    pillars: ['📞 JJ: 616 28 91 19', '📞 Marta: 619 20 20 68 · Hugo', '✉️ gruposcoutacrux518@gmail.com']
+                    pillars: ['💬 WhatsApp Directo', '📞 Llamada Telefónica', '✉️ Correo Oficial']
                 },
                 {
                     id: 'base-inscripcion',
-                    symbol: 'δ Sábado de Prueba',
-                    dx: 0,
-                    dy: 150,
-                    r: 7.5,
+                    symbol: 'γ Sábado de Prueba',
+                    dx: -130,
+                    dy: 90,
+                    r: 7.8,
                     color: '#FFFFFF',
                     halo: 'rgba(217, 56, 58, 0.32)',
                     badge: '6 a 21 Años · Sin Compromiso',
-                    title: 'Ven a Probar un Sábado Gratis con tu Unidad',
-                    body: 'Cualquier niño, niña o joven de 6 a 21 años puede venir a probar un sábado gratis sin compromiso para conocer a sus compañeros y a los Kraaletes de su rama.',
-                    pillars: ['1. Escríbenos con su edad', '2. Ven un sábado a las 16:30 h', '3. ¡Bienvenido a Acrux 518!']
+                    title: 'Ven a Probar un Sábado Gratis con tu Rama',
+                    body: 'Cualquier niño, niña o joven de 6 a 21 años puede venir a probar un sábado gratis sin compromiso para conocer su unidad y a sus scouters.',
+                    pillars: ['1. Elige tu Unidad', '2. Ven a las 16:30 h', '3. ¡Vive la Aventura!']
+                },
+                {
+                    id: 'redes-sociales',
+                    symbol: 'δ Redes Sociales',
+                    dx: 130,
+                    dy: 90,
+                    r: 8.0,
+                    color: '#FFFFFF',
+                    halo: 'rgba(225, 48, 108, 0.38)',
+                    badge: 'Canales Oficiales',
+                    title: 'Redes Sociales Oficiales del Grupo Scout Acrux 518',
+                    body: 'Sigue el día a día, fotos de acampadas, salidas y noticias del grupo y de sus ramas en Instagram, Facebook y canales oficiales.',
+                    pillars: ['📸 @gruposcoutacrux518', '📸 @unidadtrea518', '📸 @clan_amadablam518', '📘 Facebook Acrux']
                 }
             ],
-            edges: [[0, 1], [0, 2], [0, 3], [1, 3], [2, 3]]
+            edges: [[0, 1], [1, 3], [3, 2], [2, 0], [0, 3], [1, 2]]
         }
     ];
 
@@ -1016,13 +1021,36 @@
             SECTORS[2].desc = 'Constelación oficial de campamentos del Grupo Scout ACRUX 518 sincronizada con Google Drive.';
         }
 
+        // Helper para generar etiquetas compactas de 2 líneas y evitar colisiones de texto
+        function getCampDisplayLabels(rawName, greekLetter) {
+            const yearMatch = (rawName || '').match(/\b(19\d\d|20\d\d)\b/);
+            const year = yearMatch ? yearMatch[1] : '';
+
+            let clean = (rawName || '')
+                .replace(/\b(Campamento|Campamentos|de|del|Verano|Semana\s+Santa|Primavera|Acampada|Salida|Raid|en)\b/gi, '')
+                .replace(/\b(19\d\d|20\d\d)\b/g, '')
+                .replace(/[-_–·:]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+
+            if (!clean) clean = (rawName || '').replace(/[-_]/g, ' ').trim();
+            if (clean.length > 18) clean = clean.substring(0, 16) + '…';
+
+            const line1 = `✦ ${greekLetter} ${year}`.trim();
+            const line2 = clean;
+            const starSymbol = year ? `✦ ${greekLetter} ${year} · ${clean}` : `✦ ${greekLetter} ${clean}`;
+
+            return { line1, line2, starSymbol };
+        }
+
         // 4. Construcción geométrica de la Constelación de Verano (Hemisferio Superior)
-        const baseY_s = hasBothCampsConstellations ? -115 : 0;
-        const spanX_s = Math.min(1240, Math.max(420, (N_s - 1) * 175));
+        const baseY_s = hasBothCampsConstellations ? -135 : 0;
+        const spanX_s = Math.min(1450, Math.max(480, (N_s - 1) * 230));
 
         const summerCamps = rawSummer.map((c, idx) => {
             const letter = GREEK_ALPHABET[idx] || `★${idx + 1}`;
             const isLast = (idx === N_s - 1);
+            const lbl = getCampDisplayLabels(c.name, letter);
             let dx = 0;
             let dy = baseY_s;
 
@@ -1032,21 +1060,24 @@
             } else {
                 const t = idx / (N_s - 1);
                 const baseX = -spanX_s * 0.5 + t * spanX_s;
-                const jitterX = Math.cos(idx * 2.3 + 1.2) * 14;
+                const jitterX = Math.cos(idx * 2.3 + 1.2) * 16;
                 dx = Math.round(baseX + jitterX);
 
                 const arcY = -Math.sin(t * Math.PI) * 45;
-                const waveY = Math.sin(t * Math.PI * 2.2) * 18;
+                const waveY = (idx % 2 === 0 ? -22 : 22) + Math.sin(t * Math.PI * 2.2) * 14;
                 dy = Math.round(baseY_s + arcY + waveY);
             }
 
-            const r = isLast ? 9.4 : (idx === 0 ? 8.2 : 6.6 + ((idx * 3 + 1) % 4) * 0.3);
+            const r = isLast ? 9.5 : (idx === 0 ? 8.2 : 6.8 + ((idx * 3 + 1) % 4) * 0.3);
+            const labelPos = (idx % 2 === 0) ? 'top' : 'bottom';
 
             return {
                 id: c.id || `camp-summer-${idx}`,
                 seasonType: 'summer',
-                seasonBadge: '☀️ Campamento de Verano',
-                starSymbol: `☀️ ${letter} ${c.name || 'Verano'}`,
+                seasonBadge: 'Campamento de Verano',
+                starSymbol: lbl.starSymbol,
+                labelLine1: lbl.line1,
+                labelLine2: lbl.line2,
                 name: c.name || `Campamento de Verano ${idx + 1}`,
                 season: c.season || 'Campamento de Verano',
                 location: c.location || '📍 Ubicación estival',
@@ -1055,7 +1086,7 @@
                 dx,
                 dy,
                 r,
-                labelPos: 'top',
+                labelPos,
                 isRedStar: isLast,
                 isLastCamp: isLast,
                 desc: c.desc || 'Campamento oficial de verano del Grupo Scout ACRUX 518 sincronizado con Google Drive.',
@@ -1064,12 +1095,13 @@
         });
 
         // 5. Construcción geométrica de la Constelación de Semana Santa (Hemisferio Inferior)
-        const baseY_e = hasBothCampsConstellations ? +115 : 0;
-        const spanX_e = Math.min(1160, Math.max(400, (N_e - 1) * 180));
+        const baseY_e = hasBothCampsConstellations ? +135 : 0;
+        const spanX_e = Math.min(1400, Math.max(460, (N_e - 1) * 230));
 
         const easterCamps = rawEaster.map((c, idx) => {
             const letter = GREEK_ALPHABET[idx] || `✦${idx + 1}`;
             const isLast = (idx === N_e - 1);
+            const lbl = getCampDisplayLabels(c.name, letter);
             let dx = 0;
             let dy = baseY_e;
 
@@ -1079,21 +1111,24 @@
             } else {
                 const t = idx / (N_e - 1);
                 const baseX = -spanX_e * 0.5 + t * spanX_e;
-                const jitterX = Math.sin(idx * 2.1 + 0.8) * 14;
+                const jitterX = Math.sin(idx * 2.1 + 0.8) * 16;
                 dx = Math.round(baseX + jitterX);
 
                 const arcY = Math.sin(t * Math.PI) * 35;
-                const waveY = Math.cos(t * Math.PI * 2.0) * 16;
+                const waveY = (idx % 2 === 0 ? 22 : -22) + Math.cos(t * Math.PI * 2.0) * 14;
                 dy = Math.round(baseY_e + arcY + waveY);
             }
 
-            const r = isLast ? 9.2 : (idx === 0 ? 8.0 : 6.5 + ((idx * 2 + 1) % 4) * 0.3);
+            const r = isLast ? 9.2 : (idx === 0 ? 8.0 : 6.6 + ((idx * 2 + 1) % 4) * 0.3);
+            const labelPos = (idx % 2 === 0) ? 'bottom' : 'top';
 
             return {
                 id: c.id || `camp-easter-${idx}`,
                 seasonType: 'easter',
-                seasonBadge: '🌸 Semana Santa y Primavera',
-                starSymbol: `🌸 ${letter} ${c.name || 'Semana Santa'}`,
+                seasonBadge: 'Semana Santa y Primavera',
+                starSymbol: lbl.starSymbol,
+                labelLine1: lbl.line1,
+                labelLine2: lbl.line2,
                 name: c.name || `Campamento de Semana Santa ${idx + 1}`,
                 season: c.season || 'Campamento de Semana Santa',
                 location: c.location || '📍 Ubicación de acampada',
@@ -1102,7 +1137,7 @@
                 dx,
                 dy,
                 r,
-                labelPos: 'bottom',
+                labelPos,
                 isRedStar: isLast,
                 isLastCamp: isLast,
                 desc: c.desc || 'Acampada o campamento oficial de Semana Santa del Grupo Scout ACRUX 518 sincronizado con Google Drive.',
@@ -1131,6 +1166,8 @@
         const campConstellationStars = CAMPS_DATA.map((camp, cIdx) => ({
             id: `camp-star-${camp.id}`,
             symbol: camp.starSymbol,
+            labelLine1: camp.labelLine1,
+            labelLine2: camp.labelLine2,
             dx: camp.dx,
             dy: camp.dy,
             r: camp.r,
@@ -1641,7 +1678,7 @@
 
                     elStarNodesWrap.innerHTML = `
                         <div class="camps-constellation-group">
-                            <span class="camps-group-title">☀️ Constelación Estival · Verano</span>
+                            <span class="camps-group-title">Constelación Estival · Verano</span>
                             <div class="camps-group-chips">
                                 ${summerItems.map(it => `
                                     <button type="button" class="star-node-chip ${it.isRed ? 'is-red-chip' : ''} ${it.idx === subIdx ? 'active' : ''}" data-sub-idx="${it.idx}">
@@ -1651,7 +1688,7 @@
                             </div>
                         </div>
                         <div class="camps-constellation-group" style="margin-top: 0.6rem;">
-                            <span class="camps-group-title">🌸 Constelación Equinoccial · Semana Santa</span>
+                            <span class="camps-group-title">Constelación Equinoccial · Semana Santa y Primavera</span>
                             <div class="camps-group-chips">
                                 ${easterItems.map(it => `
                                     <button type="button" class="star-node-chip ${it.isRed ? 'is-red-chip' : ''} ${it.idx === subIdx ? 'active' : ''}" data-sub-idx="${it.idx}">
@@ -1772,7 +1809,13 @@
 
         const heroVisual = document.getElementById('uzHeroVisual');
         if (heroVisual) {
-            heroVisual.innerHTML = unit.heroSvg || '';
+            if (unit.bannerImg) {
+                heroVisual.innerHTML = `<img src="${unit.bannerImg}" alt="Banner oficial de ${unit.fullName}" class="unit-banner-img" loading="eager">`;
+            } else if (unit.heroSvg) {
+                heroVisual.innerHTML = unit.heroSvg;
+            } else {
+                heroVisual.innerHTML = '';
+            }
         }
 
         // Redes sociales de la unidad
@@ -2095,8 +2138,8 @@
         const seasonPill = document.getElementById('czSeasonPill');
         if (seasonPill) {
             seasonPill.textContent = camp.seasonType === 'easter'
-                ? '🌸 CONSTELACIÓN EQUINOCCIAL (SEMANA SANTA)'
-                : '☀️ CONSTELACIÓN ESTIVAL (VERANO)';
+                ? 'CONSTELACIÓN EQUINOCCIAL (SEMANA SANTA)'
+                : 'CONSTELACIÓN ESTIVAL (VERANO)';
         }
         const locPill = document.getElementById('czLocationPill');
         if (locPill) locPill.textContent = camp.location || '📍 Ubicación en naturaleza';
@@ -2462,10 +2505,36 @@
                 : defaultCoords;
 
             drawerBody.innerHTML = `
-                <!-- 1. BLOQUE DE COORDINACIÓN CON FOTO Y ACCIÓN EN 1 CLIC -->
+                <!-- 1. BLOQUE BASES DEL GRUPO (SEDE OFICIAL RUEDA 53) -->
                 <div class="bases-modal-section">
                     <div class="bases-section-title-row">
-                        <span class="bases-pill-badge">👥 EQUIPO DE COORDINACIÓN</span>
+                        <span class="bases-pill-badge">📍 01 · BASES DEL GRUPO</span>
+                        <h3>Sede Oficial de Acrux 518</h3>
+                        <p>Punto de encuentro semanal para las 5 ramas scout, actividades ordinarias y reuniones:</p>
+                    </div>
+
+                    <div class="bases-locations-grid">
+                        <article class="base-location-card" style="border-color: rgba(217, 56, 58, 0.45);">
+                            <div>
+                                <span class="base-type-badge">BASE PRINCIPAL · REUNIONES DE SÁBADO</span>
+                                <h4>Carretera de Rueda, 53 (CP 47008, Valladolid)</h4>
+                                <p class="base-schedule">🕓 <strong>Sábados de 16:30 a 19:00 h</strong> (calendario escolar lectivo)</p>
+                            </div>
+                            <p class="base-desc">Sede oficial del Grupo Scout ACRUX 518 en Valladolid. Aquí arrancan y terminan nuestras actividades de sábado, juegos de ciudad, asambleas de familias y almacén de intendencia.</p>
+                            <div class="base-actions">
+                                <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="btn-cosmos-primary" style="padding:0.5rem 1.05rem; font-size:0.8rem;">
+                                    <span>🗺️ Abrir en Google Maps</span>
+                                    <span class="btn-arrow">↗</span>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- 2. BLOQUE DE COORDINACIÓN CON FOTO Y ACCIÓN EN 1 CLIC -->
+                <div class="bases-modal-section" style="margin-top: 1.6rem;">
+                    <div class="bases-section-title-row">
+                        <span class="bases-pill-badge">👥 02 · EQUIPO DE COORDINACIÓN</span>
                         <h3>Canal Directo con Coordinación</h3>
                         <p>Atención directa para familias y nuevos jóvenes. Contacta en 1 clic:</p>
                     </div>
@@ -2501,48 +2570,10 @@
                     </div>
                 </div>
 
-                <!-- 2. BLOQUE NUESTRAS BASES: BASE PRINCIPAL Y BASES DE CAMPO -->
-                <div class="bases-modal-section" style="margin-top: 1.6rem;">
-                    <div class="bases-section-title-row">
-                        <span class="bases-pill-badge">📍 COORDENADAS OPERATIVAS</span>
-                        <h3>Nuestras Bases en Valladolid</h3>
-                    </div>
-
-                    <div class="bases-locations-grid">
-                        <article class="base-location-card">
-                            <div>
-                                <span class="base-type-badge">BASE PRINCIPAL · REUNIONES DE SÁBADO</span>
-                                <h4>Carretera de Rueda, 53 (CP 47008)</h4>
-                                <p class="base-schedule">🕓 <strong>Sábados de 16:30 a 19:00 h</strong> (calendario lectivo)</p>
-                            </div>
-                            <p class="base-desc">Sede oficial del Grupo Scout ACRUX 518. Punto de encuentro semanal para todas las unidades educativas, asambleas de familias e intendencia.</p>
-                            <div class="base-actions">
-                                <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="btn-cosmos-primary" style="padding:0.48rem 0.95rem; font-size:0.78rem;">
-                                    <span>🗺️ Abrir en Google Maps</span>
-                                    <span class="btn-arrow">↗</span>
-                                </a>
-                            </div>
-                        </article>
-
-                        <article class="base-location-card">
-                            <div>
-                                <span class="base-type-badge">BASES DE CAMPO Y MONTAÑA</span>
-                                <h4>Naturaleza en Valladolid y Castilla y León</h4>
-                                <p class="base-schedule">🌲 <strong>Salidas y acampadas frecuentes</strong></p>
-                            </div>
-                            <p class="base-desc">Espacios naturales donde aplicamos el escultismo al aire libre: <strong>Pinar de Antequera</strong>, <strong>Parque de las Contiendas</strong>, <strong>Ribera del Pisuerga</strong> y campamentos de montaña.</p>
-                            <div class="base-actions">
-                                <span class="field-base-badge">🌲 Naturaleza 100% Real</span>
-                                <span class="field-base-badge">⛺ Acampadas y Vivacs</span>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-
                 <!-- 3. PASO A PASO: ¿QUIERES VENIR A PROBAR? + FORMULARIO RÁPIDO -->
                 <div class="bases-modal-section" style="margin-top: 1.6rem;">
                     <div class="bases-section-title-row">
-                        <span class="bases-pill-badge">⚜️ INSCRIPCIÓN Y SÁBADO DE PRUEBA</span>
+                        <span class="bases-pill-badge">⚜️ 03 · SÁBADO DE PRUEBA</span>
                         <h3>¿Quieres apuntarte o venir a probar un sábado?</h3>
                         <p>El primer sábado es totalmente gratuito y sin compromiso. ¡Ven a conocernos!</p>
                     </div>
@@ -2590,6 +2621,77 @@
                             </div>
                             <div id="bcSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
                         </form>
+                    </div>
+                </div>
+
+                <!-- 4. BLOQUE TODAS LAS REDES SOCIALES DEL GRUPO -->
+                <div class="bases-modal-section" style="margin-top: 1.6rem;">
+                    <div class="bases-section-title-row">
+                        <span class="bases-pill-badge">📱 04 · REDES SOCIALES DEL GRUPO</span>
+                        <h3>Canales Oficiales de Acrux 518</h3>
+                        <p>Sigue las salidas, acampadas, fotos semanales y avisos en nuestras redes oficiales:</p>
+                    </div>
+
+                    <div class="group-socials-grid">
+                        <a href="https://www.instagram.com/gruposcoutacrux518/" target="_blank" rel="noopener" class="group-social-card is-instagram">
+                            <div class="group-social-header">
+                                <div class="group-social-icon">📸</div>
+                                <div class="group-social-info">
+                                    <strong>Instagram General</strong>
+                                    <span>@gruposcoutacrux518</span>
+                                </div>
+                            </div>
+                            <p class="group-social-desc">Cuenta oficial del grupo: fotos de actividades, avisos de rondas solares y campamentos.</p>
+                            <span class="group-social-link-btn">Ver Perfil Oficial ↗</span>
+                        </a>
+
+                        <a href="https://www.instagram.com/unidadtrea518/" target="_blank" rel="noopener" class="group-social-card is-instagram">
+                            <div class="group-social-header">
+                                <div class="group-social-icon">📸</div>
+                                <div class="group-social-info">
+                                    <strong>Unidad Esculta Trea</strong>
+                                    <span>@unidadtrea518</span>
+                                </div>
+                            </div>
+                            <p class="group-social-desc">Red oficial de la rama esculta (14 a 17 años): raids, vivacs y Empresas Escultas.</p>
+                            <span class="group-social-link-btn">Ver Perfil de Trea ↗</span>
+                        </a>
+
+                        <a href="https://www.instagram.com/clan_amadablam518/" target="_blank" rel="noopener" class="group-social-card is-instagram">
+                            <div class="group-social-header">
+                                <div class="group-social-icon">📸</div>
+                                <div class="group-social-info">
+                                    <strong>Clan Rover Ama Dablam</strong>
+                                    <span>@clan_amadablam518</span>
+                                </div>
+                            </div>
+                            <p class="group-social-desc">Red oficial de los Rovers (17 a 21 años): proyectos de servicio, montaña y rutas.</p>
+                            <span class="group-social-link-btn">Ver Perfil del Clan ↗</span>
+                        </a>
+
+                        <a href="https://www.facebook.com/GrupoScoutAcrux518" target="_blank" rel="noopener" class="group-social-card is-facebook">
+                            <div class="group-social-header">
+                                <div class="group-social-icon">📘</div>
+                                <div class="group-social-info">
+                                    <strong>Página de Facebook</strong>
+                                    <span>Grupo Scout Acrux 518</span>
+                                </div>
+                            </div>
+                            <p class="group-social-desc">Página en Facebook para familias y antiguos miembros del grupo scout en Valladolid.</p>
+                            <span class="group-social-link-btn">Abrir Facebook ↗</span>
+                        </a>
+
+                        <a href="mailto:gruposcoutacrux518@gmail.com" class="group-social-card is-email">
+                            <div class="group-social-header">
+                                <div class="group-social-icon">✉️</div>
+                                <div class="group-social-info">
+                                    <strong>Correo Oficial</strong>
+                                    <span>gruposcoutacrux518@gmail.com</span>
+                                </div>
+                            </div>
+                            <p class="group-social-desc">Atención formal para trámites de inscripción, documentación y consultas institucionales.</p>
+                            <span class="group-social-link-btn">Escribir Correo ↗</span>
+                        </a>
                     </div>
                 </div>
             `;
@@ -3325,14 +3427,14 @@
             ctx.fillStyle = 'rgba(255, 235, 180, 0.52)';
             ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
             ctx.shadowBlur = 6;
-            ctx.fillText('☀️ CONSTELACIÓN ESTIVAL · CAMPAMENTOS DE VERANO', scSummerTitle.x, scSummerTitle.y);
+            ctx.fillText('CONSTELACIÓN ESTIVAL · CAMPAMENTOS DE VERANO', scSummerTitle.x, scSummerTitle.y);
 
             // Título de la Constelación de Semana Santa (abajo)
             const scEasterTitle = worldToScreen(CAMPS_ORIGIN_X, CAMPS_ORIGIN_Y + 215);
             ctx.fillStyle = 'rgba(167, 243, 208, 0.52)';
             ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
             ctx.shadowBlur = 6;
-            ctx.fillText('🌸 CONSTELACIÓN EQUINOCCIAL · SEMANA SANTA Y PRIMAVERA', scEasterTitle.x, scEasterTitle.y);
+            ctx.fillText('CONSTELACIÓN EQUINOCCIAL · SEMANA SANTA Y PRIMAVERA', scEasterTitle.x, scEasterTitle.y);
 
             ctx.restore();
         }
@@ -3441,7 +3543,21 @@
                         : (anniversaryLerp > 0.35 ? 'rgba(243, 229, 171, 0.75)' : 'rgba(255, 255, 255, 0.74)');
                 }
 
-                if (nd.labelPos === 'top') {
+                if (nd.clusterType === 'camp' && nd.labelLine1) {
+                    ctx.textAlign = 'center';
+                    const isTop = (nd.labelPos === 'top');
+                    const y1 = isTop ? (sy - r * 1.35 - 20) : (sy + r * 1.35 + 13);
+                    const y2 = y1 + 11.5;
+
+                    ctx.fillText(nd.labelLine1, sx, y1);
+                    if (nd.labelLine2) {
+                        ctx.font = '400 9.5px "JetBrains Mono", monospace';
+                        ctx.fillStyle = nd.isRedStar 
+                            ? 'rgba(255, 163, 158, 0.90)' 
+                            : ((isHovered || isSelectedInSector) ? '#FFFFFF' : 'rgba(255, 255, 255, 0.68)');
+                        ctx.fillText(nd.labelLine2, sx, y2);
+                    }
+                } else if (nd.labelPos === 'top') {
                     ctx.textAlign = 'center';
                     ctx.fillText(nd.symbol, sx, sy - r * 1.35 - 9);
                 } else if (nd.labelPos === 'bottom') {
@@ -3799,10 +3915,15 @@
                 unit.salidas = uData.salidas;
             }
 
-            // Redes sociales de la unidad
-            if (uData && uData.socialUrl) {
-                unit.socialUrl = uData.socialUrl;
-                if (uData.socialLabel) unit.socialLabel = uData.socialLabel;
+            // Redes sociales de la unidad: solo Escultas y Clan tienen redes oficiales propias
+            if (unit.id === 'escultas' || unit.id === 'clan') {
+                if (uData && uData.socialUrl) {
+                    unit.socialUrl = uData.socialUrl;
+                    if (uData.socialLabel) unit.socialLabel = uData.socialLabel;
+                }
+            } else {
+                unit.socialUrl = null;
+                unit.socialLabel = null;
             }
         });
 
