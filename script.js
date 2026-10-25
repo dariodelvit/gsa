@@ -1342,12 +1342,6 @@
             syncSectorUI(2, 0, true);
         }
     }
-
-        // 5. Refrescar los chips de estrellas si el usuario está viendo el Sector III
-        if (typeof activeSectorIdx !== 'undefined' && activeSectorIdx === 2 && typeof syncSectorUI === 'function') {
-            syncSectorUI(2, 0, true);
-        }
-    }
     window.rebuildCampsConstellation = rebuildCampsConstellation;
 
     // =========================================================================
