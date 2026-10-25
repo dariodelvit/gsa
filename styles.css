@@ -2611,6 +2611,81 @@ body.cosmos-body {
     margin-top: 1rem;
 }
 
+/* Modal de Historia del Grupo Scout Acrux 518 (Sector I) */
+.identity-hero-badge {
+    margin-bottom: 1.25rem;
+}
+
+.identity-hero-badge h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin: 0.35rem 0 0.25rem 0;
+}
+
+.identity-hero-badge p {
+    font-size: 0.88rem;
+    color: var(--ice-muted);
+    margin: 0;
+}
+
+.identity-story-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.95rem;
+}
+
+.identity-story-card {
+    background: rgba(12, 16, 26, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 1.25rem 1.35rem;
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.identity-story-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(217, 56, 58, 0.55);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.story-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(217, 56, 58, 0.18);
+    border: 1px solid rgba(217, 56, 58, 0.38);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    flex-shrink: 0;
+}
+
+.story-card-body h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin: 0 0 0.4rem 0;
+}
+
+.story-card-body p {
+    font-size: 0.84rem;
+    line-height: 1.55;
+    color: var(--ice-grey);
+    margin: 0 0 0.45rem 0;
+}
+
+.story-card-body p:last-child {
+    margin-bottom: 0;
+}
+
 .dossier-card {
     background: rgba(255, 255, 255, 0.035);
     border: 1px solid rgba(255, 255, 255, 0.12);

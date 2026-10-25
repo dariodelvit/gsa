@@ -572,81 +572,71 @@
             subtitle: 'ESTRELLA GUÍA · VALLADOLID (DESDE 1977)',
             coords: 'RA 12h 26m · DEC -63° 05\'',
             headingHTML: 'Cruz del Sur <span class="ice-italic">Acrux 518</span>',
-            desc: 'Nuestra insignia estelar reproduce fielmente la constelación de la Cruz del Sur (Crux): Acrux en la base, Gacrux en la cúspide norte, Mimosa a la izquierda, Imai a la derecha e Intrometida (ε Crucis). Haz scroll para viajar a la línea de nuestras Unidades.',
+            desc: 'La constelación de la Cruz del Sur (Crux) preside nuestra insignia estelar. En su base brilla Acrux (Alfa Crucis), la estrella más luminosa y el faro guía de los exploradores desde 1977. Pulsa en Acrux para conocer la historia de nuestro grupo scout.',
             worldX: 0,
             worldY: 0,
             baseZoom: 1.06,
-            primaryBtnText: 'Ir a la Constelación de Unidades',
+            primaryBtnText: '✦ Conoce Acrux 518 y su Historia',
             stars: [
                 {
                     id: 'acrux',
-                    symbol: 'α Acrux (Base)',
+                    symbol: '✦ α Acrux (Faro Guía)',
                     dx: 12,
                     dy: 172,
-                    r: 8.6,
+                    r: 12.0,
                     color: '#FFFFFF',
-                    halo: 'rgba(217, 56, 58, 0.36)',
+                    halo: 'rgba(217, 56, 58, 0.48)',
                     isMainCross: true,
+                    isMainAcrux: true,
+                    isClickable: true,
                     badge: 'Estrella Principal · Base de la Cruz',
                     title: 'α Crucis (Acrux) · El Faro que Nos Da Nombre',
-                    body: 'Situada en el pie meridional de la Cruz del Sur, Acrux es la estrella guía de los exploradores. Desde 1977 da nombre al Grupo Scout Nº 518 de ASDE en Valladolid.',
-                    pillars: ['Fundado en Valladolid en 1977', 'ASDE Exploradores de Castilla y León', 'Pañoleta Carmesí y Blanca']
+                    body: 'Situada en el pie meridional de la Cruz del Sur, Acrux es la estrella guía de los navegantes y exploradores. Desde 1977 da nombre y rumbo al Grupo Scout Nº 518 en Valladolid.',
+                    pillars: ['Fundado en Valladolid en 1977', 'ASDE Exploradores de Castilla y León', 'Educación en Valores']
                 },
                 {
                     id: 'gacrux',
-                    symbol: 'γ Gacrux (Cima)',
+                    symbol: 'γ Gacrux',
                     dx: -22,
                     dy: -192,
-                    r: 7.4,
+                    r: 6.8,
                     color: '#FFFFFF',
-                    halo: 'rgba(217, 56, 58, 0.42)',
+                    halo: 'rgba(255, 255, 255, 0.22)',
                     isMainCross: true,
-                    badge: 'Gigante Roja · Extremo Superior',
-                    title: 'γ Crucis (Gacrux) · El Fuego Carmesí',
-                    body: 'Corona la parte superior del eje mayor de la Cruz con un sutil fulgor carmesí, símbolo del fuego de campamento y del rojo (#B02324) de nuestra pañoleta.',
-                    pillars: ['Color Rojo Carmesí (#B02324)', 'Borde Blanco Nieve (#FFFFFF)', 'Calidez y Hermandad Scout']
+                    isClickable: false
                 },
                 {
                     id: 'mimosa',
-                    symbol: 'β Mimosa (Izq.)',
+                    symbol: 'β Mimosa',
                     dx: -152,
                     dy: -16,
-                    r: 7.5,
+                    r: 7.0,
                     color: '#FFFFFF',
-                    halo: 'rgba(255, 255, 255, 0.32)',
+                    halo: 'rgba(255, 255, 255, 0.22)',
                     isMainCross: true,
-                    badge: 'Brazo Izquierdo del Travesaño',
-                    title: 'β Crucis (Mimosa) · Educación en Valores',
-                    body: 'El segundo astro más luminoso de la constelación marca el extremo izquierdo del brazo transversal. Representa el método scout: aprender haciendo en pequeños grupos.',
-                    pillars: ['Aprender Haciendo', 'Naturaleza como Aula', '5 Unidades de 6 a 21 Años']
+                    isClickable: false
                 },
                 {
                     id: 'imai',
-                    symbol: 'δ Imai (Der.)',
+                    symbol: 'δ Imai',
                     dx: 104,
                     dy: -74,
-                    r: 6.4,
+                    r: 6.0,
                     color: '#FFFFFF',
-                    halo: 'rgba(255, 255, 255, 0.28)',
+                    halo: 'rgba(255, 255, 255, 0.18)',
                     isMainCross: true,
-                    badge: 'Brazo Derecho del Travesaño',
-                    title: 'δ Crucis (Imai) · Rumbo y Compromiso',
-                    body: 'Cierra el travesaño inclinado de la Cruz del Sur en su flanco derecho, señalando la lealtad a la Promesa y la Ley Scout en cada actividad de sábado y acampada.',
-                    pillars: ['Reuniones: Sábados 16:30 – 19:00 h', 'Base en Crtra. de Rueda, 53', '100% Voluntariado Educativo']
+                    isClickable: false
                 },
                 {
                     id: 'intrometida',
                     symbol: 'ε Intrometida',
                     dx: 50,
                     dy: 30,
-                    r: 5.6,
+                    r: 5.2,
                     color: '#FFFFFF',
-                    halo: 'rgba(217, 56, 58, 0.26)',
+                    halo: 'rgba(255, 255, 255, 0.16)',
                     isMainCross: true,
-                    badge: 'Quinta Estrella Interior (Ginan)',
-                    title: 'ε Crucis (Intrometida) · Las Cinco Ramas',
-                    body: 'Brilla en el cuadrante inferior derecho de la Cruz, completando las cinco estrellas principales que simbolizan nuestras cinco ramas educativas.',
-                    pillars: ['Castores · Manada · Tropa', 'Unidad Esculta · Clan Rover', 'Progresión de 6 a 21 años']
+                    isClickable: false
                 }
             ],
             edges: [
@@ -731,11 +721,11 @@
                 {
                     id: 'base-central',
                     symbol: 'α Bases del Grupo',
-                    dx: -130,
-                    dy: -90,
-                    r: 8.6,
+                    dx: 0,
+                    dy: -140,
+                    r: 9.0,
                     color: '#FFFFFF',
-                    halo: 'rgba(217, 56, 58, 0.36)',
+                    halo: 'rgba(217, 56, 58, 0.40)',
                     badge: 'Base Principal · CP 47008',
                     title: 'Bases del Grupo: Carretera de Rueda, 53 (Valladolid)',
                     body: 'Nuestro local y centro de intendencia en Valladolid. Aquí nos reunimos todos los sábados lectivos de 16:30 a 19:00 h para juegos, talleres y asambleas.',
@@ -744,11 +734,11 @@
                 {
                     id: 'canal-coordinacion',
                     symbol: 'β Coordinación',
-                    dx: 130,
-                    dy: -90,
-                    r: 8.0,
+                    dx: 135,
+                    dy: -25,
+                    r: 7.8,
                     color: '#FFFFFF',
-                    halo: 'rgba(255, 255, 255, 0.28)',
+                    halo: 'rgba(255, 255, 255, 0.35)',
                     badge: 'Atención a Familias',
                     title: 'Equipo de Coordinación: JJ, Marta y Hugo',
                     body: 'Habla directamente por teléfono, WhatsApp o correo electrónico con los coordinadores de grupo para consultar plazas por año de nacimiento o cualquier duda.',
@@ -758,10 +748,10 @@
                     id: 'base-inscripcion',
                     symbol: 'γ Sábado de Prueba',
                     dx: -130,
-                    dy: 90,
+                    dy: 25,
                     r: 7.8,
                     color: '#FFFFFF',
-                    halo: 'rgba(217, 56, 58, 0.32)',
+                    halo: 'rgba(52, 211, 153, 0.35)',
                     badge: '6 a 21 Años · Sin Compromiso',
                     title: 'Ven a Probar un Sábado Gratis con tu Rama',
                     body: 'Cualquier niño, niña o joven de 6 a 21 años puede venir a probar un sábado gratis sin compromiso para conocer su unidad y a sus scouters.',
@@ -770,9 +760,9 @@
                 {
                     id: 'redes-sociales',
                     symbol: 'δ Redes Sociales',
-                    dx: 130,
-                    dy: 90,
-                    r: 8.0,
+                    dx: 30,
+                    dy: 140,
+                    r: 8.2,
                     color: '#FFFFFF',
                     halo: 'rgba(225, 48, 108, 0.38)',
                     badge: 'Canales Oficiales',
@@ -781,7 +771,7 @@
                     pillars: ['📸 @gruposcoutacrux518', '📸 @unidadtrea518', '📸 @clan_amadablam518', '📘 Facebook Acrux']
                 }
             ],
-            edges: [[0, 1], [1, 3], [3, 2], [2, 0], [0, 3], [1, 2]]
+            edges: [[0, 1], [1, 3], [3, 2], [2, 0], [0, 3]]
         }
     ];
 
@@ -1659,7 +1649,9 @@
 
             if (elStarNodesWrap) {
                 let items = [];
-                if (sIdx === 1) {
+                if (sIdx === 0) {
+                    items = [{ label: '✦ α Acrux (Estrella Principal · Faro Guía)', idx: 0 }];
+                } else if (sIdx === 1) {
                     items = UNITS_DATA.map((u, idx) => ({ label: u.shortName, idx }));
                 } else if (sIdx === 2) {
                     items = CAMPS_DATA.map((c, idx) => ({
@@ -2718,21 +2710,78 @@
                 window.open(waUrl, '_blank', 'noopener');
             });
         } else {
-            const sec = SECTORS[0];
-            drawerKicker.textContent = sec.code;
-            drawerTitle.innerHTML = sec.headingHTML;
+            drawerKicker.textContent = 'SECTOR I · CRUX AUSTRALIS (LA CRUZ DEL SUR)';
+            drawerTitle.innerHTML = 'La Estrella Guía <span class="ice-italic">y Nuestra Historia</span>';
             drawerBody.innerHTML = `
-                <p>${sec.desc}</p>
-                <div class="dossier-grid">
-                    ${sec.stars.map(st => `
-                        <div class="dossier-card">
-                            <span class="dossier-tag">${st.badge}</span>
-                            <h3>${st.symbol} — ${st.title}</h3>
-                            <p>${st.body}</p>
-                        </div>
-                    `).join('')}
+                <div class="identity-modal-content">
+                    <div class="identity-hero-badge">
+                        <span class="bases-pill-badge">⚜️ FUNDADO EN VALLADOLID · DESDE 1977</span>
+                        <h3>Grupo Scout ACRUX Nº 518</h3>
+                        <p>El faro que nos da nombre y casi medio siglo de escultismo activo en Valladolid:</p>
+                    </div>
+
+                    <div class="identity-story-grid">
+                        <article class="identity-story-card">
+                            <div class="story-card-icon">✦</div>
+                            <div class="story-card-body">
+                                <h4>¿Por qué Acrux? · El Faro de los Exploradores</h4>
+                                <p>En el firmamento brilla la constelación de la Cruz del Sur (Crux). En su base se encuentra <strong>Acrux (Alfa Crucis)</strong>, la estrella más luminosa de toda la constelación. Desde hace siglos, navegantes y exploradores han utilizado Acrux como la brújula celestial definitiva para orientarse hacia el sur verdadero cuando caía la noche.</p>
+                                <p>Por eso, en 1977, nuestro grupo adoptó el nombre de <strong>ACRUX</strong>: el símbolo de una guía firme, de luz en la noche y de rumbo compartido.</p>
+                            </div>
+                        </article>
+
+                        <article class="identity-story-card">
+                            <div class="story-card-icon">⛺</div>
+                            <div class="story-card-body">
+                                <h4>Casi 50 Años de Escultismo en Valladolid (1977 – 2026)</h4>
+                                <p>Fundado en Valladolid en 1977, el Grupo Scout Acrux 518 lleva casi medio siglo acompañando el crecimiento de generaciones de niños, niñas y jóvenes a través del escultismo.</p>
+                                <p>Basados en el método scout ideado por Baden-Powell —aprender haciendo, vida en pequeños grupos, contacto vivo con la naturaleza y servicio a la comunidad—, educamos en valores para formar personas libres, críticas y solidarias.</p>
+                            </div>
+                        </article>
+
+                        <article class="identity-story-card">
+                            <div class="story-card-icon">🌲</div>
+                            <div class="story-card-body">
+                                <h4>Cinco Ramas Educativas de 6 a 21 Años</h4>
+                                <p>Acompañamos a cada joven según su momento de desarrollo a lo largo de 5 etapas formativas continuas:</p>
+                                <ul style="margin: 0.35rem 0 0 1.2rem; padding: 0; color: var(--ice-grey); font-size: 0.84rem; line-height: 1.6;">
+                                    <li><strong>Castores · Colonia Ohiensis</strong> (6 a 8 años) · Lema: <em>Compartir</em></li>
+                                    <li><strong>Manada · Khanhiwara</strong> (8 a 11 años) · Lema: <em>Haremos lo mejor</em></li>
+                                    <li><strong>Tropa · Lohengrin</strong> (11 a 14 años) · Lema: <em>Siempre Listos</em></li>
+                                    <li><strong>Unidad Esculta · Trea</strong> (14 a 17 años) · Lema: <em>Unidad</em></li>
+                                    <li><strong>Clan Rover · Ama Dablam</strong> (17 a 21 años) · Lema: <em>Servir</em></li>
+                                </ul>
+                            </div>
+                        </article>
+
+                        <article class="identity-story-card">
+                            <div class="story-card-icon">📍</div>
+                            <div class="story-card-body">
+                                <h4>Comunidad y Pertenencia Oficial</h4>
+                                <p>Pertenecemos a <strong>ASDE Exploradores de Castilla y León</strong> y a la <strong>Federación de Scouts de España (ASDE)</strong>. Nuestras reuniones ordinarias tienen lugar todos los sábados de 16:30 a 19:00 h en nuestra base de <strong>Carretera de Rueda, 53 (Valladolid)</strong>.</p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div style="margin-top: 1.4rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-cosmos-primary" id="btnIdentityToUnits" style="padding: 0.55rem 1.15rem;">
+                            <span>Explorar las 5 Unidades</span>
+                            <span class="btn-arrow">→</span>
+                        </button>
+                        <button type="button" class="btn-cosmos-secondary" id="btnIdentityToBases" style="padding: 0.55rem 1.15rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color:#FFF; border-radius:999px; cursor:pointer;">
+                            <span>📍 Ver Bases y Contacto</span>
+                        </button>
+                    </div>
                 </div>
             `;
+
+            document.getElementById('btnIdentityToUnits')?.addEventListener('click', () => {
+                closeDrawerModal();
+                goToSector(1, 0);
+            });
+            document.getElementById('btnIdentityToBases')?.addEventListener('click', () => {
+                openDrawerModal('bases');
+            });
         }
 
         drawerBackdrop.classList.add('is-open');
@@ -2827,7 +2876,7 @@
     if (elPrimaryBtn) {
         elPrimaryBtn.addEventListener('click', () => {
             if (activeSectorIdx === 0) {
-                goToSector(1, 0);
+                openDrawerModal('identity');
             } else if (activeSectorIdx === 1) {
                 openUnitSuperZoom(selectedSubIdx);
             } else if (activeSectorIdx === 2) {
@@ -2937,9 +2986,13 @@
                 } else if (hitNode.clusterType === 'sector') {
                     if (hitNode.sectorIndex === 3) {
                         openLostSuperZoom(typeof hitNode.cajonIndex === 'number' ? hitNode.cajonIndex : 0);
+                    } else if (hitNode.sectorIndex === 0) {
+                        // En la Cruz del Sur, solo Acrux es interactiva y abre la historia
+                        if (hitNode.id === 'acrux') {
+                            openDrawerModal('identity');
+                        }
                     } else {
                         goToSector(hitNode.sectorIndex, hitNode.starIdx);
-                        if (hitNode.sectorIndex === 0) openDrawerModal('identity');
                         if (hitNode.sectorIndex === 4) openDrawerModal('bases');
                     }
                 }
@@ -3301,8 +3354,13 @@
                 nd.hover += (f - nd.hover) * 0.18;
 
                 if (dM < 52 && dM < closestDist) {
-                    closestDist = dM;
-                    closestNode = nd;
+                    // En el Sector I (Cruz del Sur), solo Acrux es interactiva y cliqueable
+                    if (nd.sectorIndex === 0 && nd.id !== 'acrux') {
+                        // Las demás estrellas de la constelación son puramente astronómicas decorativas
+                    } else {
+                        closestDist = dM;
+                        closestNode = nd;
+                    }
                 }
             } else {
                 nd.hover += (0 - nd.hover) * 0.1;
@@ -3489,6 +3547,70 @@
             ctx.beginPath();
             ctx.arc(sx, sy, glowR, 0, Math.PI * 2);
             ctx.fill();
+
+            // Resplandor monumental y destellos celestiales para α Acrux (Estrella Guía del Grupo)
+            if (nd.id === 'acrux') {
+                const acruxPulse = Math.sin(elapsed * 2.6) * 0.16 + 1.0;
+                const acruxHaloR = r * 7.5 * acruxPulse;
+                const gAcrux = ctx.createRadialGradient(sx, sy, 0, sx, sy, acruxHaloR);
+                gAcrux.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+                gAcrux.addColorStop(0.18, 'rgba(255, 220, 220, 0.45)');
+                gAcrux.addColorStop(0.45, 'rgba(217, 56, 58, 0.28)');
+                gAcrux.addColorStop(0.75, 'rgba(217, 56, 58, 0.08)');
+                gAcrux.addColorStop(1, 'rgba(217, 56, 58, 0)');
+                ctx.fillStyle = gAcrux;
+                ctx.beginPath();
+                ctx.arc(sx, sy, acruxHaloR, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Destellos celestiales en cruz de 4 puntas principales (estilo telescopio astronómico)
+                const spikeLen = r * (4.2 + Math.sin(elapsed * 2.2) * 0.6);
+                const spikeW = Math.max(1.3, r * 0.16);
+                ctx.save();
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.90)';
+                ctx.shadowColor = '#FFFFFF';
+                ctx.shadowBlur = 14;
+
+                // Eje horizontal
+                ctx.beginPath();
+                ctx.moveTo(sx - spikeLen, sy);
+                ctx.lineTo(sx, sy - spikeW);
+                ctx.lineTo(sx + spikeLen, sy);
+                ctx.lineTo(sx, sy + spikeW);
+                ctx.closePath();
+                ctx.fill();
+
+                // Eje vertical
+                ctx.beginPath();
+                ctx.moveTo(sx, sy - spikeLen);
+                ctx.lineTo(sx + spikeW, sy);
+                ctx.lineTo(sx, sy + spikeLen);
+                ctx.lineTo(sx - spikeW, sy);
+                ctx.closePath();
+                ctx.fill();
+
+                // 4 Puntas secundarias diagonales
+                const diagLen = spikeLen * 0.52;
+                const diagW = spikeW * 0.65;
+                ctx.fillStyle = 'rgba(255, 225, 225, 0.60)';
+                ctx.beginPath();
+                ctx.moveTo(sx - diagLen * 0.707, sy - diagLen * 0.707);
+                ctx.lineTo(sx + diagLen * 0.707, sy + diagLen * 0.707);
+                ctx.lineTo(sx + diagLen * 0.707 + diagW, sy + diagLen * 0.707 - diagW);
+                ctx.lineTo(sx - diagLen * 0.707 + diagW, sy - diagLen * 0.707 - diagW);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.moveTo(sx - diagLen * 0.707, sy + diagLen * 0.707);
+                ctx.lineTo(sx + diagLen * 0.707, sy - diagLen * 0.707);
+                ctx.lineTo(sx + diagLen * 0.707 + diagW, sy - diagLen * 0.707 + diagW);
+                ctx.lineTo(sx - diagLen * 0.707 + diagW, sy + diagLen * 0.707 + diagW);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.restore();
+            }
 
             // Anillo orbital: en Unidades usa el color sutil de cada rama; en «El Baúl» usa rojo Acrux sutil; en Campamentos y Cajones blanco puro
             if ((nd.isClusterHub || isHovered) && !superZoomState) {
