@@ -42,6 +42,8 @@
             constellationTitle: 'ESTRELLA I · «LA VIDA EN EL ESTANQUE»',
             age: '6 a 8 años (1º y 2º de Primaria)',
             motto: 'Lema: «Compartir»',
+            socialUrl: 'https://www.instagram.com/coloniaohiensis518/',
+            socialLabel: '@coloniaohiensis518',
             accentColor: '#38BDF8',
             glowColor: 'rgba(56, 189, 248, 0.12)',
             ringColor: 'rgba(56, 189, 248, 0.38)',
@@ -51,8 +53,6 @@
             r: 7.2,
             lead: 'Nuestra Colonia Ohiensis está ambientada en el libro «La Vida en el Estanque». Junto a Kid, Moi y Piko, los pequeños castores viven en su acogedora madriguera de palitos, barro y virutas, trabajan en equipo manteniendo la Presa sobre el río «Gran Hermano» y aprenden con los Grandes Castores, el sabio búho Malak y la Familia Jones que en la Colonia todo se comparte.',
             lawQuote: '«El castor que es obediente, trabajador, limpio y ordenado, que participa en todo, que juega con todos y comparte con alegría, llega a ser un castor alegre y feliz recordando siempre las enseñanzas de la Colonia.» — La Vida en el Estanque',
-            storyTitle: '«La Vida en el Estanque» · Capítulos e Imaginario de la Colonia',
-            storySub: 'Del nacimiento de Kid y el rayo de Keeo el Castor Plateado hasta el Nado Hacia Arriba',
             heroSvg: `
                 <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de La Vida en el Estanque">
                     <defs>
@@ -72,114 +72,39 @@
                             <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.7"/>
                         </linearGradient>
                     </defs>
-                    <!-- Cielo azul intenso y Arco Iris de Keeo -->
                     <rect width="560" height="205" fill="url(#skyCastores)"/>
                     <path d="M 40 190 Q 280 -20 520 190" fill="none" stroke="url(#rainbowArc)" stroke-width="14" stroke-linecap="round"/>
-                    <!-- Sol radiante como en la portada de La Vida en el Estanque -->
                     <circle cx="95" cy="58" r="24" fill="#FDE047"/>
                     <circle cx="95" cy="58" r="34" fill="#FDE047" opacity="0.32"/>
-                    <!-- Viejas montañas nevadas al fondo -->
                     <polygon points="0,185 95,88 195,185" fill="#1E3A5F"/>
                     <polygon points="95,88 68,125 122,125" fill="#F8FAFC"/>
                     <polygon points="150,185 265,72 385,185" fill="#152C4A"/>
                     <polygon points="265,72 232,116 298,116" fill="#F8FAFC"/>
-                    <!-- Bosque de robles, sauces, álamos temblones y abedules -->
                     <polygon points="35,185 60,115 85,185" fill="#15803D"/>
                     <polygon points="75,185 102,105 130,185" fill="#166534"/>
                     <polygon points="390,185 422,95 455,185" fill="#166534"/>
                     <polygon points="440,185 470,108 500,185" fill="#15803D"/>
-                    <!-- El Gran Roble y Malak el Búho Sabio en la rama -->
                     <rect x="488" y="95" width="22" height="92" fill="#5C3A21"/>
                     <circle cx="498" cy="78" r="46" fill="#14532D"/>
                     <ellipse cx="478" cy="96" rx="9" ry="12" fill="#78350F"/>
                     <circle cx="475" cy="93" r="2.5" fill="#F59E0B"/>
                     <circle cx="481" cy="93" r="2.5" fill="#F59E0B"/>
-                    <!-- El Estanque y el Río Gran Hermano -->
                     <rect y="182" width="560" height="138" fill="url(#pondWater)"/>
-                    <!-- La Madriguera de palitos, barro y virutas -->
                     <path d="M 105 225 Q 155 162 205 225 Z" fill="#78350F" stroke="#B45309" stroke-width="3"/>
                     <line x1="120" y1="215" x2="190" y2="195" stroke="#D97706" stroke-width="3"/>
                     <line x1="130" y1="195" x2="185" y2="218" stroke="#F59E0B" stroke-width="2.5"/>
-                    <!-- El viejo tronco central con Keeo el Castor Plateado -->
                     <ellipse cx="295" cy="225" rx="34" ry="10" fill="#6B4423"/>
                     <ellipse cx="295" cy="208" rx="14" ry="16" fill="#E2E8F0" stroke="#94A3B8" stroke-width="2"/>
                     <circle cx="295" cy="192" r="10" fill="#F1F5F9"/>
                     <ellipse cx="314" cy="215" rx="11" ry="5" fill="#94A3B8"/>
-                    <!-- Kid chapoteando en el agua: ¡Splash, Splash, Splash! -->
                     <circle cx="405" cy="252" r="11" fill="#92400E"/>
                     <ellipse cx="422" cy="257" rx="12" ry="5" fill="#78350F"/>
                     <path d="M 382 248 Q 372 232 364 242 M 436 246 Q 446 230 454 240" stroke="#E0F2FE" stroke-width="2.5" fill="none"/>
-                    <!-- La Presa (Dique) de orilla a orilla -->
                     <rect x="20" y="286" width="520" height="14" rx="7" fill="#78350F" stroke="#D97706" stroke-width="2"/>
                     <text x="24" y="34" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ EL ESTANQUE DEL GRAN ROBLE · «SPLASH, SPLASH, SPLASH»</text>
                 </svg>
             `,
-            scenes: [
-                {
-                    tag: 'CAPÍTULOS 1º Y 3º · EL BOSQUE Y EL ESTANQUE',
-                    title: 'Kid, la Madriguera, la Presa y el Río «Gran Hermano»',
-                    desc: 'Kid nace sobre la alfombra de virutas de madera y descubre el estanque rodeado de robles, sauces y abedules. Con Lekes, Kibu y Rasty aprende qué es la Presa, conoce al río «Gran Hermano» y aprende con Arco Iris a partir la rama en dos para COMPARTIR.',
-                    svg: `
-                        <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="360" height="180" fill="#072F49"/>
-                            <rect width="360" height="105" fill="#0284C7"/>
-                            <circle cx="62" cy="40" r="18" fill="#FDE047"/>
-                            <polygon points="0,105 65,48 130,105" fill="#15803D"/>
-                            <polygon points="230,105 295,42 360,105" fill="#166534"/>
-                            <path d="M 65 138 Q 115 88 165 138 Z" fill="#78350F" stroke="#F59E0B" stroke-width="2.5"/>
-                            <rect x="185" y="128" width="145" height="12" rx="6" fill="#92400E" stroke="#FBBF24" stroke-width="1.5"/>
-                            <circle cx="245" cy="152" r="10" fill="#B45309"/>
-                            <ellipse cx="260" cy="156" rx="10" ry="4" fill="#78350F"/>
-                            <text x="14" y="168" fill="#BAE6FD" font-family="JetBrains Mono, monospace" font-size="10">Madriguera de virutas · La Presa · El Gran Hermano</text>
-                        </svg>
-                    `
-                },
-                {
-                    tag: 'CAPÍTULO 2º · EL GRAN INCENDIO',
-                    title: 'El Búho Malak («¡Uhú, Uhú!») y la Familia Jones',
-                    desc: 'Malak, el búho sabio que habla todas las lenguas cuando salen las estrellas, avisa del Gran Incendio. Los castores abren la presa y la Familia Jones (Ojo de Halcón, Arco Iris, Burbuja y Pelirrojo) cava cortafuegos. Como recompensa por trabajar juntos, aquel día les crecieron las paletas.',
-                    svg: `
-                        <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="360" height="180" fill="#090D16"/>
-                            <circle cx="52" cy="36" r="14" fill="#F8FAFC" opacity="0.9"/>
-                            <path d="M 190 115 Q 235 45 275 115 Q 310 55 345 115 Z" fill="#EA580C" opacity="0.75"/>
-                            <path d="M 215 115 Q 250 65 285 115 Z" fill="#FDE047" opacity="0.85"/>
-                            <rect x="85" y="45" width="18" height="90" fill="#451A03"/>
-                            <circle cx="94" cy="42" r="32" fill="#14532D"/>
-                            <ellipse cx="94" cy="56" rx="10" ry="13" fill="#92400E"/>
-                            <circle cx="90" cy="53" r="3" fill="#FBBF24"/>
-                            <circle cx="98" cy="53" r="3" fill="#FBBF24"/>
-                            <rect y="115" width="360" height="65" fill="#0369A1"/>
-                            <path d="M 25 140 Q 120 120 220 142 T 350 135" stroke="#7DD3FC" stroke-width="4" fill="none"/>
-                            <text x="14" y="168" fill="#FDE047" font-family="JetBrains Mono, monospace" font-size="10">¡¡Uhú, Uhú!! · Malak y la Familia Jones salvan el bosque</text>
-                        </svg>
-                    `
-                },
-                {
-                    tag: 'CAPÍTULOS 4º Y 5º · EL CASTOR PLATEADO Y NILA',
-                    title: 'El Rayo de Keeo y la Salud del Gran Hermano',
-                    desc: 'Bajo la lluvia mágica y el Arco Iris, un relámpago sobre el viejo tronco del Gran Roble vuelve plateado a Keeo y le otorga el don de hablar con todos los animales y humanos. Además, la valiente castora Nila y el búho Kalú enseñan a cuidar y mantener limpias las aguas del Gran Hermano.',
-                    svg: `
-                        <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="360" height="180" fill="#0B192C"/>
-                            <path d="M 20 140 Q 180 10 340 140" fill="none" stroke="#38BDF8" stroke-width="8" opacity="0.65"/>
-                            <path d="M 30 140 Q 180 24 330 140" fill="none" stroke="#FBBF24" stroke-width="6" opacity="0.65"/>
-                            <polygon points="185,8 162,62 186,62 168,112 208,52 182,52" fill="#FDE047"/>
-                            <rect y="122" width="360" height="58" fill="#0284C7"/>
-                            <ellipse cx="180" cy="128" rx="36" ry="9" fill="#5C3A21"/>
-                            <ellipse cx="180" cy="110" rx="14" ry="17" fill="#F8FAFC" stroke="#38BDF8" stroke-width="2"/>
-                            <circle cx="180" cy="92" r="10" fill="#FFFFFF"/>
-                            <text x="14" y="168" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-size="10">Keeo «El Castor Plateado» · El don de todas las lenguas</text>
-                        </svg>
-                    `
-                },
-                {
-                    tag: 'CAPÍTULOS 6º, 7º Y 8º · NADO HACIA ARRIBA',
-                    title: 'Kapi, las Ardillas Tic y Tac y el Paso a la Manada',
-                    desc: 'Kapi aprende en la tormenta por qué nunca construimos solos, las ardillas rojas Tic y Tac aprenden a compartir sus frutos, y en la ceremonia del remolino de lluvia plateada junto a Keeo, Kid, Moi y Piko nadan río arriba por el Gran Hermano hasta el Waigunga, donde Akela les recibe en la Manada.',
-                    img: 'images/DSC_066412.jpg'
-                }
-            ],
+            salidas: [],
             pillars: [
                 { title: '1 · Castor sin Paletas (Llegada al Estanque)', desc: 'Como Kid al salir de la madriguera: descubre la Colonia, aprende la llamada «¡Splash, Splash, Splash!» y hace sus primeros amigos.' },
                 { title: '2 · Castor con Paletas (Como en el Gran Incendio)', desc: 'Tras aprender a ayudar y compartir el trabajo en la presa junto a los Grandes Castores y la Familia Jones, al castor le crecen las paletas.' },
@@ -205,6 +130,8 @@
             constellationTitle: 'ESTRELLA II · SELVA DE SEEONEE Y RÍO WAIGUNGA',
             age: '8 a 11 años (3º, 4º y 5º de Primaria)',
             motto: 'Lema: «Haremos lo mejor»',
+            socialUrl: 'https://www.instagram.com/manadakhanhiwara/',
+            socialLabel: '@manadakhanhiwara',
             accentColor: '#FBBF24',
             glowColor: 'rgba(251, 191, 36, 0.12)',
             ringColor: 'rgba(251, 191, 36, 0.38)',
@@ -214,8 +141,6 @@
             r: 7.2,
             lead: 'Al terminar el «Nado Hacia Arriba» por el Gran Hermano, los castores llegan al río Waigunga en la Selva de Seeonee («El Libro de las Tierras Vírgenes» de Rudyard Kipling). Allí Akela, Baloo, Bagheera y los Viejos Lobos los acogen con el Gran Clamor en la Manada Khanhiwara.',
             lawQuote: '«El Lobato escucha y obedece al Viejo Lobo. El Lobato se vence a sí mismo.» — Ley de la Manada de Seeonee',
-            storyTitle: 'La Selva de Seeonee · El Mundo de Mowgli y los Viejos Lobos',
-            storySub: 'Cacerías por la selva, la Roca del Consejo bajo la luna llena y la vida en Seisenas',
             heroSvg: `
                 <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Roca del Consejo en la Selva de Seeonee">
                     <defs>
@@ -230,7 +155,6 @@
                     <circle cx="430" cy="82" r="64" fill="#FDE047" opacity="0.24"/>
                     <polygon points="40,320 185,128 335,320" fill="#451A03"/>
                     <polygon points="155,320 285,112 435,320" fill="#78350F"/>
-                    <!-- Silueta de Akela en la Roca del Consejo -->
                     <polygon points="272,112 296,112 290,86 278,86" fill="#090D16"/>
                     <polygon points="25,320 65,175 105,320" fill="#064E3B"/>
                     <polygon points="455,320 498,165 542,320" fill="#064E3B"/>
@@ -238,32 +162,7 @@
                     <text x="24" y="34" fill="#FEF08A" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ LA ROCA DEL CONSEJO · SELVA DE SEEONEE</text>
                 </svg>
             `,
-            scenes: [
-                {
-                    tag: 'DEL ESTANQUE A LA SELVA',
-                    title: 'La Llegada por el Río Waigunga y el Gran Clamor',
-                    desc: 'Cuando los pequeños castores culminan su Nado Hacia Arriba llegan al río Waigunga, donde Akela, Baloo, Bagheera y Kaa les dan la bienvenida a la Manada Khanhiwara.',
-                    img: 'images/DSC_058812.jpg'
-                },
-                {
-                    tag: 'ASAMBLEA DE LUNA LLENA',
-                    title: 'La Roca del Consejo y las Seisenas',
-                    desc: 'Organizados en Seisenas de seis lobatos, nos reunimos en círculo en torno a la Roca del Consejo para evaluar nuestras cacerías y celebrar las Promesas.',
-                    img: 'images/DSC_059812.jpg'
-                },
-                {
-                    tag: 'SABIDURÍA DE BALOO',
-                    title: 'Las Máximas de la Selva',
-                    desc: 'El Lobato piensa primero en los demás, tiene siempre los ojos y los oídos bien abiertos, es alegre, limpio y dice siempre la verdad.',
-                    img: 'images/DSC_064012.jpg'
-                },
-                {
-                    tag: 'LA SENDA DE MOWGLI',
-                    title: 'Las 4 Etapas del Lobato en Khanhiwara',
-                    desc: 'Huella Tierna, Lobo Saltador, Lobo Rastreador y Lobo Cazador: el camino de progresión antes de cruzar hacia la Tropa.',
-                    img: 'images/DSC_04051.jpg'
-                }
-            ],
+            salidas: [],
             pillars: [
                 { title: 'La Selva de Seeonee y la Roca del Consejo', desc: 'Espacio de asamblea donde la Manada valora sus cazas, celebra promesas y aprende a escucharse.' },
                 { title: 'La Senda de Mowgli (Progresión)', desc: 'Cuatro etapas de crecimiento: Huella Tierna, Lobo Saltador, Lobo Rastreador y Lobo Cazador.' },
@@ -289,6 +188,8 @@
             constellationTitle: 'ESTRELLA III · TROPA LOHENGRIN',
             age: '11 a 14 años (6º Primaria, 1º y 2º de ESO)',
             motto: 'Lema: «Siempre Listos»',
+            socialUrl: 'https://www.instagram.com/tropalohengrin518/',
+            socialLabel: '@tropalohengrin518',
             accentColor: '#34D399',
             glowColor: 'rgba(52, 211, 153, 0.12)',
             ringColor: 'rgba(52, 211, 153, 0.38)',
@@ -298,8 +199,6 @@
             r: 7.4,
             lead: 'El corazón de la aventura scout y la vida en patrulla. En la Tropa Lohengrin los jóvenes viven el espíritu de caballería y exploración: se organizan en Patrullas autónomas con cargos reales, levantan sus construcciones de pionerismo en madera y sisal, y diseñan sus propias aventuras (Aymaras).',
             lawQuote: '«Cifra su honor en ser digno de confianza, es leal, útil, amigo de todos y hermano de cualquier otro scout.» — Ley Scout',
-            storyTitle: 'Tropa Lohengrin · Pionerismo, Patrullas y Exploración',
-            storySub: 'Aventura en la naturaleza, orientación con brújula y autonomía en Patrulla',
             heroSvg: `
                 <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Tropa Lohengrin">
                     <defs>
@@ -312,7 +211,6 @@
                     <rect width="560" height="320" fill="url(#skyTropa)"/>
                     <polygon points="0,280 140,95 290,280" fill="#064E3B"/>
                     <polygon points="240,280 410,80 560,280" fill="#047857"/>
-                    <!-- Tienda de Patrulla y Trípode de Pionerismo -->
                     <polygon points="150,275 235,165 320,275" fill="#D97706" stroke="#FEF08A" stroke-width="2.5"/>
                     <polygon points="210,275 235,165 260,275" fill="#92400E"/>
                     <line x1="380" y1="275" x2="425" y2="150" stroke="#FDE68A" stroke-width="4"/>
@@ -322,32 +220,7 @@
                     <text x="24" y="34" fill="#A7F3D0" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ TROPA LOHENGRIN · SISTEMA DE PATRULLAS Y PIONERISMO</text>
                 </svg>
             `,
-            scenes: [
-                {
-                    tag: 'VIDA EN PATRULLA',
-                    title: 'Autonomía Real y Espíritu de Patrulla',
-                    desc: 'Cada tropero asume un cargo indispensable (Guía, Subguía, Intendente, Sanitario, Guardián de Leyenda) para que la Patrulla funcione en equipo.',
-                    img: 'images/DSC_064012.jpg'
-                },
-                {
-                    tag: 'INGENIERÍA SCOUT',
-                    title: 'Pionerismo en Madera y Cuerda',
-                    desc: 'Amarres cuadrados y diagonales, mesas de patrulla, mochileros y portadas levantadas por los propios troperos en el campamento de verano.',
-                    img: 'images/DSC_066412.jpg'
-                },
-                {
-                    tag: 'EXPLORACIÓN Y TOPOGRAFÍA',
-                    title: 'Raids con Mapa y Brújula',
-                    desc: 'Marchas por etapas leyendo curvas de nivel, orientándose en montaña y cocinando por patrullas.',
-                    img: 'images/DSC_3166.jpg'
-                },
-                {
-                    tag: 'PROYECTOS DE TROPA',
-                    title: 'Las Aymaras y la Corte de Honor',
-                    desc: 'Aventuras trimestrales ideadas, votadas y preparadas por los propios chicos y chicas de la Tropa.',
-                    img: 'images/DSC_04051.jpg'
-                }
-            ],
+            salidas: [],
             pillars: [
                 { title: 'El Sistema de Patrullas y Cargos Reales', desc: 'Autonomía auténtica en acampada, toma de decisiones en Consejo de Patrulla y responsabilidad compartida.' },
                 { title: 'Las Aymaras y la Corte de Honor', desc: 'Aventuras y proyectos trimestrales ideados, votados y construidos por los propios troperos.' },
@@ -371,6 +244,8 @@
             constellationTitle: 'ESTRELLA IV · UNIDAD ESCULTA TREA',
             age: '14 a 17 años (3º, 4º de ESO y 1º de Bachillerato)',
             motto: 'Lema: «Unidad»',
+            socialUrl: 'https://www.instagram.com/unidadtrea518/',
+            socialLabel: '@unidadtrea518',
             accentColor: '#A67B5B',
             glowColor: 'rgba(166, 123, 91, 0.12)',
             ringColor: 'rgba(166, 123, 91, 0.38)',
@@ -380,8 +255,6 @@
             r: 7.2,
             lead: 'Nombrada en honor a la imponente Canal de Trea en los Picos de Europa. En la Unidad Esculta los adolescentes son los verdaderos protagonistas: trabajan mediante «Empresas Escultas» autogestionadas, afrontan travesías de alta montaña, vivacs bajo las estrellas y retos de superación.',
             lawQuote: '«No hay senda demasiado empinada cuando toda la Unidad camina al mismo paso hacia la cumbre.» — Espíritu de la Canal de Trea',
-            storyTitle: 'Unidad Esculta Trea · Empresas, Cumbres y Vivac',
-            storySub: 'Autogestión juvenil, travesías por cordilleras y compromiso con el grupo',
             heroSvg: `
                 <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Canal de Trea">
                     <defs>
@@ -398,32 +271,7 @@
                     <text x="24" y="34" fill="#EDE0D4" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ LA CANAL DE TREA · PICOS DE EUROPA Y EMPRESA ESCULTA</text>
                 </svg>
             `,
-            scenes: [
-                {
-                    tag: 'PROTAGONISMO JUVENIL',
-                    title: 'La Empresa Esculta Autogestionada',
-                    desc: 'Proyectos ambiciosos elegidos, diseñados, financiados y realizados de principio a fin por los propios escultas.',
-                    img: 'images/DSC_3166.jpg'
-                },
-                {
-                    tag: 'ALTA MONTAÑA',
-                    title: 'Travesías y Vivac Bajo las Estrellas',
-                    desc: 'Marchas exigentes de varios días con mochila al hombro durmiendo al raso en las cumbres.',
-                    img: 'images/DSC_04051.jpg'
-                },
-                {
-                    tag: 'ESPÍRITU DE UNIDAD',
-                    title: 'Cohesión, Asamblea y Pensamiento Crítico',
-                    desc: 'Debates, toma de decisiones en Asamblea de Unidad y fuerte vínculo de amistad y apoyo mutuo.',
-                    img: 'images/DSC_059812.jpg'
-                },
-                {
-                    tag: 'ACCIÓN Y SERVICIO',
-                    title: 'Implicación Social y Ambiental',
-                    desc: 'Colaboración con entidades sociales, cuidado del entorno natural y apoyo activo en las actividades del grupo.',
-                    img: 'images/DSC_066412.jpg'
-                }
-            ],
+            salidas: [],
             pillars: [
                 { title: 'La Empresa Esculta Autogestionada', desc: 'Retos ambiciosos ideados, presupuestados, financiados y evaluados íntegramente por los jóvenes en Asamblea.' },
                 { title: 'Espíritu Montañero y Superación', desc: 'Marchas de varios días por cordilleras, orientación nocturna y vivac en altura.' },
@@ -446,6 +294,8 @@
             constellationTitle: 'ESTRELLA V · CLAN ROVER AMA DABLAM',
             age: '17 a 21 años (2º Bachillerato, FP y Universidad)',
             motto: 'Lema: «Servir»',
+            socialUrl: 'https://www.instagram.com/clan_amadablam518/',
+            socialLabel: '@clan_amadablam518',
             accentColor: '#D9383A',
             glowColor: 'rgba(217, 56, 58, 0.12)',
             ringColor: 'rgba(217, 56, 58, 0.38)',
@@ -455,8 +305,6 @@
             r: 7.6,
             lead: 'En la cumbre de la línea ascendente, bajo el nombre de la mítica montaña del Himalaya (Ama Dablam). El Clan es una comunidad de jóvenes adultos que reman su propia canoa: caminan con la Horquilla Rover, lideran proyectos de impacto social y se preparan para dar el paso como futuros Scouters del grupo.',
             lawQuote: '«Rema tu propia canoa: elige tu rumbo con libertad y pon tu vida en servicio de los demás.» — Lema Rover «Servir»',
-            storyTitle: 'Clan Rover Ama Dablam · La Cumbre y la Horquilla Rover',
-            storySub: 'Servicio activo, rutas en autonomía total y el paso de Rover a Scouter',
             heroSvg: `
                 <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la cumbre del Ama Dablam">
                     <defs>
@@ -467,39 +315,13 @@
                         </linearGradient>
                     </defs>
                     <rect width="560" height="320" fill="url(#skyClan)"/>
-                    <!-- Cumbre escarpada del Ama Dablam en Rojo Rover y Cruz del Sur -->
                     <polygon points="60,320 280,42 500,320" fill="#2A0808" stroke="#D9383A" stroke-width="2"/>
                     <polygon points="280,42 225,112 280,96 335,112" fill="#F8FAFC"/>
                     <circle cx="280" cy="22" r="4" fill="#FFFFFF"/>
                     <text x="24" y="34" fill="#FECACA" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ CUMBRE AMA DABLAM (6.812m) · LEMA «SERVIR»</text>
                 </svg>
             `,
-            scenes: [
-                {
-                    tag: 'SIMBOLOGÍA ROVER',
-                    title: 'La Horquilla y Remar tu Propia Canoa',
-                    desc: 'Cada rover es protagonista de su propio proyecto personal de vida, tomando decisiones conscientes en comunidad.',
-                    img: 'images/DSC_066412.jpg'
-                },
-                {
-                    tag: 'COMPROMISO REAL',
-                    title: 'Voluntariado y Proyectos de Servicio',
-                    desc: 'Acción social directa, cooperación y servicio constante dentro y fuera del Grupo Scout ACRUX 518.',
-                    img: 'images/DSC_058812.jpg'
-                },
-                {
-                    tag: 'CAMPAMENTOS VOLANTES',
-                    title: 'Grandes Travesías de Alta Montaña',
-                    desc: 'Expediciones rovers en autosuficiencia por las grandes cordilleras.',
-                    img: 'images/DSC_3166.jpg'
-                },
-                {
-                    tag: 'EL CIERRE DEL CICLO',
-                    title: 'De Rover a Scouter (Kraalete)',
-                    desc: 'Formación como Monitores de Tiempo Libre para integrarse en los Kraales de las unidades y devolver lo aprendido.',
-                    img: 'images/DSC_059812.jpg'
-                }
-            ],
+            salidas: [],
             pillars: [
                 { title: 'La Horquilla Rover y el Proyecto de Vida', desc: 'Símbolo de la elección consciente entre caminos para construir un futuro comprometido.' },
                 { title: 'Lema «Servir» en Acción', desc: 'Voluntariado social, cooperación, apoyo a las ramas menores y ciudadanía activa.' },
@@ -1776,6 +1598,25 @@
                 if (elPrimaryBtn) elPrimaryBtn.style.display = '';
             }
 
+            // Botón de Volver al Inicio en Sector V
+            const returnBtn = document.getElementById('btnSectorVReturn');
+            if (returnBtn) {
+                returnBtn.style.display = sIdx === 4 ? 'inline-flex' : 'none';
+            }
+
+            // Actualizar etiqueta del HUD inferior
+            const progressEl = document.getElementById('hudProgressPercent');
+            if (progressEl) {
+                const sectorNames = [
+                    '01 / 05 · Cruz del Sur',
+                    '02 / 05 · Unidades',
+                    '03 / 05 · Campamentos',
+                    '04 / 05 · El Baúl',
+                    '05 / 05 · Bases y Contacto'
+                ];
+                progressEl.textContent = sectorNames[sIdx] || `0${sIdx + 1} / 05`;
+            }
+
             if (elStarNodesWrap) {
                 let items = [];
                 if (sIdx === 1) {
@@ -1931,49 +1772,186 @@
             heroVisual.innerHTML = unit.heroSvg || '';
         }
 
-        const storyTitleEl = document.getElementById('uzStoryTitle');
-        if (storyTitleEl) storyTitleEl.textContent = unit.storyTitle || 'Marco Simbólico e Imágenes';
-        const storySubEl = document.getElementById('uzStorySub');
-        if (storySubEl) storySubEl.textContent = unit.storySub || '';
-
-        const galleryWrap = document.getElementById('uzVisualGallery');
-        if (galleryWrap) {
-            galleryWrap.innerHTML = (unit.scenes || []).map(sc => `
-                <article class="unit-scene-card">
-                    <div class="unit-scene-art">
-                        ${sc.svg ? sc.svg : `<img src="${sc.img}" alt="${sc.title}" loading="lazy">`}
-                    </div>
-                    <div class="unit-scene-body">
-                        <span class="unit-scene-tag">${sc.tag}</span>
-                        <h4>${sc.title}</h4>
-                        <p>${sc.desc}</p>
-                    </div>
-                </article>
-            `).join('');
+        // Redes sociales de la unidad
+        const socialBtn = document.getElementById('uzSocialBtn');
+        const socialLabel = document.getElementById('uzSocialLabel');
+        if (socialBtn) {
+            if (unit.socialUrl) {
+                socialBtn.href = unit.socialUrl;
+                if (socialLabel) socialLabel.textContent = unit.socialLabel || 'Instagram de la Rama';
+                socialBtn.style.display = 'inline-flex';
+            } else {
+                socialBtn.style.display = 'none';
+            }
         }
 
+        // 01 · AVENTURAS, SALIDAS Y CAMPAMENTOS DE LA UNIDAD (DRIVE)
+        const campsGrid = document.getElementById('uzUnitCampsGrid');
+        if (campsGrid) {
+            if (unit.salidas && Array.isArray(unit.salidas) && unit.salidas.length > 0) {
+                campsGrid.innerHTML = unit.salidas.map(s => {
+                    const photosHtml = (s.photos && s.photos.length > 0)
+                        ? `<div class="salida-photos-row">
+                            ${s.photos.slice(0, 3).map((p, pIdx) => `
+                                <div class="salida-photo-thumb">
+                                    <img src="${p}" alt="${s.name} ${pIdx + 1}" referrerpolicy="no-referrer" loading="lazy">
+                                </div>
+                            `).join('')}
+                           </div>`
+                        : '';
+
+                    return `
+                        <article class="unit-salida-card" data-salida-id="${s.id}">
+                            <div class="salida-card-header">
+                                <div class="salida-tags-row">
+                                    <span class="salida-badge">🌲 Salida / Aventura</span>
+                                    ${s.location ? `<span class="salida-location-tag">${s.location}</span>` : ''}
+                                    ${s.date ? `<span class="salida-date-tag">🗓️ ${s.date}</span>` : ''}
+                                </div>
+                                <h4 class="salida-title">${s.name}</h4>
+                                <p class="salida-desc">${s.desc || 'Álbum oficial sincronizado directamente desde Google Drive.'}</p>
+                            </div>
+                            ${photosHtml}
+                            <div class="salida-unlock-box">
+                                <div class="salida-input-row">
+                                    <input type="password" class="dossier-form-input salida-pass-input" placeholder="🔑 Contraseña para ver el álbum completo...">
+                                    <button type="button" class="btn-cosmos-primary salida-unlock-btn" data-salida-id="${s.id}">
+                                        <span>📂 Abrir Álbum en Drive</span>
+                                        <span class="btn-arrow">↗</span>
+                                    </button>
+                                </div>
+                                <small class="salida-unlock-feedback"></small>
+                            </div>
+                        </article>
+                    `;
+                }).join('');
+
+                campsGrid.querySelectorAll('.unit-salida-card').forEach(card => {
+                    const salidaId = card.getAttribute('data-salida-id');
+                    const passInput = card.querySelector('.salida-pass-input');
+                    const unlockBtn = card.querySelector('.salida-unlock-btn');
+                    const feedback = card.querySelector('.salida-unlock-feedback');
+
+                    const doUnlock = async () => {
+                        const pass = passInput ? passInput.value.trim() : '';
+                        if (!pass) {
+                            if (feedback) {
+                                feedback.textContent = 'Introduce la contraseña de la salida.';
+                                feedback.className = 'salida-unlock-feedback is-error';
+                            }
+                            return;
+                        }
+                        if (feedback) {
+                            feedback.textContent = 'Verificando con Google Drive...';
+                            feedback.className = 'salida-unlock-feedback is-loading';
+                        }
+                        if (unlockBtn) unlockBtn.disabled = true;
+
+                        try {
+                            const res = await fetch(`${DRIVE_API_URL}?action=unlock&id=${encodeURIComponent(salidaId)}&pass=${encodeURIComponent(pass)}`);
+                            const data = await res.json();
+                            if (data && data.success && data.url) {
+                                if (feedback) {
+                                    feedback.textContent = '¡Contraseña correcta! Abriendo Google Drive...';
+                                    feedback.className = 'salida-unlock-feedback is-success';
+                                }
+                                if (passInput) passInput.value = '';
+                                window.open(data.url, '_blank', 'noopener');
+                            } else {
+                                if (feedback) {
+                                    feedback.textContent = 'Contraseña incorrecta';
+                                    feedback.className = 'salida-unlock-feedback is-error';
+                                }
+                            }
+                        } catch (err) {
+                            if (feedback) {
+                                feedback.textContent = 'Error de conexión con Google Drive.';
+                                feedback.className = 'salida-unlock-feedback is-error';
+                            }
+                        } finally {
+                            if (unlockBtn) unlockBtn.disabled = false;
+                        }
+                    };
+
+                    unlockBtn?.addEventListener('click', doUnlock);
+                    passInput?.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') doUnlock();
+                    });
+                });
+            } else {
+                campsGrid.innerHTML = `
+                    <div class="unit-camps-empty">
+                        <div class="empty-icon-wrap">🌲</div>
+                        <h4>Aún no hay álbumes de salidas publicados en el Google Drive de esta unidad.</h4>
+                        <p>Las subcarpetas creadas en <code>01_UNIDADES / ${unit.fullName.split('·')[0].trim()}</code> con fotos se sincronizarán aquí automáticamente.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 02 · LOS KRAALETES DE LA UNIDAD (CROMOS VERTICALES 3/4)
+        const kraalWrap = document.getElementById('uzKraaletesGrid');
+        if (kraalWrap) {
+            kraalWrap.innerHTML = unit.kraaletes.map((k, kIdx) => {
+                const hasCromo = !!k.cromoUrl;
+                return `
+                    <article class="kraalete-cromo-card ${hasCromo ? 'has-cromo-img' : 'no-cromo'}" data-cromo-idx="${kIdx}">
+                        <div class="cromo-inner">
+                            ${hasCromo ? `
+                                <img src="${k.cromoUrl}" alt="${k.name}" class="kraalete-cromo-img" referrerpolicy="no-referrer" loading="lazy">
+                            ` : `
+                                <div class="cromo-fallback-content">
+                                    <div class="cromo-scout-badge">⚜️</div>
+                                    <span class="cromo-unit-tag">${unit.shortName}</span>
+                                    <strong class="cromo-fallback-name">${k.name}</strong>
+                                    <span class="cromo-fallback-role">${k.role}</span>
+                                </div>
+                            `}
+                            <div class="cromo-bottom-label">
+                                <strong class="cromo-label-name">${k.name}</strong>
+                                <span class="cromo-label-role">${k.role}</span>
+                            </div>
+                            <div class="cromo-sheen" aria-hidden="true"></div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            // Brillo holográfico y tilt 3D al pasar el ratón
+            kraalWrap.querySelectorAll('.kraalete-cromo-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotX = ((y - centerY) / centerY) * -12;
+                    const rotY = ((x - centerX) / centerX) * 12;
+                    const percentX = (x / rect.width) * 100;
+                    const percentY = (y / rect.height) * 100;
+                    const sheen = card.querySelector('.cromo-sheen');
+
+                    card.style.transform = `perspective(800px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.03, 1.03, 1.03)`;
+                    if (sheen) {
+                        sheen.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 45%, transparent 70%)`;
+                        sheen.style.opacity = '1';
+                    }
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                    const sheen = card.querySelector('.cromo-sheen');
+                    if (sheen) sheen.style.opacity = '0';
+                });
+            });
+        }
+
+        // 03 · METODOLOGÍA Y PROGRESIÓN
         const pillarsWrap = document.getElementById('uzPillarsList');
         if (pillarsWrap) {
             pillarsWrap.innerHTML = unit.pillars.map(p => `
                 <div class="sz-pillar-item">
                     <strong>✦ ${p.title}</strong>
                     <span>${p.desc}</span>
-                </div>
-            `).join('');
-        }
-
-        const kraalWrap = document.getElementById('uzKraaletesGrid');
-        if (kraalWrap) {
-            kraalWrap.innerHTML = unit.kraaletes.map(k => `
-                <div class="kraalete-card ${k.cromoUrl ? 'has-cromo' : ''}">
-                    ${k.cromoUrl ? `
-                        <div class="kraalete-cromo-wrap">
-                            <img src="${k.cromoUrl}" alt="${k.name}" loading="lazy" referrerpolicy="no-referrer">
-                        </div>
-                    ` : ''}
-                    <span class="kraalete-star">${k.star || '✦ KRAALETE'}</span>
-                    <strong class="kraalete-name">${k.name}</strong>
-                    <span class="kraalete-role">${k.role}</span>
                 </div>
             `).join('');
         }
@@ -2442,79 +2420,197 @@
         if (mode === 'bases') {
             drawerKicker.textContent = 'SECTOR V · COORDENADAS OPERATIVAS E INSCRIPCIÓN';
             drawerTitle.innerHTML = 'Nuestras <span class="ice-italic">Bases y Contacto</span>';
+
+            const defaultCoords = [
+                {
+                    name: 'JJ',
+                    role: 'Coordinador General de Grupo',
+                    phone: '616289119',
+                    displayPhone: '616 28 91 19',
+                    photoUrl: null
+                },
+                {
+                    name: 'Marta',
+                    role: 'Coordinadora de Grupo',
+                    phone: '619202068',
+                    displayPhone: '619 20 20 68',
+                    photoUrl: null
+                },
+                {
+                    name: 'Hugo',
+                    role: 'Equipo de Coordinación',
+                    phone: '616289119',
+                    displayPhone: '616 28 91 19',
+                    photoUrl: null
+                }
+            ];
+
+            const coordsList = (coordinadoresDrive && Array.isArray(coordinadoresDrive) && coordinadoresDrive.length > 0)
+                ? coordinadoresDrive.map(c => {
+                    const rawPhone = (c.telefono || c.phone || '616289119').replace(/\s+/g, '');
+                    return {
+                        name: c.name || 'Coordinación',
+                        role: c.cargo || c.role || 'Equipo de Coordinación',
+                        phone: rawPhone,
+                        displayPhone: c.telefono || c.phone || '616 28 91 19',
+                        photoUrl: c.fotoUrl || c.cromoUrl || c.photoUrl || null
+                    };
+                })
+                : defaultCoords;
+
             drawerBody.innerHTML = `
-                <div class="dossier-grid" style="margin-bottom:1.5rem;">
-                    <div class="dossier-card">
-                        <span class="dossier-tag">BASE PRINCIPAL · VALLADOLID</span>
-                        <h3>Carretera de Rueda, 53 (CP 47008)</h3>
-                        <p>Centro neurálgico del Grupo Scout ACRUX 518. Aquí realizamos las reuniones de los sábados de <strong>16:30 a 19:00 h</strong>, las asambleas de familias y la intendencia de acampadas.</p>
-                        <span class="star-pillar-tag">🕓 Sábados de 16:30 a 19:00 h</span>
+                <!-- 1. BLOQUE DE COORDINACIÓN CON FOTO Y ACCIÓN EN 1 CLIC -->
+                <div class="bases-modal-section">
+                    <div class="bases-section-title-row">
+                        <span class="bases-pill-badge">👥 EQUIPO DE COORDINACIÓN</span>
+                        <h3>Canal Directo con Coordinación</h3>
+                        <p>Atención directa para familias y nuevos jóvenes. Contacta en 1 clic:</p>
                     </div>
-                    <div class="dossier-card">
-                        <span class="dossier-tag">BASES DE CAMPO Y MONTAÑA</span>
-                        <h3>Naturaleza en Valladolid y Castilla y León</h3>
-                        <p>Salidas frecuentes al <strong>Pinar de Antequera</strong>, <strong>Parque de las Contiendas</strong>, <strong>Ribera del Pisuerga</strong> y bases de campamento en las sierras de Castilla y León y el norte de España.</p>
-                        <span class="star-pillar-tag">🌲 Naturaleza 100% Real</span>
-                    </div>
-                    <div class="dossier-card">
-                        <span class="dossier-tag">COORDINACIÓN GENERAL</span>
-                        <h3>Canal Directo con el Grupo</h3>
-                        <p>Atención directa a familias y jóvenes por teléfono, WhatsApp, correo electrónico o redes oficiales:</p>
-                        ${(coordinadoresDrive && coordinadoresDrive.length > 0) ? `
-                            <div class="coordinators-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.65rem; margin-top: 0.75rem; margin-bottom: 0.5rem;">
-                                ${coordinadoresDrive.map(c => `
-                                    <div class="coordinator-card" style="background: rgba(8,9,13,0.7); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:0.65rem; text-align:center;">
-                                        ${(c.fotoUrl || c.cromoUrl) ? `
-                                            <div style="width:60px; height:60px; margin:0 auto 0.45rem auto; border-radius:50%; overflow:hidden; border:2px solid var(--accent-red, #D9383A);">
-                                                <img src="${c.fotoUrl || c.cromoUrl}" alt="${c.name}" referrerpolicy="no-referrer" style="width:100%; height:100%; object-fit:cover;">
-                                            </div>
-                                        ` : ''}
-                                        <strong style="display:block; color:#FFF; font-size:0.88rem;">${c.name}</strong>
-                                        <span style="display:block; font-size:0.72rem; color:var(--ice-muted);">${c.cargo || c.role || 'Coordinación'}</span>
-                                        ${(c.telefono || c.phone) ? `<a href="tel:${(c.telefono || c.phone).replace(/\s+/g, '')}" style="display:inline-block; margin-top:0.3rem; font-family:'JetBrains Mono',monospace; font-size:0.74rem; color:#F3E5AB; text-decoration:none;">📞 ${c.telefono || c.phone}</a>` : ''}
+
+                    <div class="coordinators-action-grid">
+                        ${coordsList.map(c => `
+                            <article class="coordinator-action-card">
+                                <div style="display:flex; align-items:center; gap:0.95rem;">
+                                    <div class="coord-avatar-frame">
+                                        ${c.photoUrl ? `
+                                            <img src="${c.photoUrl}" alt="${c.name}" class="coord-avatar-img" referrerpolicy="no-referrer">
+                                        ` : `
+                                            <div class="coord-avatar-fallback">⚜️</div>
+                                        `}
                                     </div>
-                                `).join('')}
-                            </div>
-                        ` : `
-                            <div style="display:flex; flex-direction:column; gap:0.3rem; margin-top:0.5rem;">
-                                <span class="star-pillar-tag">📞 JJ: 616 28 91 19</span>
-                                <span class="star-pillar-tag">📞 Marta: 619 20 20 68 · Hugo</span>
-                            </div>
-                        `}
-                        <span class="star-pillar-tag" style="margin-top:0.5rem;">✉️ gruposcoutacrux518@gmail.com · @gsacrux518</span>
+                                    <div class="coord-info-col">
+                                        <strong class="coord-name">${c.name}</strong>
+                                        <span class="coord-role">${c.role}</span>
+                                        <span class="coord-phone-text">📞 ${c.displayPhone}</span>
+                                    </div>
+                                </div>
+                                <div class="coord-btn-row">
+                                    <a href="https://wa.me/34${c.phone}?text=${encodeURIComponent('Hola ' + c.name + ', me pongo en contacto desde la web del Grupo Scout Acrux 518 para pedir información.')}" 
+                                       target="_blank" rel="noopener" class="btn-coord-action btn-coord-wa">
+                                        <span>💬 WhatsApp</span>
+                                    </a>
+                                    <a href="tel:+34${c.phone}" class="btn-coord-action btn-coord-call">
+                                        <span>📞 Llamar</span>
+                                    </a>
+                                </div>
+                            </article>
+                        `).join('')}
                     </div>
                 </div>
 
-                <div style="background:rgba(255,255,255,0.035); border:1px solid rgba(255,255,255,0.16); border-radius:16px; padding:1.35rem;">
-                    <h3 style="font-family:'Outfit',sans-serif; color:#FFF; margin:0 0 0.4rem 0;">⚜️ Solicitar Sábado de Prueba Gratis (6 a 21 años)</h3>
-                    <p style="margin:0 0 1rem 0; font-size:0.85rem;">Rellena estos datos para avisar al equipo de Coordinación y a los Kraaletes de su unidad correspondiente:</p>
-                    <form id="basesContactForm">
-                        <div class="dossier-grid" style="margin-bottom:0.85rem; margin-top:0;">
-                            <input type="text" id="bcName" class="dossier-form-input" required placeholder="Nombre de madre, padre o joven" style="margin-bottom:0;">
-                            <input type="tel" id="bcPhone" class="dossier-form-input" required placeholder="Teléfono / WhatsApp de contacto" style="margin-bottom:0;">
-                            <select id="bcUnit" class="dossier-form-input" style="margin-bottom:0;">
-                                <option value="Castores · Colonia Ohiensis (6-8 años)">1 · Castores · Colonia Ohiensis (6 a 8 años)</option>
-                                <option value="Manada · Khanhiwara (8-11 años)">2 · Manada · Khanhiwara (8 a 11 años)</option>
-                                <option value="Tropa · Lohengrin (11-14 años)">3 · Tropa · Lohengrin (11 a 14 años)</option>
-                                <option value="Unidad Esculta · Trea (14-17 años)">4 · Unidad Esculta · Trea (14 a 17 años)</option>
-                                <option value="Clan Rover · Ama Dablam (17-21 años)">5 · Clan Rover · Ama Dablam (17 a 21 años)</option>
-                            </select>
+                <!-- 2. BLOQUE NUESTRAS BASES: BASE PRINCIPAL Y BASES DE CAMPO -->
+                <div class="bases-modal-section" style="margin-top: 1.6rem;">
+                    <div class="bases-section-title-row">
+                        <span class="bases-pill-badge">📍 COORDENADAS OPERATIVAS</span>
+                        <h3>Nuestras Bases en Valladolid</h3>
+                    </div>
+
+                    <div class="bases-locations-grid">
+                        <article class="base-location-card">
+                            <div>
+                                <span class="base-type-badge">BASE PRINCIPAL · REUNIONES DE SÁBADO</span>
+                                <h4>Carretera de Rueda, 53 (CP 47008)</h4>
+                                <p class="base-schedule">🕓 <strong>Sábados de 16:30 a 19:00 h</strong> (calendario lectivo)</p>
+                            </div>
+                            <p class="base-desc">Sede oficial del Grupo Scout ACRUX 518. Punto de encuentro semanal para todas las unidades educativas, asambleas de familias e intendencia.</p>
+                            <div class="base-actions">
+                                <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="btn-cosmos-primary" style="padding:0.48rem 0.95rem; font-size:0.78rem;">
+                                    <span>🗺️ Abrir en Google Maps</span>
+                                    <span class="btn-arrow">↗</span>
+                                </a>
+                            </div>
+                        </article>
+
+                        <article class="base-location-card">
+                            <div>
+                                <span class="base-type-badge">BASES DE CAMPO Y MONTAÑA</span>
+                                <h4>Naturaleza en Valladolid y Castilla y León</h4>
+                                <p class="base-schedule">🌲 <strong>Salidas y acampadas frecuentes</strong></p>
+                            </div>
+                            <p class="base-desc">Espacios naturales donde aplicamos el escultismo al aire libre: <strong>Pinar de Antequera</strong>, <strong>Parque de las Contiendas</strong>, <strong>Ribera del Pisuerga</strong> y campamentos de montaña.</p>
+                            <div class="base-actions">
+                                <span class="field-base-badge">🌲 Naturaleza 100% Real</span>
+                                <span class="field-base-badge">⛺ Acampadas y Vivacs</span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- 3. PASO A PASO: ¿QUIERES VENIR A PROBAR? + FORMULARIO RÁPIDO -->
+                <div class="bases-modal-section" style="margin-top: 1.6rem;">
+                    <div class="bases-section-title-row">
+                        <span class="bases-pill-badge">⚜️ INSCRIPCIÓN Y SÁBADO DE PRUEBA</span>
+                        <h3>¿Quieres apuntarte o venir a probar un sábado?</h3>
+                        <p>El primer sábado es totalmente gratuito y sin compromiso. ¡Ven a conocernos!</p>
+                    </div>
+
+                    <!-- 3 Pasos Visuales -->
+                    <div class="bases-steps-grid">
+                        <div class="step-card">
+                            <div class="step-num">01</div>
+                            <strong>Elige la Unidad</strong>
+                            <p>Según la edad del joven (de 6 a 21 años: Castores, Manada, Tropa, Escultas o Clan).</p>
                         </div>
-                        <button type="submit" class="btn-cosmos-primary">Enviar Solicitud a Coordinación →</button>
-                        <div id="bcSuccessMsg" style="display:none; margin-top:0.9rem; padding:0.9rem; border-radius:10px; background:rgba(176,35,36,0.22); border:1px solid rgba(217,56,58,0.55); color:#FFF;"></div>
-                    </form>
+                        <div class="step-card">
+                            <div class="step-num">02</div>
+                            <strong>Ven a la Base</strong>
+                            <p>Te esperamos un sábado a las 16:30 h en Carretera de Rueda, 53 con ropa cómoda.</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num">03</div>
+                            <strong>¡Vive la Aventura!</strong>
+                            <p>Jugará y compartirá la tarde con sus compañeros de rama y los scouters.</p>
+                        </div>
+                    </div>
+
+                    <!-- Formulario Rápido -->
+                    <div class="quick-signup-box">
+                        <h4>Avisar a Coordinación para este sábado</h4>
+                        <p>Rellena este breve formulario y te abriremos el mensaje de WhatsApp ya redactado para coordinar tu llegada:</p>
+                        <form id="basesContactForm">
+                            <div class="signup-inputs-grid">
+                                <input type="text" id="bcName" class="dossier-form-input" required placeholder="Nombre de madre, padre o joven" style="margin:0;">
+                                <input type="tel" id="bcPhone" class="dossier-form-input" required placeholder="Teléfono de contacto" style="margin:0;">
+                                <select id="bcUnit" class="dossier-form-input" style="margin:0;">
+                                    <option value="Castores (6 a 8 años)">1 · Castores · Colonia Ohiensis (6 a 8 años)</option>
+                                    <option value="Manada (8 a 11 años)">2 · Manada · Khanhiwara (8 a 11 años)</option>
+                                    <option value="Tropa (11 a 14 años)">3 · Tropa · Lohengrin (11 a 14 años)</option>
+                                    <option value="Unidad Esculta (14 a 17 años)">4 · Unidad Esculta · Trea (14 a 17 años)</option>
+                                    <option value="Clan Rover (17 a 21 años)">5 · Clan Rover · Ama Dablam (17 a 21 años)</option>
+                                </select>
+                            </div>
+                            <div class="signup-action-row" style="margin-top:0.85rem;">
+                                <button type="submit" class="btn-cosmos-primary" style="padding:0.55rem 1.15rem;">
+                                    <span>💬 Enviar Solicitud por WhatsApp a Coordinación</span>
+                                    <span class="btn-arrow">↗</span>
+                                </button>
+                            </div>
+                            <div id="bcSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
+                        </form>
+                    </div>
                 </div>
             `;
 
             document.getElementById('basesContactForm')?.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const name = document.getElementById('bcName')?.value || '';
+                const phone = document.getElementById('bcPhone')?.value || '';
                 const unit = document.getElementById('bcUnit')?.value || '';
+                const targetCoord = coordsList[0] || defaultCoords[0];
+                const cleanTargetPhone = (targetCoord.phone || '616289119').replace(/\s+/g, '');
+
+                const waText = `Hola ${targetCoord.name}, me pongo en contacto desde la web del Grupo Scout Acrux 518.\n\nSoy ${name} (Tel: ${phone}). Nos gustaría venir a probar un sábado a la base de Carretera de Rueda 53 con la rama: ${unit}. ¿Podríais confirmarnos el horario de este sábado? ¡Gracias!`;
+                const waUrl = `https://wa.me/34${cleanTargetPhone}?text=${encodeURIComponent(waText)}`;
+
                 const msg = document.getElementById('bcSuccessMsg');
                 if (msg) {
                     msg.style.display = 'block';
-                    msg.innerHTML = `<strong>⚜️ ¡Solicitud lista, ${name}!</strong> Te esperamos este sábado a las 16:30 h en nuestra <strong>Base Principal de Carretera de Rueda, 53</strong> para probar con <strong>${unit}</strong>. También puedes escribir directamente por WhatsApp a JJ (<strong>616 28 91 19</strong>) o Marta (<strong>619 20 20 68</strong>).`;
+                    msg.innerHTML = `
+                        <strong>⚜️ ¡Solicitud preparada, ${name}!</strong><br>
+                        Abriendo WhatsApp para avisar a <strong>${targetCoord.name}</strong> (${targetCoord.displayPhone}). Si la ventana no se abre automáticamente, <a href="${waUrl}" target="_blank" rel="noopener" style="color:#FFF; text-decoration:underline; font-weight:600;">pulsa aquí para enviar el mensaje</a>. ¡Te esperamos este sábado a las 16:30 h en Carretera de Rueda, 53!
+                    `;
                 }
+                window.open(waUrl, '_blank', 'noopener');
             });
         } else {
             const sec = SECTORS[0];
@@ -2753,6 +2849,23 @@
     });
 
     document.getElementById('btnHomeConstellation')?.addEventListener('click', () => goToSector(0, 0));
+    document.getElementById('btnSectorVReturn')?.addEventListener('click', () => goToSector(0, 0));
+
+    document.getElementById('btnPrevSector')?.addEventListener('click', () => {
+        if (activeSectorIdx > 0) {
+            goToSector(activeSectorIdx - 1, 0);
+        } else {
+            goToSector(SECTORS.length - 1, 0);
+        }
+    });
+
+    document.getElementById('btnNextSector')?.addEventListener('click', () => {
+        if (activeSectorIdx < SECTORS.length - 1) {
+            goToSector(activeSectorIdx + 1, 0);
+        } else {
+            goToSector(0, 0);
+        }
+    });
 
     if (elOverviewBtn) {
         elOverviewBtn.addEventListener('click', () => {
@@ -3657,16 +3770,36 @@
     function syncUnitsFromDrive(unidadesData) {
         if (!unidadesData || typeof unidadesData !== 'object') return;
         UNITS_DATA.forEach(unit => {
-            const driveKraal = unidadesData[unit.id];
-            if (Array.isArray(driveKraal) && driveKraal.length > 0) {
-                unit.kraaletes = driveKraal.map((k, i) => ({
+            const uData = unidadesData[unit.id];
+            if (!uData) return;
+
+            // Kraaletes / Cromos (soporta array directo o subpropiedad .kraaletes)
+            const kraalList = Array.isArray(uData) ? uData : uData.kraaletes;
+            if (Array.isArray(kraalList) && kraalList.length > 0) {
+                unit.kraaletes = kraalList.map((k, i) => ({
                     star: k.star || `★ ${i + 1} · ${unit.shortName}`,
                     name: k.name || 'Scouter',
                     role: k.role || 'Kraalete',
-                    cromoUrl: k.cromoUrl || k.fotoUrl || null
+                    cromoUrl: k.cromoUrl || k.fotoUrl || k.photoUrl || null
                 }));
             }
+
+            // Salidas / Aventuras de la unidad
+            if (uData && Array.isArray(uData.salidas)) {
+                unit.salidas = uData.salidas;
+            }
+
+            // Redes sociales de la unidad
+            if (uData && uData.socialUrl) {
+                unit.socialUrl = uData.socialUrl;
+                if (uData.socialLabel) unit.socialLabel = uData.socialLabel;
+            }
         });
+
+        // Si la vista de unidad está abierta, refrescarla en vivo
+        if (elUnitZoomOverlay?.classList.contains('is-open')) {
+            openUnitSuperZoom(selectedSubIdx);
+        }
     }
 
     function syncCoordinacionFromDrive(coordData) {
@@ -3720,6 +3853,9 @@
             }
             const data = JSON.parse(text);
             if (data) {
+                if (data.error) {
+                    console.error('Google Drive Sync: Error reportado por Google Apps Script:', data.error);
+                }
                 if (data.campamentos !== undefined) {
                     rebuildCampsConstellation(data.campamentos);
                 }

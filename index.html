@@ -108,6 +108,9 @@
                     <span id="btnStagePrimaryText">Entrar con Super-Zoom</span>
                     <span class="btn-arrow">→</span>
                 </button>
+                <button type="button" class="btn-cosmos-secondary btn-return-start" id="btnSectorVReturn" style="display:none;" title="Volver a la Cruz del Sur (Sector I)">
+                    <span>↺ Volver al Inicio (Cruz del Sur)</span>
+                </button>
             </div>
         </article>
     </main>
@@ -135,6 +138,11 @@
                         <span class="sz-constellation-badge" id="uzConstellationName">✦ ESTRELLA I · COLONIA OHIENSIS</span>
                         <span class="sz-age-pill" id="uzAgePill">6 a 8 años</span>
                         <span class="sz-motto-banner" id="uzMotto">Lema: «Compartir»</span>
+                        <a href="#" target="_blank" rel="noopener" class="unit-social-btn" id="uzSocialBtn" style="display: none;" title="Ver perfil oficial de Instagram">
+                            <span class="social-icon">📸</span>
+                            <span id="uzSocialLabel">@unidad</span>
+                            <span class="social-arrow">↗</span>
+                        </a>
                     </div>
                     <h2 class="sz-unit-title" id="uzTitle">Castores · Colonia Ohiensis</h2>
                     <p class="sz-unit-lead" id="uzLead"></p>
@@ -143,42 +151,41 @@
                 <div class="unit-hero-visual-col" id="uzHeroVisual"></div>
             </div>
 
-            <!-- Galería Visual e Ilustrada del Marco Simbólico (ej. Capítulos de «La Vida en el Estanque») -->
-            <div class="unit-story-section">
+            <!-- 01 · AVENTURAS, SALIDAS Y CAMPAMENTOS DE LA UNIDAD (SINCRONIZADOS DESDE DRIVE) -->
+            <section class="unit-camps-section" id="uzUnitCampsSection">
                 <div class="sz-section-header">
                     <div>
-                        <span class="sz-section-index" id="uzStoryIndex">01 · AMBIENTACIÓN E IMAGINARIO VISUAL</span>
-                        <h3 id="uzStoryTitle">«La Vida en el Estanque» · Escenas e Imágenes de la Rama</h3>
-                        <p id="uzStorySub">El universo simbólico, sus capítulos y vivencias a todo color</p>
+                        <span class="sz-section-index" id="uzCampsIndex">01 · AVENTURAS, SALIDAS Y CAMPAMENTOS DE LA UNIDAD</span>
+                        <h3 id="uzCampsHeading">Aventuras, Salidas y Álbumes en Google Drive</h3>
+                        <p id="uzCampsSub">Subcarpetas de campamentos de rama, acampadas y salidas de fin de semana con desbloqueo oficial</p>
                     </div>
                 </div>
-                <div class="unit-visual-gallery" id="uzVisualGallery"></div>
-            </div>
+                <div class="unit-camps-grid" id="uzUnitCampsGrid"></div>
+            </section>
 
-            <div class="superzoom-unit-grid">
-                <div class="sz-unit-main">
-                    <div class="sz-section-header">
-                        <div>
-                            <span class="sz-section-index">02 · METODOLOGÍA Y PROGRESIÓN</span>
-                            <h3>Marco Simbólico y Etapas</h3>
-                            <p>Cómo trabajamos cada sábado y acampada en esta unidad</p>
-                        </div>
+            <!-- 02 · LOS KRAALETES DE LA UNIDAD (CROMOS VERTICALES 3/4) -->
+            <section class="unit-kraal-section" id="uzUnitKraalSection">
+                <div class="sz-section-header">
+                    <div>
+                        <span class="sz-section-index">02 · LOS KRAALETES DE LA UNIDAD</span>
+                        <h3 id="uzKraalTitle">El Kraal y Personajes del Bosque</h3>
+                        <p id="uzKraalSub">Cromos coleccionables de los scouters y figuras del marco simbólico de esta rama</p>
                     </div>
-                    <div class="sz-pillars-list" id="uzPillarsList"></div>
                 </div>
+                <div class="kraaletes-cromos-grid" id="uzKraaletesGrid"></div>
+            </section>
 
-                <div class="sz-unit-kraal-box">
-                    <div class="sz-kraal-header">
-                        <span class="sz-kraal-star-icon">★</span>
-                        <div>
-                            <span class="sz-section-index">03 · LOS KRAALETES DE LA UNIDAD</span>
-                            <h3 id="uzKraalTitle">El Kraal y Personajes del Bosque</h3>
-                            <p id="uzKraalSub">Scouters y figuras del marco simbólico de esta rama educativa</p>
-                        </div>
+            <!-- 03 · METODOLOGÍA Y PROGRESIÓN -->
+            <section class="unit-progression-section">
+                <div class="sz-section-header">
+                    <div>
+                        <span class="sz-section-index">03 · METODOLOGÍA Y PROGRESIÓN</span>
+                        <h3>Marco Simbólico y Etapas</h3>
+                        <p>Cómo trabajamos cada sábado y acampada en esta unidad</p>
                     </div>
-                    <div class="sz-kraaletes-grid" id="uzKraaletesGrid"></div>
                 </div>
-            </div>
+                <div class="sz-pillars-list" id="uzPillarsList"></div>
+            </section>
         </div>
     </section>
 
@@ -302,24 +309,36 @@
     </section>
 
     <!-- ======================================================================
-         8. HUD INFERIOR MINIMALISTA (SOLO LÍNEA DE PROGRESO ESTELAR)
+         8. HUD INFERIOR MINIMALISTA CON NAVEGACIÓN ENTRE SECTORES
          ====================================================================== -->
     <footer class="cosmos-hud-bottom">
-        <div class="hud-scroll-rail-wrap cosmos-interactive">
-            <div class="hud-scroll-labels">
-                <span id="hudScrollHint">HAZ SCROLL O CLIC EN UNA ESTRELLA PARA ENTRAR EN ELLA</span>
-                <span id="hudProgressPercent">01 / 05</span>
-            </div>
-            <div class="hud-scroll-track" id="hudScrollTrack" role="slider" aria-label="Progreso del mapa estelar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
-                <div class="hud-scroll-fill" id="hudScrollFill"></div>
-                <div class="hud-scroll-ticks" id="hudScrollTicks">
-                    <button type="button" class="rail-tick active" data-sector="0" title="I · Cruz del Sur (Acrux)"></button>
-                    <button type="button" class="rail-tick" data-sector="1" title="II · Unidades"></button>
-                    <button type="button" class="rail-tick" data-sector="2" title="III · Campamentos"></button>
-                    <button type="button" class="rail-tick" data-sector="3" title="IV · Objetos Perdidos"></button>
-                    <button type="button" class="rail-tick" data-sector="4" title="V · Bases y Contacto"></button>
+        <div class="hud-bottom-nav-container cosmos-interactive">
+            <button type="button" class="hud-nav-arrow-btn" id="btnPrevSector" aria-label="Sector Anterior" title="Ir al sector anterior">
+                <span class="arrow-symbol">←</span>
+                <span class="arrow-text">Anterior</span>
+            </button>
+
+            <div class="hud-scroll-rail-wrap">
+                <div class="hud-scroll-labels">
+                    <span id="hudScrollHint">HAZ SCROLL O CLIC EN UNA ESTRELLA PARA ENTRAR EN ELLA</span>
+                    <span id="hudProgressPercent">01 / 05 · Cruz del Sur</span>
+                </div>
+                <div class="hud-scroll-track" id="hudScrollTrack" role="slider" aria-label="Progreso del mapa estelar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+                    <div class="hud-scroll-fill" id="hudScrollFill"></div>
+                    <div class="hud-scroll-ticks" id="hudScrollTicks">
+                        <button type="button" class="rail-tick active" data-sector="0" title="I · Cruz del Sur (Acrux)"></button>
+                        <button type="button" class="rail-tick" data-sector="1" title="II · Unidades"></button>
+                        <button type="button" class="rail-tick" data-sector="2" title="III · Campamentos"></button>
+                        <button type="button" class="rail-tick" data-sector="3" title="IV · Objetos Perdidos"></button>
+                        <button type="button" class="rail-tick" data-sector="4" title="V · Bases y Contacto"></button>
+                    </div>
                 </div>
             </div>
+
+            <button type="button" class="hud-nav-arrow-btn" id="btnNextSector" aria-label="Sector Siguiente" title="Ir al sector siguiente">
+                <span class="arrow-text">Siguiente</span>
+                <span class="arrow-symbol">→</span>
+            </button>
         </div>
     </footer>
 
@@ -369,6 +388,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=2.7"></script>
+    <script src="script.js?v=2.8"></script>
 </body>
 </html>
