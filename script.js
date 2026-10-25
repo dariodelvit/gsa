@@ -1042,6 +1042,20 @@
         clusterType: 'baul-field'
     });
 
+    // Estrellas secundarias del campo de Campamentos para enriquecer la constelación
+    const campFieldExtras = [
+        { dx: -540, dy: -95, r: 2.6, symbol: '' },
+        { dx: -340, dy: 125, r: 2.9, symbol: '' },
+        { dx: -110, dy: -145, r: 2.7, symbol: '' },
+        { dx: 140, dy: 135, r: 2.8, symbol: '' },
+        { dx: 390, dy: -155, r: 3.0, symbol: '' },
+        { dx: 580, dy: 75, r: 2.7, symbol: '' }
+    ];
+    registerStarCluster(campFieldExtras, [], CAMPS_ORIGIN_X, CAMPS_ORIGIN_Y, {
+        sectorIndex: 2,
+        clusterType: 'camp-field'
+    });
+
     // 2. Registrar Sector II: LAS 5 UNIDADES EN UNA CONSTELACIÓN DE LÍNEA RECTA ASCENDENTE
     //    Cada estrella de la línea recta muestra el color de su Unidad (Escultas marrón, Clan rojo, etc.).
     const unitLineStars = UNITS_DATA.map((unit, uIdx) => ({
@@ -1118,26 +1132,13 @@
 
         const N = sortedCamps.length;
 
-        // Secuencia astronómica armónica de alturas y orientación de etiquetas
-        // Alterna valles (dy > 0, etiqueta abajo) y crestas (dy < 0, etiqueta arriba)
-        // para dar una constelación orgánica, dispersa y evitar que las etiquetas colapsen.
-        const CELESTIAL_OFFSETS = [
-            { dy: 70, labelPos: 'bottom' },
-            { dy: -125, labelPos: 'top' },
-            { dy: 45, labelPos: 'bottom' },
-            { dy: -140, labelPos: 'top' },
-            { dy: 85, labelPos: 'bottom' },
-            { dy: -100, labelPos: 'top' },
-            { dy: 50, labelPos: 'bottom' },
-            { dy: -115, labelPos: 'top' },
-            { dy: 75, labelPos: 'bottom' },
-            { dy: -130, labelPos: 'top' },
-            { dy: 60, labelPos: 'bottom' },
-            { dy: -105, labelPos: 'top' }
-        ];
-
-        // Ancho generoso del sector para que las estrellas respiren con holgura
-        const spanX = Math.min(1080, Math.max(380, (N - 1) * 140));
+        // Ancho generoso del sector y ajuste automático de zoom para encuadre astronómico perfecto
+        const spanX = Math.min(1260, Math.max(460, (N - 1) * 165));
+        if (N > 5) {
+            SECTORS[2].baseZoom = Math.min(1.02, Math.max(0.82, 940 / spanX));
+        } else {
+            SECTORS[2].baseZoom = 1.02;
+        }
 
         CAMPS_DATA = sortedCamps.map((c, idx) => {
             const letter = GREEK_ALPHABET[idx] || `★${idx + 1}`;
@@ -1149,17 +1150,60 @@
             if (N === 1) {
                 dx = 0;
                 dy = -15;
-                labelPos = 'top';
+                labelPos = 'bottom';
+            } else if (N === 2) {
+                dx = idx === 0 ? -160 : 160;
+                dy = idx === 0 ? 30 : -45;
+                labelPos = idx === 0 ? 'bottom' : 'top';
+            } else if (N === 3) {
+                const coords = [
+                    { dx: -210, dy: 45, lp: 'bottom' },
+                    { dx: 0, dy: -55, lp: 'top' },
+                    { dx: 210, dy: 25, lp: 'bottom' }
+                ];
+                dx = coords[idx].dx;
+                dy = coords[idx].dy;
+                labelPos = coords[idx].lp;
+            } else if (N === 4) {
+                const coords = [
+                    { dx: -260, dy: 40, lp: 'bottom' },
+                    { dx: -90, dy: -65, lp: 'top' },
+                    { dx: 90, dy: -25, lp: 'bottom' },
+                    { dx: 260, dy: 50, lp: 'top' }
+                ];
+                dx = coords[idx].dx;
+                dy = coords[idx].dy;
+                labelPos = coords[idx].lp;
             } else {
+                // Curva armónica celestial continua (como la constelación del Río / Senda de las Estrellas)
                 const t = idx / (N - 1); // 0 .. 1 progresando en años
-                const baseX = -spanX / 2 + t * spanX;
-                // Desplazamiento orgánico en X para romper la rigidez lineal
-                const jitterX = Math.sin(idx * 2.15 + 1.2) * 16;
-                dx = Math.round(baseX + jitterX);
+                const baseX = -spanX * 0.5 + t * spanX;
+                const primaryArch = Math.sin(t * Math.PI) * -85;
+                const naturalUndulation = Math.sin(t * Math.PI * 2.0 - 0.3) * 65;
+                const timeAscent = (t - 0.5) * -70;
+                const seedJitterY = Math.sin(idx * 3.14 + 0.8) * 16;
+                const seedJitterX = Math.cos(idx * 2.37 + 1.4) * 12;
 
-                const offsetCfg = CELESTIAL_OFFSETS[idx % CELESTIAL_OFFSETS.length];
-                dy = Math.round(offsetCfg.dy + Math.sin(idx * 1.6) * 12);
-                labelPos = offsetCfg.labelPos;
+                dx = Math.round(baseX + seedJitterX);
+                dy = Math.round(primaryArch + naturalUndulation + timeAscent + seedJitterY);
+
+                if (dy < -35) {
+                    labelPos = 'top';
+                } else if (dy > 15) {
+                    labelPos = 'bottom';
+                } else {
+                    labelPos = (idx % 2 === 0) ? 'top' : 'bottom';
+                }
+            }
+
+            // Magnitudes astronómicas realistas
+            let r = 7.0;
+            if (isLast) {
+                r = 9.4; // Gran Supergigante Roja (el campamento más reciente)
+            } else if (idx === 0) {
+                r = 8.2; // Estrella Alfa de la Constelación
+            } else {
+                r = 6.4 + ((idx * 3 + 1) % 5) * 0.28;
             }
 
             return {
@@ -1173,8 +1217,8 @@
                 driveUrl: c.driveUrl || '',
                 dx,
                 dy,
-                r: isLast ? 8.8 : (7.4 + (idx % 3) * 0.4),
-                labelPos: labelPos,
+                r,
+                labelPos,
                 isRedStar: isLast,
                 isLastCamp: isLast,
                 desc: c.desc || 'Campamento oficial del Grupo Scout ACRUX 518 sincronizado con Google Drive.',
@@ -1255,13 +1299,16 @@
             symbol: '✦ El Baúl',
             dx: 0,
             dy: 0,
-            r: 7.6,
+            r: 8.2,
             color: '#FFFFFF',
-            halo: 'rgba(217, 56, 58, 0.20)',
+            halo: 'rgba(56, 189, 248, 0.30)',
+            ringColor: 'rgba(56, 189, 248, 0.45)',
+            hoverRingColor: 'rgba(56, 189, 248, 0.90)',
             isBaulMain: true,
             isClusterHub: true,
             cajonIndex: 0,
             starIdx: 0,
+            labelPos: 'bottom',
             badge: '✦ Estrella Principal · Objetos Perdidos',
             title: '✦ El Baúl · Estrella de Objetos Perdidos (Google Drive)',
             body: 'Haz clic en «El Baúl» para adentrarte en su interior y explorar los cajones sincronizados con Google Drive.',
@@ -1316,41 +1363,28 @@
             };
         });
 
-        // 3. Generar dinámicamente SECTORS[3].stars y SECTORS[3].edges
+        // 3. Generar dinámicamente SECTORS[3].stars y SECTORS[3].edges formando un asterismo celestial armónico
         const N = LOST_CAJONES_DATA.length;
         const miniStars = [];
         const edges = [];
 
-        for (let i = 0; i < N; i++) {
-            const cj = LOST_CAJONES_DATA[i];
-            let dx = 0;
-            let dy = 0;
-
-            if (N === 1) {
-                dx = -120;
-                dy = -60;
-            } else {
-                const startAngle = -Math.PI * 0.85; // ~ -153°
-                const endAngle = Math.PI * 0.15;   // ~ +27°
-                const angle = startAngle + (i / (N - 1)) * (endAngle - startAngle);
-                const rad = 175 + Math.sin(i * 2.2) * 22;
-                dx = Math.round(Math.cos(angle) * rad);
-                dy = Math.round(Math.sin(angle) * rad);
-            }
-
+        if (N === 1) {
+            // Par binario elegante con El Baúl abajo y Cajón 01 en ascenso luminoso
+            const cj = LOST_CAJONES_DATA[0];
             miniStars.push({
                 id: `cajon-star-${cj.id}`,
                 symbol: cj.starSymbol,
-                dx,
-                dy,
-                r: 4.8,
+                dx: 110,
+                dy: -80,
+                r: 5.6,
+                labelPos: 'top',
                 color: '#38BDF8',
-                halo: 'rgba(56, 189, 248, 0.28)',
-                ringColor: 'rgba(56, 189, 248, 0.40)',
-                hoverRingColor: 'rgba(56, 189, 248, 0.85)',
-                cajonIndex: i,
-                starIdx: i + 1,
-                badge: `✦ Mini-Estrella · Cajón 0${i + 1}`,
+                halo: 'rgba(56, 189, 248, 0.35)',
+                ringColor: 'rgba(56, 189, 248, 0.48)',
+                hoverRingColor: 'rgba(56, 189, 248, 0.95)',
+                cajonIndex: 0,
+                starIdx: 1,
+                badge: `✦ Mini-Estrella · ${cj.folderName}`,
                 title: `${cj.starSymbol} · ${cj.folderName}`,
                 body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
                 pillars: [
@@ -1359,9 +1393,139 @@
                     'Clic para abrir cajón'
                 ]
             });
+            edges.push([0, 1]);
+        } else if (N === 2) {
+            // Triángulo áureo celeste (Delta asterism)
+            const pos = [
+                { dx: -130, dy: -70, lp: 'top' },
+                { dx: 130, dy: -70, lp: 'top' }
+            ];
+            for (let i = 0; i < N; i++) {
+                const cj = LOST_CAJONES_DATA[i];
+                miniStars.push({
+                    id: `cajon-star-${cj.id}`,
+                    symbol: cj.starSymbol,
+                    dx: pos[i].dx,
+                    dy: pos[i].dy,
+                    r: 5.2,
+                    labelPos: pos[i].lp,
+                    color: '#38BDF8',
+                    halo: 'rgba(56, 189, 248, 0.32)',
+                    ringColor: 'rgba(56, 189, 248, 0.45)',
+                    hoverRingColor: 'rgba(56, 189, 248, 0.90)',
+                    cajonIndex: i,
+                    starIdx: i + 1,
+                    badge: `✦ Mini-Estrella · Cajón 0${i + 1}`,
+                    title: `${cj.starSymbol} · ${cj.folderName}`,
+                    body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
+                    pillars: [`📁 ${cj.folderName}`, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
+                });
+            }
+            edges.push([0, 1], [0, 2], [1, 2]);
+        } else if (N === 3) {
+            // Diamante / Rombo celeste envolvente
+            const pos = [
+                { dx: -145, dy: -25, lp: 'left' },
+                { dx: 0, dy: -110, lp: 'top' },
+                { dx: 145, dy: -25, lp: 'right' }
+            ];
+            for (let i = 0; i < N; i++) {
+                const cj = LOST_CAJONES_DATA[i];
+                miniStars.push({
+                    id: `cajon-star-${cj.id}`,
+                    symbol: cj.starSymbol,
+                    dx: pos[i].dx,
+                    dy: pos[i].dy,
+                    r: 5.0,
+                    labelPos: pos[i].lp,
+                    color: '#38BDF8',
+                    halo: 'rgba(56, 189, 248, 0.32)',
+                    ringColor: 'rgba(56, 189, 248, 0.45)',
+                    hoverRingColor: 'rgba(56, 189, 248, 0.90)',
+                    cajonIndex: i,
+                    starIdx: i + 1,
+                    badge: `✦ Mini-Estrella · Cajón 0${i + 1}`,
+                    title: `${cj.starSymbol} · ${cj.folderName}`,
+                    body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
+                    pillars: [`📁 ${cj.folderName}`, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
+                });
+            }
+            edges.push([0, 1], [1, 2], [2, 3], [3, 0], [0, 2]);
+        } else if (N === 4) {
+            // El Cofre de las Estrellas (cuadrilátero celeste con estrella joya El Baúl en el centro)
+            const pos = [
+                { dx: -140, dy: -85, lp: 'top' },
+                { dx: 140, dy: -85, lp: 'top' },
+                { dx: 120, dy: 85, lp: 'bottom' },
+                { dx: -120, dy: 85, lp: 'bottom' }
+            ];
+            for (let i = 0; i < N; i++) {
+                const cj = LOST_CAJONES_DATA[i];
+                miniStars.push({
+                    id: `cajon-star-${cj.id}`,
+                    symbol: cj.starSymbol,
+                    dx: pos[i].dx,
+                    dy: pos[i].dy,
+                    r: 5.0,
+                    labelPos: pos[i].lp,
+                    color: '#38BDF8',
+                    halo: 'rgba(56, 189, 248, 0.32)',
+                    ringColor: 'rgba(56, 189, 248, 0.45)',
+                    hoverRingColor: 'rgba(56, 189, 248, 0.90)',
+                    cajonIndex: i,
+                    starIdx: i + 1,
+                    badge: `✦ Mini-Estrella · Cajón 0${i + 1}`,
+                    title: `${cj.starSymbol} · ${cj.folderName}`,
+                    body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
+                    pillars: [`📁 ${cj.folderName}`, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
+                });
+            }
+            edges.push([1, 2], [2, 3], [3, 4], [4, 1], [0, 1], [0, 2], [0, 3], [0, 4]);
+        } else {
+            // Bóveda / Corona celeste para N >= 5
+            for (let i = 0; i < N; i++) {
+                const cj = LOST_CAJONES_DATA[i];
+                const angle = -Math.PI * 0.90 + (i / (N - 1)) * (Math.PI * 1.80);
+                const rx = 195 + Math.sin(i * 1.8) * 16;
+                const ry = 125 + Math.cos(i * 2.2) * 14;
+                const tilt = -0.16;
+                const rawX = Math.cos(angle) * rx;
+                const rawY = Math.sin(angle) * ry;
+                const dx = Math.round(rawX * Math.cos(tilt) - rawY * Math.sin(tilt));
+                const dy = Math.round(rawX * Math.sin(tilt) + rawY * Math.cos(tilt));
 
-            // Conectar la estrella central 0 con cada mini-estrella (índice i + 1)
-            edges.push([0, i + 1]);
+                let labelPos = 'bottom';
+                if (dy < -35) labelPos = 'top';
+                else if (dx < -60) labelPos = 'left';
+                else if (dx > 60) labelPos = 'right';
+
+                miniStars.push({
+                    id: `cajon-star-${cj.id}`,
+                    symbol: cj.starSymbol,
+                    dx,
+                    dy,
+                    r: 4.8,
+                    labelPos,
+                    color: '#38BDF8',
+                    halo: 'rgba(56, 189, 248, 0.28)',
+                    ringColor: 'rgba(56, 189, 248, 0.40)',
+                    hoverRingColor: 'rgba(56, 189, 248, 0.85)',
+                    cajonIndex: i,
+                    starIdx: i + 1,
+                    badge: `✦ Mini-Estrella · Cajón 0${i + 1}`,
+                    title: `${cj.starSymbol} · ${cj.folderName}`,
+                    body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
+                    pillars: [`📁 ${cj.folderName}`, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
+                });
+            }
+            // Cinta perimetral de la bóveda
+            for (let i = 0; i < N - 1; i++) {
+                edges.push([i + 1, i + 2]);
+            }
+            // Tirantes estructurales hacia El Baúl (nodo 0)
+            edges.push([0, 1]);
+            edges.push([0, N]);
+            edges.push([0, Math.ceil(N / 2)]);
         }
 
         SECTORS[3].stars = [baulMainStar, ...miniStars];
@@ -2880,17 +3044,29 @@
             ctx.beginPath();
             ctx.moveTo(ax, ay);
             ctx.quadraticCurveTo(mx + ed.ctrlX, my + ed.ctrlY, bx, by);
-            ctx.strokeStyle = anniversaryLerp > 0.2
-                ? `rgba(212, 175, 55, ${alpha.toFixed(3)})`
-                : `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
-            ctx.lineWidth = (isFocusedSector ? 1.35 : 0.85) + ed.glow * 1.1;
+
+            let edgeStroke = `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
+            let edgeShadow = 'rgba(255, 255, 255, 0.55)';
+
+            if (anniversaryLerp > 0.2) {
+                edgeStroke = `rgba(212, 175, 55, ${alpha.toFixed(3)})`;
+                edgeShadow = 'rgba(212, 175, 55, 0.65)';
+            } else if (ed.sectorIndex === 3) {
+                // Brillo cian estelar para «El Baúl» y sus cajones
+                edgeStroke = `rgba(186, 230, 253, ${alpha.toFixed(3)})`;
+                edgeShadow = 'rgba(56, 189, 248, 0.55)';
+            } else if (ed.sectorIndex === 2 || ed.clusterType === 'camp') {
+                // Destello plateado de alta pureza con halo estelar para Campamentos
+                edgeStroke = `rgba(240, 246, 255, ${alpha.toFixed(3)})`;
+                edgeShadow = 'rgba(200, 225, 255, 0.60)';
+            } else if (ed.sectorIndex === 0) {
+                edgeShadow = 'rgba(217, 56, 58, 0.45)';
+            }
+
+            ctx.strokeStyle = edgeStroke;
+            ctx.lineWidth = (isFocusedSector ? 1.45 : 0.85) + ed.glow * 1.1;
             if (ed.glow > 0.08 || isFocusedSector) {
-                if (anniversaryLerp > 0.2) {
-                    ctx.shadowColor = 'rgba(212, 175, 55, 0.65)';
-                } else {
-                    const isPureWhiteSector = ed.sectorIndex === 1 || ed.sectorIndex === 2 || ed.sectorIndex === 3;
-                    ctx.shadowColor = (!isPureWhiteSector && ed.glow > 0.2) ? 'rgba(217, 56, 58, 0.55)' : 'rgba(255, 255, 255, 0.55)';
-                }
+                ctx.shadowColor = edgeShadow;
                 ctx.shadowBlur = 8 + ed.glow * 10;
             }
             ctx.stroke();
@@ -2989,6 +3165,10 @@
                     ? '600 12px "JetBrains Mono", monospace'
                     : '400 10.5px "JetBrains Mono", monospace';
 
+                // Sombra suave que garantiza legibilidad cinematográfica sin importar el fondo
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.90)';
+                ctx.shadowBlur = 5;
+
                 if (nd.isRedStar) {
                     ctx.fillStyle = (isHovered || isSelectedInSector) ? '#FFA39E' : '#FF6B6B';
                 } else {
@@ -2999,16 +3179,16 @@
 
                 if (nd.labelPos === 'top') {
                     ctx.textAlign = 'center';
-                    ctx.fillText(nd.symbol, sx, sy - r * 1.35 - 8);
+                    ctx.fillText(nd.symbol, sx, sy - r * 1.35 - 9);
                 } else if (nd.labelPos === 'bottom') {
                     ctx.textAlign = 'center';
-                    ctx.fillText(nd.symbol, sx, sy + r * 1.35 + 16);
+                    ctx.fillText(nd.symbol, sx, sy + r * 1.35 + 17);
                 } else if (nd.labelPos === 'left') {
                     ctx.textAlign = 'right';
-                    ctx.fillText(nd.symbol, sx - r * 1.35 - 8, sy + 4);
+                    ctx.fillText(nd.symbol, sx - r * 1.35 - 9, sy + 4);
                 } else {
                     ctx.textAlign = 'left';
-                    ctx.fillText(nd.symbol, sx + r * 1.35 + 7, sy + 4);
+                    ctx.fillText(nd.symbol, sx + r * 1.35 + 8, sy + 4);
                 }
                 ctx.restore();
             }
