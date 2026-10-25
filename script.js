@@ -352,6 +352,9 @@
     // Inicialmente vacío: cero cajones inventados; solo se puebla con carpetas reales de Drive
     let LOST_CAJONES_DATA = [];
 
+    // Coordinación dinámica de Grupo (desde Drive o fallback)
+    let coordinadoresDrive = null;
+
     // =========================================================================
     // 2C. MODO 50 ANIVERSARIO (1976 - 2026) · ESPIRAL ÁUREA Y CONECTOR GOOGLE DRIVE
     // =========================================================================
@@ -2960,7 +2963,14 @@
             elProgressFill.style.width = `${clamp(pct, 0, 100).toFixed(1)}%`;
         }
         if (elProgressPercent) {
-            elProgressPercent.textContent = `0${activeSectorIdx + 1} / 0${SECTORS.length}`;
+            const sectorNames = [
+                '01 / 05 · Cruz del Sur',
+                '02 / 05 · Unidades',
+                '03 / 05 · Campamentos',
+                '04 / 05 · El Baúl',
+                '05 / 05 · Bases y Contacto'
+            ];
+            elProgressPercent.textContent = sectorNames[activeSectorIdx] || `0${activeSectorIdx + 1} / 0${SECTORS.length}`;
         }
 
         freePanX += (targetFreePanX - freePanX) * 0.085;
