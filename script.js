@@ -1094,6 +1094,11 @@
 
     // Clasificador inteligente para diferenciar Campamentos de Verano vs Semana Santa / Primavera
     function detectCampSeason(camp) {
+        // 0. Si viene directamente categorizado desde Google Drive (por subcarpeta Verano / Semana Santa)
+        if (camp.seasonType === 'easter' || camp.seasonType === 'summer') {
+            return camp.seasonType;
+        }
+
         const raw = `${camp.name || ''} ${camp.driveFolderName || ''} ${camp.desc || ''} ${camp.location || ''} ${camp.season || ''}`.toLowerCase();
 
         // 1. Detección explícita por palabras clave de Semana Santa / Primavera
