@@ -111,15 +111,15 @@
                 { title: '2 · Castor con Paletas (Como en el Gran Incendio)', desc: 'Tras aprender a ayudar y compartir el trabajo en la presa junto a los Grandes Castores y la Familia Jones, al castor le crecen las paletas.' },
                 { title: '3 · Castor Plateado y «Nado Hacia Arriba»', desc: 'Siguiendo el ejemplo de Keeo, comparte siempre con alegría y se prepara en el remolino del Gran Roble para nadar río arriba hacia el río Waigunga y la Manada.' }
             ],
-            kraalTitle: 'Personajes y Kraaletes de la Colonia Ohiensis',
-            kraalSub: 'Los Grandes Castores, el Búho Malak y la Familia Jones («La Vida en el Estanque»)',
+            kraalTitle: 'Kraal de la Colonia Ohiensis',
+            kraalSub: 'Scouters de Castores (Kraaletes de Colonia)',
             kraaletes: [
-                { star: '★ Castor Plateado', name: 'Keeo', role: 'El Castor Plateado · Habla todas las lenguas del bosque y convoca a la Colonia con tres coletazos: «Splash, Splash, Splash»' },
-                { star: '★ El Búho Sabio', name: 'Malak', role: 'Vigila de noche desde lo alto del Gran Roble con su «¡¡Uhú, Uhú!!» y cuenta las historias que enseñan La Vida en el Estanque' },
-                { star: '★ Grandes Castores', name: 'Lekes, Kibu y Rasty', role: 'Guías del Estanque · Maestros en construir la presa, roer los troncos y enseñar a nadar («en boca cerrada no entran peces»)' },
-                { star: '★ Familia Jones', name: 'Ojo de Halcón y Arco Iris', role: 'Los padres amigos del bosque · Aportan los leños de la presa y enseñan a partir la rama en dos para COMPARTIR siempre' },
-                { star: '★ Familia Jones', name: 'Burbuja y Pelirrojo', role: 'Los hermanos amigos del agua · Juegan, chapotean y enseñan a nadar a Kid, Moi y Piko en el centro del estanque' },
-                { star: '★ Amigos del Bosque', name: 'Tic, Tac, Nila y Kalú', role: 'Las dos ágiles ardillas rojas que aprendieron a compartir, la valiente castora Nila y el anciano búho sabio Kalú' }
+                { star: '★ Kibu', name: 'Kibu', role: 'Scouter de Colonia' },
+                { star: '★ Malak', name: 'Malak', role: 'Scouter de Colonia' },
+                { star: '★ Kapi', name: 'Kapi', role: 'Scouter de Colonia' },
+                { star: '★ Tic-Tac', name: 'Tic-Tac', role: 'Scouter de Colonia' },
+                { star: '★ Burbuja', name: 'Burbuja', role: 'Scouter de Colonia' },
+                { star: '★ Rusty', name: 'Rusty', role: 'Scouter de Colonia' }
             ]
         },
         {
@@ -171,14 +171,17 @@
                 { title: 'Vida en Seisenas', desc: 'Pequeños grupos de seis lobatos donde los mayores acompañan y enseñan con el ejemplo a los más jóvenes.' }
             ],
             kraalTitle: 'Kraal de la Manada Khanhiwara',
-            kraalSub: 'Los Viejos Lobos de Seeonee (Kraaletes de Manada)',
+            kraalSub: 'Los Viejos Lobos (Kraaletes de Manada)',
             kraaletes: [
-                { star: '★ I · Seeonee', name: 'Akela', role: 'Viejo Lobo Jefe · Guía desde la Roca del Consejo y coordinación de la Manada' },
-                { star: '★ II · Seeonee', name: 'Baloo', role: 'El Oso Pardo · Maestro de la Ley de la Manada y las Máximas de la Selva' },
-                { star: '★ III · Seeonee', name: 'Bagheera', role: 'La Pantera Negra · Destreza, agilidad, observación y cacerías en el bosque' },
-                { star: '★ IV · Seeonee', name: 'Raksha', role: 'La Loba Madre · Acogida, ternura, cuidado y protección de cada lobezno' },
-                { star: '★ V · Seeonee', name: 'Kaa y Hathi', role: 'La Pitón de Roca y el Elefante Sabio · Astucia, orden e historias de la selva' },
-                { star: '★ VI · Seeonee', name: 'Hermano Gris', role: 'Compañero fiel de Mowgli · Hermandad, lealtad y juegos en equipo' }
+                { star: '★ Baloo', name: 'Baloo', role: 'Viejo Lobo de Manada' },
+                { star: '★ Raksa', name: 'Raksa', role: 'Viejo Lobo de Manada' },
+                { star: '★ Akela', name: 'Akela', role: 'Viejo Lobo de Manada' },
+                { star: '★ Kotic', name: 'Kotic', role: 'Viejo Lobo de Manada' },
+                { star: '★ Rikki', name: 'Rikki', role: 'Viejo Lobo de Manada' },
+                { star: '★ Bagheera', name: 'Bagheera', role: 'Viejo Lobo de Manada' },
+                { star: '★ Fao', name: 'Fao', role: 'Viejo Lobo de Manada' },
+                { star: '★ Kaa', name: 'Kaa', role: 'Viejo Lobo de Manada' },
+                { star: '★ Hermano Gris', name: 'Hermano Gris', role: 'Viejo Lobo de Manada' }
             ]
         },
         {
@@ -232,10 +235,15 @@
             kraalTitle: 'Kraal de la Tropa Lohengrin',
             kraalSub: 'Scouters de Tropa (Kraaletes de Lohengrin)',
             kraaletes: [
-                { star: '★ I · Lohengrin', name: 'Coordinación de Tropa', role: 'Acompañamiento de Guías de Patrulla y presidencia de la Corte de Honor' },
-                { star: '★ II · Lohengrin', name: 'Scouter de Pionerismo', role: 'Construcciones en madera, amarres, intendencia y seguridad en acampada' },
-                { star: '★ III · Lohengrin', name: 'Scouter de Exploración', role: 'Topografía, brújula, rutas de montaña y grandes juegos estratégicos' },
-                { star: '★ IV · Lohengrin', name: 'Guardián de Leyenda', role: 'Ambientación de Lohengrin, veladas, canciones y ceremonias de promesa' }
+                { star: '★ Nadia', name: 'Nadia', role: 'Scouter de Tropa' },
+                { star: '★ Ángel', name: 'Ángel', role: 'Scouter de Tropa' },
+                { star: '★ Hugo', name: 'Hugo', role: 'Scouter de Tropa' },
+                { star: '★ Jesús', name: 'Jesús', role: 'Scouter de Tropa' },
+                { star: '★ Silvia', name: 'Silvia', role: 'Scouter de Tropa' },
+                { star: '★ Edgar', name: 'Edgar', role: 'Scouter de Tropa' },
+                { star: '★ Pablo', name: 'Pablo', role: 'Scouter de Tropa' },
+                { star: '★ Ane', name: 'Ane', role: 'Scouter de Tropa' },
+                { star: '★ Darío', name: 'Darío', role: 'Scouter de Tropa' }
             ]
         },
         {
@@ -284,9 +292,11 @@
             kraalTitle: 'Kraal de la Unidad Esculta Trea',
             kraalSub: 'Scouters de Escultas (Kraaletes de Trea)',
             kraaletes: [
-                { star: '★ I · Trea', name: 'Coordinación de Unidad', role: 'Acompañamiento de la Asamblea de Unidad y Consejo de Empresa' },
-                { star: '★ II · Trea', name: 'Scouter de Alta Montaña', role: 'Planificación técnica de raids, vivacs y seguridad en cumbres' },
-                { star: '★ III · Trea', name: 'Scouter de Proyectos', role: 'Mentoría en Empresas Escultas, autogestión y acción comunitaria' }
+                { star: '★ Silvia', name: 'Silvia', role: 'Scouter de Unidad' },
+                { star: '★ David', name: 'David', role: 'Scouter de Unidad' },
+                { star: '★ JJ', name: 'JJ', role: 'Scouter de Unidad' },
+                { star: '★ Lucia', name: 'Lucia', role: 'Scouter de Unidad' },
+                { star: '★ Leonor', name: 'Leonor', role: 'Scouter de Unidad' }
             ]
         },
         {
@@ -333,10 +343,12 @@
                 { title: 'De Rover a Scouter (El Cierre del Ciclo)', desc: 'Formación como monitores de tiempo libre para devolver al grupo todo lo aprendido.' }
             ],
             kraalTitle: 'Kraal del Clan Ama Dablam',
-            kraalSub: 'Acompañantes Rovers y Coordinación (Kraaletes de Clan)',
+            kraalSub: 'Acompañantes Rovers (Kraaletes de Clan)',
             kraaletes: [
-                { star: '★ I · Ama Dablam', name: 'Acompañante de Clan', role: 'Mentoría de vida rover, Parlamentos de Clan y Partidas Rovers' },
-                { star: '★ II · Ama Dablam', name: 'Coordinación General (JJ, Marta y Hugo)', role: 'Enlace directo con la estructura del Grupo y transición a Scouter' }
+                { star: '★ Laura', name: 'Laura', role: 'Acompañante de Clan' },
+                { star: '★ María', name: 'María', role: 'Acompañante de Clan' },
+                { star: '★ Marta', name: 'Marta', role: 'Acompañante de Clan' },
+                { star: '★ Victoria', name: 'Victoria', role: 'Acompañante de Clan' }
             ]
         }
     ];
@@ -740,7 +752,7 @@
                     color: '#FFFFFF',
                     halo: 'rgba(255, 255, 255, 0.35)',
                     badge: 'Atención a Familias',
-                    title: 'Equipo de Coordinación: JJ, Marta y Hugo',
+                    title: 'Equipo de Coordinación: JJ, Raksha y Hugo',
                     body: 'Habla directamente por teléfono, WhatsApp o correo electrónico con los coordinadores de grupo para consultar plazas por año de nacimiento o cualquier duda.',
                     pillars: ['💬 WhatsApp Directo', '📞 Llamada Telefónica', '✉️ Correo Oficial']
                 },
@@ -2501,7 +2513,7 @@
                 photoUrl: null
             },
             {
-                name: 'Marta',
+                name: 'Raksha',
                 role: 'Coordinadora de Grupo',
                 phone: '619202068',
                 displayPhone: '619 20 20 68',

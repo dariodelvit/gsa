@@ -1,130 +1,109 @@
-# Grupo Scout ACRUX 518 · Mapa Estelar Global Interactivo
+# ⚜️ Grupo Scout ACRUX 518 · Web Oficial y Mapa Estelar
 
-> **Experiencia web astronómica e interactiva conmemorativa para el Grupo Scout ACRUX 518 de Valladolid (ASDE - Exploradores de Castilla y León).**
+¡Hola! Esta es la web oficial del **Grupo Scout Acrux 518** de Valladolid (perteneciente a ASDE - Exploradores de Castilla y León y Scouts de España).
 
-Una interfaz de exploración espacial minimalista y fluida construida en **HTML5 Canvas 2D, JavaScript Vanilla puro y CSS moderno**, con diseño de vanguardia inspirado en estándares internacionales (*Awwwards* / *FWA*).
+En lugar de hacer una web clásica con bloques de texto aburridos, decidimos montar algo especial: un **mapa estelar interactivo en el espacio** donde vas navegando por el universo scout y cada constelación representa una parte real de nuestro grupo.
 
----
-
-## 🌌 Visión y Concepto
-
-La web se estructura como un **firmamento cósmico navegable**, donde cada área, unidad educativa, campamento y recuerdo del grupo está integrado en constelaciones reales y geométricas conectadas por la estrella guía **Acrux (α Crucis)**.
-
-### Los 5 Sectores del Cosmos:
-1. **Sector I · Cruz del Sur (`Crux Australis`):**
-   - Reproducción astronómicamente fiel de la constelación de la Cruz del Sur: **Acrux** (base meridional), **Gacrux** (cima carmesí), **Mimosa** (brazo izquierdo), **Imai** (brazo derecho) y la **Intrometida** (ε Crucis).
-   - Acceso al Drawer lateral de Identidad Scout (historia desde 1977, pañoleta carmesí y blanca, valores y método educativo).
-2. **Sector II · El Camino de las Unidades:**
-   - Las 5 ramas educativas representadas en una constelación de **línea recta ascendente**:
-     1. **Castores** (6 a 8 años · Colonia Odisea)
-     2. **Manada** (8 a 11 años · Manada Waingunga)
-     3. **Tropa** (11 a 14 años · Tropa Lohengrin)
-     4. **Unidad Esculta** (14 a 17 años · Unidad Esculta Trea)
-     5. **Clan** (17 a 21 años · Clan Rover Ama Dablam)
-   - **Super-Zoom Hiperespacial:** Al pulsar en cualquier unidad, la cámara ejecuta un salto fluido estilo *hiperespacio* que sumerge al usuario dentro de la estrella, abriendo su pestaña exclusiva con pedagogía, lema, colores de rama y el **Kraalete específico (scouters asignados a esa unidad)**.
-3. **Sector III · Constelación de Campamentos:**
-   - Constelación geométrica en estrellas blancas puras que representan las grandes aventuras del grupo: *Campamento de Verano*, *Campamento de Invierno*, *Acampada de Primavera* y *Senda de Vivac / Raids*.
-   - Super-Zoom hacia la ficha de cada campamento con crónica, ubicación geográfica, 3 fotos destacadas y botón directo a la carpeta comunitaria de Google Drive.
-4. **Sector IV · «El Baúl» (Objetos Perdidos):**
-   - Constelación de aspecto astronómico natural presidida por la estrella central «El Baúl» (con fulgor carmesí Acrux).
-   - Conectada a 4 mini-estrellas secundarias («Cajones»), sincronizadas con las carpetas de Google Drive donde las familias pueden localizar prendas y material extraviado.
-5. **Sector V · Bases y Contacto:**
-   - Información de la sede física en Carretera de Rueda 53 (Valladolid), calendario de sábados lectivos, preguntas frecuentes y canales oficiales de comunicación.
+La web está pensada para ser súper rápida, intuitiva y fácil de usar tanto desde el móvil de una familia como desde el ordenador.
 
 ---
 
-## 🌟 Modo 50º Aniversario (1976 – 2026)
+## 🌌 ¿Cómo está organizada la web? (Los 5 Sectores)
 
-Conmemoración del medio siglo de historia del grupo mediante una transformación estética en **Negro Obsidiana y Oro Puro**:
+El mapa se divide en 5 grandes sectores por los que te puedes mover con la rueda del ratón, arrastrando con el dedo en el móvil o usando los botones de navegación:
 
-- **El Cometa Dorado (Easter Egg Celeste):**
-  - Un bólido dorado de núcleo blanco puro y estela de partículas de polvo de oro que cruza periódicamente el firmamento (cada ~8–12 segundos).
-  - Cruza la pantalla a alta velocidad (~3.6s de vuelo) con trayectoria diagonal. Al hacer clic sobre él en pleno vuelo, se desbloquea el modo conmemorativo.
-- **Supernova Shockwave:**
-  - Onda expansiva circular a 60 fps con 80 partículas de polvo dorado que tiñe toda la interfaz.
-- **Paleta de Lujo:**
-  - El espacio se vuelve Negro Obsidiana (`#030304`).
-  - Líneas estelares, halos, tipografías y cursor transicionan a tonos **Oro Imperial (`#D4AF37`)**, **Champán (`#F3E5AB`)** y **Bronce Antiguo (`#AA771C`)**.
-- **La Espiral del Tiempo (50 Estrellas · 1976 a 2026):**
-  - Emerge una espiral logarítmica de Fibonacci con exactamente 50 estrellas doradas alrededor de la Cruz del Sur.
-  - Cada estrella representa un año scout. Las estrellas con recuerdos desbloqueados palpitan en oro y abren un **Modal de Cristal Conmemorativo** con foto histórica, año en tipografía display y conector a la carpeta `05_50_ANIVERSARIO` de Google Drive.
-  - **Rendimiento:** Las imágenes históricas utilizan *Lazy Loading* estricto y se descargan únicamente al abrir ese recuerdo puntual, liberando memoria de inmediato al cerrar.
+### 1. Sector I · La Cruz del Sur (Estrella Guía Acrux)
+Es la constelación que nos da nombre. En su base brilla **α Acrux**, la estrella más luminosa y el faro de los exploradores desde 1977. 
+* Si haces clic en Acrux (o en el botón principal), la cámara pega un **salto al hiperespacio** y te sumerge en el dossier completo del grupo.
+* Ahí tienes todo en un solo lugar: nuestra historia desde 1977, cómo educamos, nuestras bases en **Carretera de Rueda, 53**, los teléfonos de coordinación con WhatsApp directo, el formulario para venir a probar un sábado y todas nuestras redes sociales.
 
----
+### 2. Sector II · El Camino de las Unidades (Nuestras 5 Ramas)
+Una constelación en línea ascendente que representa el crecimiento scout de los 6 a los 21 años:
+1. **Castores · Colonia Ohiensis** (6 a 8 años) · Lema: *«Compartir»*
+2. **Manada · Khanhiwara** (8 a 11 años) · Lema: *«Haremos lo mejor»*
+3. **Tropa · Lohengrin** (11 a 14 años) · Lema: *«Siempre Listos»*
+4. **Unidad Esculta · Trea** (14 a 17 años) · Lema: *«Unidad»*
+5. **Clan Rover · Ama Dablam** (17 a 21 años) · Lema: *«Servir»*
 
-## 📁 Estructura del Proyecto
+Al hacer clic en cualquier unidad, entras con hiperespacio a su propia vista interior:
+* Foto oficial de la rama y lema.
+* **Cromos de los Scouters (Kraaletes)** con foto o avatar y su cargo.
+* **Aventuras, Salidas y Álbumes de Drive**: sincronizados con las carpetas de Google Drive de esa unidad, con miniaturas y botón para abrir el álbum completo con la contraseña de familias.
+* Enlaces directos a las redes sociales de esa rama (para Escultas `@escultas_trea` y Clan `@clan_amadablam`).
 
-```text
-GSA/
-├── index.html              # Estructura semántica, canvas de navegación, HUD y modales
-├── styles.css              # Arquitectura CSS moderna (variables, temas, obsidian/gold, responsive)
-├── script.js               # Motor astronómico en Canvas 2D, física de partículas, cámara y eventos
-├── images/                 # Fotografías de campamentos, unidades y recuerdos históricos
-│   ├── castores/
-│   ├── manada/
-│   ├── tropa/
-│   ├── escultas/
-│   ├── clan/
-│   └── campamentos/
-├── _archivo_legacy/        # Archivo seguro de versiones y páginas multi-página descartadas
-└── README.md               # Documentación oficial del proyecto (este archivo)
-```
+### 3. Sector III · Campamentos (Verano y Semana Santa)
+Para que no se mezclen las épocas del año, los campamentos están repartidos en **dos constelaciones diferentes**:
+* Una constelación para los **Campamentos de Verano** (las grandes acampadas de 15 días en la montaña).
+* Otra constelación para los **Campamentos de Semana Santa / Primavera**.
+* Al pinchar en cada campamento puedes ver la crónica, el lugar donde fuimos, fotos destacadas y el botón para entrar a la carpeta de fotos en Drive.
 
----
+### 4. Sector IV · El Baúl (Objetos Perdidos)
+El rincón salva-vidas para las familias. Aquí se suben las fotos de toda la ropa, cantimploras, botas y cosas que van quedando olvidadas en salidas y campas. Está organizado por «cajones» para que sea fácil encontrar lo que se ha perdido.
 
-## 🚀 Puesta en Marcha en Local
-
-No requiere NodeJS, npm, Webpack ni dependencias externas. Se ejecuta directamente en cualquier navegador moderno:
-
-1. **Abrir directamente:**
-   - Haz doble clic en [`index.html`](index.html) para abrirlo en Edge, Chrome, Firefox, Safari u Opera.
-2. **Servidor local (opcional / recomendado):**
-   - Mediante la extensión *Live Server* de Visual Studio Code o cualquier servidor HTTP estático:
-     ```bash
-     # Con Python 3
-     python -m http.server 8080
-     
-     # Con PHP
-     php -S localhost:8080
-     ```
-   - Accede a `http://localhost:8080`.
+### 5. Sector V · Bases y Contacto
+El cierre del recorrido estelar:
+* **Base Principal**: Carretera de Rueda, 53 (Valladolid) · Sábados de 16:30 a 19:00 h con botón directo a Google Maps.
+* **Coordinación**: contacto directo con JJ, Raksha y Hugo con botones de WhatsApp y llamada a un clic.
+* **Sábado de prueba**: explicación en 3 pasos para chavales nuevos y formulario rápido.
+* **Redes oficiales**: enlaces al Instagram del grupo, Escultas, Clan y canal de YouTube.
+* Botón de retorno rápido a la Cruz del Sur para volver a empezar.
 
 ---
 
-## 🔗 Parámetros de Prueba y Navegación Rápida (URL / Hash)
+## 🌟 El Secreto del 50º Aniversario (1976 – 2026)
 
-Puedes testear estados específicos añadiendo parámetros al final de la URL:
-
-- `#anniversary=1` → Inicia la web con el **Modo 50º Aniversario** activado.
-- `#annivModal=1976` → Abre directamente el modal conmemorativo del año fundacional 1976.
-- `#sector=1` → Salta de inmediato al Sector II (**El Camino de las Unidades**).
-- `#sector=2` → Salta de inmediato al Sector III (**Constelación de Campamentos**).
-- `#sector=3` → Salta de inmediato al Sector IV (**El Baúl · Objetos Perdidos**).
-- `#testComet=1` → Fuerza la trayectoria del cometa dorado a mitad de pantalla para pruebas.
+Si estás explorando la web con calma, verás que cada poco tiempo cruza el cielo un **Cometa Dorado**. 
+* Si eres rápido y haces clic sobre el cometa antes de que desaparezca, se activa el **Modo 50º Aniversario**.
+* El universo entero se tiñe de negro y oro, y se despliega una **espiral de 50 estrellas doradas** alrededor de la Cruz del Sur (una por cada año de historia del grupo desde 1976 hasta 2026).
+* Al pinchar en cada estrella puedes abrir el recuerdo con foto histórica de ese año.
 
 ---
 
-## 🛠️ Conexión con Google Drive
+## 👥 Equipo de Coordinación y Kraal de Scouters
 
-Las rutas a carpetas de Google Drive están centralizadas en constantes en la cabecera de [`script.js`](script.js):
+### Equipo de Coordinación:
+* **JJ** · Coordinador General de Grupo
+* **Raksha** · Coordinadora de Grupo
+* **Hugo** · Equipo de Coordinación
 
-- `DRIVE_ANNIVERSARY_FOLDER`: Nombre de la carpeta de recopilación histórica del 50º aniversario (`05_50_ANIVERSARIO`).
-- `DRIVE_ANNIVERSARY_URL`: Enlace público a la carpeta Drive del 50 aniversario.
-- `DRIVE_LOST_BASE_URL`: Enlace raíz para los cajones de Objetos Perdidos.
-- Cada campamento en `CAMPS_DATA` cuenta con su respectivo campo `driveFolder` y `driveUrl`.
-
----
-
-## 📐 Convenciones y Directrices de Estilo
-
-1. **Lenguaje y Terminología:**
-   - Eliminación total de la expresión *"Ronda Solar"*; se utiliza en su lugar *"año scout"* o *"etapa scout"*.
-2. **Optimización Gráfica:**
-   - El Canvas 2D se ejecuta a **60 fps estables** adaptando su resolución a `window.devicePixelRatio`.
-   - Limpieza automática de búferes de partículas e interpolación suave (Lerp) en cámara y cursor magnético.
-3. **Compatibilidad:**
-   - Totalmente adaptable a pantallas de escritorio, portátiles, tablets y dispositivos táctiles.
+### Kraal de Scouters por Unidades:
+* **Castores**: Kibu, Malak, Kapi, Tic-Tac, Burbuja, Rusty.
+* **Manada**: Baloo, Raksa, Akela, Kotic, Rikki, Bagheera, Fao, Kaa, Hermano Gris.
+* **Tropa**: Nadia, Ángel, Hugo, Jesús, Silvia, Edgar, Pablo, Ane, Darío.
+* **Escultas**: Silvia, David, JJ, Lucia, Leonor.
+* **Clan**: Laura, María, Marta, Victoria.
 
 ---
 
-© 1977 – 2026 **Grupo Scout ACRUX 518** · ASDE Exploradores de Castilla y León · Valladolid, España.
+## 💻 ¿Cómo está hecha la web por dentro?
+
+Para que la web no pese megas y megas ni tarde en cargar en móviles con mala cobertura en campamento, está hecha en **HTML5 Canvas, CSS y JavaScript Vanilla puro**:
+* **Cero dependencias pesadas**: sin React, sin frameworks raros, sin librerías de 500 KB.
+* **Motor a 60 fps**: las estrellas, el polvo cósmico y las líneas se dibujan directas en canvas adaptándose a la pantalla de cualquier móvil, tablet u ordenador.
+* **Conexión con Google Drive**: usamos un script de Google Apps Script (`DRIVE_API_URL`). Así el equipo de scouters puede subir fotos, álbumes de campamentos o cromos directamente a las carpetas de Drive del grupo y la web se actualiza sola sin tener que tocar una sola línea de código.
+
+---
+
+## 🚀 Cómo abrir y probar el proyecto
+
+No hace falta instalar nada de NodeJS ni terminales raras:
+1. Simplemente haz doble clic en el archivo [`index.html`](index.html) y se te abrirá en tu navegador favorito (Chrome, Firefox, Edge, Safari).
+2. Si quieres usar un servidor local para probar cambios en vivo, con la extensión *Live Server* de Visual Studio Code o ejecutando en la carpeta:
+   ```bash
+   python -m http.server 8080
+   ```
+   Y abres en tu navegador `http://localhost:8080`.
+
+---
+
+## 📱 Redes Sociales Oficiales
+
+* **Instagram General**: [@scoutsacrux518](https://www.instagram.com/gruposcoutacrux518/)
+* **Unidad Esculta Trea**: [@escultas_trea](https://www.instagram.com/escultas_trea/)
+* **Clan Rover Ama Dablam**: [@clan_amadablam](https://www.instagram.com/clan_amadablam/)
+* **Facebook**: [Grupo Scout Acrux 518](https://www.facebook.com/GrupoScoutAcrux518)
+* **Correo oficial**: `gruposcoutacrux518@gmail.com`
+
+---
+
+*«Siempre Listos para Servir»* · **Grupo Scout ACRUX 518** · Valladolid
