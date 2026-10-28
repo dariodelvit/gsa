@@ -1,65 +1,135 @@
 # ⚜️ Grupo Scout ACRUX 518 · Web Oficial y Mapa Estelar
 
-¡Hola! Esta es la web oficial del **Grupo Scout Acrux 518** de Valladolid (perteneciente a ASDE - Exploradores de Castilla y León y Scouts de España).
+¡Hola! Esta es la web oficial del **Grupo Scout Acrux 518** de Valladolid (ASDE - Exploradores de Castilla y León y Scouts de España).
 
-En lugar de hacer una web clásica con bloques de texto aburridos, decidimos montar algo especial: un **mapa estelar interactivo en el espacio** donde vas navegando por el universo scout y cada constelación representa una parte real de nuestro grupo.
+En lugar de hacer la típica web de texto aburrida que nadie lee, montamos un **mapa estelar interactivo en el espacio**: vas navegando por el universo scout y cada constelación representa una parte real y viva de nuestro grupo.
 
-La web está pensada para ser súper rápida, intuitiva y fácil de usar tanto desde el móvil de una familia como desde el ordenador.
+Y lo mejor de todo: **está conectada 100% con Google Drive** para que cualquier scouter pueda subir fotos de salidas, campamentos o ropa perdida desde su móvil o Drive sin tener que tocar ni una sola línea de código.
 
 ---
 
-## 🌌 ¿Cómo está organizada la web? (Los 5 Sectores)
+## 📁 CÓMO FUNCIONA LA SINCRONIZACIÓN CON GOOGLE DRIVE (Guía para Scouters)
 
-El mapa se divide en 5 grandes sectores por los que te puedes mover con la rueda del ratón, arrastrando con el dedo en el móvil o usando los botones de navegación:
+Esta es la parte más importante del proyecto. La web no tiene base de datos compleja ni panel de control raro: **nuestro panel de control es simplemente el Google Drive del Grupo**.
 
-### 1. Sector I · La Cruz del Sur (Estrella Guía Acrux)
-Es la constelación que nos da nombre. En su base brilla **α Acrux**, la estrella más luminosa y el faro de los exploradores desde 1977. 
-* Si haces clic en Acrux (o en el botón principal), la cámara pega un **salto al hiperespacio** y te sumerge en el dossier completo del grupo.
-* Ahí tienes todo en un solo lugar: nuestra historia desde 1977, cómo educamos, nuestras bases en **Carretera de Rueda, 53**, los teléfonos de coordinación con WhatsApp directo, el formulario para venir a probar un sábado y todas nuestras redes sociales.
+La web se conecta en tiempo real a nuestro Google Drive mediante un **Google Apps Script** (`DRIVE_API_URL`). Cada vez que alguien entra a la página, la web le pregunta a Drive qué carpetas y fotos nuevas hay y se dibuja sola.
 
-### 2. Sector II · El Camino de las Unidades (Nuestras 5 Ramas)
-Una constelación en línea ascendente que representa el crecimiento scout de los 6 a los 21 años:
+```
+GOOGLE DRIVE DEL GRUPO (TuDrive / Carpeta Raíz)
+│
+├── 📁 01_UNIDADES/
+│   ├── 📁 Castores/
+│   ├── 📁 Manada/
+│   ├── 📁 Tropa/
+│   ├── 📁 Escultas/
+│   └── 📁 Clan/
+│
+├── 📁 02_CAMPAMENTOS/
+│   ├── 📁 [Carpetas de Campamentos de Verano]
+│   └── 📁 [Carpetas de Campamentos de Semana Santa / Primavera]
+│
+├── 📁 03_OBJETOS_PERDIDOS/
+│   ├── 📁 Cajon 1 · Ropa y Abrigo/
+│   ├── 📁 Cajon 2 · Calzado y Botas/
+│   ├── 📁 Cajon 3 · Cantimploras y Menaje/
+│   └── 📁 Cajon 4 · Varios y Especiales/
+│
+├── 📁 04_COORDINACION/
+│   └── [Fotos o cromos de JJ, Raksha y Hugo]
+│
+└── 📁 05_50_ANIVERSARIO/
+    └── [Fotos históricas desde 1976 hasta 2026]
+```
+
+---
+
+### 1. Salidas y Aventuras de las Unidades (`01_UNIDADES`)
+Dentro de `01_UNIDADES/[Nombre_Rama]` (por ejemplo `01_UNIDADES/Tropa`):
+* **Para publicar una salida nueva**: simplemente crea una subcarpeta con el nombre de la actividad (por ejemplo: `2024-11 Acampada Pinar de Antequera`).
+* Mete dentro las fotos de esa salida en formato JPG o PNG. La web cogerá automáticamente **las 3 primeras fotos como vista previa** y creará la tarjeta interactiva de la aventura dentro de esa rama.
+* **Cromos de los Scouters (Kraaletes)**: si subes a la carpeta de la unidad las fotos o cromos de los monitores con su nombre (ejemplo: `Kibu.jpg`), la web sustituye los avatares genéricos por los cromos coleccionables con brillo holográfico.
+
+### 2. Campamentos del Grupo (`02_CAMPAMENTOS`)
+Los campamentos aparecen en el **Sector III** y la web los separa de forma inteligente en **dos constelaciones diferentes**:
+* **Constelación de Verano** (arriba): campamentos de 15 días en julio/agosto.
+* **Constelación de Semana Santa / Primavera** (abajo): acampadas de pascua y primavera.
+
+**¿Cómo sabe la web si es de verano o de primavera?**
+Lo detecta sola a partir del nombre de la carpeta:
+* Si la carpeta contiene palabras como *Semana Santa*, *Pascua*, *Primavera*, *Acampada* o lugares tradicionales de primavera (*Barbadillo*, *Cofiñal*, *Arija*, *Moncayo*), la coloca en la **Constelación de Semana Santa**.
+* Si contiene *Verano*, *Julio*, *Agosto* o lugares clásicos de verano (*Prioro*, *Cóbreces*, *Valdeavellano*, *Vilviestre*, *Priaranza*), la coloca en la **Constelación de Verano**.
+* Si la carpeta tiene el año en el nombre (ejemplo: `2024 Prioro Verano` o `2025 Barbadillo SS`), la web los ordena cronológicamente y dibuja las líneas de la constelación uniendo los años en orden.
+
+### 3. El Baúl de Objetos Perdidos (`03_OBJETOS_PERDIDOS`)
+Las familias ya no tienen que volverse locas buscando qué se les ha quedado en el campamento:
+* Dentro de `03_OBJETOS_PERDIDOS` hay subcarpetas que actúan como «Cajones» (por tipo de ropa o por campamento).
+* Cualquier foto que eches a una chaqueta, zapatilla o saco olvidado y la subas a esa carpeta, **aparece al instante en la estrella de El Baúl** para que los padres la reconozcan y la reclamen.
+
+### 4. ¿Cómo funciona la seguridad y las contraseñas? (`action=unlock`)
+Por privacidad de los chavales y protección de menores, **los enlaces completos a las carpetas de Google Drive nunca están abiertos a cualquiera en internet**:
+1. Cuando una persona entra a la web, solo ve las fotos de miniatura públicas que devuelve el escáner.
+2. Para abrir el álbum completo con todas las fotos en alta resolución de Drive, hay un campo de contraseña: `"🔑 Contraseña para ver el álbum completo..."`.
+3. Al pulsar en *"Abrir Álbum en Drive"*, la web envía la clave a nuestro Apps Script:
+   ```text
+   GET DRIVE_API_URL?action=unlock&id=[ID_CARPETA]&pass=[CONTRASEÑA]
+   ```
+4. Si la contraseña coincide con la del grupo o la configurada para ese álbum, Google Apps Script devuelve el enlace directo a Google Drive y se abre en una pestaña nueva. Si la contraseña está mal, avisa de error y no deja pasar.
+
+### 5. Configuración del Google Apps Script
+El script vive en la cuenta de Google del grupo. Si alguna vez hay que volver a publicarlo o actualizar el código del script:
+* Abre el proyecto en [script.google.com](https://script.google.com).
+* Ve a **Implementar > Gestionar implementaciones**.
+* Asegúrate de que los permisos estén configurados así:
+  * **Ejecutar como**: *Yo (la cuenta de Google del grupo)*.
+  * **Quién tiene acceso**: **Cualquier persona (*Anyone*)** — *(¡MUY IMPORTANTE! Si pones "Solo usuarios con cuenta Google", la web fallará porque Google intentará pedir login a las familias)*.
+* Copia la URL terminada en `/exec` y pégala en la constante `DRIVE_API_URL` al principio de [`script.js`](script.js).
+
+---
+
+## 🌌 Los 5 Sectores del Mapa Estelar
+
+Puedes moverte por el mapa deslizando con el dedo en el móvil, usando la rueda del ratón o con los botones de la barra inferior:
+
+### Sector I · La Cruz del Sur (Estrella Guía Acrux)
+El faro del grupo desde 1977. Al pulsar en **α Acrux** pegas un **salto hiperespacial** que abre el dossier completo:
+* **Historia**: raíces desde 1977 y casi 50 años de escultismo en Valladolid.
+* **5 Ramas**: resumen de las 5 etapas educativas continuas.
+* **Bases del Grupo**: nuestra sede en **Carretera de Rueda, 53**, horarios de sábado (16:30 a 19:00 h) y botón a **Google Maps**.
+* **Coordinación**: tarjetas directas de **JJ, Raksha y Hugo** con WhatsApp y llamada a 1 clic.
+* **Sábado de prueba**: formulario rápido que redacta un WhatsApp al coordinador para venir a probar.
+* **Redes oficiales**: enlaces a todos los canales del grupo.
+
+### Sector II · El Camino de las Unidades (Nuestras 5 Ramas)
+Línea ascendente que conecta las 5 etapas formativas:
 1. **Castores · Colonia Ohiensis** (6 a 8 años) · Lema: *«Compartir»*
 2. **Manada · Khanhiwara** (8 a 11 años) · Lema: *«Haremos lo mejor»*
 3. **Tropa · Lohengrin** (11 a 14 años) · Lema: *«Siempre Listos»*
 4. **Unidad Esculta · Trea** (14 a 17 años) · Lema: *«Unidad»*
 5. **Clan Rover · Ama Dablam** (17 a 21 años) · Lema: *«Servir»*
 
-Al hacer clic en cualquier unidad, entras con hiperespacio a su propia vista interior:
-* Foto oficial de la rama y lema.
-* **Cromos de los Scouters (Kraaletes)** con foto o avatar y su cargo.
-* **Aventuras, Salidas y Álbumes de Drive**: sincronizados con las carpetas de Google Drive de esa unidad, con miniaturas y botón para abrir el álbum completo con la contraseña de familias.
-* Enlaces directos a las redes sociales de esa rama (para Escultas `@escultas_trea` y Clan `@clan_amadablam`).
+Cada unidad tiene su propio zoom estelar con foto oficial, cromos de scouters, salidas de Drive y redes sociales (Instagram para Escultas `@escultas_trea` y Clan `@clan_amadablam`).
 
-### 3. Sector III · Campamentos (Verano y Semana Santa)
-Para que no se mezclen las épocas del año, los campamentos están repartidos en **dos constelaciones diferentes**:
-* Una constelación para los **Campamentos de Verano** (las grandes acampadas de 15 días en la montaña).
-* Otra constelación para los **Campamentos de Semana Santa / Primavera**.
-* Al pinchar en cada campamento puedes ver la crónica, el lugar donde fuimos, fotos destacadas y el botón para entrar a la carpeta de fotos en Drive.
+### Sector III · Campamentos (Verano y Semana Santa)
+Dos constelaciones separadas para no mezclar las vivencias de verano con las acampadas de primavera. Conecta directamente con las crónicas y carpetas protegidas de Drive.
 
-### 4. Sector IV · El Baúl (Objetos Perdidos)
-El rincón salva-vidas para las familias. Aquí se suben las fotos de toda la ropa, cantimploras, botas y cosas que van quedando olvidadas en salidas y campas. Está organizado por «cajones» para que sea fácil encontrar lo que se ha perdido.
+### Sector IV · El Baúl (Objetos Perdidos)
+Organizado por cajones para recuperar ropa y material olvidado en campamentos.
 
-### 5. Sector V · Bases y Contacto
-El cierre del recorrido estelar:
-* **Base Principal**: Carretera de Rueda, 53 (Valladolid) · Sábados de 16:30 a 19:00 h con botón directo a Google Maps.
-* **Coordinación**: contacto directo con JJ, Raksha y Hugo con botones de WhatsApp y llamada a un clic.
-* **Sábado de prueba**: explicación en 3 pasos para chavales nuevos y formulario rápido.
-* **Redes oficiales**: enlaces al Instagram del grupo, Escultas, Clan y canal de YouTube.
-* Botón de retorno rápido a la Cruz del Sur para volver a empezar.
+### Sector V · Bases y Contacto
+El cierre de la expedición: sede oficial, coordinación, sábado de prueba, redes y botón para regresar a la Cruz del Sur.
 
 ---
 
-## 🌟 El Secreto del 50º Aniversario (1976 – 2026)
+## 🌟 El Huevo de Pascua del 50º Aniversario (1976 – 2026)
 
-Si estás explorando la web con calma, verás que cada poco tiempo cruza el cielo un **Cometa Dorado**. 
-* Si eres rápido y haces clic sobre el cometa antes de que desaparezca, se activa el **Modo 50º Aniversario**.
-* El universo entero se tiñe de negro y oro, y se despliega una **espiral de 50 estrellas doradas** alrededor de la Cruz del Sur (una por cada año de historia del grupo desde 1976 hasta 2026).
-* Al pinchar en cada estrella puedes abrir el recuerdo con foto histórica de ese año.
+De vez en cuando cruza el cielo un **Cometa Dorado**:
+* Si logras hacer clic sobre el cometa en pleno vuelo, se desbloquea el **Modo 50º Aniversario**.
+* El firmamento se transforma en negro obsidiana y oro, revelando una **espiral de 50 estrellas doradas** alrededor de la Cruz del Sur.
+* Cada estrella representa un año de vida del grupo (1976 a 2026) y abre recuerdos históricos con fotos sincronizadas con la carpeta `05_50_ANIVERSARIO` de Drive.
 
 ---
 
-## 👥 Equipo de Coordinación y Kraal de Scouters
+## 👥 Equipo Actual del Grupo
 
 ### Equipo de Coordinación:
 * **JJ** · Coordinador General de Grupo
@@ -75,24 +145,22 @@ Si estás explorando la web con calma, verás que cada poco tiempo cruza el ciel
 
 ---
 
-## 💻 ¿Cómo está hecha la web por dentro?
+## 💻 Tecnología Limpia (Sin librerías pesadas)
 
-Para que la web no pese megas y megas ni tarde en cargar en móviles con mala cobertura en campamento, está hecha en **HTML5 Canvas, CSS y JavaScript Vanilla puro**:
-* **Cero dependencias pesadas**: sin React, sin frameworks raros, sin librerías de 500 KB.
-* **Motor a 60 fps**: las estrellas, el polvo cósmico y las líneas se dibujan directas en canvas adaptándose a la pantalla de cualquier móvil, tablet u ordenador.
-* **Conexión con Google Drive**: usamos un script de Google Apps Script (`DRIVE_API_URL`). Así el equipo de scouters puede subir fotos, álbumes de campamentos o cromos directamente a las carpetas de Drive del grupo y la web se actualiza sola sin tener que tocar una sola línea de código.
+* **HTML5 Canvas 2D + JavaScript Vanilla**: 60 fps fluidos en cualquier móvil sin necesidad de instalar NodeJS ni frameworks como React o Angular.
+* **CSS Moderno**: efectos de cristal (*backdrop-filter*), tipografía responsiva y modo aniversario.
+* **Google Apps Script**: backend en la nube sin coste de servidores ni bases de datos de pago.
 
 ---
 
-## 🚀 Cómo abrir y probar el proyecto
+## 🚀 Cómo probar la web en local
 
-No hace falta instalar nada de NodeJS ni terminales raras:
-1. Simplemente haz doble clic en el archivo [`index.html`](index.html) y se te abrirá en tu navegador favorito (Chrome, Firefox, Edge, Safari).
-2. Si quieres usar un servidor local para probar cambios en vivo, con la extensión *Live Server* de Visual Studio Code o ejecutando en la carpeta:
+1. Haz doble clic en [`index.html`](index.html) para abrirla en cualquier navegador.
+2. Si prefieres un servidor local:
    ```bash
    python -m http.server 8080
    ```
-   Y abres en tu navegador `http://localhost:8080`.
+   Y abres `http://localhost:8080`.
 
 ---
 
