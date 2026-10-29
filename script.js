@@ -2076,31 +2076,31 @@
             ]
         },
         manada: {
-            kicker: '(01 / 05) · MUNDO MANADA · LAGUNA DEL RÍO WAIGUNGA Y SELVA DE SEEONEE',
-            loreHeading: 'El Libro de las Tierras Vírgenes · Manada Khanhiwara',
-            stepNames: ['Río Waigunga', 'Roca del Consejo', 'Senda Mowgli', 'Viejos Lobos', 'Cazas Drive'],
-            skyTop: 0x130D26,
-            skyHorizon: 0x3B1D4A,
-            fogColor: 0x241332,
-            fogDensity: 0.0092,
+            kicker: '(01 / 05) · MUNDO MANADA · LA ROCA DEL CONSEJO EN LA DENSA SELVA DE SEEONEE',
+            loreHeading: 'La Roca del Consejo bajo la Luna Llena · Manada Khanhiwara',
+            stepNames: ['Roca del Consejo', 'Selva y Ley', 'Senda Mowgli', 'Viejos Lobos', 'Cazas Drive'],
+            skyTop: 0x090818,
+            skyHorizon: 0x1D283A,
+            fogColor: 0x0F1722,
+            fogDensity: 0.0095,
             waterColor: 0x0D9488,
             waterEmissive: 0x064E3B,
-            sunColor: 0xFBBF24,
-            sunPos: [-32, 34, -40],
-            hemiSky: 0xF59E0B,
+            sunColor: 0xFEF08A,
+            sunPos: [-18, 48, -28],
+            hemiSky: 0x93C5FD,
             hemiGround: 0x064E3B,
-            shoreLightColor: 0xF97316,
-            terrainLow: [0.06, 0.32, 0.20],
-            terrainMid: [0.18, 0.26, 0.14],
-            terrainHigh: [0.42, 0.25, 0.11],
-            heightScale: 14.5,
+            shoreLightColor: 0xF59E0B,
+            terrainLow: [0.04, 0.24, 0.13],
+            terrainMid: [0.07, 0.32, 0.17],
+            terrainHigh: [0.14, 0.36, 0.20],
+            heightScale: 15.5,
             particleColor: 0xFDE047,
             cameraStops: [
-                { radius: 41, height: 10.5, lookY: 2.4 },
-                { radius: 36, height: 8.2, lookY: 2.8 },
-                { radius: 39, height: 12.0, lookY: 1.5 },
-                { radius: 37, height: 9.2, lookY: 1.8 },
-                { radius: 43, height: 13.5, lookY: 2.2 }
+                { radius: 33, height: 12.2, lookY: 7.4 },
+                { radius: 29, height: 10.4, lookY: 7.8 },
+                { radius: 34, height: 13.8, lookY: 6.8 },
+                { radius: 30, height: 11.0, lookY: 7.5 },
+                { radius: 35, height: 14.5, lookY: 7.2 }
             ]
         },
         tropa: {
@@ -2630,42 +2630,43 @@
         unitLakeState.animatedProps = [];
         unitLakeState.reedClusters = [];
 
-        // 1. Cantos rodados suaves de río y rocas musgosas en toda la ribera 360°
-        const pebbleColors = unitId === 'escultas'
-            ? [0x9CA3AF, 0xCBD5E1, 0x64748B]
-            : (unitId === 'clan' ? [0x475569, 0x64748B, 0x94A3B8] : [0x57534E, 0x78716C, 0x44403C]);
+        // 1. Cantos rodados suaves y rocas musgosas (para los mundos con lago: Castores, Tropa, Escultas y Clan)
+        if (unitId !== 'manada') {
+            const pebbleColors = unitId === 'escultas'
+                ? [0x9CA3AF, 0xCBD5E1, 0x64748B]
+                : (unitId === 'clan' ? [0x475569, 0x64748B, 0x94A3B8] : [0x57534E, 0x78716C, 0x44403C]);
 
-        for (let i = 0; i < 36; i++) {
-            const ang = (i / 36) * Math.PI * 2 + Math.sin(i * 1.9) * 0.08;
-            const rad = 22.8 + (i % 5) * 1.35;
-            const rx = Math.cos(ang) * rad;
-            const rz = Math.sin(ang) * rad;
-            const ry = getTerrainHeight(rx, rz);
+            for (let i = 0; i < 36; i++) {
+                const ang = (i / 36) * Math.PI * 2 + Math.sin(i * 1.9) * 0.08;
+                const rad = 22.8 + (i % 5) * 1.35;
+                const rx = Math.cos(ang) * rad;
+                const rz = Math.sin(ang) * rad;
+                const ry = getTerrainHeight(rx, rz);
 
-            const rSize = 0.55 + (i % 4) * 0.38;
-            const boulderGeo = deformGeometrySmooth(
-                new THREE.SphereGeometry(rSize, 22, 18),
-                0.22,
-                1.35,
-                i * 1.7
-            );
-            const boulderMat = new THREE.MeshStandardMaterial({
-                color: pebbleColors[i % pebbleColors.length],
-                roughness: 0.84,
-                metalness: 0.05
-            });
-            const boulder = new THREE.Mesh(boulderGeo, boulderMat);
-            boulder.position.set(rx, ry + 0.08, rz);
-            boulder.scale.set(1.35, 0.62 + (i % 3) * 0.12, 1.15);
-            boulder.rotation.y = i * 0.9;
-            group.add(boulder);
+                const rSize = 0.55 + (i % 4) * 0.38;
+                const boulderGeo = deformGeometrySmooth(
+                    new THREE.SphereGeometry(rSize, 22, 18),
+                    0.22,
+                    1.35,
+                    i * 1.7
+                );
+                const boulderMat = new THREE.MeshStandardMaterial({
+                    color: pebbleColors[i % pebbleColors.length],
+                    roughness: 0.84,
+                    metalness: 0.05
+                });
+                const boulder = new THREE.Mesh(boulderGeo, boulderMat);
+                boulder.position.set(rx, ry + 0.08, rz);
+                boulder.scale.set(1.35, 0.62 + (i % 3) * 0.12, 1.15);
+                boulder.rotation.y = i * 0.9;
+                group.add(boulder);
 
-            // Juncos y espadañas mecidos por la brisa en las orillas
-            if (i % 2 === 0 && unitId !== 'escultas') {
-                const reeds = createShoreReedsCluster(THREE, unitId, i);
-                reeds.position.set(Math.cos(ang + 0.04) * 22.2, -0.05, Math.sin(ang + 0.04) * 22.2);
-                group.add(reeds);
-                unitLakeState.reedClusters.push({ mesh: reeds, phase: i * 0.6 });
+                if (i % 2 === 0 && unitId !== 'escultas') {
+                    const reeds = createShoreReedsCluster(THREE, unitId, i);
+                    reeds.position.set(Math.cos(ang + 0.04) * 22.2, -0.05, Math.sin(ang + 0.04) * 22.2);
+                    group.add(reeds);
+                    unitLakeState.reedClusters.push({ mesh: reeds, phase: i * 0.6 });
+                }
             }
         }
 
@@ -2805,87 +2806,207 @@
                 unitLakeState.animatedProps.push({ mesh: padGroup, baseY: 0.05, phase: p * 0.7 });
             }
         } else if (unitId === 'manada') {
-            // 1. LA ROCA DEL CONSEJO ESCULPIDA EN BASALTO SUAVE Y TERRAZAS NATURALES
+            // =================================================================
+            // MUNDO MANADA: LA ROCA DEL CONSEJO EN EL CENTRO DE UN BOSQUE DENSO
+            // =================================================================
             const councilGroup = new THREE.Group();
-            const councilMat = new THREE.MeshStandardMaterial({
-                color: 0x6D4C41,
-                roughness: 0.80,
-                metalness: 0.06
+            const rockBaseMat = new THREE.MeshStandardMaterial({
+                color: 0x64748B,
+                roughness: 0.78,
+                metalness: 0.08
+            });
+            const rockMoonlitMat = new THREE.MeshStandardMaterial({
+                color: 0x94A3B8,
+                emissive: 0x1E293B,
+                emissiveIntensity: 0.22,
+                roughness: 0.68,
+                metalness: 0.12
             });
 
-            // Estratos geológicos suaves y redondeados formando el anfiteatro de la Roca del Consejo
-            const strata = [
-                [0, 2.2, 0, 7.2, 0.55],
-                [0, 5.2, -0.5, 5.6, 0.75],
-                [0.4, 8.4, -0.8, 4.2, 0.85],
-                [0.6, 11.2, -0.2, 3.1, 0.52], // Plataforma superior de Akela
-                [-4.8, 1.8, 2.2, 3.2, 0.48],
-                [4.9, 1.9, 2.0, 3.4, 0.50],
-                [-3.2, 3.8, 1.5, 2.8, 0.55],
-                [3.4, 4.0, 1.4, 2.9, 0.55]
+            // 1. Macizo rocoso central elevado (La Cima de la Roca del Consejo en (0, y, 0))
+            const mainSlabs = [
+                [0, 1.8, 0, 12.5, 0.32, 1.15, 1.10],
+                [0, 3.6, 0, 10.2, 0.36, 1.10, 1.05],
+                [0, 5.4, -0.3, 7.8, 0.40, 1.08, 1.02],
+                // La Gran Peña de Akela sobresaliendo en la cúspide de la colina
+                [0, 7.6, -1.2, 4.4, 0.48, 1.25, 1.35],
+                [0, 9.2, -1.6, 3.1, 0.42, 1.15, 1.45]
             ];
-            strata.forEach(([sx, sy, sz, sr, flatY], idx) => {
-                const rockGeo = deformGeometrySmooth(new THREE.SphereGeometry(sr, 32, 24), 0.18, 0.85, 30 + idx * 2.3);
-                const slab = new THREE.Mesh(rockGeo, councilMat);
+            mainSlabs.forEach(([sx, sy, sz, sr, scaleY, scaleX, scaleZ], idx) => {
+                const slabGeo = deformGeometrySmooth(
+                    new THREE.SphereGeometry(sr, 40, 28),
+                    0.15,
+                    0.75,
+                    40 + idx * 3.7
+                );
+                const slab = new THREE.Mesh(slabGeo, idx >= 3 ? rockMoonlitMat : rockBaseMat);
                 slab.position.set(sx, sy, sz);
-                slab.scale.set(1.18, flatY, 1.05);
+                slab.scale.set(scaleX, scaleY, scaleZ);
                 councilGroup.add(slab);
             });
 
-            // Dos Hogueras Ceremoniales del Consejo flanqueando la Roca
-            const leftFire = createCampfireWithGlow(THREE, 0.85);
-            leftFire.position.set(-3.4, 4.8, 2.2);
-            councilGroup.add(leftFire);
+            // 2. El Círculo de las Cien Piedras (Rocas dispuestas en anfiteatro donde se sienta la Manada)
+            const sittingStonesCount = 20;
+            for (let s = 0; s < sittingStonesCount; s++) {
+                const ang = (s / sittingStonesCount) * Math.PI * 2;
+                const rad = 7.4 + (s % 2) * 1.8;
+                const bx = Math.cos(ang) * rad;
+                const bz = Math.sin(ang) * rad;
+                const by = 4.6 + Math.cos(s * 1.7) * 0.45;
+                const stoneGeo = deformGeometrySmooth(
+                    new THREE.SphereGeometry(0.95 + (s % 3) * 0.25, 22, 18),
+                    0.18,
+                    1.3,
+                    80 + s
+                );
+                const stone = new THREE.Mesh(stoneGeo, s % 2 === 0 ? rockMoonlitMat : rockBaseMat);
+                stone.position.set(bx, by, bz);
+                stone.scale.set(1.25, 0.58, 1.1);
+                stone.rotation.y = -ang;
+                councilGroup.add(stone);
+            }
 
-            const rightFire = createCampfireWithGlow(THREE, 0.85);
-            rightFire.position.set(3.6, 4.9, 2.1);
-            councilGroup.add(rightFire);
+            // Función auxiliar para esculpir figuras orgánicas de lobos (Akela y la Manada de Seeonee)
+            const createWolfSculpture = (coatHex, scaleW = 1.0, isHowling = false) => {
+                const wolf = new THREE.Group();
+                const furMat = new THREE.MeshStandardMaterial({
+                    color: coatHex,
+                    roughness: 0.72,
+                    metalness: 0.08
+                });
+                // Torso y pecho
+                const torso = new THREE.Mesh(new THREE.SphereGeometry(0.42 * scaleW, 18, 16), furMat);
+                torso.scale.set(0.85, 1.15, 1.25);
+                torso.position.set(0, 0.48 * scaleW, 0);
+                torso.rotation.x = -0.35;
+                wolf.add(torso);
 
-            councilGroup.position.set(0, getTerrainHeight(0, -26.5) - 0.8, -26.5);
-            group.add(councilGroup);
+                const chest = new THREE.Mesh(new THREE.SphereGeometry(0.38 * scaleW, 18, 16), furMat);
+                chest.position.set(0, 0.78 * scaleW, 0.22 * scaleW);
+                wolf.add(chest);
 
-            // 2. PALMERAS CURVADAS DE LA SELVA DE SEEONEE
-            const palmTrunkMat = new THREE.MeshStandardMaterial({ color: 0x5D4037, roughness: 0.88 });
-            const frondMat = new THREE.MeshStandardMaterial({ color: 0x15803D, roughness: 0.65, side: THREE.DoubleSide });
-            const palmCoords = [[-16, -21], [17, -20], [24, -6], [-23, 8], [19, 17], [-15, 21]];
-            palmCoords.forEach(([px, pz], idx) => {
-                const palm = new THREE.Group();
-                const curve = new THREE.CatmullRomCurve3([
-                    new THREE.Vector3(0, 0, 0),
-                    new THREE.Vector3(Math.cos(idx) * 0.8, 2.8, Math.sin(idx) * 0.8),
-                    new THREE.Vector3(Math.cos(idx) * 1.6, 5.8, Math.sin(idx) * 1.6)
-                ]);
-                const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.24, 14, false);
-                palm.add(new THREE.Mesh(tubeGeo, palmTrunkMat));
+                // Cabeza y hocico erguidos mirando a la Luna / al Consejo
+                const head = new THREE.Mesh(new THREE.SphereGeometry(0.28 * scaleW, 18, 16), furMat);
+                head.position.set(0, 1.12 * scaleW, 0.34 * scaleW);
+                wolf.add(head);
 
-                const topPt = curve.getPoint(1);
-                for (let f = 0; f < 8; f++) {
-                    const fAng = (f / 8) * Math.PI * 2;
-                    const frondCurve = new THREE.CatmullRomCurve3([
-                        new THREE.Vector3(0, 0, 0),
-                        new THREE.Vector3(Math.cos(fAng) * 1.5, 0.45, Math.sin(fAng) * 1.5),
-                        new THREE.Vector3(Math.cos(fAng) * 2.9, -0.65, Math.sin(fAng) * 2.9)
-                    ]);
-                    const frondGeo = new THREE.TubeGeometry(frondCurve, 14, 0.16, 8, false);
-                    const frondMesh = new THREE.Mesh(frondGeo, frondMat);
-                    frondMesh.scale.set(1, 0.25, 1);
-                    frondMesh.position.copy(topPt);
-                    palm.add(frondMesh);
-                }
-                palm.position.set(px, getTerrainHeight(px, pz) - 0.2, pz);
-                group.add(palm);
+                const snout = new THREE.Mesh(new THREE.ConeGeometry(0.14 * scaleW, 0.42 * scaleW, 16), furMat);
+                snout.position.set(0, (isHowling ? 1.28 : 1.14) * scaleW, 0.56 * scaleW);
+                snout.rotation.x = isHowling ? Math.PI * 0.28 : Math.PI * 0.45;
+                wolf.add(snout);
+
+                // Orejas erguidas de lobo
+                [-0.12, 0.12].forEach(ex => {
+                    const ear = new THREE.Mesh(new THREE.ConeGeometry(0.065 * scaleW, 0.22 * scaleW, 12), furMat);
+                    ear.position.set(ex * scaleW, 1.36 * scaleW, 0.28 * scaleW);
+                    wolf.add(ear);
+                });
+
+                // Cola tupida
+                const tail = new THREE.Mesh(new THREE.CylinderGeometry(0.06 * scaleW, 0.12 * scaleW, 0.65 * scaleW, 12), furMat);
+                tail.position.set(0, 0.32 * scaleW, -0.48 * scaleW);
+                tail.rotation.x = 0.65;
+                wolf.add(tail);
+
+                return wolf;
+            };
+
+            // 3. AKELA (El Gran Lobo Gris Solitario) en lo alto de la Peña del Consejo
+            const akelaWolf = createWolfSculpture(0xCBD5E1, 1.35, true);
+            akelaWolf.position.set(0, 10.35, -1.2);
+            councilGroup.add(akelaWolf);
+
+            // Lobos de la Manada sentados en las rocas del círculo mirando hacia Akela
+            const packAngles = [0.35, 0.95, 1.65, 2.35, 3.1, 3.85, 4.6, 5.4];
+            const wolfCoats = [0x94A3B8, 0x78716C, 0x64748B, 0xA8A29E, 0x475569];
+            packAngles.forEach((wAng, wIdx) => {
+                const rad = 7.4 + (wIdx % 2) * 1.8;
+                const wx = Math.cos(wAng) * rad;
+                const wz = Math.sin(wAng) * rad;
+                const wy = 5.05 + Math.cos(wIdx * 1.7) * 0.35;
+                const packWolf = createWolfSculpture(wolfCoats[wIdx % wolfCoats.length], 0.92, wIdx % 3 === 0);
+                packWolf.position.set(wx, wy, wz);
+                packWolf.lookAt(0, 9.5, -1.2);
+                councilGroup.add(packWolf);
             });
 
-            // 3. GRAN LUNA LLENA DE SEEONEE CON HALO ATMOSFÉRICO
+            // 4. Haz Volumétrico de Luz de Luna Llena bañando la Roca del Consejo desde el cielo
+            const moonBeamGeo = new THREE.CylinderGeometry(3.2, 13.5, 44, 36, 1, true);
+            const moonBeamMat = new THREE.MeshBasicMaterial({
+                color: 0xFEF08A,
+                transparent: true,
+                opacity: 0.085,
+                side: THREE.DoubleSide,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const moonBeam = new THREE.Mesh(moonBeamGeo, moonBeamMat);
+            moonBeam.position.set(-2.5, 24.0, -4.0);
+            moonBeam.rotation.z = -0.14;
+            moonBeam.rotation.x = 0.12;
+            councilGroup.add(moonBeam);
+
+            const summitMoonGlow = createGlowSprite(THREE, 0xFEF08A, 16.0, 0.48);
+            summitMoonGlow.position.set(0, 10.5, -1.0);
+            councilGroup.add(summitMoonGlow);
+
+            // Tres Hogueras del Consejo al pie de las rocas para contrastar el ámbar con la luz lunar
+            [[ -6.2, 3.8, 6.2 ], [ 6.4, 3.8, 5.8 ], [ 0.0, 3.6, -8.2 ]].forEach(([fx, fy, fz]) => {
+                const fire = createCampfireWithGlow(THREE, 0.88);
+                fire.position.set(fx, fy, fz);
+                councilGroup.add(fire);
+            });
+
+            councilGroup.position.set(0, 0.2, 0);
+            group.add(councilGroup);
+
+            // 5. LIANAS TROPICALES Y SOTOBOSQUE DENSO DE LA SELVA DE SEEONEE ALREDEDOR DE LA ROCA
+            const vineMat = new THREE.MeshStandardMaterial({ color: 0x14532D, roughness: 0.85 });
+            const bushColors = [0x064E3B, 0x065F46, 0x14532D, 0x15803D];
+            for (let b = 0; b < 54; b++) {
+                const ang = (b / 54) * Math.PI * 2 + (b % 3) * 0.05;
+                const rad = 15.8 + (b % 5) * 2.8;
+                const bx = Math.cos(ang) * rad;
+                const bz = Math.sin(ang) * rad;
+                const by = getTerrainHeight(bx, bz);
+
+                // Arbustos de helechos y follaje espeso de sotobosque
+                const bushGeo = deformGeometrySmooth(new THREE.SphereGeometry(1.35 + (b % 3) * 0.45, 18, 14), 0.20, 1.4, b * 1.9);
+                const bush = new THREE.Mesh(
+                    bushGeo,
+                    new THREE.MeshStandardMaterial({ color: bushColors[b % bushColors.length], roughness: 0.78 })
+                );
+                bush.position.set(bx, by + 0.35, bz);
+                bush.scale.set(1.35, 0.72, 1.25);
+                group.add(bush);
+
+                // Lianas colgantes entre los grandes árboles de la selva
+                if (b % 3 === 0) {
+                    const vRad = 22.5 + (b % 4) * 3.5;
+                    const vx1 = Math.cos(ang) * vRad;
+                    const vz1 = Math.sin(ang) * vRad;
+                    const vx2 = Math.cos(ang + 0.22) * (vRad + 1.5);
+                    const vz2 = Math.sin(ang + 0.22) * (vRad + 1.5);
+                    const vCurve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(vx1, by + 7.5, vz1),
+                        new THREE.Vector3((vx1 + vx2) * 0.5, by + 4.2, (vz1 + vz2) * 0.5),
+                        new THREE.Vector3(vx2, by + 8.0, vz2)
+                    ]);
+                    const vineMesh = new THREE.Mesh(new THREE.TubeGeometry(vCurve, 18, 0.08, 8, false), vineMat);
+                    group.add(vineMesh);
+                }
+            }
+
+            // 6. LA GRAN LUNA LLENA DEL CONSEJO EN LO ALTO DEL CIELO NOCTURNO DE SEEONEE
             const moonMesh = new THREE.Mesh(
-                new THREE.SphereGeometry(7.2, 48, 48),
-                new THREE.MeshBasicMaterial({ color: 0xFEF08A })
+                new THREE.SphereGeometry(8.8, 48, 48),
+                new THREE.MeshBasicMaterial({ color: 0xFEF9C3 })
             );
-            moonMesh.position.set(-28, 35, -62);
+            moonMesh.position.set(-18, 44, -52);
             group.add(moonMesh);
 
-            const moonHalo = createGlowSprite(THREE, 0xFDE047, 36.0, 0.55);
-            moonHalo.position.set(-28, 35, -61);
+            const moonHalo = createGlowSprite(THREE, 0xFDE047, 44.0, 0.62);
+            moonHalo.position.set(-18, 44, -51);
             group.add(moonHalo);
         } else if (unitId === 'tropa') {
             // 1. GRAN TORRE DE PIONERISMO EN MADERA REDONDEADA + AMARRES Y PUENTE
@@ -3416,6 +3537,11 @@
             }
         });
 
+        const ringCaption = document.querySelector('#uzNextOrbitStepBtn .uz-progress-ring-caption');
+        if (ringCaption) {
+            ringCaption.textContent = unitId === 'manada' ? 'Rodear la Roca' : 'Rodear el lago';
+        }
+
         syncUnitOrbitDOM(0, 0);
 
         if (!ensureUnitLakeThreeScene()) return;
@@ -3437,6 +3563,11 @@
         sunLight.color.setHex(biome.sunColor);
         sunLight.position.set(biome.sunPos[0], biome.sunPos[1], biome.sunPos[2]);
         shoreLight.color.setHex(biome.shoreLightColor);
+        if (unitId === 'manada') {
+            shoreLight.position.set(0, 12.5, 0);
+        } else {
+            shoreLight.position.set(0, 6.0, -22);
+        }
 
         // 0. Cúpula Celeste 3D Atmosférica (Sky Dome con dispersión Mie)
         const skyDome = createSkyDomeShaderMesh(THREE, biome);
@@ -3447,14 +3578,24 @@
         const isAlpine = unitId === 'escultas' || unitId === 'clan';
         const getTerrainHeight = (x, z) => {
             const r = Math.hypot(x, z);
+            const nSmooth = fbm2D(x * 0.028, z * 0.028, 5) * 0.5 + 0.5;
+            const nDetail = fbm2D(x * 0.075 + 4.2, z * 0.075 - 3.1, 3) * 0.35;
+
+            if (unitId === 'manada') {
+                // En Manada NO hay lago central: el centro (r < 16.5) es una colina rocosa elevada (La Roca del Consejo)
+                // rodeada de un claro musgoso (r = 16.5..24) y las colinas selváticas de Seeonee (r > 24)
+                const centralHill = Math.max(0, 1.0 - Math.pow(r / 16.5, 1.85)) * 4.4;
+                const rockRugged = (r < 17.0 ? ridgedFbm2D(x * 0.09, z * 0.09, 3) * 0.95 : 0);
+                const outerJungleHills = Math.pow(clamp((r - 22.0) / 68.0, 0, 1), 1.25) * biome.heightScale * (nSmooth * 0.7 + 0.3);
+                return centralHill + rockRugged + 0.35 + nDetail * 0.45 + outerJungleHills;
+            }
+
             if (r < 19.5) {
                 return -3.4 + smoothstep(12.0, 19.5, r) * 1.2;
             }
             const shoreBlend = smoothstep(19.5, 25.5, r);
             const hillEnvelope = Math.pow(clamp((r - 23.5) / 72.0, 0, 1), 1.32);
 
-            const nSmooth = fbm2D(x * 0.028, z * 0.028, 5) * 0.5 + 0.5;
-            const nDetail = fbm2D(x * 0.075 + 4.2, z * 0.075 - 3.1, 3) * 0.35;
             const nRidge = isAlpine
                 ? ridgedFbm2D(x * 0.032 + 1.5, z * 0.032, 4) * 0.85
                 : fbm2D(x * 0.042 - 2.0, z * 0.042 + 1.8, 4) * 0.45 + 0.45;
@@ -3471,7 +3612,6 @@
         const posAttr = terrainGeo.attributes.position;
         const colors = new Float32Array(posAttr.count * 3);
 
-        // Color de arena/musgo húmedo para la orilla inmediata del lago
         const shoreSand = unitId === 'clan'
             ? [0.28, 0.32, 0.38]
             : (unitId === 'escultas' ? [0.38, 0.33, 0.28] : [0.26, 0.36, 0.22]);
@@ -3487,7 +3627,13 @@
             const hNorm = clamp((vy - 0.15) / (biome.heightScale * 0.92), 0, 1);
 
             let rCol, gCol, bCol;
-            if (r < 24.5 && vy < 0.85) {
+            if (unitId === 'manada' && r < 16.5) {
+                // Roca granítica/basáltica iluminada por la luna en la colina central del Consejo
+                const rockMix = smoothstep(10.5, 16.5, r);
+                rCol = lerp(0.42, biome.terrainLow[0], rockMix);
+                gCol = lerp(0.45, biome.terrainLow[1], rockMix);
+                bCol = lerp(0.50, biome.terrainLow[2], rockMix);
+            } else if (unitId !== 'manada' && r < 24.5 && vy < 0.85) {
                 const st = smoothstep(20.5, 24.5, r);
                 rCol = lerp(shoreSand[0], biome.terrainLow[0], st);
                 gCol = lerp(shoreSand[1], biome.terrainLow[1], st);
@@ -3524,48 +3670,72 @@
         const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
         worldGroup.add(terrainMesh);
 
-        // 2. El Lago Central 3D con Shader GLSL Líquido (Fresnel + Especular + Espuma de Orilla)
-        const waterObj = createSmoothWaterShaderMesh(THREE, biome);
-        worldGroup.add(waterObj.mesh);
-        unitLakeState.waterMesh = waterObj.mesh;
-        unitLakeState.waterUniforms = waterObj.uniforms;
+        // 2. El Lago Central 3D (Solo en Castores, Tropa, Escultas y Clan; en Manada el centro es la Roca del Consejo)
+        if (unitId !== 'manada') {
+            const waterObj = createSmoothWaterShaderMesh(THREE, biome);
+            worldGroup.add(waterObj.mesh);
+            unitLakeState.waterMesh = waterObj.mesh;
+            unitLakeState.waterUniforms = waterObj.uniforms;
 
-        // Anillos concéntricos suaves de alta resolución en la superficie del agua
-        const rippleMat = new THREE.MeshBasicMaterial({
-            color: 0xFFFFFF,
-            transparent: true,
-            opacity: 0.22,
-            side: THREE.DoubleSide,
-            depthWrite: false
-        });
-        for (let rIdx = 0; rIdx < 4; rIdx++) {
-            const ringGeo = new THREE.RingGeometry(2.8 + rIdx * 4.2, 2.94 + rIdx * 4.2, 96);
-            ringGeo.rotateX(-Math.PI / 2);
-            const ringMesh = new THREE.Mesh(ringGeo, rippleMat.clone());
-            ringMesh.position.y = 0.06;
-            worldGroup.add(ringMesh);
-            unitLakeState.rippleRings.push({ mesh: ringMesh, phase: rIdx * 0.25 });
+            const rippleMat = new THREE.MeshBasicMaterial({
+                color: 0xFFFFFF,
+                transparent: true,
+                opacity: 0.22,
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
+            for (let rIdx = 0; rIdx < 4; rIdx++) {
+                const ringGeo = new THREE.RingGeometry(2.8 + rIdx * 4.2, 2.94 + rIdx * 4.2, 96);
+                ringGeo.rotateX(-Math.PI / 2);
+                const ringMesh = new THREE.Mesh(ringGeo, rippleMat.clone());
+                ringMesh.position.y = 0.06;
+                worldGroup.add(ringMesh);
+                unitLakeState.rippleRings.push({ mesh: ringMesh, phase: rIdx * 0.25 });
+            }
+        } else {
+            unitLakeState.waterMesh = null;
+            unitLakeState.waterUniforms = null;
         }
 
-        // 3. Bosque perimetral 360° de alta resolución alrededor del lago
-        const treeCount = unitId === 'clan' ? 30 : (unitId === 'escultas' ? 34 : 56);
-        for (let t = 0; t < treeCount; t++) {
-            const angle = (t / treeCount) * Math.PI * 2 + Math.sin(t * 2.1) * 0.07;
-            const radius = 25.2 + (t % 6) * 3.8 + Math.cos(t * 1.7) * 1.8;
-            const tx = Math.cos(angle) * radius;
-            const tz = Math.sin(angle) * radius;
-            if (Math.hypot(tx, tz + 24) < 8.0) continue;
+        // 3. Bosque perimetral 360° de alta resolución (En Manada: Selva de Seeonee ultra densa rodeando la Roca del Consejo)
+        if (unitId === 'manada') {
+            const jungleTreeCount = 138;
+            for (let t = 0; t < jungleTreeCount; t++) {
+                const ringIdx = t % 4;
+                const angle = (t / jungleTreeCount) * Math.PI * 2 + Math.sin(t * 3.1) * 0.06;
+                // Anillos densos de selva desde r=18.5 hasta r=72 rodeando el claro de la Roca del Consejo
+                const radius = 18.8 + ringIdx * 8.5 + (t % 5) * 2.4 + Math.cos(t * 1.9) * 1.6;
+                // Evitar bloquear exactamente la trayectoria de la cámara (r ≈ 29..35)
+                const safeRadius = (radius > 27.5 && radius < 36.2) ? (radius < 31.8 ? 26.2 : 37.5) : radius;
+                const tx = Math.cos(angle) * safeRadius;
+                const tz = Math.sin(angle) * safeRadius;
+                const ty = getTerrainHeight(tx, tz);
+                const sc = 0.92 + (t % 5) * 0.26 + (ringIdx >= 2 ? 0.35 : 0);
+                const tree = createPineOrBiomeTree(THREE, 'manada', sc, t * 1.73);
+                tree.position.set(tx, ty - 0.2, tz);
+                tree.rotation.y = t * 1.3;
+                worldGroup.add(tree);
+            }
+        } else {
+            const treeCount = unitId === 'clan' ? 30 : (unitId === 'escultas' ? 34 : 56);
+            for (let t = 0; t < treeCount; t++) {
+                const angle = (t / treeCount) * Math.PI * 2 + Math.sin(t * 2.1) * 0.07;
+                const radius = 25.2 + (t % 6) * 3.8 + Math.cos(t * 1.7) * 1.8;
+                const tx = Math.cos(angle) * radius;
+                const tz = Math.sin(angle) * radius;
+                if (Math.hypot(tx, tz + 24) < 8.0) continue;
 
-            const ty = getTerrainHeight(tx, tz);
-            if (ty < 0.25) continue;
-            const sc = 0.78 + (t % 4) * 0.22;
-            const tree = createPineOrBiomeTree(THREE, unitId, sc, t * 1.37);
-            tree.position.set(tx, ty - 0.15, tz);
-            tree.rotation.y = t * 1.1;
-            worldGroup.add(tree);
+                const ty = getTerrainHeight(tx, tz);
+                if (ty < 0.25) continue;
+                const sc = 0.78 + (t % 4) * 0.22;
+                const tree = createPineOrBiomeTree(THREE, unitId, sc, t * 1.37);
+                tree.position.set(tx, ty - 0.15, tz);
+                tree.rotation.y = t * 1.1;
+                worldGroup.add(tree);
+            }
         }
 
-        // 4. Hitos 3D orgánicos y detallados de cada Unidad en las orillas del lago
+        // 4. Hitos 3D orgánicos y detallados de cada Unidad
         buildUnitSpecificLandmarks(THREE, worldGroup, unitId, getTerrainHeight);
 
         // 5. Partículas atmosféricas suaves con textura radial (luciérnagas, polen, pavesas o nieve)
@@ -3626,8 +3796,10 @@
             const camZ = Math.cos(orbitAngle) * camRadius;
 
             unitLakeState.camera.position.set(camX, camHeight, camZ);
-            const lookTargetX = Math.cos(orbitAngle) * 3.2;
-            const lookTargetZ = -Math.sin(orbitAngle) * 3.2;
+            // En Manada la cámara orbita enfocando directamente la cima central de la Roca del Consejo
+            const lookOffset = unitLakeState.unitId === 'manada' ? 0.6 : 3.2;
+            const lookTargetX = Math.cos(orbitAngle) * lookOffset;
+            const lookTargetZ = -Math.sin(orbitAngle) * lookOffset;
             unitLakeState.camera.lookAt(lookTargetX, lookY, lookTargetZ);
 
             // Actualizar tiempo del shader líquido del lago
