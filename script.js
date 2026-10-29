@@ -2210,15 +2210,151 @@
         scene: null,
         camera: null,
         worldGroup: null,
+        skyDome: null,
         waterMesh: null,
-        waterBasePositions: null,
+        waterUniforms: null,
         rippleRings: [],
         particles: null,
         shoreLight: null,
         sunLight: null,
         hemiLight: null,
-        animatedProps: []
+        animatedProps: [],
+        reedClusters: [],
+        glowTexture: null,
+        terrainDetailTexture: null
     };
+
+    // =========================================================================
+    // GENERADOR DE RUIDO ORGÁNICO SUAVE (PERLIN / FBM C2 CONTINUO) + TEXTURAS
+    // =========================================================================
+    function hash2D(ix, iz) {
+        const n = Math.sin(ix * 127.1 + iz * 311.7) * 43758.5453123;
+        return n - Math.floor(n);
+    }
+
+    function valueNoise2D(x, z) {
+        const ix = Math.floor(x);
+        const iz = Math.floor(z);
+        const fx = x - ix;
+        const fz = z - iz;
+        // Interpolación quíntica C2 para superficies 100% suaves sin aristas poligonales
+        const ux = fx * fx * fx * (fx * (fx * 6 - 15) + 10);
+        const uz = fz * fz * fz * (fz * (fz * 6 - 15) + 10);
+
+        const a = hash2D(ix, iz);
+        const b = hash2D(ix + 1, iz);
+        const c = hash2D(ix, iz + 1);
+        const d = hash2D(ix + 1, iz + 1);
+
+        return lerp(lerp(a, b, ux), lerp(c, d, ux), uz) * 2 - 1;
+    }
+
+    function fbm2D(x, z, octaves = 5) {
+        let val = 0;
+        let amp = 0.5;
+        let freq = 1.0;
+        let norm = 0;
+        for (let i = 0; i < octaves; i++) {
+            val += amp * valueNoise2D(x * freq, z * freq);
+            norm += amp;
+            amp *= 0.5;
+            freq *= 2.03;
+            // Rotación ligera entre octavas para evitar patrones de cuadrícula
+            const nx = x * 0.866 - z * 0.5;
+            const nz = x * 0.5 + z * 0.866;
+            x = nx;
+            z = nz;
+        }
+        return val / norm;
+    }
+
+    function ridgedFbm2D(x, z, octaves = 4) {
+        let val = 0;
+        let amp = 0.5;
+        let freq = 1.0;
+        let norm = 0;
+        for (let i = 0; i < octaves; i++) {
+            const n = 1.0 - Math.abs(valueNoise2D(x * freq, z * freq));
+            val += amp * (n * n);
+            norm += amp;
+            amp *= 0.5;
+            freq *= 2.05;
+        }
+        return val / norm;
+    }
+
+    function getSoftGlowTexture(THREE) {
+        if (unitLakeState.glowTexture) return unitLakeState.glowTexture;
+        const c = document.createElement('canvas');
+        c.width = 128;
+        c.height = 128;
+        const gCtx = c.getContext('2d');
+        const grad = gCtx.createRadialGradient(64, 64, 0, 64, 64, 64);
+        grad.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)');
+        grad.addColorStop(0.28, 'rgba(255, 255, 255, 0.65)');
+        grad.addColorStop(0.65, 'rgba(255, 255, 255, 0.16)');
+        grad.addColorStop(1.0, 'rgba(255, 255, 255, 0.0)');
+        gCtx.fillStyle = grad;
+        gCtx.fillRect(0, 0, 128, 128);
+        const tex = new THREE.CanvasTexture(c);
+        unitLakeState.glowTexture = tex;
+        return tex;
+    }
+
+    function getTerrainDetailTexture(THREE) {
+        if (unitLakeState.terrainDetailTexture) return unitLakeState.terrainDetailTexture;
+        const c = document.createElement('canvas');
+        c.width = 256;
+        c.height = 256;
+        const gCtx = c.getContext('2d');
+        gCtx.fillStyle = '#d8d8d8';
+        gCtx.fillRect(0, 0, 256, 256);
+        for (let i = 0; i < 4200; i++) {
+            const x = Math.random() * 256;
+            const y = Math.random() * 256;
+            const r = 1 + Math.random() * 2.5;
+            const shade = 195 + Math.floor(Math.random() * 55);
+            gCtx.fillStyle = `rgb(${shade},${shade},${shade})`;
+            gCtx.beginPath();
+            gCtx.arc(x, y, r, 0, Math.PI * 2);
+            gCtx.fill();
+        }
+        const tex = new THREE.CanvasTexture(c);
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(28, 28);
+        unitLakeState.terrainDetailTexture = tex;
+        return tex;
+    }
+
+    function createGlowSprite(THREE, hexColor, scaleSize = 6.0, opacity = 0.65) {
+        const mat = new THREE.SpriteMaterial({
+            map: getSoftGlowTexture(THREE),
+            color: hexColor,
+            transparent: true,
+            opacity,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const sprite = new THREE.Sprite(mat);
+        sprite.scale.set(scaleSize, scaleSize, 1);
+        return sprite;
+    }
+
+    function deformGeometrySmooth(geo, amp = 0.18, freq = 1.2, seed = 0) {
+        const pos = geo.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+            const vx = pos.getX(i);
+            const vy = pos.getY(i);
+            const vz = pos.getZ(i);
+            const len = Math.hypot(vx, vy, vz) || 1;
+            const n = fbm2D(vx * freq + seed, vz * freq + vy * 0.7 - seed, 3);
+            const factor = 1 + n * amp;
+            pos.setXYZ(i, vx * factor, vy * factor, vz * factor);
+        }
+        geo.computeVertexNormals();
+        return geo;
+    }
 
     function syncUnitOrbitDOM(progress, forceStep = null) {
         const wrapped = ((progress % 5) + 5) % 5;
@@ -2228,7 +2364,6 @@
         // 1. Actualizar pantallas (.uz-orbit-screen) con transición suave estilo Emotion Agency
         const screens = document.querySelectorAll('#unitSuperZoomOverlay .uz-orbit-screen');
         screens.forEach((scr, idx) => {
-            // Distancia circular en el ciclo de 5 paradas
             let diff = idx - wrapped;
             if (diff > 2.5) diff -= 5;
             if (diff < -2.5) diff += 5;
@@ -2273,7 +2408,6 @@
 
     function goToUnitOrbitStep(stepIdx) {
         clearTimeout(unitLakeState.snapTimer);
-        // Elegir el múltiplo de 5 más cercano a orbitTarget para que el giro sea por el camino más corto
         const currentCycle = Math.floor(unitLakeState.orbitCurrent / 5) * 5;
         let candidate = currentCycle + stepIdx;
         const diff = candidate - unitLakeState.orbitCurrent;
@@ -2289,326 +2423,918 @@
         }, 160);
     }
 
-    function createPineOrBiomeTree(THREE, unitId, scale = 1) {
+    // =========================================================================
+    // ÁRBOLES ORGÁNICOS DE ALTA RESOLUCIÓN Y VEGETACIÓN DE ORILLA (SIN FLAT-SHADING)
+    // =========================================================================
+    function createPineOrBiomeTree(THREE, unitId, scale = 1, seed = 1) {
         const tree = new THREE.Group();
-        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x4A2E1B, roughness: 0.9 });
-        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * scale, 0.35 * scale, 2.2 * scale, 7), trunkMat);
-        trunk.position.y = 1.1 * scale;
+        const barkMat = new THREE.MeshStandardMaterial({
+            color: unitId === 'clan' ? 0x3E2723 : 0x4E342E,
+            roughness: 0.92,
+            metalness: 0.02
+        });
+
+        // Tronco orgánico suavemente curvado con raíces en la base
+        const trunkGeo = new THREE.CylinderGeometry(0.15 * scale, 0.36 * scale, 2.8 * scale, 18, 6);
+        const tPos = trunkGeo.attributes.position;
+        for (let i = 0; i < tPos.count; i++) {
+            const py = tPos.getY(i);
+            const bend = Math.sin((py / (2.8 * scale) + 0.5) * Math.PI) * 0.14 * scale * Math.sin(seed);
+            tPos.setX(i, tPos.getX(i) + bend);
+        }
+        trunkGeo.computeVertexNormals();
+        const trunk = new THREE.Mesh(trunkGeo, barkMat);
+        trunk.position.y = 1.35 * scale;
         tree.add(trunk);
 
         if (unitId === 'manada') {
-            // Árbol frondoso de la Selva de Seeonee
-            const leafColor = Math.random() > 0.35 ? 0x065F46 : 0x15803D;
-            const foliageMat = new THREE.MeshStandardMaterial({ color: leafColor, roughness: 0.75, flatShading: true });
-            const crown = new THREE.Mesh(new THREE.DodecahedronGeometry(1.85 * scale, 1), foliageMat);
-            crown.position.y = 2.9 * scale;
-            crown.scale.set(1.15, 0.85, 1.15);
-            tree.add(crown);
-        } else {
-            // Coníferas alpinas / pinos del bosque
-            const leafColor = unitId === 'clan'
-                ? 0x334155
-                : (unitId === 'escultas' ? 0x3F6212 : (unitId === 'tropa' ? 0x047857 : 0x15803D));
-            const coneMat = new THREE.MeshStandardMaterial({ color: leafColor, roughness: 0.8, flatShading: true });
-            for (let l = 0; l < 3; l++) {
-                const r = (1.75 - l * 0.42) * scale;
-                const h = (2.4 - l * 0.35) * scale;
-                const cone = new THREE.Mesh(new THREE.ConeGeometry(r, h, 7), coneMat);
-                cone.position.y = (2.1 + l * 1.15) * scale;
-                tree.add(cone);
-            }
-            if (unitId === 'clan') {
-                const snowCap = new THREE.Mesh(
-                    new THREE.ConeGeometry(0.95 * scale, 1.2 * scale, 7),
-                    new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.5, flatShading: true })
+            // Árbol frondoso tropical de la Selva de Seeonee con copa multicapa suave
+            const leafColors = [0x065F46, 0x047857, 0x15803D];
+            const cloudOffsets = [
+                [0, 3.1, 0, 1.75],
+                [-1.05, 2.65, 0.65, 1.35],
+                [1.1, 2.75, -0.55, 1.4],
+                [0.35, 3.65, 0.45, 1.3],
+                [-0.55, 2.9, -0.85, 1.25]
+            ];
+            cloudOffsets.forEach(([cx, cy, cz, cr], idx) => {
+                const mat = new THREE.MeshStandardMaterial({
+                    color: leafColors[(idx + Math.floor(seed)) % leafColors.length],
+                    roughness: 0.76,
+                    metalness: 0.04
+                });
+                const puffGeo = deformGeometrySmooth(
+                    new THREE.SphereGeometry(cr * scale, 22, 18),
+                    0.16,
+                    1.1,
+                    seed + idx * 3.1
                 );
-                snowCap.position.y = 4.65 * scale;
+                const puff = new THREE.Mesh(puffGeo, mat);
+                puff.position.set(cx * scale, cy * scale, cz * scale);
+                puff.scale.set(1.18, 0.82, 1.14);
+                tree.add(puff);
+            });
+        } else {
+            // Pinos y abetos orgánicos con faldas onduladas suaves (5 niveles de ramaje)
+            const baseLeafColor = unitId === 'clan'
+                ? 0x1E293B
+                : (unitId === 'escultas' ? 0x166534 : (unitId === 'tropa' ? 0x065F46 : 0x15803D));
+            const coneMat = new THREE.MeshStandardMaterial({
+                color: baseLeafColor,
+                roughness: 0.82,
+                metalness: 0.03
+            });
+
+            const tiers = 5;
+            for (let l = 0; l < tiers; l++) {
+                const r = (1.85 - l * 0.31) * scale;
+                const h = (1.95 - l * 0.22) * scale;
+                const boughGeo = new THREE.ConeGeometry(r, h, 28, 5);
+                const bPos = boughGeo.attributes.position;
+                for (let k = 0; k < bPos.count; k++) {
+                    const vx = bPos.getX(k);
+                    const vy = bPos.getY(k);
+                    const vz = bPos.getZ(k);
+                    const ang = Math.atan2(vz, vx);
+                    const rad = Math.hypot(vx, vz);
+                    if (rad > 0.05) {
+                        // Ondulación orgánica de las ramas del abeto
+                        const ruffle = 1 + Math.sin(ang * 7 + l * 1.9 + seed) * 0.09 + Math.cos(ang * 11 - seed) * 0.05;
+                        const droop = -Math.pow(rad / r, 1.6) * 0.28 * scale;
+                        bPos.setX(k, vx * ruffle);
+                        bPos.setY(k, vy + droop);
+                        bPos.setZ(k, vz * ruffle);
+                    }
+                }
+                boughGeo.computeVertexNormals();
+                const bough = new THREE.Mesh(boughGeo, coneMat);
+                bough.position.y = (1.95 + l * 0.88) * scale;
+                tree.add(bough);
+            }
+
+            if (unitId === 'clan' || unitId === 'escultas') {
+                // Manto suave de nieve en las copas de alta montaña
+                const snowMat = new THREE.MeshStandardMaterial({
+                    color: 0xF1F5F9,
+                    roughness: 0.45,
+                    metalness: 0.08
+                });
+                const snowCapGeo = deformGeometrySmooth(
+                    new THREE.ConeGeometry(0.95 * scale, 1.35 * scale, 24, 4),
+                    0.10,
+                    1.8,
+                    seed
+                );
+                const snowCap = new THREE.Mesh(snowCapGeo, snowMat);
+                snowCap.position.y = 5.45 * scale;
                 tree.add(snowCap);
             }
         }
         return tree;
     }
 
+    function createShoreReedsCluster(THREE, unitId, seed = 0) {
+        const cluster = new THREE.Group();
+        const reedColor = unitId === 'clan' ? 0x64748B : (unitId === 'manada' ? 0x15803D : 0x16A34A);
+        const stemMat = new THREE.MeshStandardMaterial({ color: reedColor, roughness: 0.7 });
+        const headMat = new THREE.MeshStandardMaterial({ color: 0x5C3A21, roughness: 0.9 });
+
+        for (let i = 0; i < 7; i++) {
+            const h = 1.1 + (i % 3) * 0.35;
+            const stemGeo = new THREE.CylinderGeometry(0.022, 0.042, h, 10, 4);
+            const pos = stemGeo.attributes.position;
+            const tiltX = Math.cos(i * 1.4 + seed) * 0.18;
+            const tiltZ = Math.sin(i * 1.4 + seed) * 0.18;
+            for (let k = 0; k < pos.count; k++) {
+                const yNorm = (pos.getY(k) + h * 0.5) / h;
+                pos.setX(k, pos.getX(k) + yNorm * yNorm * tiltX);
+                pos.setZ(k, pos.getZ(k) + yNorm * yNorm * tiltZ);
+            }
+            stemGeo.computeVertexNormals();
+            const stem = new THREE.Mesh(stemGeo, stemMat);
+            stem.position.set(Math.cos(i * 1.1) * 0.35, h * 0.45, Math.sin(i * 1.1) * 0.35);
+            cluster.add(stem);
+
+            if (i % 2 === 0 && unitId !== 'clan') {
+                const head = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.28, 12), headMat);
+                head.position.set(
+                    stem.position.x + tiltX * 0.82,
+                    h * 0.82,
+                    stem.position.z + tiltZ * 0.82
+                );
+                cluster.add(head);
+            }
+        }
+        return cluster;
+    }
+
+    function createCampfireWithGlow(THREE, scale = 1.0) {
+        const fireGroup = new THREE.Group();
+        const logMat = new THREE.MeshStandardMaterial({ color: 0x4E342E, roughness: 0.9 });
+        for (let i = 0; i < 6; i++) {
+            const ang = (i / 6) * Math.PI;
+            const log = new THREE.Mesh(new THREE.CylinderGeometry(0.14 * scale, 0.17 * scale, 2.2 * scale, 14), logMat);
+            log.rotation.z = Math.PI / 2 - 0.18;
+            log.rotation.y = ang;
+            log.position.y = 0.22 * scale;
+            fireGroup.add(log);
+        }
+
+        // Piedras redondeadas de protección alrededor de la hoguera
+        const stoneMat = new THREE.MeshStandardMaterial({ color: 0x57534E, roughness: 0.85 });
+        for (let s = 0; s < 10; s++) {
+            const a = (s / 10) * Math.PI * 2;
+            const st = new THREE.Mesh(new THREE.SphereGeometry(0.24 * scale, 14, 12), stoneMat);
+            st.scale.set(1.2, 0.7, 1.0);
+            st.position.set(Math.cos(a) * 1.25 * scale, 0.12 * scale, Math.sin(a) * 1.25 * scale);
+            fireGroup.add(st);
+        }
+
+        // Llamas orgánicas multicapa suaves
+        const outerFlameGeo = deformGeometrySmooth(new THREE.ConeGeometry(0.85 * scale, 2.4 * scale, 24, 6), 0.15, 1.5, 2.1);
+        const outerFlame = new THREE.Mesh(
+            outerFlameGeo,
+            new THREE.MeshBasicMaterial({ color: 0xF97316, transparent: true, opacity: 0.88 })
+        );
+        outerFlame.position.y = 1.15 * scale;
+        fireGroup.add(outerFlame);
+
+        const innerFlameGeo = deformGeometrySmooth(new THREE.ConeGeometry(0.48 * scale, 1.7 * scale, 20, 4), 0.12, 1.8, 4.3);
+        const innerFlame = new THREE.Mesh(
+            innerFlameGeo,
+            new THREE.MeshBasicMaterial({ color: 0xFEF08A, transparent: true, opacity: 0.95 })
+        );
+        innerFlame.position.y = 0.95 * scale;
+        fireGroup.add(innerFlame);
+
+        const halo = createGlowSprite(THREE, 0xFB923C, 7.5 * scale, 0.72);
+        halo.position.y = 1.3 * scale;
+        fireGroup.add(halo);
+
+        unitLakeState.animatedProps.push({
+            mesh: outerFlame,
+            innerMesh: innerFlame,
+            haloSprite: halo,
+            baseY: 1.15 * scale,
+            phase: Math.random() * 6,
+            isFlame: true
+        });
+
+        return fireGroup;
+    }
+
+    // =========================================================================
+    // MODELOS 3D DETALLADOS Y ORGÁNICOS DE CADA UNIDAD ALREDEDOR DEL LAGO
+    // =========================================================================
     function buildUnitSpecificLandmarks(THREE, group, unitId, getTerrainHeight) {
         unitLakeState.animatedProps = [];
+        unitLakeState.reedClusters = [];
 
-        // Nenúfares o bloques de hielo sobre el lago + rocas de orilla
-        const rockMat = new THREE.MeshStandardMaterial({
-            color: unitId === 'escultas' ? 0x9CA3AF : (unitId === 'clan' ? 0x475569 : 0x57534E),
-            roughness: 0.88,
-            flatShading: true
-        });
-        for (let i = 0; i < 24; i++) {
-            const ang = (i / 24) * Math.PI * 2 + (i % 3) * 0.11;
-            const rad = 23.5 + (i % 4) * 1.6;
+        // 1. Cantos rodados suaves de río y rocas musgosas en toda la ribera 360°
+        const pebbleColors = unitId === 'escultas'
+            ? [0x9CA3AF, 0xCBD5E1, 0x64748B]
+            : (unitId === 'clan' ? [0x475569, 0x64748B, 0x94A3B8] : [0x57534E, 0x78716C, 0x44403C]);
+
+        for (let i = 0; i < 36; i++) {
+            const ang = (i / 36) * Math.PI * 2 + Math.sin(i * 1.9) * 0.08;
+            const rad = 22.8 + (i % 5) * 1.35;
             const rx = Math.cos(ang) * rad;
             const rz = Math.sin(ang) * rad;
             const ry = getTerrainHeight(rx, rz);
-            const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.65 + (i % 3) * 0.45, 0), rockMat);
-            rock.position.set(rx, ry + 0.15, rz);
-            rock.scale.set(1.2, 0.65, 1.0);
-            rock.rotation.y = i * 0.8;
-            group.add(rock);
+
+            const rSize = 0.55 + (i % 4) * 0.38;
+            const boulderGeo = deformGeometrySmooth(
+                new THREE.SphereGeometry(rSize, 22, 18),
+                0.22,
+                1.35,
+                i * 1.7
+            );
+            const boulderMat = new THREE.MeshStandardMaterial({
+                color: pebbleColors[i % pebbleColors.length],
+                roughness: 0.84,
+                metalness: 0.05
+            });
+            const boulder = new THREE.Mesh(boulderGeo, boulderMat);
+            boulder.position.set(rx, ry + 0.08, rz);
+            boulder.scale.set(1.35, 0.62 + (i % 3) * 0.12, 1.15);
+            boulder.rotation.y = i * 0.9;
+            group.add(boulder);
+
+            // Juncos y espadañas mecidos por la brisa en las orillas
+            if (i % 2 === 0 && unitId !== 'escultas') {
+                const reeds = createShoreReedsCluster(THREE, unitId, i);
+                reeds.position.set(Math.cos(ang + 0.04) * 22.2, -0.05, Math.sin(ang + 0.04) * 22.2);
+                group.add(reeds);
+                unitLakeState.reedClusters.push({ mesh: reeds, phase: i * 0.6 });
+            }
         }
 
         if (unitId === 'castores') {
-            // 1. La Gran Presa de Troncos (Orilla Norte)
-            const logMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.85 });
+            // 1. LA GRAN PRESA DE TRONCOS REDONDEADOS + ESPUMA DE AGUA (Orilla Norte)
+            const barkMat = new THREE.MeshStandardMaterial({ color: 0x6D4C41, roughness: 0.86 });
+            const cutWoodMat = new THREE.MeshStandardMaterial({ color: 0xD7CCC8, roughness: 0.7 });
             const damGroup = new THREE.Group();
-            for (let i = 0; i < 26; i++) {
-                const log = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, 6.8 + (i % 3) * 1.5, 8), logMat);
-                log.rotation.z = Math.PI / 2 + (Math.sin(i * 1.7) * 0.18);
-                log.rotation.y = (Math.cos(i * 2.3) * 0.35);
-                log.position.set((i - 13) * 0.62, 0.25 + (i % 4) * 0.34, (i % 2) * 0.45);
+            for (let i = 0; i < 42; i++) {
+                const len = 5.2 + (i % 4) * 1.6;
+                const rad = 0.22 + (i % 3) * 0.06;
+                const logGeo = new THREE.CylinderGeometry(rad, rad * 1.08, len, 18);
+                const log = new THREE.Mesh(logGeo, [barkMat, cutWoodMat, cutWoodMat]);
+                log.rotation.z = Math.PI / 2 + Math.sin(i * 1.7) * 0.15;
+                log.rotation.y = Math.cos(i * 2.3) * 0.38;
+                log.position.set((i - 21) * 0.44, 0.15 + (i % 5) * 0.26, Math.sin(i * 0.9) * 0.65);
                 damGroup.add(log);
             }
-            damGroup.position.set(0, 0.1, -22.5);
+            damGroup.position.set(0, 0.05, -22.2);
             group.add(damGroup);
 
-            // 2. La Madriguera de los Castores (Domo de ramas con luz cálida interior)
+            // 2. LA MADRIGUERA ORGÁNICA + EMBARCADERO DE MADERA
             const lodgeGroup = new THREE.Group();
+            const lodgeGeo = deformGeometrySmooth(
+                new THREE.SphereGeometry(3.9, 32, 24, 0, Math.PI * 2, 0, Math.PI * 0.58),
+                0.14,
+                1.2,
+                7.7
+            );
             const lodgeDome = new THREE.Mesh(
-                new THREE.SphereGeometry(3.8, 12, 10, 0, Math.PI * 2, 0, Math.PI * 0.58),
-                new THREE.MeshStandardMaterial({ color: 0x92400E, roughness: 0.9, flatShading: true })
+                lodgeGeo,
+                new THREE.MeshStandardMaterial({ color: 0x795548, roughness: 0.88 })
             );
+            lodgeDome.scale.set(1.15, 0.88, 1.15);
             lodgeGroup.add(lodgeDome);
-            const lodgeGlow = new THREE.Mesh(
-                new THREE.SphereGeometry(0.95, 10, 10),
-                new THREE.MeshBasicMaterial({ color: 0xFDE047 })
+
+            // Entrada cálida iluminada de la Madriguera
+            const arch = new THREE.Mesh(
+                new THREE.TorusGeometry(1.05, 0.24, 16, 28, Math.PI),
+                new THREE.MeshStandardMaterial({ color: 0x4E342E, roughness: 0.85 })
             );
-            lodgeGlow.position.set(0, 0.8, 3.1);
-            lodgeGroup.add(lodgeGlow);
-            lodgeGroup.position.set(-14, 0.0, -18);
+            arch.position.set(0, 0.2, 3.35);
+            lodgeGroup.add(arch);
+
+            const lodgeLightGlow = createGlowSprite(THREE, 0xFDE047, 5.2, 0.78);
+            lodgeLightGlow.position.set(0, 0.9, 3.5);
+            lodgeGroup.add(lodgeLightGlow);
+
+            lodgeGroup.position.set(-13.5, 0.0, -18.2);
+            lodgeGroup.rotation.y = 0.55;
             group.add(lodgeGroup);
 
-            // 3. El Gran Roble de Malak (Orilla Este)
+            // Embarcadero de madera en la orilla del Estanque
+            const pierGroup = new THREE.Group();
+            const plankMat = new THREE.MeshStandardMaterial({ color: 0x8D6E63, roughness: 0.8 });
+            for (let p = 0; p < 10; p++) {
+                const plank = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.12, 0.42), plankMat);
+                plank.position.set(0, 0.45, p * 0.52);
+                pierGroup.add(plank);
+            }
+            [[-0.95, 0.5], [0.95, 0.5], [-0.95, 4.6], [0.95, 4.6]].forEach(([px, pz]) => {
+                const post = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 1.6, 14), barkMat);
+                post.position.set(px, 0.1, pz);
+                pierGroup.add(post);
+            });
+            pierGroup.position.set(-8.5, 0.0, -21.5);
+            pierGroup.rotation.y = 0.32;
+            group.add(pierGroup);
+
+            // 3. EL GRAN ROBLE CENTENARIO DE MALAK (Orilla Este)
             const oakGroup = new THREE.Group();
-            const oakTrunk = new THREE.Mesh(
-                new THREE.CylinderGeometry(1.1, 1.8, 7.5, 9),
-                new THREE.MeshStandardMaterial({ color: 0x5C3A21, roughness: 0.9 })
-            );
-            oakTrunk.position.y = 3.6;
+            const oakBarkMat = new THREE.MeshStandardMaterial({ color: 0x4E342E, roughness: 0.92 });
+            const oakTrunkGeo = deformGeometrySmooth(new THREE.CylinderGeometry(1.15, 2.05, 7.8, 24, 8), 0.12, 0.8, 11);
+            const oakTrunk = new THREE.Mesh(oakTrunkGeo, oakBarkMat);
+            oakTrunk.position.y = 3.8;
             oakGroup.add(oakTrunk);
-            const oakCrownMat = new THREE.MeshStandardMaterial({ color: 0x15803D, roughness: 0.7, flatShading: true });
-            [[0, 8.2, 0, 4.6], [-2.6, 7.0, 1.4, 3.2], [2.8, 7.2, -1.2, 3.4], [0.5, 6.8, 2.5, 3.1]].forEach(([cx, cy, cz, cr]) => {
-                const puff = new THREE.Mesh(new THREE.DodecahedronGeometry(cr, 1), oakCrownMat);
+
+            const oakFoliageColors = [0x15803D, 0x16A34A, 0x166534];
+            const oakClusters = [
+                [0, 8.6, 0, 4.6],
+                [-2.9, 7.4, 1.5, 3.5],
+                [3.1, 7.6, -1.3, 3.6],
+                [0.6, 7.2, 2.8, 3.4],
+                [-1.8, 7.5, -2.4, 3.3],
+                [1.8, 9.2, 1.1, 3.2]
+            ];
+            oakClusters.forEach(([cx, cy, cz, cr], idx) => {
+                const puffGeo = deformGeometrySmooth(new THREE.SphereGeometry(cr, 28, 22), 0.15, 0.9, 20 + idx);
+                const puffMat = new THREE.MeshStandardMaterial({
+                    color: oakFoliageColors[idx % oakFoliageColors.length],
+                    roughness: 0.75
+                });
+                const puff = new THREE.Mesh(puffGeo, puffMat);
                 puff.position.set(cx, cy, cz);
+                puff.scale.set(1.22, 0.82, 1.18);
                 oakGroup.add(puff);
             });
+            const oakGlow = createGlowSprite(THREE, 0xFDE047, 9.0, 0.45);
+            oakGlow.position.set(0, 7.5, 0);
+            oakGroup.add(oakGlow);
+
             const oakY = getTerrainHeight(26, 4);
-            oakGroup.position.set(26, oakY, 4);
+            oakGroup.position.set(26, oakY - 0.3, 4);
             group.add(oakGroup);
 
-            // 4. Nenúfares flotantes en el Estanque
-            const padMat = new THREE.MeshStandardMaterial({ color: 0x22C55E, roughness: 0.6 });
-            const flowerMat = new THREE.MeshBasicMaterial({ color: 0xF472B6 });
-            for (let p = 0; p < 18; p++) {
-                const a = (p / 18) * Math.PI * 2 + 0.3;
-                const r = 8 + (p % 5) * 3.1;
-                const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.08, 12), padMat);
-                pad.position.set(Math.cos(a) * r, 0.06, Math.sin(a) * r);
-                if (p % 3 === 0) {
-                    const fl = new THREE.Mesh(new THREE.ConeGeometry(0.28, 0.35, 6), flowerMat);
-                    fl.position.y = 0.2;
-                    pad.add(fl);
+            // 4. NENÚFARES CON FLORES DE LOTO SUAVES EN EL ESTANQUE
+            const padMat = new THREE.MeshStandardMaterial({ color: 0x16A34A, roughness: 0.55, side: THREE.DoubleSide });
+            const petalMat = new THREE.MeshStandardMaterial({ color: 0xF472B6, emissive: 0xDB2777, emissiveIntensity: 0.2, roughness: 0.4 });
+            const centerMat = new THREE.MeshBasicMaterial({ color: 0xFDE047 });
+
+            for (let p = 0; p < 22; p++) {
+                const a = (p / 22) * Math.PI * 2 + 0.3;
+                const r = 7.5 + (p % 5) * 2.9;
+                const padGroup = new THREE.Group();
+                const padDisc = new THREE.Mesh(new THREE.CircleGeometry(0.88 + (p % 3) * 0.18, 28, 0, Math.PI * 1.88), padMat);
+                padDisc.rotation.x = -Math.PI / 2;
+                padGroup.add(padDisc);
+
+                if (p % 2 === 0) {
+                    for (let pet = 0; pet < 6; pet++) {
+                        const pAng = (pet / 6) * Math.PI * 2;
+                        const petal = new THREE.Mesh(new THREE.SphereGeometry(0.16, 12, 10), petalMat);
+                        petal.scale.set(0.7, 0.45, 1.5);
+                        petal.position.set(Math.cos(pAng) * 0.18, 0.08, Math.sin(pAng) * 0.18);
+                        petal.rotation.y = -pAng;
+                        petal.rotation.x = 0.35;
+                        padGroup.add(petal);
+                    }
+                    const stamen = new THREE.Mesh(new THREE.SphereGeometry(0.09, 10, 10), centerMat);
+                    stamen.position.y = 0.12;
+                    padGroup.add(stamen);
                 }
-                group.add(pad);
-                unitLakeState.animatedProps.push({ mesh: pad, baseY: 0.06, phase: p * 0.7 });
+
+                padGroup.position.set(Math.cos(a) * r, 0.05, Math.sin(a) * r);
+                padGroup.rotation.y = p * 1.3;
+                group.add(padGroup);
+                unitLakeState.animatedProps.push({ mesh: padGroup, baseY: 0.05, phase: p * 0.7 });
             }
         } else if (unitId === 'manada') {
-            // 1. La Imponente Roca del Consejo (Promontorio escalonado en la orilla)
+            // 1. LA ROCA DEL CONSEJO ESCULPIDA EN BASALTO SUAVE Y TERRAZAS NATURALES
             const councilGroup = new THREE.Group();
-            const councilMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.82, flatShading: true });
-            const mainSpire = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 6.8, 11.5, 7), councilMat);
-            mainSpire.position.y = 5.5;
-            councilGroup.add(mainSpire);
-            const akelaLedge = new THREE.Mesh(new THREE.CylinderGeometry(2.6, 3.4, 3.2, 6), councilMat);
-            akelaLedge.position.set(0.8, 11.8, 0.6);
-            councilGroup.add(akelaLedge);
+            const councilMat = new THREE.MeshStandardMaterial({
+                color: 0x6D4C41,
+                roughness: 0.80,
+                metalness: 0.06
+            });
 
-            // Antorchas / Fuego del Consejo
-            const fireOrb = new THREE.Mesh(
-                new THREE.ConeGeometry(0.9, 2.2, 7),
-                new THREE.MeshBasicMaterial({ color: 0xF59E0B })
-            );
-            fireOrb.position.set(0, 11.6, 2.2);
-            councilGroup.add(fireOrb);
-            unitLakeState.animatedProps.push({ mesh: fireOrb, baseY: 11.6, phase: 0, isFlame: true });
+            // Estratos geológicos suaves y redondeados formando el anfiteatro de la Roca del Consejo
+            const strata = [
+                [0, 2.2, 0, 7.2, 0.55],
+                [0, 5.2, -0.5, 5.6, 0.75],
+                [0.4, 8.4, -0.8, 4.2, 0.85],
+                [0.6, 11.2, -0.2, 3.1, 0.52], // Plataforma superior de Akela
+                [-4.8, 1.8, 2.2, 3.2, 0.48],
+                [4.9, 1.9, 2.0, 3.4, 0.50],
+                [-3.2, 3.8, 1.5, 2.8, 0.55],
+                [3.4, 4.0, 1.4, 2.9, 0.55]
+            ];
+            strata.forEach(([sx, sy, sz, sr, flatY], idx) => {
+                const rockGeo = deformGeometrySmooth(new THREE.SphereGeometry(sr, 32, 24), 0.18, 0.85, 30 + idx * 2.3);
+                const slab = new THREE.Mesh(rockGeo, councilMat);
+                slab.position.set(sx, sy, sz);
+                slab.scale.set(1.18, flatY, 1.05);
+                councilGroup.add(slab);
+            });
 
-            councilGroup.position.set(0, getTerrainHeight(0, -27) - 0.5, -27);
+            // Dos Hogueras Ceremoniales del Consejo flanqueando la Roca
+            const leftFire = createCampfireWithGlow(THREE, 0.85);
+            leftFire.position.set(-3.4, 4.8, 2.2);
+            councilGroup.add(leftFire);
+
+            const rightFire = createCampfireWithGlow(THREE, 0.85);
+            rightFire.position.set(3.6, 4.9, 2.1);
+            councilGroup.add(rightFire);
+
+            councilGroup.position.set(0, getTerrainHeight(0, -26.5) - 0.8, -26.5);
             group.add(councilGroup);
 
-            // 2. Gran Luna Llena de Seeonee reflejada en el río Waigunga
+            // 2. PALMERAS CURVADAS DE LA SELVA DE SEEONEE
+            const palmTrunkMat = new THREE.MeshStandardMaterial({ color: 0x5D4037, roughness: 0.88 });
+            const frondMat = new THREE.MeshStandardMaterial({ color: 0x15803D, roughness: 0.65, side: THREE.DoubleSide });
+            const palmCoords = [[-16, -21], [17, -20], [24, -6], [-23, 8], [19, 17], [-15, 21]];
+            palmCoords.forEach(([px, pz], idx) => {
+                const palm = new THREE.Group();
+                const curve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(0, 0, 0),
+                    new THREE.Vector3(Math.cos(idx) * 0.8, 2.8, Math.sin(idx) * 0.8),
+                    new THREE.Vector3(Math.cos(idx) * 1.6, 5.8, Math.sin(idx) * 1.6)
+                ]);
+                const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.24, 14, false);
+                palm.add(new THREE.Mesh(tubeGeo, palmTrunkMat));
+
+                const topPt = curve.getPoint(1);
+                for (let f = 0; f < 8; f++) {
+                    const fAng = (f / 8) * Math.PI * 2;
+                    const frondCurve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(0, 0, 0),
+                        new THREE.Vector3(Math.cos(fAng) * 1.5, 0.45, Math.sin(fAng) * 1.5),
+                        new THREE.Vector3(Math.cos(fAng) * 2.9, -0.65, Math.sin(fAng) * 2.9)
+                    ]);
+                    const frondGeo = new THREE.TubeGeometry(frondCurve, 14, 0.16, 8, false);
+                    const frondMesh = new THREE.Mesh(frondGeo, frondMat);
+                    frondMesh.scale.set(1, 0.25, 1);
+                    frondMesh.position.copy(topPt);
+                    palm.add(frondMesh);
+                }
+                palm.position.set(px, getTerrainHeight(px, pz) - 0.2, pz);
+                group.add(palm);
+            });
+
+            // 3. GRAN LUNA LLENA DE SEEONEE CON HALO ATMOSFÉRICO
             const moonMesh = new THREE.Mesh(
-                new THREE.SphereGeometry(7.5, 24, 24),
+                new THREE.SphereGeometry(7.2, 48, 48),
                 new THREE.MeshBasicMaterial({ color: 0xFEF08A })
             );
-            moonMesh.position.set(-28, 34, -58);
+            moonMesh.position.set(-28, 35, -62);
             group.add(moonMesh);
+
+            const moonHalo = createGlowSprite(THREE, 0xFDE047, 36.0, 0.55);
+            moonHalo.position.set(-28, 35, -61);
+            group.add(moonHalo);
         } else if (unitId === 'tropa') {
-            // 1. Gran Torre de Pionerismo en Madera y Cuerdas
+            // 1. GRAN TORRE DE PIONERISMO EN MADERA REDONDEADA + AMARRES Y PUENTE
             const towerGroup = new THREE.Group();
-            const poleMat = new THREE.MeshStandardMaterial({ color: 0xB45309, roughness: 0.8 });
-            const corners = [[-1.8, -1.8], [1.8, -1.8], [1.8, 1.8], [-1.8, 1.8]];
+            const pinePoleMat = new THREE.MeshStandardMaterial({ color: 0xA16207, roughness: 0.78 });
+            const ropeMat = new THREE.MeshStandardMaterial({ color: 0xFDE68A, roughness: 0.65 });
+            const deckMat = new THREE.MeshStandardMaterial({ color: 0xB45309, roughness: 0.76 });
+
+            const corners = [[-1.9, -1.9], [1.9, -1.9], [1.9, 1.9], [-1.9, 1.9]];
             corners.forEach(([cx, cz]) => {
-                const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.22, 12.5, 7), poleMat);
-                pole.position.set(cx * 0.75, 6.0, cz * 0.75);
-                pole.rotation.z = -cx * 0.04;
-                pole.rotation.x = cz * 0.04;
+                const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.23, 12.8, 18), pinePoleMat);
+                pole.position.set(cx * 0.78, 6.2, cz * 0.78);
+                pole.rotation.z = -cx * 0.038;
+                pole.rotation.x = cz * 0.038;
                 towerGroup.add(pole);
+
+                // Anillos de amarre cuadrado en sisal
+                [3.2, 6.2, 9.2].forEach(ly => {
+                    const lashing = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.05, 10, 20), ropeMat);
+                    lashing.position.set(cx * (0.78 - ly * 0.015), ly, cz * (0.78 - ly * 0.015));
+                    lashing.rotation.x = Math.PI / 2;
+                    towerGroup.add(lashing);
+                });
             });
-            const deck = new THREE.Mesh(
-                new THREE.BoxGeometry(3.6, 0.35, 3.6),
-                new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.75 })
-            );
-            deck.position.y = 9.2;
-            towerGroup.add(deck);
+
+            // Travesaños horizontales y plataforma de tablones
+            [3.2, 6.2, 9.2].forEach(ly => {
+                const span = 3.2 - ly * 0.08;
+                [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(([ox, oz]) => {
+                    const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, span, 14), pinePoleMat);
+                    bar.position.set(ox * span * 0.45, ly, oz * span * 0.45);
+                    if (ox === 0) bar.rotation.z = Math.PI / 2;
+                    else bar.rotation.x = Math.PI / 2;
+                    towerGroup.add(bar);
+                });
+            });
+
+            // Plataforma de observación con tablones individuales y barandilla
+            for (let p = -4; p <= 4; p++) {
+                const plank = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.14, 0.34), deckMat);
+                plank.position.set(0, 9.3, p * 0.38);
+                towerGroup.add(plank);
+            }
+
+            // Tejado de lona scout a cuatro aguas suavizado
+            const roofGeo = new THREE.ConeGeometry(2.85, 2.4, 32);
             const roof = new THREE.Mesh(
-                new THREE.ConeGeometry(3.0, 2.6, 4),
-                new THREE.MeshStandardMaterial({ color: 0x059669, roughness: 0.7, flatShading: true })
+                roofGeo,
+                new THREE.MeshStandardMaterial({ color: 0x059669, roughness: 0.65 })
             );
-            roof.position.y = 12.8;
-            roof.rotation.y = Math.PI / 4;
+            roof.position.y = 12.6;
             towerGroup.add(roof);
-            towerGroup.position.set(-6, getTerrainHeight(-6, -26), -26);
+
+            const lanternGlow = createGlowSprite(THREE, 0xFDE047, 5.5, 0.75);
+            lanternGlow.position.set(0, 10.4, 0);
+            towerGroup.add(lanternGlow);
+
+            towerGroup.position.set(-6.5, getTerrainHeight(-6.5, -25.5), -25.5);
             group.add(towerGroup);
 
-            // 2. Tiendas Canadienses de Patrulla iluminadas en la pradera
-            const tentPositions = [[16, -21, 0.6], [23, -14, 1.1], [24, 8, 2.2], [-22, 12, -1.2]];
+            // 2. CAMPAMENTO DE PATRULLAS (TIENDAS CANADIENSES SUAVES CON LUZ CÁLIDA)
+            const tentPositions = [[15.5, -21, 0.55], [22.5, -13.5, 1.05], [23.5, 8.5, 2.15], [-21.5, 12.5, -1.15], [-18.5, -15.5, 0.35]];
             tentPositions.forEach(([tx, tz, rot]) => {
                 const tent = new THREE.Group();
-                const body = new THREE.Mesh(
-                    new THREE.ConeGeometry(2.4, 3.2, 4),
-                    new THREE.MeshStandardMaterial({
-                        color: 0x10B981,
-                        emissive: 0xF59E0B,
-                        emissiveIntensity: 0.28,
-                        roughness: 0.65,
-                        flatShading: true
-                    })
-                );
-                body.position.y = 1.6;
-                body.scale.set(1.0, 1.0, 1.45);
-                tent.add(body);
+                // Tienda canadiense a dos aguas con geometría suave extruida/cilíndrica
+                const canvasMat = new THREE.MeshStandardMaterial({
+                    color: 0x059669,
+                    emissive: 0xF59E0B,
+                    emissiveIntensity: 0.25,
+                    roughness: 0.62
+                });
+                const roofPrism = new THREE.Mesh(new THREE.CylinderGeometry(1.85, 1.85, 3.6, 3, 1), canvasMat);
+                roofPrism.rotation.x = Math.PI / 2;
+                roofPrism.rotation.z = 0;
+                roofPrism.position.y = 1.05;
+                tent.add(roofPrism);
+
+                const ridgePole = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 4.0, 12), pinePoleMat);
+                ridgePole.rotation.x = Math.PI / 2;
+                ridgePole.position.y = 1.95;
+                tent.add(ridgePole);
+
+                const innerGlow = createGlowSprite(THREE, 0xFBBF24, 4.2, 0.62);
+                innerGlow.position.set(0, 1.1, 1.6);
+                tent.add(innerGlow);
+
                 tent.position.set(tx, getTerrainHeight(tx, tz), tz);
                 tent.rotation.y = rot;
                 group.add(tent);
             });
 
-            // 3. Fuego de Campamento en la orilla del Lago Lohengrin
-            const fireGroup = new THREE.Group();
-            const flame = new THREE.Mesh(
-                new THREE.ConeGeometry(1.1, 2.8, 7),
-                new THREE.MeshBasicMaterial({ color: 0xFB923C })
-            );
-            flame.position.y = 1.4;
-            fireGroup.add(flame);
-            unitLakeState.animatedProps.push({ mesh: flame, baseY: 1.4, phase: 0.5, isFlame: true });
-            fireGroup.position.set(5, getTerrainHeight(5, -23.5), -23.5);
-            group.add(fireGroup);
+            // 3. FUEGO DE CAMPAMENTO Y TRONCOS DE VELADA EN LA ORILLA
+            const campFire = createCampfireWithGlow(THREE, 1.15);
+            campFire.position.set(4.8, getTerrainHeight(4.8, -23.0), -23.0);
+            group.add(campFire);
         } else if (unitId === 'escultas') {
-            // 1. Agujas Calizas Verticales de la Canal de Trea (Picos de Europa)
-            const limestoneMat = new THREE.MeshStandardMaterial({ color: 0xD6D3D1, roughness: 0.78, flatShading: true });
+            // 1. MACIZO CALIZO ESCULPIDO DE LOS PICOS DE EUROPA (CANAL DE TREA)
+            const limestoneMat = new THREE.MeshStandardMaterial({
+                color: 0xD6D3D1,
+                roughness: 0.76,
+                metalness: 0.06
+            });
             const peakCoords = [
-                [0, -34, 8.5, 28],
-                [-18, -30, 7.2, 24],
-                [19, -29, 7.8, 25],
-                [31, 6, 7.0, 22],
-                [-30, 10, 7.4, 23]
+                [0, -35, 10.5, 29, 1],
+                [-17, -31, 8.8, 25, 2],
+                [18, -30, 9.2, 26, 3],
+                [32, 6, 8.2, 22, 4],
+                [-31, 11, 8.6, 23, 5]
             ];
-            peakCoords.forEach(([px, pz, pr, ph]) => {
-                const spire = new THREE.Mesh(new THREE.ConeGeometry(pr, ph, 6), limestoneMat);
-                spire.position.set(px, ph * 0.45, pz);
-                spire.rotation.y = px * 0.2;
+            peakCoords.forEach(([px, pz, pr, ph, seed]) => {
+                const spireGeo = new THREE.ConeGeometry(pr, ph, 48, 20);
+                const sPos = spireGeo.attributes.position;
+                for (let k = 0; k < sPos.count; k++) {
+                    const vx = sPos.getX(k);
+                    const vy = sPos.getY(k);
+                    const vz = sPos.getZ(k);
+                    const n = ridgedFbm2D(vx * 0.14 + seed, vz * 0.14 + vy * 0.08, 3);
+                    const scaleFactor = 0.82 + n * 0.36;
+                    sPos.setX(k, vx * scaleFactor);
+                    sPos.setZ(k, vz * scaleFactor);
+                }
+                spireGeo.computeVertexNormals();
+                const spire = new THREE.Mesh(spireGeo, limestoneMat);
+                spire.position.set(px, ph * 0.44, pz);
                 group.add(spire);
             });
 
-            // 2. Vivac de Alta Montaña e Hitos de Piedra (Jitos)
-            const vivacCoords = [[-12, -23], [14, -22], [22, 16]];
-            vivacCoords.forEach(([vx, vz]) => {
+            // 2. TIENDAS GEODÉSICAS DE VIVAC DE ALTA MONTAÑA + JITOS DE PIEDRA
+            const vivacCoords = [[-11.5, -22.8, 0.4], [13.5, -21.8, -0.5], [21.5, 15.5, 1.2]];
+            const domeMat = new THREE.MeshStandardMaterial({
+                color: 0xEA580C,
+                emissive: 0xF59E0B,
+                emissiveIntensity: 0.35,
+                roughness: 0.50
+            });
+            const ribMat = new THREE.MeshStandardMaterial({ color: 0xE2E8F0, roughness: 0.3, metalness: 0.6 });
+
+            vivacCoords.forEach(([vx, vz, rot]) => {
+                const vivacGroup = new THREE.Group();
                 const dome = new THREE.Mesh(
-                    new THREE.SphereGeometry(1.9, 8, 6, 0, Math.PI * 2, 0, Math.PI * 0.55),
-                    new THREE.MeshStandardMaterial({
-                        color: 0xD97706,
-                        emissive: 0xF59E0B,
-                        emissiveIntensity: 0.38,
-                        flatShading: true
-                    })
+                    new THREE.SphereGeometry(2.05, 32, 24, 0, Math.PI * 2, 0, Math.PI * 0.52),
+                    domeMat
                 );
-                dome.position.set(vx, getTerrainHeight(vx, vz), vz);
-                group.add(dome);
+                dome.scale.set(1.15, 0.9, 1.0);
+                vivacGroup.add(dome);
+
+                // Varillas geodésicas cruzadas
+                [0.5, -0.5].forEach(rAng => {
+                    const rib = new THREE.Mesh(new THREE.TorusGeometry(2.06, 0.035, 12, 32, Math.PI), ribMat);
+                    rib.rotation.y = rAng;
+                    vivacGroup.add(rib);
+                });
+
+                const glow = createGlowSprite(THREE, 0xFDBA74, 4.8, 0.65);
+                glow.position.y = 1.0;
+                vivacGroup.add(glow);
+
+                vivacGroup.position.set(vx, getTerrainHeight(vx, vz), vz);
+                vivacGroup.rotation.y = rot;
+                group.add(vivacGroup);
+            });
+
+            // Jitos de piedra (Cairns) marcando la senda montañera
+            const cairnMat = new THREE.MeshStandardMaterial({ color: 0xE7E5E4, roughness: 0.8 });
+            [[-4, -22.5], [0, -23.2], [5, -22.6], [9, -22.0]].forEach(([jx, jz]) => {
+                const cairn = new THREE.Group();
+                const jy = getTerrainHeight(jx, jz);
+                [0.42, 0.32, 0.23, 0.15].forEach((cr, level) => {
+                    const st = new THREE.Mesh(new THREE.SphereGeometry(cr, 16, 14), cairnMat);
+                    st.scale.set(1.2, 0.68, 1.05);
+                    st.position.y = level * 0.32 + 0.15;
+                    cairn.add(st);
+                });
+                cairn.position.set(jx, jy, jz);
+                group.add(cairn);
             });
         } else if (unitId === 'clan') {
-            // 1. La Gran Pirámide Nevada del Ama Dablam (6.812m) y su glaciar colgante
+            // 1. LA GRAN CUMBRE ESCULPIDA DEL AMA DABLAM (6.812M) Y SU GLACIAR COLGANTE
             const amaGroup = new THREE.Group();
-            const mainPeak = new THREE.Mesh(
-                new THREE.ConeGeometry(13.5, 36, 5),
-                new THREE.MeshStandardMaterial({ color: 0xE2E8F0, roughness: 0.55, flatShading: true })
-            );
-            mainPeak.position.set(0, 17, -38);
-             mainPeak.rotation.y = Math.PI * 0.18;
-            amaGroup.add(mainPeak);
+            const peakGeo = new THREE.ConeGeometry(15.5, 38, 64, 28);
+            const pPos = peakGeo.attributes.position;
+            for (let i = 0; i < pPos.count; i++) {
+                const vx = pPos.getX(i);
+                const vy = pPos.getY(i);
+                const vz = pPos.getZ(i);
+                const ridgeN = ridgedFbm2D(vx * 0.11 + 2.4, vz * 0.11 + vy * 0.06, 4);
+                const factor = 0.78 + ridgeN * 0.42;
+                pPos.setX(i, vx * factor);
+                pPos.setZ(i, vz * factor);
+            }
+            peakGeo.computeVertexNormals();
 
-            // El "Dablam" (glaciar colgante característico)
-            const hangingGlacier = new THREE.Mesh(
-                new THREE.DodecahedronGeometry(4.2, 0),
+            const mainPeak = new THREE.Mesh(
+                peakGeo,
                 new THREE.MeshStandardMaterial({
-                    color: 0xF8FAFC,
-                    emissive: 0x38BDF8,
-                    emissiveIntensity: 0.22,
-                    flatShading: true
+                    color: 0xF1F5F9,
+                    roughness: 0.48,
+                    metalness: 0.12
                 })
             );
-            hangingGlacier.position.set(3.2, 19.5, -31.5);
+            mainPeak.position.set(0, 17.5, -39);
+            amaGroup.add(mainPeak);
+
+            // El "Dablam" (glaciar colgante esculpido suavemente)
+            const glacierGeo = deformGeometrySmooth(new THREE.SphereGeometry(4.4, 32, 24), 0.16, 0.9, 9.2);
+            const hangingGlacier = new THREE.Mesh(
+                glacierGeo,
+                new THREE.MeshStandardMaterial({
+                    color: 0xE0F2FE,
+                    emissive: 0x38BDF8,
+                    emissiveIntensity: 0.25,
+                    roughness: 0.30,
+                    metalness: 0.20
+                })
+            );
+            hangingGlacier.scale.set(1.25, 0.78, 0.85);
+            hangingGlacier.position.set(3.2, 20.0, -31.0);
             amaGroup.add(hangingGlacier);
             group.add(amaGroup);
 
-            // 2. La Horquilla Rover gigante clavada en el promontorio rocoso de la orilla
+            // 2. LA HORQUILLA ROVER ORGÁNICA ESCULPIDA CON CURVAS SUAVES (TUBEGEOMETRY)
             const horquillaGroup = new THREE.Group();
             const staffMat = new THREE.MeshStandardMaterial({
-                color: 0xB91C1C,
+                color: 0x991B1B,
                 emissive: 0xDC2626,
-                emissiveIntensity: 0.35,
-                roughness: 0.5
+                emissiveIntensity: 0.32,
+                roughness: 0.42,
+                metalness: 0.15
             });
-            const mainShaft = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.28, 8.5, 8), staffMat);
-            mainShaft.position.y = 4.2;
-            horquillaGroup.add(mainShaft);
-            const leftFork = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 3.2, 8), staffMat);
-            leftFork.position.set(-0.85, 9.2, 0);
-            leftFork.rotation.z = 0.45;
-            horquillaGroup.add(leftFork);
-            const rightFork = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 3.2, 8), staffMat);
-            rightFork.position.set(0.85, 9.2, 0);
-            rightFork.rotation.z = -0.45;
-            horquillaGroup.add(rightFork);
-            horquillaGroup.position.set(-14, getTerrainHeight(-14, -23), -23);
+
+            const mainCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(0, 0, 0),
+                new THREE.Vector3(0.08, 3.2, 0),
+                new THREE.Vector3(-0.05, 6.8, 0)
+            ]);
+            horquillaGroup.add(new THREE.Mesh(new THREE.TubeGeometry(mainCurve, 28, 0.22, 18, false), staffMat));
+
+            const leftBranch = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(-0.05, 6.6, 0),
+                new THREE.Vector3(-0.85, 8.1, 0),
+                new THREE.Vector3(-1.15, 9.8, 0)
+            ]);
+            horquillaGroup.add(new THREE.Mesh(new THREE.TubeGeometry(leftBranch, 20, 0.16, 16, false), staffMat));
+
+            const rightBranch = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(-0.05, 6.6, 0),
+                new THREE.Vector3(0.78, 8.1, 0),
+                new THREE.Vector3(1.10, 9.8, 0)
+            ]);
+            horquillaGroup.add(new THREE.Mesh(new THREE.TubeGeometry(rightBranch, 20, 0.16, 16, false), staffMat));
+
+            const roverGlow = createGlowSprite(THREE, 0xEF4444, 7.5, 0.72);
+            roverGlow.position.set(0, 8.4, 0);
+            horquillaGroup.add(roverGlow);
+
+            horquillaGroup.position.set(-13.5, getTerrainHeight(-13.5, -22.8), -22.8);
             group.add(horquillaGroup);
 
-            // 3. Canoa Rover en la orilla («Rema tu propia canoa») y Domos de Campo Base
-            const canoe = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.65, 0.65, 4.8, 8),
-                new THREE.MeshStandardMaterial({ color: 0x991B1B, roughness: 0.6 })
+            // 3. CANOA ROVER ESCULPIDA EN MADERA («REMA TU PROPIA CANOA») Y TÉMPANOS SUAVES
+            const canoeGroup = new THREE.Group();
+            const hullCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(-2.6, 0.38, 0),
+                new THREE.Vector3(-1.5, 0.0, 0),
+                new THREE.Vector3(0, -0.05, 0),
+                new THREE.Vector3(1.5, 0.0, 0),
+                new THREE.Vector3(2.6, 0.38, 0)
+            ]);
+            const hullGeo = new THREE.TubeGeometry(hullCurve, 32, 0.58, 20, false);
+            const hullMesh = new THREE.Mesh(
+                hullGeo,
+                new THREE.MeshStandardMaterial({ color: 0x991B1B, roughness: 0.45, metalness: 0.1 })
             );
-            canoe.rotation.z = Math.PI / 2;
-            canoe.rotation.y = 0.4;
-            canoe.scale.set(1, 1, 0.45);
-            canoe.position.set(8, 0.18, -20.5);
-            group.add(canoe);
-            unitLakeState.animatedProps.push({ mesh: canoe, baseY: 0.18, phase: 1.2 });
+            hullMesh.scale.set(1.0, 0.52, 0.82);
+            canoeGroup.add(hullMesh);
 
-            // Bloques de hielo glaciar flotando en el lago
-            const iceMat = new THREE.MeshStandardMaterial({ color: 0xE0F2FE, roughness: 0.35, flatShading: true });
-            for (let k = 0; k < 12; k++) {
-                const ang = (k / 12) * Math.PI * 2;
-                const rad = 10 + (k % 4) * 2.8;
-                const ice = new THREE.Mesh(new THREE.DodecahedronGeometry(0.75 + (k % 3) * 0.35, 0), iceMat);
-                ice.position.set(Math.cos(ang) * rad, 0.08, Math.sin(ang) * rad);
-                ice.scale.set(1.3, 0.45, 1.1);
+            // Bancos de madera de la canoa
+            const seatMat = new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.6 });
+            [-0.9, 0, 0.9].forEach(sx => {
+                const seat = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.06, 0.78), seatMat);
+                seat.position.set(sx, 0.16, 0);
+                canoeGroup.add(seat);
+            });
+
+            canoeGroup.position.set(8.2, 0.16, -20.2);
+            canoeGroup.rotation.y = 0.42;
+            group.add(canoeGroup);
+            unitLakeState.animatedProps.push({ mesh: canoeGroup, baseY: 0.16, phase: 1.2 });
+
+            // Bloques de hielo glaciar redondeados y translúcidos sobre el agua
+            const iceMat = new THREE.MeshStandardMaterial({
+                color: 0xE0F2FE,
+                emissive: 0x0284C7,
+                emissiveIntensity: 0.18,
+                roughness: 0.22,
+                metalness: 0.15,
+                transparent: true,
+                opacity: 0.88
+            });
+            for (let k = 0; k < 14; k++) {
+                const ang = (k / 14) * Math.PI * 2 + 0.2;
+                const rad = 9.5 + (k % 4) * 2.6;
+                const iceGeo = deformGeometrySmooth(new THREE.SphereGeometry(0.75 + (k % 3) * 0.32, 24, 18), 0.16, 1.4, k * 2.1);
+                const ice = new THREE.Mesh(iceGeo, iceMat);
+                ice.position.set(Math.cos(ang) * rad, 0.06, Math.sin(ang) * rad);
+                ice.scale.set(1.45, 0.36, 1.2);
                 group.add(ice);
-                unitLakeState.animatedProps.push({ mesh: ice, baseY: 0.08, phase: k * 0.9 });
+                unitLakeState.animatedProps.push({ mesh: ice, baseY: 0.06, phase: k * 0.9 });
             }
         }
+    }
+
+    function createSkyDomeShaderMesh(THREE, biome) {
+        const skyGeo = new THREE.SphereGeometry(210, 64, 32);
+        const skyUniforms = {
+            uSkyTop: { value: new THREE.Color(biome.skyTop) },
+            uSkyHorizon: { value: new THREE.Color(biome.skyHorizon) },
+            uSunColor: { value: new THREE.Color(biome.sunColor) },
+            uSunDir: { value: new THREE.Vector3(biome.sunPos[0], biome.sunPos[1], biome.sunPos[2]).normalize() },
+            uTime: { value: 0 }
+        };
+        const skyMat = new THREE.ShaderMaterial({
+            side: THREE.BackSide,
+            depthWrite: false,
+            uniforms: skyUniforms,
+            vertexShader: `
+                varying vec3 vWorldPos;
+                void main() {
+                    vec4 wp = modelMatrix * vec4(position, 1.0);
+                    vWorldPos = wp.xyz;
+                    gl_Position = projectionMatrix * viewMatrix * wp;
+                }
+            `,
+            fragmentShader: `
+                uniform vec3 uSkyTop;
+                uniform vec3 uSkyHorizon;
+                uniform vec3 uSunColor;
+                uniform vec3 uSunDir;
+                uniform float uTime;
+                varying vec3 vWorldPos;
+
+                void main() {
+                    vec3 dir = normalize(vWorldPos);
+                    float h = clamp(dir.y, 0.0, 1.0);
+                    vec3 col = mix(uSkyHorizon, uSkyTop, pow(h, 0.55));
+
+                    // Bruma luminosa en el horizonte
+                    float horizonGlow = exp(-abs(dir.y) * 7.5);
+                    col += uSunColor * horizonGlow * 0.24;
+
+                    // Halo solar / lunar atmosférico suave (dispersión Mie)
+                    float sunAmt = max(dot(dir, uSunDir), 0.0);
+                    col += uSunColor * pow(sunAmt, 12.0) * 0.35;
+                    col += vec3(1.0, 0.98, 0.92) * smoothstep(0.996, 0.9995, sunAmt) * 0.85;
+
+                    gl_FragColor = vec4(col, 1.0);
+                }
+            `
+        });
+        return new THREE.Mesh(skyGeo, skyMat);
+    }
+
+    function createSmoothWaterShaderMesh(THREE, biome) {
+        const waterGeo = new THREE.CircleGeometry(26.5, 128);
+        waterGeo.rotateX(-Math.PI / 2);
+
+        const waterUniforms = {
+            uTime: { value: 0 },
+            uWaterShallow: { value: new THREE.Color(biome.waterColor) },
+            uWaterDeep: { value: new THREE.Color(biome.waterEmissive) },
+            uSkyHorizon: { value: new THREE.Color(biome.skyHorizon) },
+            uSunColor: { value: new THREE.Color(biome.sunColor) },
+            uSunDir: { value: new THREE.Vector3(biome.sunPos[0], biome.sunPos[1], biome.sunPos[2]).normalize() }
+        };
+
+        const waterMat = new THREE.ShaderMaterial({
+            transparent: true,
+            uniforms: waterUniforms,
+            vertexShader: `
+                uniform float uTime;
+                varying vec3 vWorldPos;
+                varying float vDist;
+
+                void main() {
+                    vec3 pos = position;
+                    float r = length(pos.xz);
+                    vDist = r;
+                    float wave = sin(r * 0.65 - uTime * 2.1) * 0.07
+                               + cos(pos.x * 0.42 + pos.z * 0.38 + uTime * 1.6) * 0.05;
+                    pos.y += wave * smoothstep(26.0, 12.0, r);
+                    vec4 wp = modelMatrix * vec4(pos, 1.0);
+                    vWorldPos = wp.xyz;
+                    gl_Position = projectionMatrix * viewMatrix * wp;
+                }
+            `,
+            fragmentShader: `
+                uniform float uTime;
+                uniform vec3 uWaterShallow;
+                uniform vec3 uWaterDeep;
+                uniform vec3 uSkyHorizon;
+                uniform vec3 uSunColor;
+                uniform vec3 uSunDir;
+                varying vec3 vWorldPos;
+                varying float vDist;
+
+                float waveHeight(vec2 p, float t) {
+                    float d = length(p);
+                    float w1 = sin(d * 0.85 - t * 2.3) * 0.5;
+                    float w2 = sin(p.x * 0.62 + p.y * 0.48 + t * 1.7) * 0.35;
+                    float w3 = cos(p.x * 1.15 - p.y * 0.95 - t * 2.6) * 0.22;
+                    float w4 = sin(p.x * 2.4 + p.y * 2.1 + t * 3.2) * 0.08;
+                    return w1 + w2 + w3 + w4;
+                }
+
+                void main() {
+                    vec2 p = vWorldPos.xz;
+                    float eps = 0.12;
+                    float hC = waveHeight(p, uTime);
+                    float hX = waveHeight(p + vec2(eps, 0.0), uTime);
+                    float hZ = waveHeight(p + vec2(0.0, eps), uTime);
+                    vec3 normal = normalize(vec3(hC - hX, eps * 2.8, hC - hZ));
+
+                    vec3 viewDir = normalize(cameraPosition - vWorldPos);
+                    float fresnel = pow(1.0 - max(dot(viewDir, normal), 0.0), 3.2);
+
+                    // Gradiente de profundidad del lago y reflejo Fresnel del cielo
+                    float depthFactor = smoothstep(23.5, 4.0, vDist);
+                    vec3 baseWater = mix(uWaterShallow, uWaterDeep, depthFactor * 0.72);
+                    vec3 reflSky = mix(baseWater, uSkyHorizon * 1.35, clamp(fresnel * 0.85 + 0.15, 0.0, 1.0));
+
+                    // Reflejo especular líquido del sol / luna sobre las ondas
+                    vec3 halfVec = normalize(uSunDir + viewDir);
+                    float spec = pow(max(dot(normal, halfVec), 0.0), 96.0);
+                    float shimmer = pow(max(dot(normal, halfVec), 0.0), 18.0) * 0.28;
+                    vec3 col = reflSky + uSunColor * (spec * 1.35 + shimmer);
+
+                    // Anillos concéntricos sutiles y espuma suave en la orilla
+                    float shoreWave = sin(vDist * 2.6 - uTime * 2.8) * 0.5 + 0.5;
+                    float shoreFoam = smoothstep(20.5, 22.8, vDist) * (0.35 + 0.65 * shoreWave);
+                    col = mix(col, vec3(0.92, 0.97, 1.0), shoreFoam * 0.55);
+
+                    float edgeAlpha = smoothstep(25.8, 22.6, vDist) * 0.94;
+                    gl_FragColor = vec4(col, edgeAlpha);
+                }
+            `
+        });
+
+        const mesh = new THREE.Mesh(waterGeo, waterMat);
+        mesh.position.y = 0.02;
+        return { mesh, uniforms: waterUniforms };
     }
 
     function ensureUnitLakeThreeScene() {
@@ -2625,22 +3351,26 @@
         });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
+        if (THREE.ACESFilmicToneMapping !== undefined) {
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.12;
+        }
 
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x0B3B5E, 0.0085);
+        scene.fog = new THREE.FogExp2(0x0B3B5E, 0.0072);
 
-        const camera3D = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.5, 260);
+        const camera3D = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.5, 320);
         camera3D.position.set(0, 11.5, 42);
 
-        const hemiLight = new THREE.HemisphereLight(0x7DD3FC, 0x14532D, 0.95);
+        const hemiLight = new THREE.HemisphereLight(0x7DD3FC, 0x14532D, 1.05);
         scene.add(hemiLight);
 
-        const sunLight = new THREE.DirectionalLight(0xFDE047, 1.15);
+        const sunLight = new THREE.DirectionalLight(0xFDE047, 1.25);
         sunLight.position.set(38, 42, -28);
         scene.add(sunLight);
 
-        const shoreLight = new THREE.PointLight(0xF59E0B, 2.2, 65);
-        shoreLight.position.set(0, 5.5, -22);
+        const shoreLight = new THREE.PointLight(0xF59E0B, 2.4, 72);
+        shoreLight.position.set(0, 6.0, -22);
         scene.add(shoreLight);
 
         const worldGroup = new THREE.Group();
@@ -2693,7 +3423,6 @@
         const THREE = window.THREE;
         const { scene, worldGroup, hemiLight, sunLight, shoreLight } = unitLakeState;
 
-        // Limpiar geometrías previas del mundo anterior
         while (worldGroup.children.length > 0) {
             const child = worldGroup.children[0];
             worldGroup.remove(child);
@@ -2702,30 +3431,50 @@
 
         // Configurar atmósfera y luces del bioma
         scene.fog.color.setHex(biome.fogColor);
-        scene.fog.density = biome.fogDensity;
+        scene.fog.density = biome.fogDensity * 0.85;
         hemiLight.color.setHex(biome.hemiSky);
         hemiLight.groundColor.setHex(biome.hemiGround);
         sunLight.color.setHex(biome.sunColor);
         sunLight.position.set(biome.sunPos[0], biome.sunPos[1], biome.sunPos[2]);
         shoreLight.color.setHex(biome.shoreLightColor);
 
-        // Función de altura del terreno alrededor del lago (r < 22 es el lecho del lago)
+        // 0. Cúpula Celeste 3D Atmosférica (Sky Dome con dispersión Mie)
+        const skyDome = createSkyDomeShaderMesh(THREE, biome);
+        worldGroup.add(skyDome);
+        unitLakeState.skyDome = skyDome;
+
+        // Función de topografía orgánica FBM C2-continua (sin aristas poligonales)
+        const isAlpine = unitId === 'escultas' || unitId === 'clan';
         const getTerrainHeight = (x, z) => {
             const r = Math.hypot(x, z);
-            if (r < 20.5) return -3.2;
-            const shoreFactor = smoothstep(20.5, 26.5, r);
-            const mountainFactor = Math.pow( clamp((r - 24) / 68, 0, 1), 1.35 );
-            const ang = Math.atan2(z, x);
-            const wave1 = Math.sin(x * 0.085 + z * 0.065) * Math.cos(x * 0.05 - z * 0.08);
-            const ridge = Math.abs(Math.sin(ang * 3.0 + r * 0.04)) * 0.65 + Math.cos(ang * 5.0 - 0.8) * 0.35;
-            return -3.2 * (1 - shoreFactor) + shoreFactor * (0.45 + mountainFactor * biome.heightScale * (0.55 + 0.45 * wave1 + 0.55 * ridge));
+            if (r < 19.5) {
+                return -3.4 + smoothstep(12.0, 19.5, r) * 1.2;
+            }
+            const shoreBlend = smoothstep(19.5, 25.5, r);
+            const hillEnvelope = Math.pow(clamp((r - 23.5) / 72.0, 0, 1), 1.32);
+
+            const nSmooth = fbm2D(x * 0.028, z * 0.028, 5) * 0.5 + 0.5;
+            const nDetail = fbm2D(x * 0.075 + 4.2, z * 0.075 - 3.1, 3) * 0.35;
+            const nRidge = isAlpine
+                ? ridgedFbm2D(x * 0.032 + 1.5, z * 0.032, 4) * 0.85
+                : fbm2D(x * 0.042 - 2.0, z * 0.042 + 1.8, 4) * 0.45 + 0.45;
+
+            const beachHeight = 0.28 + nDetail * 0.35;
+            const mountainHeight = hillEnvelope * biome.heightScale * (nSmooth * 0.65 + nRidge * 0.65 + nDetail * 0.2);
+
+            return lerp(-2.2, beachHeight + mountainHeight, shoreBlend);
         };
 
-        // 1. Terreno 3D (Cuenca del Lago + Anfiteatro de Montañas 360°)
-        const terrainGeo = new THREE.PlaneGeometry(190, 190, 88, 88);
+        // 1. Terreno 3D de Alta Resolución con Normales Suaves (176x176 subdivisiones, flatShading: false)
+        const terrainGeo = new THREE.PlaneGeometry(220, 220, 176, 176);
         terrainGeo.rotateX(-Math.PI / 2);
         const posAttr = terrainGeo.attributes.position;
         const colors = new Float32Array(posAttr.count * 3);
+
+        // Color de arena/musgo húmedo para la orilla inmediata del lago
+        const shoreSand = unitId === 'clan'
+            ? [0.28, 0.32, 0.38]
+            : (unitId === 'escultas' ? [0.38, 0.33, 0.28] : [0.26, 0.36, 0.22]);
 
         for (let i = 0; i < posAttr.count; i++) {
             const vx = posAttr.getX(i);
@@ -2733,9 +3482,17 @@
             const vy = getTerrainHeight(vx, vz);
             posAttr.setY(i, vy);
 
-            const hNorm = clamp((vy - 0.2) / (biome.heightScale * 0.95), 0, 1);
+            const r = Math.hypot(vx, vz);
+            const microVar = fbm2D(vx * 0.18, vz * 0.18, 2) * 0.04;
+            const hNorm = clamp((vy - 0.15) / (biome.heightScale * 0.92), 0, 1);
+
             let rCol, gCol, bCol;
-            if (hNorm < 0.45) {
+            if (r < 24.5 && vy < 0.85) {
+                const st = smoothstep(20.5, 24.5, r);
+                rCol = lerp(shoreSand[0], biome.terrainLow[0], st);
+                gCol = lerp(shoreSand[1], biome.terrainLow[1], st);
+                bCol = lerp(shoreSand[2], biome.terrainLow[2], st);
+            } else if (hNorm < 0.45) {
                 const t = hNorm / 0.45;
                 rCol = lerp(biome.terrainLow[0], biome.terrainMid[0], t);
                 gCol = lerp(biome.terrainLow[1], biome.terrainMid[1], t);
@@ -2746,82 +3503,73 @@
                 gCol = lerp(biome.terrainMid[1], biome.terrainHigh[1], t);
                 bCol = lerp(biome.terrainMid[2], biome.terrainHigh[2], t);
             }
-            colors[i * 3] = rCol;
-            colors[i * 3 + 1] = gCol;
-            colors[i * 3 + 2] = bCol;
+
+            colors[i * 3] = clamp(rCol + microVar, 0, 1);
+            colors[i * 3 + 1] = clamp(gCol + microVar, 0, 1);
+            colors[i * 3 + 2] = clamp(bCol + microVar, 0, 1);
         }
         terrainGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
         terrainGeo.computeVertexNormals();
 
+        const detailTex = getTerrainDetailTexture(THREE);
         const terrainMat = new THREE.MeshStandardMaterial({
             vertexColors: true,
-            roughness: 0.84,
-            metalness: 0.08,
-            flatShading: true
+            map: detailTex,
+            bumpMap: detailTex,
+            bumpScale: 0.18,
+            roughness: 0.86,
+            metalness: 0.04,
+            flatShading: false
         });
         const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
         worldGroup.add(terrainMesh);
 
-        // 2. El Lago Central 3D («El Laguito») con ondas dinámicas y reflejo especular
-        const waterGeo = new THREE.PlaneGeometry(54, 54, 52, 52);
-        waterGeo.rotateX(-Math.PI / 2);
-        const waterMat = new THREE.MeshStandardMaterial({
-            color: biome.waterColor,
-            emissive: biome.waterEmissive,
-            emissiveIntensity: 0.42,
-            roughness: 0.16,
-            metalness: 0.72,
-            transparent: true,
-            opacity: 0.90,
-            flatShading: true
-        });
-        const waterMesh = new THREE.Mesh(waterGeo, waterMat);
-        waterMesh.position.y = 0.0;
-        worldGroup.add(waterMesh);
-        unitLakeState.waterMesh = waterMesh;
-        unitLakeState.waterBasePositions = Float32Array.from(waterGeo.attributes.position.array);
+        // 2. El Lago Central 3D con Shader GLSL Líquido (Fresnel + Especular + Espuma de Orilla)
+        const waterObj = createSmoothWaterShaderMesh(THREE, biome);
+        worldGroup.add(waterObj.mesh);
+        unitLakeState.waterMesh = waterObj.mesh;
+        unitLakeState.waterUniforms = waterObj.uniforms;
 
-        // Anillos concéntricos de ondas suaves en la superficie del agua
+        // Anillos concéntricos suaves de alta resolución en la superficie del agua
         const rippleMat = new THREE.MeshBasicMaterial({
             color: 0xFFFFFF,
             transparent: true,
-            opacity: 0.26,
-            side: THREE.DoubleSide
+            opacity: 0.22,
+            side: THREE.DoubleSide,
+            depthWrite: false
         });
         for (let rIdx = 0; rIdx < 4; rIdx++) {
-            const ringGeo = new THREE.RingGeometry(2.5 + rIdx * 4.2, 2.68 + rIdx * 4.2, 48);
+            const ringGeo = new THREE.RingGeometry(2.8 + rIdx * 4.2, 2.94 + rIdx * 4.2, 96);
             ringGeo.rotateX(-Math.PI / 2);
             const ringMesh = new THREE.Mesh(ringGeo, rippleMat.clone());
-            ringMesh.position.y = 0.05;
+            ringMesh.position.y = 0.06;
             worldGroup.add(ringMesh);
             unitLakeState.rippleRings.push({ mesh: ringMesh, phase: rIdx * 0.25 });
         }
 
-        // 3. Bosque perimetral 360° alrededor del lago
-        const treeCount = unitId === 'clan' ? 26 : (unitId === 'escultas' ? 30 : 48);
+        // 3. Bosque perimetral 360° de alta resolución alrededor del lago
+        const treeCount = unitId === 'clan' ? 30 : (unitId === 'escultas' ? 34 : 56);
         for (let t = 0; t < treeCount; t++) {
-            const angle = (t / treeCount) * Math.PI * 2 + Math.sin(t * 2.1) * 0.08;
-            // Dejar pasillos de visión despejados desde el lago
-            const radius = 25.5 + (t % 5) * 4.2 + Math.cos(t * 1.7) * 2.0;
+            const angle = (t / treeCount) * Math.PI * 2 + Math.sin(t * 2.1) * 0.07;
+            const radius = 25.2 + (t % 6) * 3.8 + Math.cos(t * 1.7) * 1.8;
             const tx = Math.cos(angle) * radius;
             const tz = Math.sin(angle) * radius;
-            // Evitar solapar con el hito norte (0, -25)
-            if (Math.hypot(tx, tz + 24) < 7.5) continue;
+            if (Math.hypot(tx, tz + 24) < 8.0) continue;
 
             const ty = getTerrainHeight(tx, tz);
-            if (ty < 0.2) continue;
-            const sc = 0.78 + (t % 4) * 0.24;
-            const tree = createPineOrBiomeTree(THREE, unitId, sc);
+            if (ty < 0.25) continue;
+            const sc = 0.78 + (t % 4) * 0.22;
+            const tree = createPineOrBiomeTree(THREE, unitId, sc, t * 1.37);
             tree.position.set(tx, ty - 0.15, tz);
             tree.rotation.y = t * 1.1;
             worldGroup.add(tree);
         }
 
-        // 4. Hitos 3D únicos de cada Unidad en las orillas del lago
+        // 4. Hitos 3D orgánicos y detallados de cada Unidad en las orillas del lago
         buildUnitSpecificLandmarks(THREE, worldGroup, unitId, getTerrainHeight);
 
-        // 5. Partículas atmosféricas flotando sobre el lago (luciérnagas, polen, pavesas o nieve)
-        const pCount = 160;
+        // 5. Partículas atmosféricas suaves con textura radial (luciérnagas, polen, pavesas o nieve)
+        const pCount = 180;
         const pGeo = new THREE.BufferGeometry();
         const pPos = new Float32Array(pCount * 3);
         for (let i = 0; i < pCount; i++) {
@@ -2834,9 +3582,12 @@
         pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
         const pMat = new THREE.PointsMaterial({
             color: biome.particleColor,
-            size: unitId === 'clan' ? 0.42 : 0.36,
+            map: getSoftGlowTexture(THREE),
+            size: unitId === 'clan' ? 0.85 : 0.75,
             transparent: true,
-            opacity: 0.78
+            opacity: 0.88,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
         });
         const particles = new THREE.Points(pGeo, pMat);
         worldGroup.add(particles);
@@ -2848,7 +3599,6 @@
         unitLakeState.rafId = requestAnimationFrame(renderUnitLakeFrame);
 
         const t = now * 0.001;
-        // Interpolación suave de la órbita 360° alrededor del lago
         unitLakeState.orbitCurrent = lerp(unitLakeState.orbitCurrent, unitLakeState.orbitTarget, 0.075);
         unitLakeState.smoothMouseX = lerp(unitLakeState.smoothMouseX, unitLakeState.mouseX, 0.08);
         unitLakeState.smoothMouseY = lerp(unitLakeState.smoothMouseY, unitLakeState.mouseY, 0.08);
@@ -2870,57 +3620,58 @@
             const camHeight = lerp(stopA.height, stopB.height, frac) + unitLakeState.smoothMouseY * 2.2;
             const lookY = lerp(stopA.lookY, stopB.lookY, frac) - unitLakeState.smoothMouseY * 1.1;
 
-            // Ángulo orbital completo de 360° (2*PI) alrededor del lago al recorrer las 5 paradas
             const orbitAngle = (unitLakeState.orbitCurrent / 5) * Math.PI * 2 + unitLakeState.smoothMouseX * 0.16;
 
             const camX = Math.sin(orbitAngle) * camRadius;
             const camZ = Math.cos(orbitAngle) * camRadius;
 
             unitLakeState.camera.position.set(camX, camHeight, camZ);
-            // Mirar a través del lago con un sutil desplazamiento tangencial para encuadrar la orilla opuesta
             const lookTargetX = Math.cos(orbitAngle) * 3.2;
             const lookTargetZ = -Math.sin(orbitAngle) * 3.2;
             unitLakeState.camera.lookAt(lookTargetX, lookY, lookTargetZ);
 
-            // Animar las olas suaves de la superficie del lago
-            if (unitLakeState.waterMesh && unitLakeState.waterBasePositions) {
-                const pos = unitLakeState.waterMesh.geometry.attributes.position;
-                const base = unitLakeState.waterBasePositions;
-                for (let i = 0; i < pos.count; i++) {
-                    const bx = base[i * 3];
-                    const bz = base[i * 3 + 2];
-                    const dist = Math.hypot(bx, bz);
-                    const ripple = Math.sin(dist * 0.55 - t * 2.2) * 0.14 + Math.cos(bx * 0.35 + t * 1.6) * 0.08;
-                    pos.setY(i, ripple);
-                }
-                pos.needsUpdate = true;
+            // Actualizar tiempo del shader líquido del lago
+            if (unitLakeState.waterUniforms) {
+                unitLakeState.waterUniforms.uTime.value = t;
             }
 
-            // Animar los anillos concéntricos en el agua
-            unitLakeState.rippleRings.forEach((ringObj, idx) => {
-                const cycle = (t * 0.18 + ringObj.phase) % 1;
+            // Animar los anillos concéntricos suaves en el agua
+            unitLakeState.rippleRings.forEach((ringObj) => {
+                const cycle = (t * 0.16 + ringObj.phase) % 1;
                 const sc = 0.35 + cycle * 1.65;
                 ringObj.mesh.scale.set(sc, 1, sc);
-                ringObj.mesh.material.opacity = Math.sin(cycle * Math.PI) * 0.24;
+                ringObj.mesh.material.opacity = Math.sin(cycle * Math.PI) * 0.20;
             });
 
-            // Animar elementos flotantes y hogueras
+            // Animar mecida suave de juncos en la orilla
+            unitLakeState.reedClusters.forEach(rc => {
+                rc.mesh.rotation.z = Math.sin(t * 1.9 + rc.phase) * 0.06;
+            });
+
+            // Animar elementos flotantes y hogueras multicapa
             unitLakeState.animatedProps.forEach(item => {
                 if (item.isFlame) {
-                    const flicker = 0.88 + Math.sin(t * 11 + item.phase) * 0.16;
-                    item.mesh.scale.set(flicker, 0.9 + Math.cos(t * 14) * 0.18, flicker);
+                    const flicker = 0.90 + Math.sin(t * 10.5 + item.phase) * 0.12;
+                    item.mesh.scale.set(flicker, 0.92 + Math.cos(t * 13.0) * 0.14, flicker);
+                    if (item.innerMesh) {
+                        item.innerMesh.scale.set(1.0 / flicker, 0.95 + Math.sin(t * 15.0) * 0.15, 1.0 / flicker);
+                    }
+                    if (item.haloSprite) {
+                        const hScale = 7.2 + Math.sin(t * 8.0 + item.phase) * 0.65;
+                        item.haloSprite.scale.set(hScale, hScale, 1);
+                    }
                 } else {
-                    item.mesh.position.y = item.baseY + Math.sin(t * 1.8 + item.phase) * 0.09;
+                    item.mesh.position.y = item.baseY + Math.sin(t * 1.8 + item.phase) * 0.07;
                 }
             });
 
             // Animar partículas flotantes sobre el lago
             if (unitLakeState.particles) {
-                unitLakeState.particles.rotation.y = t * 0.04;
+                unitLakeState.particles.rotation.y = t * 0.035;
                 const pAttr = unitLakeState.particles.geometry.attributes.position;
                 for (let i = 0; i < pAttr.count; i++) {
                     let py = pAttr.getY(i);
-                    py += (unitLakeState.unitId === 'clan' ? -0.025 : 0.018);
+                    py += (unitLakeState.unitId === 'clan' ? -0.022 : 0.016);
                     if (py > 19) py = 0.8;
                     if (py < 0.6) py = 18.5;
                     pAttr.setY(i, py);
