@@ -116,10 +116,17 @@
     </main>
 
     <!-- ======================================================================
-         6. NUEVA TAB COMPLETA DE UNIDAD + SUS KRAALETES (TRAS SUPER-ZOOM)
+         6. EXPERIENCIA 3D ORBITAL ALREDEDOR DEL LAGO POR UNIDAD (ESTILO EMOTION AGENCY)
          ====================================================================== -->
-    <section class="star-tab-view" id="unitSuperZoomOverlay" aria-hidden="true">
-        <header class="star-tab-topbar">
+    <section class="star-tab-view unit-orbit-world-view" id="unitSuperZoomOverlay" data-unit-world="castores" aria-hidden="true">
+        <!-- Escenario 3D WebGL / Canvas del Lago y su Entorno (Cámara en Órbita 360º) -->
+        <div class="unit-orbit-webgl-wrap" aria-hidden="true">
+            <canvas id="uzLakeOrbitCanvas" class="unit-orbit-canvas"></canvas>
+            <div class="unit-orbit-vignette"></div>
+        </div>
+
+        <!-- Cabecera Superior Fija -->
+        <header class="star-tab-topbar unit-orbit-topbar">
             <button type="button" class="star-tab-back-btn" id="btnCloseUnitZoom">
                 <span>←</span> Volver a la Constelación de Unidades [ESC]
             </button>
@@ -131,61 +138,125 @@
             </div>
         </header>
 
-        <div class="star-tab-container">
-            <div class="star-tab-hero unit-colored-hero">
-                <div class="unit-hero-text-col">
-                    <div class="star-tab-meta-row">
-                        <span class="sz-constellation-badge" id="uzConstellationName">✦ ESTRELLA I · COLONIA OHIENSIS</span>
-                        <span class="sz-age-pill" id="uzAgePill">6 a 8 años</span>
-                        <span class="sz-motto-banner" id="uzMotto">Lema: «Compartir»</span>
-                        <a href="#" target="_blank" rel="noopener" class="unit-social-btn" id="uzSocialBtn" style="display: none;" title="Ver perfil oficial de Instagram">
-                            <span class="social-icon">📸</span>
-                            <span id="uzSocialLabel">@unidad</span>
-                            <span class="social-arrow">↗</span>
-                        </a>
+        <!-- Pista de Scroll de Storytelling (La cámara da la vuelta completa al lago mientras aparecen las 5 paradas) -->
+        <div class="unit-orbit-scroll-track" id="uzOrbitScrollTrack">
+            <div class="unit-orbit-sticky-stage" id="uzOrbitStickyStage">
+
+                <!-- PARADA 01 (0° DEL LAGO): PORTADA EDITORIAL DE LA UNIDAD -->
+                <section class="uz-orbit-screen is-active" data-orbit-step="0">
+                    <div class="uz-orbit-screen-inner uz-screen-hero">
+                        <div class="uz-hero-top-meta">
+                            <span class="sz-constellation-badge" id="uzConstellationName">✦ ESTRELLA I · COLONIA OHIENSIS</span>
+                            <span class="sz-age-pill" id="uzAgePill">6 a 8 años</span>
+                            <span class="sz-motto-banner" id="uzMotto">Lema: «Compartir»</span>
+                            <a href="#" target="_blank" rel="noopener" class="unit-social-btn" id="uzSocialBtn" style="display: none;" title="Ver perfil oficial de Instagram">
+                                <span class="social-icon">📸</span>
+                                <span id="uzSocialLabel">@unidad</span>
+                                <span class="social-arrow">↗</span>
+                            </a>
+                        </div>
+
+                        <div class="uz-hero-bottom-editorial">
+                            <p class="uz-editorial-kicker" id="uzWorldBiomeTag">(01 / 05) · EXPLORACIÓN EN ÓRBITA 360° ALREDEDOR DEL LAGO</p>
+                            <h2 class="sz-unit-title uz-editorial-display-title" id="uzTitle">Castores · Colonia Ohiensis</h2>
+                        </div>
                     </div>
-                    <h2 class="sz-unit-title" id="uzTitle">Castores · Colonia Ohiensis</h2>
-                    <p class="sz-unit-lead" id="uzLead"></p>
-                    <blockquote class="unit-law-quote" id="uzQuoteBanner"></blockquote>
-                </div>
-                <div class="unit-hero-visual-col" id="uzHeroVisual"></div>
+                </section>
+
+                <!-- PARADA 02 (72° DEL LAGO): AMBIENTACIÓN, LEY Y FOTOGRAFÍA OFICIAL -->
+                <section class="uz-orbit-screen" data-orbit-step="1">
+                    <div class="uz-orbit-screen-inner uz-screen-lore">
+                        <div class="uz-lore-editorial-col">
+                            <span class="uz-emotion-pill">01 · AMBIENTACIÓN Y LEY DE LA RAMA</span>
+                            <h3 class="uz-editorial-subtitle" id="uzLoreHeading">El Espíritu de Nuestra Unidad</h3>
+                            <p class="sz-unit-lead uz-editorial-lead" id="uzLead"></p>
+                            <blockquote class="unit-law-quote uz-editorial-quote" id="uzQuoteBanner"></blockquote>
+                        </div>
+                        <div class="uz-lore-visual-col">
+                            <div class="unit-hero-visual-col uz-glass-photo-card" id="uzHeroVisual"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PARADA 03 (144° DEL LAGO): METODOLOGÍA Y ETAPAS DE PROGRESIÓN -->
+                <section class="uz-orbit-screen" data-orbit-step="2">
+                    <div class="uz-orbit-screen-inner uz-screen-pillars">
+                        <div class="uz-pillars-header">
+                            <span class="uz-emotion-pill">02 · METODOLOGÍA Y PROGRESIÓN</span>
+                            <h3 class="uz-editorial-subtitle">Marco Simbólico y Etapas del Camino</h3>
+                            <p class="uz-editorial-subdesc">Cómo vivimos la aventura cada sábado y acampada alrededor de nuestro mundo</p>
+                        </div>
+                        <div class="sz-pillars-list uz-editorial-pillars" id="uzPillarsList"></div>
+                    </div>
+                </section>
+
+                <!-- PARADA 04 (216° DEL LAGO): LOS KRAALETES DE LA UNIDAD (CROMOS 3/4) -->
+                <section class="uz-orbit-screen" data-orbit-step="3" id="uzUnitKraalSection">
+                    <div class="uz-orbit-screen-inner uz-screen-kraal">
+                        <div class="uz-screen-header-compact">
+                            <div>
+                                <span class="uz-emotion-pill">03 · LOS KRAALETES DE LA UNIDAD</span>
+                                <h3 class="uz-editorial-subtitle" id="uzKraalTitle">El Kraal y Personajes del Bosque</h3>
+                                <p class="uz-editorial-subdesc" id="uzKraalSub">Cromos coleccionables de los scouters y figuras del marco simbólico de esta rama</p>
+                            </div>
+                        </div>
+                        <div class="kraaletes-cromos-grid uz-orbit-scrollable-grid" id="uzKraaletesGrid" data-orbit-scrollable="true"></div>
+                    </div>
+                </section>
+
+                <!-- PARADA 05 (288°–360° DEL LAGO): AVENTURAS, SALIDAS Y CAMPAMENTOS (GOOGLE DRIVE) -->
+                <section class="uz-orbit-screen" data-orbit-step="4" id="uzUnitCampsSection">
+                    <div class="uz-orbit-screen-inner uz-screen-camps">
+                        <div class="uz-screen-header-compact">
+                            <div>
+                                <span class="uz-emotion-pill" id="uzCampsIndex">04 · AVENTURAS, SALIDAS Y CAMPAMENTOS DE LA UNIDAD</span>
+                                <h3 class="uz-editorial-subtitle" id="uzCampsHeading">Aventuras, Salidas y Álbumes en Google Drive</h3>
+                                <p class="uz-editorial-subdesc" id="uzCampsSub">Subcarpetas de campamentos de rama, acampadas y salidas de fin de semana con desbloqueo oficial</p>
+                            </div>
+                        </div>
+                        <div class="unit-camps-grid uz-orbit-scrollable-grid" id="uzUnitCampsGrid" data-orbit-scrollable="true"></div>
+                    </div>
+                </section>
+
+                <!-- HUD INFERIOR DE ÓRBITA (ANILLO DE PROGRESO ESTILO EMOTION AGENCY + BRÚJULA DE PARADAS) -->
+                <footer class="uz-orbit-hud-bottom">
+                    <div class="uz-orbit-steps-nav" id="uzOrbitStepsNav" role="navigation" aria-label="Paradas alrededor del lago">
+                        <button type="button" class="uz-orbit-step-btn active" data-goto-orbit="0">
+                            <span class="step-idx">(01)</span>
+                            <span class="step-name">El Lago</span>
+                        </button>
+                        <button type="button" class="uz-orbit-step-btn" data-goto-orbit="1">
+                            <span class="step-idx">(02)</span>
+                            <span class="step-name">Historia y Ley</span>
+                        </button>
+                        <button type="button" class="uz-orbit-step-btn" data-goto-orbit="2">
+                            <span class="step-idx">(03)</span>
+                            <span class="step-name">Etapas</span>
+                        </button>
+                        <button type="button" class="uz-orbit-step-btn" data-goto-orbit="3">
+                            <span class="step-idx">(04)</span>
+                            <span class="step-name">Kraaletes</span>
+                        </button>
+                        <button type="button" class="uz-orbit-step-btn" data-goto-orbit="4">
+                            <span class="step-idx">(05)</span>
+                            <span class="step-name">Álbumes Drive</span>
+                        </button>
+                    </div>
+
+                    <button type="button" class="uz-orbit-progress-ring-btn" id="uzNextOrbitStepBtn" title="Avanzar a la siguiente orilla del lago">
+                        <svg class="uz-progress-ring-svg" viewBox="0 0 100 100">
+                            <circle class="uz-progress-ring-track" cx="50" cy="50" r="44"></circle>
+                            <circle class="uz-progress-ring-bar" id="uzOrbitRingBar" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="276.46"></circle>
+                        </svg>
+                        <span class="uz-progress-ring-center">
+                            <small id="uzOrbitAngleLabel">0°</small>
+                            <span>↻</span>
+                        </span>
+                        <span class="uz-progress-ring-caption">Rodear el lago</span>
+                    </button>
+                </footer>
+
             </div>
-
-            <!-- 01 · AVENTURAS, SALIDAS Y CAMPAMENTOS DE LA UNIDAD (SINCRONIZADOS DESDE DRIVE) -->
-            <section class="unit-camps-section" id="uzUnitCampsSection">
-                <div class="sz-section-header">
-                    <div>
-                        <span class="sz-section-index" id="uzCampsIndex">01 · AVENTURAS, SALIDAS Y CAMPAMENTOS DE LA UNIDAD</span>
-                        <h3 id="uzCampsHeading">Aventuras, Salidas y Álbumes en Google Drive</h3>
-                        <p id="uzCampsSub">Subcarpetas de campamentos de rama, acampadas y salidas de fin de semana con desbloqueo oficial</p>
-                    </div>
-                </div>
-                <div class="unit-camps-grid" id="uzUnitCampsGrid"></div>
-            </section>
-
-            <!-- 02 · LOS KRAALETES DE LA UNIDAD (CROMOS VERTICALES 3/4) -->
-            <section class="unit-kraal-section" id="uzUnitKraalSection">
-                <div class="sz-section-header">
-                    <div>
-                        <span class="sz-section-index">02 · LOS KRAALETES DE LA UNIDAD</span>
-                        <h3 id="uzKraalTitle">El Kraal y Personajes del Bosque</h3>
-                        <p id="uzKraalSub">Cromos coleccionables de los scouters y figuras del marco simbólico de esta rama</p>
-                    </div>
-                </div>
-                <div class="kraaletes-cromos-grid" id="uzKraaletesGrid"></div>
-            </section>
-
-            <!-- 03 · METODOLOGÍA Y PROGRESIÓN -->
-            <section class="unit-progression-section">
-                <div class="sz-section-header">
-                    <div>
-                        <span class="sz-section-index">03 · METODOLOGÍA Y PROGRESIÓN</span>
-                        <h3>Marco Simbólico y Etapas</h3>
-                        <p>Cómo trabajamos cada sábado y acampada en esta unidad</p>
-                    </div>
-                </div>
-                <div class="sz-pillars-list" id="uzPillarsList"></div>
-            </section>
         </div>
     </section>
 
@@ -388,6 +459,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=3.2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js?v=3.5"></script>
 </body>
 </html>

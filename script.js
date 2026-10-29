@@ -1995,11 +1995,12 @@
             });
         }
 
-        // 03 · METODOLOGÍA Y PROGRESIÓN
+        // 03 · METODOLOGÍA Y PROGRESIÓN (FORMATO EDITORIAL EMOTION AGENCY)
         const pillarsWrap = document.getElementById('uzPillarsList');
         if (pillarsWrap) {
-            pillarsWrap.innerHTML = unit.pillars.map(p => `
+            pillarsWrap.innerHTML = unit.pillars.map((p, idx) => `
                 <div class="sz-pillar-item">
+                    <span class="pillar-num-badge">(00${idx + 1})</span>
                     <strong>✦ ${p.title}</strong>
                     <span>${p.desc}</span>
                 </div>
@@ -2020,6 +2021,12 @@
             });
         }
 
+        // Configurar el Mundo 3D del Lago para esta Unidad y reiniciar en la Parada 01 (0° del lago)
+        if (elUnitZoomOverlay) {
+            elUnitZoomOverlay.setAttribute('data-unit-world', unit.id);
+        }
+        setupUnitLakeWorld(unit);
+
         elCampZoomOverlay?.classList.remove('is-open');
         elCampZoomOverlay?.setAttribute('aria-hidden', 'true');
         elLostZoomOverlay?.classList.remove('is-open');
@@ -2031,9 +2038,1017 @@
                 elUnitZoomOverlay.classList.add('is-open');
                 elUnitZoomOverlay.setAttribute('aria-hidden', 'false');
                 elUnitZoomOverlay.scrollTop = 0;
+                startUnitLakeOrbitLoop();
             }
         }, diveTime);
     }
+
+    // =========================================================================
+    // 8B. MOTOR 3D ORBITAL ALREDEDOR DEL LAGO POR UNIDAD (INSPIRADO EN EMOTION-AGENCY.COM)
+    // =========================================================================
+    const UNIT_LAKE_BIOMES = {
+        castores: {
+            kicker: '(01 / 05) · MUNDO CASTORES · EL ESTANQUE DEL GRAN ROBLE Y RÍO GRAN HERMANO',
+            loreHeading: 'La Vida en el Estanque · Colonia Ohiensis',
+            stepNames: ['El Estanque', 'Presa y Ley', 'Etapas Castor', 'Kraaletes', 'Salidas Drive'],
+            skyTop: 0x06233B,
+            skyHorizon: 0x0E4F79,
+            fogColor: 0x0B3B5E,
+            fogDensity: 0.0085,
+            waterColor: 0x0EA5E9,
+            waterEmissive: 0x0369A1,
+            sunColor: 0xFDE047,
+            sunPos: [38, 42, -28],
+            hemiSky: 0x7DD3FC,
+            hemiGround: 0x14532D,
+            shoreLightColor: 0xF59E0B,
+            terrainLow: [0.12, 0.42, 0.24],
+            terrainMid: [0.09, 0.34, 0.19],
+            terrainHigh: [0.22, 0.48, 0.32],
+            heightScale: 11.5,
+            particleColor: 0xFDE68A,
+            cameraStops: [
+                { radius: 42, height: 11.5, lookY: 1.8 },
+                { radius: 37, height: 8.5, lookY: 1.5 },
+                { radius: 40, height: 13.0, lookY: 1.2 },
+                { radius: 38, height: 9.5, lookY: 1.6 },
+                { radius: 44, height: 14.0, lookY: 2.0 }
+            ]
+        },
+        manada: {
+            kicker: '(01 / 05) · MUNDO MANADA · LAGUNA DEL RÍO WAIGUNGA Y SELVA DE SEEONEE',
+            loreHeading: 'El Libro de las Tierras Vírgenes · Manada Khanhiwara',
+            stepNames: ['Río Waigunga', 'Roca del Consejo', 'Senda Mowgli', 'Viejos Lobos', 'Cazas Drive'],
+            skyTop: 0x130D26,
+            skyHorizon: 0x3B1D4A,
+            fogColor: 0x241332,
+            fogDensity: 0.0092,
+            waterColor: 0x0D9488,
+            waterEmissive: 0x064E3B,
+            sunColor: 0xFBBF24,
+            sunPos: [-32, 34, -40],
+            hemiSky: 0xF59E0B,
+            hemiGround: 0x064E3B,
+            shoreLightColor: 0xF97316,
+            terrainLow: [0.06, 0.32, 0.20],
+            terrainMid: [0.18, 0.26, 0.14],
+            terrainHigh: [0.42, 0.25, 0.11],
+            heightScale: 14.5,
+            particleColor: 0xFDE047,
+            cameraStops: [
+                { radius: 41, height: 10.5, lookY: 2.4 },
+                { radius: 36, height: 8.2, lookY: 2.8 },
+                { radius: 39, height: 12.0, lookY: 1.5 },
+                { radius: 37, height: 9.2, lookY: 1.8 },
+                { radius: 43, height: 13.5, lookY: 2.2 }
+            ]
+        },
+        tropa: {
+            kicker: '(01 / 05) · MUNDO TROPA · LAGO ALPINO DE LOHENGRIN Y VALLE DE PATRULLAS',
+            loreHeading: 'Vida en Patrulla y Pionerismo · Tropa Lohengrin',
+            stepNames: ['Lago Lohengrin', 'Honor y Ley', 'Patrullas', 'Kraal Tropa', 'Aymaras Drive'],
+            skyTop: 0x031814,
+            skyHorizon: 0x064E3B,
+            fogColor: 0x052E24,
+            fogDensity: 0.0088,
+            waterColor: 0x10B981,
+            waterEmissive: 0x065F46,
+            sunColor: 0x6EE7B7,
+            sunPos: [30, 38, 35],
+            hemiSky: 0x34D399,
+            hemiGround: 0x022C22,
+            shoreLightColor: 0xFB923C,
+            terrainLow: [0.05, 0.30, 0.20],
+            terrainMid: [0.08, 0.38, 0.25],
+            terrainHigh: [0.22, 0.46, 0.36],
+            heightScale: 16.0,
+            particleColor: 0x6EE7B7,
+            cameraStops: [
+                { radius: 43, height: 11.8, lookY: 2.0 },
+                { radius: 37, height: 8.6, lookY: 1.8 },
+                { radius: 40, height: 12.5, lookY: 1.6 },
+                { radius: 38, height: 9.4, lookY: 1.8 },
+                { radius: 44, height: 14.0, lookY: 2.2 }
+            ]
+        },
+        escultas: {
+            kicker: '(01 / 05) · MUNDO ESCULTAS · IBÓN GLACIAL DE LA CANAL DE TREA (PICOS DE EUROPA)',
+            loreHeading: 'Espíritu Montañero y Empresa · Unidad Esculta Trea',
+            stepNames: ['Ibón de Trea', 'Senda y Ley', 'Empresas', 'Kraal Esculta', 'Travesías Drive'],
+            skyTop: 0x140E0A,
+            skyHorizon: 0x3B2618,
+            fogColor: 0x24170F,
+            fogDensity: 0.0086,
+            waterColor: 0x0284C7,
+            waterEmissive: 0x1E3A5F,
+            sunColor: 0xFDBA74,
+            sunPos: [-38, 44, 26],
+            hemiSky: 0xE6CCB2,
+            hemiGround: 0x2E1B0F,
+            shoreLightColor: 0xF59E0B,
+            terrainLow: [0.26, 0.20, 0.16],
+            terrainMid: [0.42, 0.33, 0.26],
+            terrainHigh: [0.76, 0.72, 0.68],
+            heightScale: 24.0,
+            particleColor: 0xFED7AA,
+            cameraStops: [
+                { radius: 44, height: 13.0, lookY: 3.0 },
+                { radius: 38, height: 9.5, lookY: 2.5 },
+                { radius: 41, height: 14.2, lookY: 2.2 },
+                { radius: 39, height: 10.2, lookY: 2.4 },
+                { radius: 45, height: 15.5, lookY: 3.2 }
+            ]
+        },
+        clan: {
+            kicker: '(01 / 05) · MUNDO CLAN · LAGO GLACIAL DEL AMA DABLAM (HIMALAYA · 6.812M)',
+            loreHeading: 'Rema Tu Propia Canoa · Clan Rover Ama Dablam',
+            stepNames: ['Lago Glaciar', 'Horquilla y Ley', 'Camino Rover', 'Kraal de Clan', 'Rutas Drive'],
+            skyTop: 0x090406,
+            skyHorizon: 0x3B0A14,
+            fogColor: 0x1F070C,
+            fogDensity: 0.0084,
+            waterColor: 0xBE123C,
+            waterEmissive: 0x1E293B,
+            sunColor: 0xFDA4AF,
+            sunPos: [0, 46, -45],
+            hemiSky: 0xF43F5E,
+            hemiGround: 0x1E1B4B,
+            shoreLightColor: 0xEF4444,
+            terrainLow: [0.18, 0.16, 0.20],
+            terrainMid: [0.36, 0.22, 0.26],
+            terrainHigh: [0.92, 0.94, 0.98],
+            heightScale: 27.5,
+            particleColor: 0xFECDD3,
+            cameraStops: [
+                { radius: 44, height: 12.8, lookY: 3.5 },
+                { radius: 38, height: 9.2, lookY: 2.6 },
+                { radius: 41, height: 13.8, lookY: 2.4 },
+                { radius: 39, height: 10.0, lookY: 2.5 },
+                { radius: 46, height: 15.0, lookY: 3.4 }
+            ]
+        }
+    };
+
+    const unitLakeState = {
+        unitId: 'castores',
+        orbitTarget: 0,      // 0..5 (5 equivale a 360° de vuelta al inicio)
+        orbitCurrent: 0,
+        activeStep: 0,       // 0..4
+        snapTimer: null,
+        isRunning: false,
+        rafId: null,
+        mouseX: 0,
+        mouseY: 0,
+        smoothMouseX: 0,
+        smoothMouseY: 0,
+        isDraggingBg: false,
+        dragLastX: 0,
+        touchStartY: 0,
+        touchStartX: 0,
+        // Three.js objects
+        renderer: null,
+        scene: null,
+        camera: null,
+        worldGroup: null,
+        waterMesh: null,
+        waterBasePositions: null,
+        rippleRings: [],
+        particles: null,
+        shoreLight: null,
+        sunLight: null,
+        hemiLight: null,
+        animatedProps: []
+    };
+
+    function syncUnitOrbitDOM(progress, forceStep = null) {
+        const wrapped = ((progress % 5) + 5) % 5;
+        const nearestStep = forceStep !== null ? forceStep : (Math.round(wrapped) % 5);
+        unitLakeState.activeStep = nearestStep;
+
+        // 1. Actualizar pantallas (.uz-orbit-screen) con transición suave estilo Emotion Agency
+        const screens = document.querySelectorAll('#unitSuperZoomOverlay .uz-orbit-screen');
+        screens.forEach((scr, idx) => {
+            // Distancia circular en el ciclo de 5 paradas
+            let diff = idx - wrapped;
+            if (diff > 2.5) diff -= 5;
+            if (diff < -2.5) diff += 5;
+            const absDiff = Math.abs(diff);
+
+            const isCurrent = idx === nearestStep;
+            scr.classList.toggle('is-active', isCurrent);
+
+            if (absDiff < 0.85) {
+                const alpha = Math.max(0, 1 - (absDiff / 0.68));
+                const shiftY = diff * 42;
+                const scale = 1 - Math.min(0.06, absDiff * 0.06);
+                scr.style.opacity = alpha.toFixed(3);
+                scr.style.transform = `translate3d(0, ${shiftY.toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
+                scr.style.pointerEvents = isCurrent && alpha > 0.45 ? 'auto' : 'none';
+            } else {
+                scr.style.opacity = '0';
+                scr.style.transform = `translate3d(0, ${diff > 0 ? 48 : -48}px, 0) scale(0.95)`;
+                scr.style.pointerEvents = 'none';
+            }
+        });
+
+        // 2. Actualizar botones de parada inferiores
+        document.querySelectorAll('#uzOrbitStepsNav .uz-orbit-step-btn').forEach((btn, idx) => {
+            btn.classList.toggle('active', idx === nearestStep);
+        });
+
+        // 3. Actualizar ProgressRing (0° a 360°)
+        const circumference = 276.46;
+        const normOrbit = wrapped / 5;
+        const ringBar = document.getElementById('uzOrbitRingBar');
+        if (ringBar) {
+            const offset = circumference * (1 - clamp(normOrbit + 0.2, 0.2, 1.0));
+            ringBar.style.strokeDashoffset = offset.toFixed(2);
+        }
+        const angleLabel = document.getElementById('uzOrbitAngleLabel');
+        if (angleLabel) {
+            const deg = Math.round(normOrbit * 360) % 360;
+            angleLabel.textContent = `${deg}°`;
+        }
+    }
+
+    function goToUnitOrbitStep(stepIdx) {
+        clearTimeout(unitLakeState.snapTimer);
+        // Elegir el múltiplo de 5 más cercano a orbitTarget para que el giro sea por el camino más corto
+        const currentCycle = Math.floor(unitLakeState.orbitCurrent / 5) * 5;
+        let candidate = currentCycle + stepIdx;
+        const diff = candidate - unitLakeState.orbitCurrent;
+        if (diff > 2.5) candidate -= 5;
+        if (diff < -2.5) candidate += 5;
+        unitLakeState.orbitTarget = candidate;
+    }
+
+    function scheduleOrbitSnap() {
+        clearTimeout(unitLakeState.snapTimer);
+        unitLakeState.snapTimer = setTimeout(() => {
+            unitLakeState.orbitTarget = Math.round(unitLakeState.orbitTarget);
+        }, 160);
+    }
+
+    function createPineOrBiomeTree(THREE, unitId, scale = 1) {
+        const tree = new THREE.Group();
+        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x4A2E1B, roughness: 0.9 });
+        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * scale, 0.35 * scale, 2.2 * scale, 7), trunkMat);
+        trunk.position.y = 1.1 * scale;
+        tree.add(trunk);
+
+        if (unitId === 'manada') {
+            // Árbol frondoso de la Selva de Seeonee
+            const leafColor = Math.random() > 0.35 ? 0x065F46 : 0x15803D;
+            const foliageMat = new THREE.MeshStandardMaterial({ color: leafColor, roughness: 0.75, flatShading: true });
+            const crown = new THREE.Mesh(new THREE.DodecahedronGeometry(1.85 * scale, 1), foliageMat);
+            crown.position.y = 2.9 * scale;
+            crown.scale.set(1.15, 0.85, 1.15);
+            tree.add(crown);
+        } else {
+            // Coníferas alpinas / pinos del bosque
+            const leafColor = unitId === 'clan'
+                ? 0x334155
+                : (unitId === 'escultas' ? 0x3F6212 : (unitId === 'tropa' ? 0x047857 : 0x15803D));
+            const coneMat = new THREE.MeshStandardMaterial({ color: leafColor, roughness: 0.8, flatShading: true });
+            for (let l = 0; l < 3; l++) {
+                const r = (1.75 - l * 0.42) * scale;
+                const h = (2.4 - l * 0.35) * scale;
+                const cone = new THREE.Mesh(new THREE.ConeGeometry(r, h, 7), coneMat);
+                cone.position.y = (2.1 + l * 1.15) * scale;
+                tree.add(cone);
+            }
+            if (unitId === 'clan') {
+                const snowCap = new THREE.Mesh(
+                    new THREE.ConeGeometry(0.95 * scale, 1.2 * scale, 7),
+                    new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.5, flatShading: true })
+                );
+                snowCap.position.y = 4.65 * scale;
+                tree.add(snowCap);
+            }
+        }
+        return tree;
+    }
+
+    function buildUnitSpecificLandmarks(THREE, group, unitId, getTerrainHeight) {
+        unitLakeState.animatedProps = [];
+
+        // Nenúfares o bloques de hielo sobre el lago + rocas de orilla
+        const rockMat = new THREE.MeshStandardMaterial({
+            color: unitId === 'escultas' ? 0x9CA3AF : (unitId === 'clan' ? 0x475569 : 0x57534E),
+            roughness: 0.88,
+            flatShading: true
+        });
+        for (let i = 0; i < 24; i++) {
+            const ang = (i / 24) * Math.PI * 2 + (i % 3) * 0.11;
+            const rad = 23.5 + (i % 4) * 1.6;
+            const rx = Math.cos(ang) * rad;
+            const rz = Math.sin(ang) * rad;
+            const ry = getTerrainHeight(rx, rz);
+            const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.65 + (i % 3) * 0.45, 0), rockMat);
+            rock.position.set(rx, ry + 0.15, rz);
+            rock.scale.set(1.2, 0.65, 1.0);
+            rock.rotation.y = i * 0.8;
+            group.add(rock);
+        }
+
+        if (unitId === 'castores') {
+            // 1. La Gran Presa de Troncos (Orilla Norte)
+            const logMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.85 });
+            const damGroup = new THREE.Group();
+            for (let i = 0; i < 26; i++) {
+                const log = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, 6.8 + (i % 3) * 1.5, 8), logMat);
+                log.rotation.z = Math.PI / 2 + (Math.sin(i * 1.7) * 0.18);
+                log.rotation.y = (Math.cos(i * 2.3) * 0.35);
+                log.position.set((i - 13) * 0.62, 0.25 + (i % 4) * 0.34, (i % 2) * 0.45);
+                damGroup.add(log);
+            }
+            damGroup.position.set(0, 0.1, -22.5);
+            group.add(damGroup);
+
+            // 2. La Madriguera de los Castores (Domo de ramas con luz cálida interior)
+            const lodgeGroup = new THREE.Group();
+            const lodgeDome = new THREE.Mesh(
+                new THREE.SphereGeometry(3.8, 12, 10, 0, Math.PI * 2, 0, Math.PI * 0.58),
+                new THREE.MeshStandardMaterial({ color: 0x92400E, roughness: 0.9, flatShading: true })
+            );
+            lodgeGroup.add(lodgeDome);
+            const lodgeGlow = new THREE.Mesh(
+                new THREE.SphereGeometry(0.95, 10, 10),
+                new THREE.MeshBasicMaterial({ color: 0xFDE047 })
+            );
+            lodgeGlow.position.set(0, 0.8, 3.1);
+            lodgeGroup.add(lodgeGlow);
+            lodgeGroup.position.set(-14, 0.0, -18);
+            group.add(lodgeGroup);
+
+            // 3. El Gran Roble de Malak (Orilla Este)
+            const oakGroup = new THREE.Group();
+            const oakTrunk = new THREE.Mesh(
+                new THREE.CylinderGeometry(1.1, 1.8, 7.5, 9),
+                new THREE.MeshStandardMaterial({ color: 0x5C3A21, roughness: 0.9 })
+            );
+            oakTrunk.position.y = 3.6;
+            oakGroup.add(oakTrunk);
+            const oakCrownMat = new THREE.MeshStandardMaterial({ color: 0x15803D, roughness: 0.7, flatShading: true });
+            [[0, 8.2, 0, 4.6], [-2.6, 7.0, 1.4, 3.2], [2.8, 7.2, -1.2, 3.4], [0.5, 6.8, 2.5, 3.1]].forEach(([cx, cy, cz, cr]) => {
+                const puff = new THREE.Mesh(new THREE.DodecahedronGeometry(cr, 1), oakCrownMat);
+                puff.position.set(cx, cy, cz);
+                oakGroup.add(puff);
+            });
+            const oakY = getTerrainHeight(26, 4);
+            oakGroup.position.set(26, oakY, 4);
+            group.add(oakGroup);
+
+            // 4. Nenúfares flotantes en el Estanque
+            const padMat = new THREE.MeshStandardMaterial({ color: 0x22C55E, roughness: 0.6 });
+            const flowerMat = new THREE.MeshBasicMaterial({ color: 0xF472B6 });
+            for (let p = 0; p < 18; p++) {
+                const a = (p / 18) * Math.PI * 2 + 0.3;
+                const r = 8 + (p % 5) * 3.1;
+                const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.08, 12), padMat);
+                pad.position.set(Math.cos(a) * r, 0.06, Math.sin(a) * r);
+                if (p % 3 === 0) {
+                    const fl = new THREE.Mesh(new THREE.ConeGeometry(0.28, 0.35, 6), flowerMat);
+                    fl.position.y = 0.2;
+                    pad.add(fl);
+                }
+                group.add(pad);
+                unitLakeState.animatedProps.push({ mesh: pad, baseY: 0.06, phase: p * 0.7 });
+            }
+        } else if (unitId === 'manada') {
+            // 1. La Imponente Roca del Consejo (Promontorio escalonado en la orilla)
+            const councilGroup = new THREE.Group();
+            const councilMat = new THREE.MeshStandardMaterial({ color: 0x78350F, roughness: 0.82, flatShading: true });
+            const mainSpire = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 6.8, 11.5, 7), councilMat);
+            mainSpire.position.y = 5.5;
+            councilGroup.add(mainSpire);
+            const akelaLedge = new THREE.Mesh(new THREE.CylinderGeometry(2.6, 3.4, 3.2, 6), councilMat);
+            akelaLedge.position.set(0.8, 11.8, 0.6);
+            councilGroup.add(akelaLedge);
+
+            // Antorchas / Fuego del Consejo
+            const fireOrb = new THREE.Mesh(
+                new THREE.ConeGeometry(0.9, 2.2, 7),
+                new THREE.MeshBasicMaterial({ color: 0xF59E0B })
+            );
+            fireOrb.position.set(0, 11.6, 2.2);
+            councilGroup.add(fireOrb);
+            unitLakeState.animatedProps.push({ mesh: fireOrb, baseY: 11.6, phase: 0, isFlame: true });
+
+            councilGroup.position.set(0, getTerrainHeight(0, -27) - 0.5, -27);
+            group.add(councilGroup);
+
+            // 2. Gran Luna Llena de Seeonee reflejada en el río Waigunga
+            const moonMesh = new THREE.Mesh(
+                new THREE.SphereGeometry(7.5, 24, 24),
+                new THREE.MeshBasicMaterial({ color: 0xFEF08A })
+            );
+            moonMesh.position.set(-28, 34, -58);
+            group.add(moonMesh);
+        } else if (unitId === 'tropa') {
+            // 1. Gran Torre de Pionerismo en Madera y Cuerdas
+            const towerGroup = new THREE.Group();
+            const poleMat = new THREE.MeshStandardMaterial({ color: 0xB45309, roughness: 0.8 });
+            const corners = [[-1.8, -1.8], [1.8, -1.8], [1.8, 1.8], [-1.8, 1.8]];
+            corners.forEach(([cx, cz]) => {
+                const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.22, 12.5, 7), poleMat);
+                pole.position.set(cx * 0.75, 6.0, cz * 0.75);
+                pole.rotation.z = -cx * 0.04;
+                pole.rotation.x = cz * 0.04;
+                towerGroup.add(pole);
+            });
+            const deck = new THREE.Mesh(
+                new THREE.BoxGeometry(3.6, 0.35, 3.6),
+                new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.75 })
+            );
+            deck.position.y = 9.2;
+            towerGroup.add(deck);
+            const roof = new THREE.Mesh(
+                new THREE.ConeGeometry(3.0, 2.6, 4),
+                new THREE.MeshStandardMaterial({ color: 0x059669, roughness: 0.7, flatShading: true })
+            );
+            roof.position.y = 12.8;
+            roof.rotation.y = Math.PI / 4;
+            towerGroup.add(roof);
+            towerGroup.position.set(-6, getTerrainHeight(-6, -26), -26);
+            group.add(towerGroup);
+
+            // 2. Tiendas Canadienses de Patrulla iluminadas en la pradera
+            const tentPositions = [[16, -21, 0.6], [23, -14, 1.1], [24, 8, 2.2], [-22, 12, -1.2]];
+            tentPositions.forEach(([tx, tz, rot]) => {
+                const tent = new THREE.Group();
+                const body = new THREE.Mesh(
+                    new THREE.ConeGeometry(2.4, 3.2, 4),
+                    new THREE.MeshStandardMaterial({
+                        color: 0x10B981,
+                        emissive: 0xF59E0B,
+                        emissiveIntensity: 0.28,
+                        roughness: 0.65,
+                        flatShading: true
+                    })
+                );
+                body.position.y = 1.6;
+                body.scale.set(1.0, 1.0, 1.45);
+                tent.add(body);
+                tent.position.set(tx, getTerrainHeight(tx, tz), tz);
+                tent.rotation.y = rot;
+                group.add(tent);
+            });
+
+            // 3. Fuego de Campamento en la orilla del Lago Lohengrin
+            const fireGroup = new THREE.Group();
+            const flame = new THREE.Mesh(
+                new THREE.ConeGeometry(1.1, 2.8, 7),
+                new THREE.MeshBasicMaterial({ color: 0xFB923C })
+            );
+            flame.position.y = 1.4;
+            fireGroup.add(flame);
+            unitLakeState.animatedProps.push({ mesh: flame, baseY: 1.4, phase: 0.5, isFlame: true });
+            fireGroup.position.set(5, getTerrainHeight(5, -23.5), -23.5);
+            group.add(fireGroup);
+        } else if (unitId === 'escultas') {
+            // 1. Agujas Calizas Verticales de la Canal de Trea (Picos de Europa)
+            const limestoneMat = new THREE.MeshStandardMaterial({ color: 0xD6D3D1, roughness: 0.78, flatShading: true });
+            const peakCoords = [
+                [0, -34, 8.5, 28],
+                [-18, -30, 7.2, 24],
+                [19, -29, 7.8, 25],
+                [31, 6, 7.0, 22],
+                [-30, 10, 7.4, 23]
+            ];
+            peakCoords.forEach(([px, pz, pr, ph]) => {
+                const spire = new THREE.Mesh(new THREE.ConeGeometry(pr, ph, 6), limestoneMat);
+                spire.position.set(px, ph * 0.45, pz);
+                spire.rotation.y = px * 0.2;
+                group.add(spire);
+            });
+
+            // 2. Vivac de Alta Montaña e Hitos de Piedra (Jitos)
+            const vivacCoords = [[-12, -23], [14, -22], [22, 16]];
+            vivacCoords.forEach(([vx, vz]) => {
+                const dome = new THREE.Mesh(
+                    new THREE.SphereGeometry(1.9, 8, 6, 0, Math.PI * 2, 0, Math.PI * 0.55),
+                    new THREE.MeshStandardMaterial({
+                        color: 0xD97706,
+                        emissive: 0xF59E0B,
+                        emissiveIntensity: 0.38,
+                        flatShading: true
+                    })
+                );
+                dome.position.set(vx, getTerrainHeight(vx, vz), vz);
+                group.add(dome);
+            });
+        } else if (unitId === 'clan') {
+            // 1. La Gran Pirámide Nevada del Ama Dablam (6.812m) y su glaciar colgante
+            const amaGroup = new THREE.Group();
+            const mainPeak = new THREE.Mesh(
+                new THREE.ConeGeometry(13.5, 36, 5),
+                new THREE.MeshStandardMaterial({ color: 0xE2E8F0, roughness: 0.55, flatShading: true })
+            );
+            mainPeak.position.set(0, 17, -38);
+             mainPeak.rotation.y = Math.PI * 0.18;
+            amaGroup.add(mainPeak);
+
+            // El "Dablam" (glaciar colgante característico)
+            const hangingGlacier = new THREE.Mesh(
+                new THREE.DodecahedronGeometry(4.2, 0),
+                new THREE.MeshStandardMaterial({
+                    color: 0xF8FAFC,
+                    emissive: 0x38BDF8,
+                    emissiveIntensity: 0.22,
+                    flatShading: true
+                })
+            );
+            hangingGlacier.position.set(3.2, 19.5, -31.5);
+            amaGroup.add(hangingGlacier);
+            group.add(amaGroup);
+
+            // 2. La Horquilla Rover gigante clavada en el promontorio rocoso de la orilla
+            const horquillaGroup = new THREE.Group();
+            const staffMat = new THREE.MeshStandardMaterial({
+                color: 0xB91C1C,
+                emissive: 0xDC2626,
+                emissiveIntensity: 0.35,
+                roughness: 0.5
+            });
+            const mainShaft = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.28, 8.5, 8), staffMat);
+            mainShaft.position.y = 4.2;
+            horquillaGroup.add(mainShaft);
+            const leftFork = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 3.2, 8), staffMat);
+            leftFork.position.set(-0.85, 9.2, 0);
+            leftFork.rotation.z = 0.45;
+            horquillaGroup.add(leftFork);
+            const rightFork = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 3.2, 8), staffMat);
+            rightFork.position.set(0.85, 9.2, 0);
+            rightFork.rotation.z = -0.45;
+            horquillaGroup.add(rightFork);
+            horquillaGroup.position.set(-14, getTerrainHeight(-14, -23), -23);
+            group.add(horquillaGroup);
+
+            // 3. Canoa Rover en la orilla («Rema tu propia canoa») y Domos de Campo Base
+            const canoe = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.65, 0.65, 4.8, 8),
+                new THREE.MeshStandardMaterial({ color: 0x991B1B, roughness: 0.6 })
+            );
+            canoe.rotation.z = Math.PI / 2;
+            canoe.rotation.y = 0.4;
+            canoe.scale.set(1, 1, 0.45);
+            canoe.position.set(8, 0.18, -20.5);
+            group.add(canoe);
+            unitLakeState.animatedProps.push({ mesh: canoe, baseY: 0.18, phase: 1.2 });
+
+            // Bloques de hielo glaciar flotando en el lago
+            const iceMat = new THREE.MeshStandardMaterial({ color: 0xE0F2FE, roughness: 0.35, flatShading: true });
+            for (let k = 0; k < 12; k++) {
+                const ang = (k / 12) * Math.PI * 2;
+                const rad = 10 + (k % 4) * 2.8;
+                const ice = new THREE.Mesh(new THREE.DodecahedronGeometry(0.75 + (k % 3) * 0.35, 0), iceMat);
+                ice.position.set(Math.cos(ang) * rad, 0.08, Math.sin(ang) * rad);
+                ice.scale.set(1.3, 0.45, 1.1);
+                group.add(ice);
+                unitLakeState.animatedProps.push({ mesh: ice, baseY: 0.08, phase: k * 0.9 });
+            }
+        }
+    }
+
+    function ensureUnitLakeThreeScene() {
+        const THREE = window.THREE;
+        const lakeCanvas = document.getElementById('uzLakeOrbitCanvas');
+        if (!THREE || !lakeCanvas) return false;
+        if (unitLakeState.renderer) return true;
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas: lakeCanvas,
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance'
+        });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x0B3B5E, 0.0085);
+
+        const camera3D = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.5, 260);
+        camera3D.position.set(0, 11.5, 42);
+
+        const hemiLight = new THREE.HemisphereLight(0x7DD3FC, 0x14532D, 0.95);
+        scene.add(hemiLight);
+
+        const sunLight = new THREE.DirectionalLight(0xFDE047, 1.15);
+        sunLight.position.set(38, 42, -28);
+        scene.add(sunLight);
+
+        const shoreLight = new THREE.PointLight(0xF59E0B, 2.2, 65);
+        shoreLight.position.set(0, 5.5, -22);
+        scene.add(shoreLight);
+
+        const worldGroup = new THREE.Group();
+        scene.add(worldGroup);
+
+        unitLakeState.renderer = renderer;
+        unitLakeState.scene = scene;
+        unitLakeState.camera = camera3D;
+        unitLakeState.hemiLight = hemiLight;
+        unitLakeState.sunLight = sunLight;
+        unitLakeState.shoreLight = shoreLight;
+        unitLakeState.worldGroup = worldGroup;
+
+        window.addEventListener('resize', () => {
+            if (!unitLakeState.renderer || !unitLakeState.camera) return;
+            unitLakeState.camera.aspect = window.innerWidth / window.innerHeight;
+            unitLakeState.camera.updateProjectionMatrix();
+            unitLakeState.renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        return true;
+    }
+
+    function setupUnitLakeWorld(unit) {
+        const unitId = unit.id || 'castores';
+        const biome = UNIT_LAKE_BIOMES[unitId] || UNIT_LAKE_BIOMES.castores;
+        unitLakeState.unitId = unitId;
+        unitLakeState.orbitTarget = 0;
+        unitLakeState.orbitCurrent = 0;
+        unitLakeState.activeStep = 0;
+
+        // Actualizar textos contextuales del bioma y nombres de paradas
+        const biomeTag = document.getElementById('uzWorldBiomeTag');
+        if (biomeTag) biomeTag.textContent = biome.kicker;
+        const loreHeading = document.getElementById('uzLoreHeading');
+        if (loreHeading) loreHeading.textContent = biome.loreHeading;
+
+        const stepButtons = document.querySelectorAll('#uzOrbitStepsNav .uz-orbit-step-btn');
+        stepButtons.forEach((btn, idx) => {
+            const nameSpan = btn.querySelector('.step-name');
+            if (nameSpan && biome.stepNames[idx]) {
+                nameSpan.textContent = biome.stepNames[idx];
+            }
+        });
+
+        syncUnitOrbitDOM(0, 0);
+
+        if (!ensureUnitLakeThreeScene()) return;
+
+        const THREE = window.THREE;
+        const { scene, worldGroup, hemiLight, sunLight, shoreLight } = unitLakeState;
+
+        // Limpiar geometrías previas del mundo anterior
+        while (worldGroup.children.length > 0) {
+            const child = worldGroup.children[0];
+            worldGroup.remove(child);
+        }
+        unitLakeState.rippleRings = [];
+
+        // Configurar atmósfera y luces del bioma
+        scene.fog.color.setHex(biome.fogColor);
+        scene.fog.density = biome.fogDensity;
+        hemiLight.color.setHex(biome.hemiSky);
+        hemiLight.groundColor.setHex(biome.hemiGround);
+        sunLight.color.setHex(biome.sunColor);
+        sunLight.position.set(biome.sunPos[0], biome.sunPos[1], biome.sunPos[2]);
+        shoreLight.color.setHex(biome.shoreLightColor);
+
+        // Función de altura del terreno alrededor del lago (r < 22 es el lecho del lago)
+        const getTerrainHeight = (x, z) => {
+            const r = Math.hypot(x, z);
+            if (r < 20.5) return -3.2;
+            const shoreFactor = smoothstep(20.5, 26.5, r);
+            const mountainFactor = Math.pow( clamp((r - 24) / 68, 0, 1), 1.35 );
+            const ang = Math.atan2(z, x);
+            const wave1 = Math.sin(x * 0.085 + z * 0.065) * Math.cos(x * 0.05 - z * 0.08);
+            const ridge = Math.abs(Math.sin(ang * 3.0 + r * 0.04)) * 0.65 + Math.cos(ang * 5.0 - 0.8) * 0.35;
+            return -3.2 * (1 - shoreFactor) + shoreFactor * (0.45 + mountainFactor * biome.heightScale * (0.55 + 0.45 * wave1 + 0.55 * ridge));
+        };
+
+        // 1. Terreno 3D (Cuenca del Lago + Anfiteatro de Montañas 360°)
+        const terrainGeo = new THREE.PlaneGeometry(190, 190, 88, 88);
+        terrainGeo.rotateX(-Math.PI / 2);
+        const posAttr = terrainGeo.attributes.position;
+        const colors = new Float32Array(posAttr.count * 3);
+
+        for (let i = 0; i < posAttr.count; i++) {
+            const vx = posAttr.getX(i);
+            const vz = posAttr.getZ(i);
+            const vy = getTerrainHeight(vx, vz);
+            posAttr.setY(i, vy);
+
+            const hNorm = clamp((vy - 0.2) / (biome.heightScale * 0.95), 0, 1);
+            let rCol, gCol, bCol;
+            if (hNorm < 0.45) {
+                const t = hNorm / 0.45;
+                rCol = lerp(biome.terrainLow[0], biome.terrainMid[0], t);
+                gCol = lerp(biome.terrainLow[1], biome.terrainMid[1], t);
+                bCol = lerp(biome.terrainLow[2], biome.terrainMid[2], t);
+            } else {
+                const t = (hNorm - 0.45) / 0.55;
+                rCol = lerp(biome.terrainMid[0], biome.terrainHigh[0], t);
+                gCol = lerp(biome.terrainMid[1], biome.terrainHigh[1], t);
+                bCol = lerp(biome.terrainMid[2], biome.terrainHigh[2], t);
+            }
+            colors[i * 3] = rCol;
+            colors[i * 3 + 1] = gCol;
+            colors[i * 3 + 2] = bCol;
+        }
+        terrainGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        terrainGeo.computeVertexNormals();
+
+        const terrainMat = new THREE.MeshStandardMaterial({
+            vertexColors: true,
+            roughness: 0.84,
+            metalness: 0.08,
+            flatShading: true
+        });
+        const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
+        worldGroup.add(terrainMesh);
+
+        // 2. El Lago Central 3D («El Laguito») con ondas dinámicas y reflejo especular
+        const waterGeo = new THREE.PlaneGeometry(54, 54, 52, 52);
+        waterGeo.rotateX(-Math.PI / 2);
+        const waterMat = new THREE.MeshStandardMaterial({
+            color: biome.waterColor,
+            emissive: biome.waterEmissive,
+            emissiveIntensity: 0.42,
+            roughness: 0.16,
+            metalness: 0.72,
+            transparent: true,
+            opacity: 0.90,
+            flatShading: true
+        });
+        const waterMesh = new THREE.Mesh(waterGeo, waterMat);
+        waterMesh.position.y = 0.0;
+        worldGroup.add(waterMesh);
+        unitLakeState.waterMesh = waterMesh;
+        unitLakeState.waterBasePositions = Float32Array.from(waterGeo.attributes.position.array);
+
+        // Anillos concéntricos de ondas suaves en la superficie del agua
+        const rippleMat = new THREE.MeshBasicMaterial({
+            color: 0xFFFFFF,
+            transparent: true,
+            opacity: 0.26,
+            side: THREE.DoubleSide
+        });
+        for (let rIdx = 0; rIdx < 4; rIdx++) {
+            const ringGeo = new THREE.RingGeometry(2.5 + rIdx * 4.2, 2.68 + rIdx * 4.2, 48);
+            ringGeo.rotateX(-Math.PI / 2);
+            const ringMesh = new THREE.Mesh(ringGeo, rippleMat.clone());
+            ringMesh.position.y = 0.05;
+            worldGroup.add(ringMesh);
+            unitLakeState.rippleRings.push({ mesh: ringMesh, phase: rIdx * 0.25 });
+        }
+
+        // 3. Bosque perimetral 360° alrededor del lago
+        const treeCount = unitId === 'clan' ? 26 : (unitId === 'escultas' ? 30 : 48);
+        for (let t = 0; t < treeCount; t++) {
+            const angle = (t / treeCount) * Math.PI * 2 + Math.sin(t * 2.1) * 0.08;
+            // Dejar pasillos de visión despejados desde el lago
+            const radius = 25.5 + (t % 5) * 4.2 + Math.cos(t * 1.7) * 2.0;
+            const tx = Math.cos(angle) * radius;
+            const tz = Math.sin(angle) * radius;
+            // Evitar solapar con el hito norte (0, -25)
+            if (Math.hypot(tx, tz + 24) < 7.5) continue;
+
+            const ty = getTerrainHeight(tx, tz);
+            if (ty < 0.2) continue;
+            const sc = 0.78 + (t % 4) * 0.24;
+            const tree = createPineOrBiomeTree(THREE, unitId, sc);
+            tree.position.set(tx, ty - 0.15, tz);
+            tree.rotation.y = t * 1.1;
+            worldGroup.add(tree);
+        }
+
+        // 4. Hitos 3D únicos de cada Unidad en las orillas del lago
+        buildUnitSpecificLandmarks(THREE, worldGroup, unitId, getTerrainHeight);
+
+        // 5. Partículas atmosféricas flotando sobre el lago (luciérnagas, polen, pavesas o nieve)
+        const pCount = 160;
+        const pGeo = new THREE.BufferGeometry();
+        const pPos = new Float32Array(pCount * 3);
+        for (let i = 0; i < pCount; i++) {
+            const a = Math.random() * Math.PI * 2;
+            const rad = 4 + Math.random() * 44;
+            pPos[i * 3] = Math.cos(a) * rad;
+            pPos[i * 3 + 1] = 0.8 + Math.random() * 18;
+            pPos[i * 3 + 2] = Math.sin(a) * rad;
+        }
+        pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+        const pMat = new THREE.PointsMaterial({
+            color: biome.particleColor,
+            size: unitId === 'clan' ? 0.42 : 0.36,
+            transparent: true,
+            opacity: 0.78
+        });
+        const particles = new THREE.Points(pGeo, pMat);
+        worldGroup.add(particles);
+        unitLakeState.particles = particles;
+    }
+
+    function renderUnitLakeFrame(now) {
+        if (!unitLakeState.isRunning) return;
+        unitLakeState.rafId = requestAnimationFrame(renderUnitLakeFrame);
+
+        const t = now * 0.001;
+        // Interpolación suave de la órbita 360° alrededor del lago
+        unitLakeState.orbitCurrent = lerp(unitLakeState.orbitCurrent, unitLakeState.orbitTarget, 0.075);
+        unitLakeState.smoothMouseX = lerp(unitLakeState.smoothMouseX, unitLakeState.mouseX, 0.08);
+        unitLakeState.smoothMouseY = lerp(unitLakeState.smoothMouseY, unitLakeState.mouseY, 0.08);
+
+        syncUnitOrbitDOM(unitLakeState.orbitCurrent);
+
+        const biome = UNIT_LAKE_BIOMES[unitLakeState.unitId] || UNIT_LAKE_BIOMES.castores;
+
+        if (unitLakeState.renderer && unitLakeState.scene && unitLakeState.camera) {
+            const wrapped = ((unitLakeState.orbitCurrent % 5) + 5) % 5;
+            const idxA = Math.floor(wrapped) % 5;
+            const idxB = (idxA + 1) % 5;
+            const frac = smoothstep(0, 1, wrapped - Math.floor(wrapped));
+
+            const stopA = biome.cameraStops[idxA];
+            const stopB = biome.cameraStops[idxB];
+
+            const camRadius = lerp(stopA.radius, stopB.radius, frac);
+            const camHeight = lerp(stopA.height, stopB.height, frac) + unitLakeState.smoothMouseY * 2.2;
+            const lookY = lerp(stopA.lookY, stopB.lookY, frac) - unitLakeState.smoothMouseY * 1.1;
+
+            // Ángulo orbital completo de 360° (2*PI) alrededor del lago al recorrer las 5 paradas
+            const orbitAngle = (unitLakeState.orbitCurrent / 5) * Math.PI * 2 + unitLakeState.smoothMouseX * 0.16;
+
+            const camX = Math.sin(orbitAngle) * camRadius;
+            const camZ = Math.cos(orbitAngle) * camRadius;
+
+            unitLakeState.camera.position.set(camX, camHeight, camZ);
+            // Mirar a través del lago con un sutil desplazamiento tangencial para encuadrar la orilla opuesta
+            const lookTargetX = Math.cos(orbitAngle) * 3.2;
+            const lookTargetZ = -Math.sin(orbitAngle) * 3.2;
+            unitLakeState.camera.lookAt(lookTargetX, lookY, lookTargetZ);
+
+            // Animar las olas suaves de la superficie del lago
+            if (unitLakeState.waterMesh && unitLakeState.waterBasePositions) {
+                const pos = unitLakeState.waterMesh.geometry.attributes.position;
+                const base = unitLakeState.waterBasePositions;
+                for (let i = 0; i < pos.count; i++) {
+                    const bx = base[i * 3];
+                    const bz = base[i * 3 + 2];
+                    const dist = Math.hypot(bx, bz);
+                    const ripple = Math.sin(dist * 0.55 - t * 2.2) * 0.14 + Math.cos(bx * 0.35 + t * 1.6) * 0.08;
+                    pos.setY(i, ripple);
+                }
+                pos.needsUpdate = true;
+            }
+
+            // Animar los anillos concéntricos en el agua
+            unitLakeState.rippleRings.forEach((ringObj, idx) => {
+                const cycle = (t * 0.18 + ringObj.phase) % 1;
+                const sc = 0.35 + cycle * 1.65;
+                ringObj.mesh.scale.set(sc, 1, sc);
+                ringObj.mesh.material.opacity = Math.sin(cycle * Math.PI) * 0.24;
+            });
+
+            // Animar elementos flotantes y hogueras
+            unitLakeState.animatedProps.forEach(item => {
+                if (item.isFlame) {
+                    const flicker = 0.88 + Math.sin(t * 11 + item.phase) * 0.16;
+                    item.mesh.scale.set(flicker, 0.9 + Math.cos(t * 14) * 0.18, flicker);
+                } else {
+                    item.mesh.position.y = item.baseY + Math.sin(t * 1.8 + item.phase) * 0.09;
+                }
+            });
+
+            // Animar partículas flotantes sobre el lago
+            if (unitLakeState.particles) {
+                unitLakeState.particles.rotation.y = t * 0.04;
+                const pAttr = unitLakeState.particles.geometry.attributes.position;
+                for (let i = 0; i < pAttr.count; i++) {
+                    let py = pAttr.getY(i);
+                    py += (unitLakeState.unitId === 'clan' ? -0.025 : 0.018);
+                    if (py > 19) py = 0.8;
+                    if (py < 0.6) py = 18.5;
+                    pAttr.setY(i, py);
+                }
+                pAttr.needsUpdate = true;
+            }
+
+            unitLakeState.renderer.render(unitLakeState.scene, unitLakeState.camera);
+        }
+    }
+
+    function startUnitLakeOrbitLoop() {
+        if (unitLakeState.isRunning) return;
+        unitLakeState.isRunning = true;
+        unitLakeState.rafId = requestAnimationFrame(renderUnitLakeFrame);
+    }
+
+    function stopUnitLakeOrbitLoop() {
+        unitLakeState.isRunning = false;
+        if (unitLakeState.rafId) {
+            cancelAnimationFrame(unitLakeState.rafId);
+            unitLakeState.rafId = null;
+        }
+    }
+
+    // Eventos interactivos de la experiencia orbital (Rueda, Botones de Parada, ProgressRing, Teclado y Touch)
+    (function bindUnitOrbitEvents() {
+        const overlay = document.getElementById('unitSuperZoomOverlay');
+        if (!overlay) return;
+
+        // 1. Rueda del ratón / Trackpad: órbita suave de 360° alrededor del lago
+        overlay.addEventListener('wheel', (e) => {
+            if (!overlay.classList.contains('is-open')) return;
+
+            // Si el cursor está sobre un contenedor con scroll interno (Kraaletes o Salidas Drive) y aún tiene recorrido, permitir su scroll natural
+            const scrollable = e.target.closest('[data-orbit-scrollable="true"]');
+            if (scrollable && scrollable.scrollHeight > scrollable.clientHeight + 4) {
+                const atTop = scrollable.scrollTop <= 2;
+                const atBottom = scrollable.scrollTop + scrollable.clientHeight >= scrollable.scrollHeight - 2;
+                if ((e.deltaY < 0 && !atTop) || (e.deltaY > 0 && !atBottom)) {
+                    e.stopPropagation();
+                    return;
+                }
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+            const stepDelta = clamp(e.deltaY, -140, 140) * 0.0042;
+            unitLakeState.orbitTarget += stepDelta;
+            scheduleOrbitSnap();
+        }, { passive: false });
+
+        // 2. Parallax suave con el ratón + posibilidad de arrastrar el lago
+        overlay.addEventListener('pointermove', (e) => {
+            if (!overlay.classList.contains('is-open')) return;
+            unitLakeState.mouseX = ((e.clientX / Math.max(1, window.innerWidth)) - 0.5) * 2;
+            unitLakeState.mouseY = ((e.clientY / Math.max(1, window.innerHeight)) - 0.5) * 2;
+
+            if (unitLakeState.isDraggingBg) {
+                const dx = e.clientX - unitLakeState.dragLastX;
+                unitLakeState.dragLastX = e.clientX;
+                unitLakeState.orbitTarget -= dx * 0.0055;
+            }
+        });
+
+        overlay.addEventListener('pointerdown', (e) => {
+            if (e.target.closest('button, a, input, .kraalete-cromo-card, .unit-salida-card, .uz-glass-photo-card')) return;
+            unitLakeState.isDraggingBg = true;
+            unitLakeState.dragLastX = e.clientX;
+            clearTimeout(unitLakeState.snapTimer);
+        });
+
+        window.addEventListener('pointerup', () => {
+            if (unitLakeState.isDraggingBg) {
+                unitLakeState.isDraggingBg = false;
+                scheduleOrbitSnap();
+            }
+        });
+
+        // 3. Soporte táctil (Swipe vertical u horizontal para rodear el lago)
+        overlay.addEventListener('touchstart', (e) => {
+            if (!e.touches.length) return;
+            unitLakeState.touchStartY = e.touches[0].clientY;
+            unitLakeState.touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        overlay.addEventListener('touchmove', (e) => {
+            if (!overlay.classList.contains('is-open') || !e.touches.length) return;
+            const scrollable = e.target.closest('[data-orbit-scrollable="true"]');
+            if (scrollable && scrollable.scrollHeight > scrollable.clientHeight + 4) return;
+
+            const dy = unitLakeState.touchStartY - e.touches[0].clientY;
+            const dx = unitLakeState.touchStartX - e.touches[0].clientX;
+            unitLakeState.touchStartY = e.touches[0].clientY;
+            unitLakeState.touchStartX = e.touches[0].clientX;
+
+            const primaryDelta = Math.abs(dy) > Math.abs(dx) ? dy : dx;
+            unitLakeState.orbitTarget += primaryDelta * 0.0065;
+            scheduleOrbitSnap();
+        }, { passive: true });
+
+        // 4. Botones de las 5 paradas inferiores
+        document.querySelectorAll('#uzOrbitStepsNav [data-goto-orbit]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetIdx = parseInt(btn.getAttribute('data-goto-orbit'), 10);
+                goToUnitOrbitStep(targetIdx);
+            });
+        });
+
+        // 5. Anillo de Progreso (ProgressRing): avanza a la siguiente orilla del lago (y da la vuelta 360°)
+        document.getElementById('uzNextOrbitStepBtn')?.addEventListener('click', () => {
+            clearTimeout(unitLakeState.snapTimer);
+            unitLakeState.orbitTarget = Math.round(unitLakeState.orbitTarget) + 1;
+        });
+
+        // 6. Teclas de flecha cuando estás dentro de una Unidad
+        window.addEventListener('keydown', (e) => {
+            if (!overlay.classList.contains('is-open')) return;
+            if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                unitLakeState.orbitTarget = Math.round(unitLakeState.orbitTarget) + 1;
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                unitLakeState.orbitTarget = Math.round(unitLakeState.orbitTarget) - 1;
+            }
+        });
+    })();
 
     let currentCampForUnlock = null;
 
@@ -2435,6 +3450,7 @@
 
     function closeAllSuperZooms(resetPan = true) {
         clearTimeout(diveTabTimer);
+        stopUnitLakeOrbitLoop();
         if (superZoomState) {
             hyperspaceJump = {
                 start: performance.now(),

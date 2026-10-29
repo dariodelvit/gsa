@@ -3098,4 +3098,482 @@ body.anniversary-50-mode .hud-scroll-fill {
     border-radius: 8px;
 }
 
+/* ==========================================================================
+   EXPERIENCIA 3D ORBITAL ALREDEDOR DEL LAGO POR UNIDAD (ESTILO EMOTION-AGENCY.COM)
+   ========================================================================== */
+#unitSuperZoomOverlay.unit-orbit-world-view {
+    overflow: hidden;
+    background: #040911;
+    user-select: none;
+}
+
+/* Fondos atmosféricos por cada Mundo / Planeta de Unidad */
+#unitSuperZoomOverlay[data-unit-world="castores"] {
+    background: radial-gradient(circle at 50% 42%, #0E4F79 0%, #072844 55%, #03111F 100%);
+}
+#unitSuperZoomOverlay[data-unit-world="manada"] {
+    background: radial-gradient(circle at 50% 38%, #4C225C 0%, #211130 55%, #0B0613 100%);
+}
+#unitSuperZoomOverlay[data-unit-world="tropa"] {
+    background: radial-gradient(circle at 50% 42%, #065F46 0%, #032B21 55%, #01130E 100%);
+}
+#unitSuperZoomOverlay[data-unit-world="escultas"] {
+    background: radial-gradient(circle at 50% 40%, #4A2E1B 0%, #24160D 55%, #0D0805 100%);
+}
+#unitSuperZoomOverlay[data-unit-world="clan"] {
+    background: radial-gradient(circle at 50% 38%, #4C0D19 0%, #22060B 55%, #090305 100%);
+}
+
+.unit-orbit-webgl-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.unit-orbit-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.unit-orbit-vignette {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(3, 6, 12, 0.68) 0%, rgba(3, 6, 12, 0.08) 24%, rgba(3, 6, 12, 0.12) 68%, rgba(3, 6, 12, 0.82) 100%),
+        radial-gradient(circle at 50% 50%, transparent 38%, rgba(2, 4, 9, 0.56) 100%);
+    pointer-events: none;
+}
+
+.unit-orbit-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    background: rgba(5, 8, 15, 0.42);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.unit-orbit-scroll-track {
+    position: relative;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.unit-orbit-sticky-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Pantallas superpuestas que emergen mientras rodeas el lago */
+.uz-orbit-screen {
+    position: absolute;
+    inset: 4.6rem 0 5.6rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 3.2rem;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.uz-orbit-screen.is-active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.uz-orbit-screen-inner {
+    width: 100%;
+    max-width: 1360px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* PARADA 01: Portada Editorial dejando el Lago 3D libre en el centro */
+.uz-screen-hero {
+    justify-content: space-between;
+    padding: 0.75rem 0 0.5rem 0;
+    pointer-events: none;
+}
+
+.uz-hero-top-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    pointer-events: auto;
+}
+
+.uz-hero-bottom-editorial {
+    margin-top: auto;
+    max-width: 920px;
+    pointer-events: auto;
+}
+
+.uz-editorial-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--unit-accent, #38BDF8);
+    margin: 0 0 0.65rem 0;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+}
+
+.uz-editorial-display-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2.6rem, 5.6vw, 5.2rem);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: #FFFFFF;
+    margin: 0;
+    text-shadow: 0 12px 38px rgba(0, 0, 0, 0.75);
+}
+
+/* Píldora estilo Emotion Agency */
+.uz-emotion-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.70rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0.38rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 0.75rem;
+}
+
+.uz-editorial-subtitle {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin: 0 0 0.6rem 0;
+    text-shadow: 0 6px 24px rgba(0, 0, 0, 0.65);
+}
+
+.uz-editorial-subdesc {
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.76);
+    margin: 0;
+    max-width: 640px;
+}
+
+/* PARADA 02: Ambientación, Ley y Fotografía Oficial en tarjeta de cristal */
+.uz-screen-lore {
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 2.4rem;
+    align-items: center;
+}
+
+.uz-lore-editorial-col {
+    background: rgba(6, 10, 18, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 24px;
+    padding: 2.1rem 2.3rem;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.uz-editorial-lead {
+    font-size: 1.02rem;
+    line-height: 1.68;
+    color: rgba(255, 255, 255, 0.90);
+    margin: 0 0 1.25rem 0;
+}
+
+.uz-editorial-quote {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--unit-accent, #38BDF8);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0 14px 14px 0;
+    font-style: italic;
+    font-size: 0.92rem;
+    color: #FFFFFF;
+}
+
+.uz-glass-photo-card {
+    background: rgba(8, 12, 22, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 24px;
+    padding: 0.65rem;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+    overflow: hidden;
+    max-height: 58vh;
+}
+
+.uz-glass-photo-card img,
+.uz-glass-photo-card svg {
+    width: 100%;
+    height: 100%;
+    max-height: 54vh;
+    object-fit: cover;
+    border-radius: 18px;
+    display: block;
+}
+
+/* PARADA 03: Metodología y Progresión (3 Tarjetas Flotantes sobre la Orilla del Lago) */
+.uz-screen-pillars {
+    justify-content: center;
+    gap: 1.75rem;
+}
+
+.uz-editorial-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.35rem;
+}
+
+.uz-editorial-pillars .sz-pillar-item {
+    background: rgba(7, 11, 20, 0.66);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 20px;
+    padding: 1.65rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    transition: transform 0.28s ease, border-color 0.28s ease;
+}
+
+.uz-editorial-pillars .sz-pillar-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--unit-accent, #38BDF8);
+}
+
+.pillar-num-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--unit-accent, #38BDF8);
+    letter-spacing: 0.1em;
+}
+
+/* PARADAS 04 Y 05: Kraaletes y Salidas Drive con scroll interno suave */
+.uz-screen-kraal,
+.uz-screen-camps {
+    justify-content: flex-start;
+    gap: 1.1rem;
+}
+
+.uz-screen-header-compact {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.uz-orbit-scrollable-grid {
+    max-height: calc(100vh - 18.5rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    padding-bottom: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+
+/* HUD Inferior de Órbita (5 Paradas + ProgressRing estilo Emotion Agency) */
+.uz-orbit-hud-bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    padding: 0.85rem 3.2rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(3, 6, 12, 0.86) 100%);
+    pointer-events: none;
+}
+
+.uz-orbit-steps-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    pointer-events: auto;
+}
+
+.uz-orbit-step-btn {
+    background: rgba(10, 15, 26, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: rgba(255, 255, 255, 0.68);
+    padding: 0.52rem 0.95rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.80rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.uz-orbit-step-btn .step-idx {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    opacity: 0.7;
+}
+
+.uz-orbit-step-btn:hover {
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.38);
+    transform: translateY(-2px);
+}
+
+.uz-orbit-step-btn.active {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: var(--unit-accent, #38BDF8);
+    color: #FFFFFF;
+    box-shadow: 0 0 22px var(--unit-glow, rgba(56, 189, 248, 0.28));
+}
+
+.uz-orbit-step-btn.active .step-idx {
+    color: var(--unit-accent, #38BDF8);
+    opacity: 1;
+}
+
+/* ProgressRing Circular (Inspirado en ProgressRing de Emotion Agency) */
+.uz-orbit-progress-ring-btn {
+    pointer-events: auto;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(10, 15, 26, 0.68);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 0.38rem 1rem 0.38rem 0.45rem;
+    border-radius: 999px;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.uz-orbit-progress-ring-btn:hover {
+    border-color: var(--unit-accent, #38BDF8);
+    transform: scale(1.04);
+}
+
+.uz-progress-ring-svg {
+    width: 44px;
+    height: 44px;
+    transform: rotate(-90deg);
+}
+
+.uz-progress-ring-track {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.16);
+    stroke-width: 5;
+}
+
+.uz-progress-ring-bar {
+    fill: none;
+    stroke: var(--unit-accent, #38BDF8);
+    stroke-width: 5.5;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.15s linear;
+}
+
+.uz-progress-ring-center {
+    position: absolute;
+    left: 0.45rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1;
+}
+
+.uz-progress-ring-center small {
+    font-size: 0.62rem;
+    color: #FFFFFF;
+}
+
+.uz-progress-ring-center span {
+    font-size: 0.65rem;
+    color: var(--unit-accent, #38BDF8);
+}
+
+.uz-progress-ring-caption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+@media (max-width: 1024px) {
+    .uz-orbit-screen {
+        padding: 1.1rem 1.4rem;
+    }
+    .uz-screen-lore,
+    .uz-editorial-pillars {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .uz-orbit-hud-bottom {
+        padding: 0.7rem 1.2rem 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .uz-orbit-screen {
+        inset: 4.2rem 0 5.0rem 0;
+        padding: 0.85rem 1rem;
+    }
+    .uz-editorial-display-title {
+        font-size: 2.15rem;
+    }
+    .uz-lore-editorial-col {
+        padding: 1.25rem;
+    }
+    .uz-orbit-step-btn .step-name {
+        display: none;
+    }
+    .uz-progress-ring-caption {
+        display: none;
+    }
+    .uz-orbit-progress-ring-btn {
+        padding: 0.35rem;
+    }
+}
+
+
 
