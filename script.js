@@ -203,8 +203,8 @@
             dx: 0,
             dy: 0,
             r: 7.4,
-            lead: 'El corazón de la aventura scout y la vida en patrulla. En la Tropa Lohengrin los jóvenes viven el espíritu de caballería y exploración: se organizan en Patrullas autónomas con cargos reales, levantan sus construcciones de pionerismo en madera y sisal, y diseñan sus propias aventuras (Aymaras).',
-            lawQuote: '«Cifra su honor en ser digno de confianza, es leal, útil, amigo de todos y hermano de cualquier otro scout.» — Ley Scout',
+            lead: 'Inspirada en la leyenda medieval de Lohengrin, el Caballero del Cisne: aquel misterioso guardián del Santo Grial que acudió navegando en una barca tirada por un cisne blanco para defender el honor de una joven injustamente acusada, pidiendo solo que jamás preguntasen su nombre. En la Tropa Lohengrin vivimos ese mismo ideal de honor, lealtad y aventura organizada en Patrullas autónomas, pionerismo y Aymaras.',
+            lawQuote: '«Cifra su honor en ser digno de confianza, es leal, útil, amigo de todos y hermano de cualquier otro scout.» — El Honor del Caballero del Cisne (Ley Scout)',
             heroSvg: `
                 <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Tropa Lohengrin">
                     <defs>
@@ -223,14 +223,14 @@
                     <line x1="460" y1="275" x2="415" y2="150" stroke="#FDE68A" stroke-width="4"/>
                     <line x1="420" y1="275" x2="420" y2="145" stroke="#F59E0B" stroke-width="4"/>
                     <rect y="272" width="560" height="48" fill="#022C22"/>
-                    <text x="24" y="34" fill="#A7F3D0" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ TROPA LOHENGRIN · SISTEMA DE PATRULLAS Y PIONERISMO</text>
+                    <text x="24" y="34" fill="#A7F3D0" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ TROPA LOHENGRIN · EL CABALLERO DEL CISNE Y LAS PATRULLAS</text>
                 </svg>
             `,
             salidas: [],
             pillars: [
-                { title: 'El Sistema de Patrullas y Cargos Reales', desc: 'Autonomía auténtica en acampada, toma de decisiones en Consejo de Patrulla y responsabilidad compartida.' },
-                { title: 'Las Aymaras y la Corte de Honor', desc: 'Aventuras y proyectos trimestrales ideados, votados y construidos por los propios troperos.' },
-                { title: 'Técnica Scout y Pionerismo', desc: 'Orientación con brújula y mapa topográfico, nudos y amarres, cocina de campo y raids de patrulla.' }
+                { title: 'La Leyenda del Caballero del Cisne (Lohengrin)', desc: 'De los poemas medievales y el Parzival de Wolfram von Eschenbach a la ópera de Wagner: el protector del Santo Grial que llega en una barca tirada por un cisne para defender el honor y la justicia sin buscar fama ni recompensa.' },
+                { title: 'La Corte de Honor y el Sistema de Patrullas', desc: 'Autonomía real en acampada, cargos de responsabilidad en cada Patrulla y toma de decisiones en la Corte de Honor bajo la palabra dada.' },
+                { title: 'Las Aymaras y el Pionerismo', desc: 'Aventuras trimestrales ideadas por los propios troperos, construcciones en madera y sisal, orientación topográfica y vida en la naturaleza.' }
             ],
             kraalTitle: 'Kraal de la Tropa Lohengrin',
             kraalSub: 'Scouters de Tropa (Kraaletes de Lohengrin)',
@@ -2104,9 +2104,9 @@
             ]
         },
         tropa: {
-            kicker: '(01 / 05) · MUNDO TROPA · LAGO ALPINO DE LOHENGRIN Y VALLE DE PATRULLAS',
-            loreHeading: 'Vida en Patrulla y Pionerismo · Tropa Lohengrin',
-            stepNames: ['Lago Lohengrin', 'Honor y Ley', 'Patrullas', 'Kraal Tropa', 'Aymaras Drive'],
+            kicker: '(01 / 05) · MUNDO TROPA · EL LAGO DE LOHENGRIN (EL CABALLERO DEL CISNE) Y VALLE DE PATRULLAS',
+            loreHeading: 'La Leyenda del Caballero del Cisne y Vida en Patrulla · Tropa Lohengrin',
+            stepNames: ['Barca del Cisne', 'Honor y Grial', 'Patrullas', 'Kraal Tropa', 'Aymaras Drive'],
             skyTop: 0x031814,
             skyHorizon: 0x064E3B,
             fogColor: 0x052E24,
@@ -2124,11 +2124,11 @@
             heightScale: 16.0,
             particleColor: 0x6EE7B7,
             cameraStops: [
-                { radius: 43, height: 11.8, lookY: 2.0 },
-                { radius: 37, height: 8.6, lookY: 1.8 },
-                { radius: 40, height: 12.5, lookY: 1.6 },
+                { radius: 42, height: 11.5, lookY: 1.8 },
+                { radius: 36, height: 8.5, lookY: 1.6 },
+                { radius: 40, height: 12.2, lookY: 1.6 },
                 { radius: 38, height: 9.4, lookY: 1.8 },
-                { radius: 44, height: 14.0, lookY: 2.2 }
+                { radius: 44, height: 13.8, lookY: 2.0 }
             ]
         },
         escultas: {
@@ -2791,7 +2791,7 @@
                 const rz = Math.sin(ang) * rad;
                 const ry = getTerrainHeight(rx, rz);
 
-                if (unitId !== 'castores') {
+                if (unitId !== 'castores' && unitId !== 'tropa') {
                     const rSize = 0.55 + (i % 4) * 0.38;
                     const boulderGeo = deformGeometrySmooth(
                         new THREE.SphereGeometry(rSize, 22, 18),
@@ -2811,7 +2811,7 @@
                     group.add(boulder);
                 }
 
-                if ((unitId === 'castores' || i % 2 === 0) && unitId !== 'escultas') {
+                if ((unitId === 'castores' || unitId === 'tropa' || i % 2 === 0) && unitId !== 'escultas') {
                     const reeds = createShoreReedsCluster(THREE, unitId, i);
                     reeds.position.set(Math.cos(ang + 0.04) * 21.8, -0.05, Math.sin(ang + 0.04) * 21.8);
                     group.add(reeds);
@@ -3122,7 +3122,179 @@
             moonCoronaOuter.position.set(-18, 43, -52.5);
             group.add(moonCoronaOuter);
         } else if (unitId === 'tropa') {
-            // 1. GRAN TORRE DE PIONERISMO EN MADERA REDONDEADA + AMARRES Y PUENTE
+            // =================================================================
+            // MUNDO TROPA (LOHENGRIN): LA BARCA DEL CABALLERO DEL CISNE EN EL
+            // LAGO ESMERALDA + TORRE DE PIONERISMO Y CAMPAMENTO DE PATRULLAS
+            // (Estética limpia 3D estilo Firewatch / Pixar)
+            // =================================================================
+            const swanBoatEnsemble = new THREE.Group();
+
+            // 1A. EL CISNE BLANCO ENCANTADO (Escultura 3D estilizada suave tirando de la barca)
+            const swanGroup = new THREE.Group();
+            const swanWhiteMat = new THREE.MeshStandardMaterial({
+                color: 0xF8FAFC,
+                emissive: 0xE2E8F0,
+                emissiveIntensity: 0.16,
+                roughness: 0.48,
+                metalness: 0.04,
+                flatShading: false
+            });
+            const goldEnchantMat = new THREE.MeshStandardMaterial({
+                color: 0xFDE047,
+                emissive: 0xF59E0B,
+                emissiveIntensity: 0.45,
+                roughness: 0.28,
+                metalness: 0.65
+            });
+            const beakMat = new THREE.MeshStandardMaterial({
+                color: 0xF97316,
+                roughness: 0.45
+            });
+
+            // Cuerpo suave del cisne sobre el agua
+            const bodyGeo = deformGeometrySmooth(new THREE.SphereGeometry(1.08, 36, 28), 0.03, 0.7, 3.1);
+            const swanBody = new THREE.Mesh(bodyGeo, swanWhiteMat);
+            swanBody.scale.set(0.84, 0.66, 1.58);
+            swanBody.position.set(0, 0.35, 0);
+            swanGroup.add(swanBody);
+
+            // Alas plegadas arqueadas con elegancia a ambos lados
+            [-1, 1].forEach(side => {
+                const wingGeo = deformGeometrySmooth(new THREE.SphereGeometry(0.92, 32, 24), 0.04, 0.8, 5.2 + side);
+                const wing = new THREE.Mesh(wingGeo, swanWhiteMat);
+                wing.scale.set(0.28, 0.66, 1.48);
+                wing.position.set(side * 0.62, 0.64, -0.15);
+                wing.rotation.z = -side * 0.24;
+                wing.rotation.x = 0.16;
+                swanGroup.add(wing);
+            });
+
+            // Cuello curvo en "S" del Cisne de Lohengrin
+            const neckCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(0, 0.48, 1.15),
+                new THREE.Vector3(0, 1.32, 1.62),
+                new THREE.Vector3(0, 2.15, 1.28),
+                new THREE.Vector3(0, 2.48, 1.55)
+            ]);
+            const neckMesh = new THREE.Mesh(
+                new THREE.TubeGeometry(neckCurve, 32, 0.16, 18, false),
+                swanWhiteMat
+            );
+            swanGroup.add(neckMesh);
+
+            // Cabeza y pico del cisne
+            const swanHead = new THREE.Mesh(new THREE.SphereGeometry(0.23, 24, 20), swanWhiteMat);
+            swanHead.position.set(0, 2.48, 1.58);
+            swanHead.scale.set(0.92, 0.95, 1.22);
+            swanGroup.add(swanHead);
+
+            const swanBeak = new THREE.Mesh(new THREE.ConeGeometry(0.10, 0.42, 18), beakMat);
+            swanBeak.position.set(0, 2.42, 1.92);
+            swanBeak.rotation.x = Math.PI * 0.46;
+            swanGroup.add(swanBeak);
+
+            // Corona / Collar dorado del joven encantado en el cuello del cisne
+            const collar = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.045, 16, 32), goldEnchantMat);
+            collar.position.set(0, 0.96, 1.44);
+            collar.rotation.x = Math.PI * 0.42;
+            swanGroup.add(collar);
+
+            const swanAura = createGlowSprite(THREE, 0xA7F3D0, 5.2, 0.42);
+            swanAura.position.set(0, 1.1, 0.4);
+            swanGroup.add(swanAura);
+
+            swanGroup.position.set(0, 0.04, 4.8);
+            swanBoatEnsemble.add(swanGroup);
+
+            // 1B. LA BARCA MEDIEVAL DE LOHENGRIN ARRASTRADA POR EL CISNE
+            const boatGroup = new THREE.Group();
+            const hullWoodMat = new THREE.MeshStandardMaterial({
+                color: 0x6D4C41,
+                roughness: 0.76,
+                metalness: 0.05,
+                flatShading: false
+            });
+            const hullInnerMat = new THREE.MeshStandardMaterial({
+                color: 0x4E342E,
+                roughness: 0.84
+            });
+
+            // Casco curvo estilizado de la barca medieval
+            const hullOuter = new THREE.Mesh(new THREE.SphereGeometry(1.65, 36, 24, 0, Math.PI * 2, Math.PI * 0.46, Math.PI * 0.54), hullWoodMat);
+            hullOuter.scale.set(0.88, 0.72, 2.35);
+            hullOuter.position.set(0, 0.78, -1.6);
+            boatGroup.add(hullOuter);
+
+            // Borda dorada y roda de proa/popa arqueadas
+            const gunwale = new THREE.Mesh(new THREE.TorusGeometry(1.58, 0.07, 16, 48), goldEnchantMat);
+            gunwale.rotation.x = Math.PI / 2;
+            gunwale.scale.set(0.86, 2.32, 1.0);
+            gunwale.position.set(0, 0.76, -1.6);
+            boatGroup.add(gunwale);
+
+            const prowCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(0, 0.45, 1.85),
+                new THREE.Vector3(0, 1.25, 2.35),
+                new THREE.Vector3(0, 1.85, 2.05)
+            ]);
+            const prowPost = new THREE.Mesh(new THREE.TubeGeometry(prowCurve, 20, 0.09, 14, false), goldEnchantMat);
+            boatGroup.add(prowPost);
+
+            // Bancos de madera de la barca
+            [-0.4, -1.6, -2.8].forEach(bz => {
+                const bench = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.10, 0.36), hullInnerMat);
+                bench.position.set(0, 0.62, bz);
+                boatGroup.add(bench);
+            });
+
+            // El Escudo Plateado y la Espada del Caballero del Cisne junto a la Luz del Santo Grial
+            const silverMat = new THREE.MeshStandardMaterial({
+                color: 0xE2E8F0,
+                roughness: 0.25,
+                metalness: 0.82
+            });
+            const shield = new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.68, 0.08, 28), silverMat);
+            shield.scale.set(0.82, 1.0, 1.18);
+            shield.position.set(0.42, 0.98, -1.2);
+            shield.rotation.z = 0.45;
+            shield.rotation.x = 0.25;
+            boatGroup.add(shield);
+
+            // El Cáliz / Luz protectora del Santo Grial en la proa de la barca
+            const chalice = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.12, 0.42, 20), goldEnchantMat);
+            chalice.position.set(0, 0.92, -0.35);
+            boatGroup.add(chalice);
+
+            const grailCoreGlow = createGlowSprite(THREE, 0xFEF08A, 4.6, 0.85);
+            grailCoreGlow.position.set(0, 1.15, -0.35);
+            boatGroup.add(grailCoreGlow);
+
+            const grailEmeraldHalo = createGlowSprite(THREE, 0x34D399, 8.8, 0.42);
+            grailEmeraldHalo.position.set(0, 1.25, -0.8);
+            boatGroup.add(grailEmeraldHalo);
+
+            swanBoatEnsemble.add(boatGroup);
+
+            // Tirantes / cadenas doradas de luz que unen al Cisne con la Barca de Lohengrin
+            [-0.42, 0.42].forEach(rx => {
+                const reinCurve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(rx * 0.35, 0.95, 6.15),
+                    new THREE.Vector3(rx * 0.85, 0.68, 3.85),
+                    new THREE.Vector3(rx * 0.65, 0.85, 1.85)
+                ]);
+                const reinMesh = new THREE.Mesh(
+                    new THREE.TubeGeometry(reinCurve, 24, 0.032, 10, false),
+                    goldEnchantMat
+                );
+                swanBoatEnsemble.add(reinMesh);
+            });
+
+            swanBoatEnsemble.position.set(0, 0.04, 1.2);
+            swanBoatEnsemble.rotation.y = 0.38;
+            group.add(swanBoatEnsemble);
+            unitLakeState.animatedProps.push({ mesh: swanBoatEnsemble, baseY: 0.04, phase: 0.5 });
+
+            // 2. GRAN TORRE DE PIONERISMO EN MADERA REDONDEADA + AMARRES Y PUENTE
             const towerGroup = new THREE.Group();
             const pinePoleMat = new THREE.MeshStandardMaterial({ color: 0xA16207, roughness: 0.78 });
             const ropeMat = new THREE.MeshStandardMaterial({ color: 0xFDE68A, roughness: 0.65 });
@@ -3180,11 +3352,10 @@
             towerGroup.position.set(-6.5, getTerrainHeight(-6.5, -25.5), -25.5);
             group.add(towerGroup);
 
-            // 2. CAMPAMENTO DE PATRULLAS (TIENDAS CANADIENSES SUAVES CON LUZ CÁLIDA)
+            // 3. CAMPAMENTO DE PATRULLAS (TIENDAS CANADIENSES SUAVES CON LUZ CÁLIDA)
             const tentPositions = [[15.5, -21, 0.55], [22.5, -13.5, 1.05], [23.5, 8.5, 2.15], [-21.5, 12.5, -1.15], [-18.5, -15.5, 0.35]];
             tentPositions.forEach(([tx, tz, rot]) => {
                 const tent = new THREE.Group();
-                // Tienda canadiense a dos aguas con geometría suave extruida/cilíndrica
                 const canvasMat = new THREE.MeshStandardMaterial({
                     color: 0x059669,
                     emissive: 0xF59E0B,
@@ -3211,7 +3382,19 @@
                 group.add(tent);
             });
 
-            // 3. FUEGO DE CAMPAMENTO Y TRONCOS DE VELADA EN LA ORILLA
+            // 4. ARBUSTOS ESTILIZADOS DE RIBERA Y FUEGO DE LA CORTE DE HONOR
+            for (let b = 0; b < 30; b++) {
+                const bAng = (b / 30) * Math.PI * 2 + 0.15;
+                const bRad = 23.4 + (b % 4) * 2.2;
+                const bx = Math.cos(bAng) * bRad;
+                const bz = Math.sin(bAng) * bRad;
+                if (Math.hypot(bx + 6.5, bz + 25.5) < 6.0) continue;
+                const by = getTerrainHeight(bx, bz);
+                const bush = createBotanicalBush(THREE, 0.72 + (b % 3) * 0.18, b * 1.47);
+                bush.position.set(bx, by - 0.08, bz);
+                group.add(bush);
+            }
+
             const campFire = createCampfireWithGlow(THREE, 1.15);
             campFire.position.set(4.8, getTerrainHeight(4.8, -23.0), -23.0);
             group.add(campFire);
@@ -3740,7 +3923,7 @@
         };
 
         // 1. Terreno 3D de Alta Resolución con Normales Suaves (220x220 subdivisiones)
-        const terrainSegs = (unitId === 'manada' || unitId === 'castores') ? 220 : 176;
+        const terrainSegs = (unitId === 'manada' || unitId === 'castores' || unitId === 'tropa') ? 220 : 176;
         const terrainGeo = new THREE.PlaneGeometry(220, 220, terrainSegs, terrainSegs);
         terrainGeo.rotateX(-Math.PI / 2);
         const posAttr = terrainGeo.attributes.position;
@@ -4010,6 +4193,98 @@
                     }
                 `
             });
+        } else if (unitId === 'tropa') {
+            // SHADER GLSL SUAVE DE PRADERA ESMERALDA DE LOHENGRIN, RIBERA DE JADE Y LADERAS DE PIZARRA (TROPA)
+            terrainMat = new THREE.ShaderMaterial({
+                uniforms: {
+                    uSunDir: { value: new THREE.Vector3(30, 38, 35).normalize() },
+                    uFogColor: { value: new THREE.Color(biome.fogColor) },
+                    uFogDensity: { value: biome.fogDensity }
+                },
+                vertexShader: `
+                    varying vec3 vWorldPos;
+                    varying vec3 vNormal;
+                    void main() {
+                        vec4 wp = modelMatrix * vec4(position, 1.0);
+                        vWorldPos = wp.xyz;
+                        vNormal = normalize(mat3(modelMatrix) * normal);
+                        gl_Position = projectionMatrix * viewMatrix * wp;
+                    }
+                `,
+                fragmentShader: `
+                    varying vec3 vWorldPos;
+                    varying vec3 vNormal;
+                    uniform vec3 uSunDir;
+                    uniform vec3 uFogColor;
+                    uniform float uFogDensity;
+
+                    float hash2(vec2 p) {
+                        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+                    }
+                    float noise2(vec2 p) {
+                        vec2 i = floor(p);
+                        vec2 f = fract(p);
+                        f = f * f * (3.0 - 2.0 * f);
+                        float a = hash2(i);
+                        float b = hash2(i + vec2(1.0, 0.0));
+                        float c = hash2(i + vec2(0.0, 1.0));
+                        float d = hash2(i + vec2(1.0, 1.0));
+                        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+                    }
+                    float fbm(vec2 p) {
+                        float v = 0.0;
+                        float a = 0.5;
+                        mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
+                        for (int i = 0; i < 5; i++) {
+                            v += a * noise2(p);
+                            p = rot * p * 2.04;
+                            a *= 0.5;
+                        }
+                        return v;
+                    }
+
+                    void main() {
+                        float r = length(vWorldPos.xz);
+                        vec3 n = normalize(vNormal);
+                        float slope = 1.0 - clamp(n.y, 0.0, 1.0);
+
+                        float nMacro = fbm(vWorldPos.xz * 0.11);
+                        float nMicro = fbm(vWorldPos.xz * 0.36 + vec2(1.8, -2.4));
+
+                        // Ribera de jade suave y pradera alpina de Lohengrin
+                        vec3 jadeShore = vec3(0.08, 0.24, 0.18);
+                        vec3 deepEmeraldMeadow = vec3(0.04, 0.26, 0.16);
+                        vec3 sunlitAlpineGrass = vec3(0.10, 0.38, 0.24);
+                        vec3 meadowCol = mix(deepEmeraldMeadow, sunlitAlpineGrass, nMacro * 0.72 + nMicro * 0.28);
+
+                        // Estratos suaves de roca alpina en las laderas del valle
+                        float strata = smoothstep(-0.5, 0.6, sin(vWorldPos.y * 4.2 + nMacro * 3.6));
+                        vec3 alpineSlate = mix(vec3(0.16, 0.24, 0.22), vec3(0.32, 0.42, 0.38), strata * 0.6 + 0.4);
+                        float isRockSlope = smoothstep(0.20, 0.44, slope) * smoothstep(0.8, 4.0, vWorldPos.y);
+
+                        float shoreToMeadow = smoothstep(20.5, 24.2, r) * smoothstep(0.10, 0.75, vWorldPos.y);
+                        vec3 albedo = mix(jadeShore, meadowCol, clamp(shoreToMeadow, 0.0, 1.0));
+                        albedo = mix(albedo, alpineSlate, isRockSlope * 0.85);
+
+                        float diff = max(dot(n, uSunDir), 0.0);
+                        vec3 sunLight = vec3(0.75, 0.98, 0.86) * (diff * 0.88);
+                        vec3 ambientLight = mix(vec3(0.05, 0.18, 0.14), vec3(0.22, 0.48, 0.38), n.y * 0.5 + 0.5);
+
+                        // Resplandor cálido de la hoguera de la Corte de Honor en la orilla norte
+                        float dFire = length(vWorldPos - vec3(4.8, 1.2, -23.0));
+                        float fireAtten = 1.0 / (1.0 + 0.09 * dFire * dFire);
+                        vec3 fireGlow = vec3(1.0, 0.62, 0.18) * (fireAtten * 0.85);
+
+                        vec3 litColor = albedo * (ambientLight + sunLight + fireGlow);
+
+                        float dist = length(cameraPosition - vWorldPos);
+                        float fogFactor = 1.0 - exp(- (uFogDensity * dist) * (uFogDensity * dist));
+                        litColor = mix(litColor, uFogColor, clamp(fogFactor, 0.0, 1.0));
+
+                        gl_FragColor = vec4(litColor, 1.0);
+                    }
+                `
+            });
         } else {
             const detailTex = getTerrainDetailTexture(THREE);
             terrainMat = new THREE.MeshStandardMaterial({
@@ -4052,7 +4327,7 @@
             unitLakeState.waterUniforms = null;
         }
 
-        // 3. Bosque perimetral 360° de alta resolución (En Manada y Castores: Bosque botánico frondoso de múltiples anillos)
+        // 3. Bosque perimetral 360° de alta resolución
         if (unitId === 'manada') {
             const jungleTreeCount = 164;
             for (let t = 0; t < jungleTreeCount; t++) {
@@ -4092,6 +4367,25 @@
                 const tree = createPineOrBiomeTree(THREE, 'castores', sc, t * 1.57);
                 tree.position.set(tx, ty - 0.22, tz);
                 tree.rotation.y = t * 1.25;
+                worldGroup.add(tree);
+            }
+        } else if (unitId === 'tropa') {
+            const pineTreeCount = 84;
+            for (let t = 0; t < pineTreeCount; t++) {
+                const ringIdx = t % 3;
+                const angle = (t / pineTreeCount) * Math.PI * 2 + Math.sin(t * 2.3) * 0.05;
+                const radius = 25.5 + ringIdx * 10.2 + (t % 5) * 2.2 + Math.cos(t * 1.7) * 1.5;
+                const safeRadius = (radius > 35.0 && radius < 44.5) ? (radius < 39.8 ? 33.8 : 45.8) : radius;
+                const tx = Math.cos(angle) * safeRadius;
+                const tz = Math.sin(angle) * safeRadius;
+                if (Math.hypot(tx + 1.0, tz + 24.0) < 9.5) continue;
+
+                const ty = getTerrainHeight(tx, tz);
+                if (ty < 0.22) continue;
+                const sc = 0.85 + (t % 4) * 0.22 + (ringIdx === 2 ? 0.28 : 0);
+                const tree = createPineOrBiomeTree(THREE, 'tropa', sc, t * 1.49);
+                tree.position.set(tx, ty - 0.18, tz);
+                tree.rotation.y = t * 1.15;
                 worldGroup.add(tree);
             }
         } else {
