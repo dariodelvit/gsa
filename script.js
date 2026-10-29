@@ -2327,6 +2327,118 @@
         return tex;
     }
 
+    function getBotanicalFoliageTexture(THREE) {
+        if (unitLakeState.foliageTexture) return unitLakeState.foliageTexture;
+        const c = document.createElement('canvas');
+        c.width = 512;
+        c.height = 512;
+        const g = c.getContext('2d');
+        g.clearRect(0, 0, 512, 512);
+
+        // Dibujar cientos de hojas botánicas orgánicas superpuestas desde el centro hacia los bordes
+        for (let i = 0; i < 420; i++) {
+            const prog = i / 420;
+            const dist = Math.pow(Math.random(), 0.68) * 205;
+            const ang = Math.random() * Math.PI * 2;
+            const lx = 256 + Math.cos(ang) * dist;
+            const ly = 256 + Math.sin(ang) * dist;
+            const leafLen = 22 + Math.random() * 28 * (1 - dist / 260);
+            const leafWid = leafLen * (0.38 + Math.random() * 0.18);
+            const rot = ang + (Math.random() - 0.5) * 1.2;
+
+            g.save();
+            g.translate(lx, ly);
+            g.rotate(rot);
+
+            // Sombra suave entre capas de hojas
+            const luma = 0.35 + prog * 0.65;
+            const rCol = Math.floor((18 + Math.random() * 24) * luma);
+            const gCol = Math.floor((88 + Math.random() * 72) * luma);
+            const bCol = Math.floor((42 + Math.random() * 34) * luma);
+
+            g.fillStyle = `rgba(${rCol}, ${gCol}, ${bCol}, 0.92)`;
+            g.beginPath();
+            g.moveTo(-leafLen * 0.5, 0);
+            g.quadraticCurveTo(0, -leafWid, leafLen * 0.5, 0);
+            g.quadraticCurveTo(0, leafWid, -leafLen * 0.5, 0);
+            g.fill();
+
+            // Nervio central sutil de la hoja
+            g.strokeStyle = `rgba(${Math.min(255, rCol + 25)}, ${Math.min(255, gCol + 38)}, ${Math.min(255, bCol + 22)}, 0.45)`;
+            g.lineWidth = 1.1;
+            g.beginPath();
+            g.moveTo(-leafLen * 0.42, 0);
+            g.lineTo(leafLen * 0.42, 0);
+            g.stroke();
+            g.restore();
+        }
+
+        const tex = new THREE.CanvasTexture(c);
+        unitLakeState.foliageTexture = tex;
+        return tex;
+    }
+
+    function getBarkTexture(THREE) {
+        if (unitLakeState.barkTexture) return unitLakeState.barkTexture;
+        const c = document.createElement('canvas');
+        c.width = 256;
+        c.height = 256;
+        const g = c.getContext('2d');
+        g.fillStyle = '#3E2723';
+        g.fillRect(0, 0, 256, 256);
+        for (let i = 0; i < 650; i++) {
+            const x = Math.random() * 256;
+            const y = Math.random() * 256;
+            const w = 1.5 + Math.random() * 3.5;
+            const h = 18 + Math.random() * 48;
+            g.fillStyle = i % 2 === 0 ? 'rgba(28, 17, 13, 0.55)' : 'rgba(93, 64, 55, 0.45)';
+            g.fillRect(x, y, w, h);
+        }
+        const tex = new THREE.CanvasTexture(c);
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(2, 4);
+        unitLakeState.barkTexture = tex;
+        return tex;
+    }
+
+    function getRealisticMoonTexture(THREE) {
+        if (unitLakeState.moonTexture) return unitLakeState.moonTexture;
+        const c = document.createElement('canvas');
+        c.width = 512;
+        c.height = 512;
+        const g = c.getContext('2d');
+        const baseGrad = g.createRadialGradient(230, 230, 20, 256, 256, 256);
+        baseGrad.addColorStop(0.0, '#FFFDF5');
+        baseGrad.addColorStop(0.65, '#FEF3C7');
+        baseGrad.addColorStop(0.92, '#E2E8F0');
+        baseGrad.addColorStop(1.0, '#94A3B8');
+        g.fillStyle = baseGrad;
+        g.fillRect(0, 0, 512, 512);
+
+        // Mares lunares (Maria) y cráteres sutiles realistas
+        const maria = [
+            [180, 190, 75, 0.14],
+            [290, 165, 62, 0.12],
+            [320, 255, 58, 0.13],
+            [155, 290, 68, 0.11],
+            [235, 260, 50, 0.10]
+        ];
+        maria.forEach(([mx, my, mr, op]) => {
+            const mg = g.createRadialGradient(mx, my, mr * 0.1, mx, my, mr);
+            mg.addColorStop(0, `rgba(71, 85, 105, ${op})`);
+            mg.addColorStop(1, 'rgba(71, 85, 105, 0)');
+            g.fillStyle = mg;
+            g.beginPath();
+            g.arc(mx, my, mr, 0, Math.PI * 2);
+            g.fill();
+        });
+
+        const tex = new THREE.CanvasTexture(c);
+        unitLakeState.moonTexture = tex;
+        return tex;
+    }
+
     function createGlowSprite(THREE, hexColor, scaleSize = 6.0, opacity = 0.65) {
         const mat = new THREE.SpriteMaterial({
             map: getSoftGlowTexture(THREE),
@@ -2347,7 +2459,6 @@
             const vx = pos.getX(i);
             const vy = pos.getY(i);
             const vz = pos.getZ(i);
-            const len = Math.hypot(vx, vy, vz) || 1;
             const n = fbm2D(vx * freq + seed, vz * freq + vy * 0.7 - seed, 3);
             const factor = 1 + n * amp;
             pos.setXYZ(i, vx * factor, vy * factor, vz * factor);
@@ -2361,7 +2472,6 @@
         const nearestStep = forceStep !== null ? forceStep : (Math.round(wrapped) % 5);
         unitLakeState.activeStep = nearestStep;
 
-        // 1. Actualizar pantallas (.uz-orbit-screen) con transición suave estilo Emotion Agency
         const screens = document.querySelectorAll('#unitSuperZoomOverlay .uz-orbit-screen');
         screens.forEach((scr, idx) => {
             let diff = idx - wrapped;
@@ -2386,12 +2496,10 @@
             }
         });
 
-        // 2. Actualizar botones de parada inferiores
         document.querySelectorAll('#uzOrbitStepsNav .uz-orbit-step-btn').forEach((btn, idx) => {
             btn.classList.toggle('active', idx === nearestStep);
         });
 
-        // 3. Actualizar ProgressRing (0° a 360°)
         const circumference = 276.46;
         const normOrbit = wrapped / 5;
         const ringBar = document.getElementById('uzOrbitRingBar');
@@ -2424,72 +2532,118 @@
     }
 
     // =========================================================================
-    // ÁRBOLES ORGÁNICOS DE ALTA RESOLUCIÓN Y VEGETACIÓN DE ORILLA (SIN FLAT-SHADING)
+    // ÁRBOLES BOTÁNICOS REALISTAS Y VEGETACIÓN ORGÁNICA (CERO BOLAS / LOW-POLY)
     // =========================================================================
     function createPineOrBiomeTree(THREE, unitId, scale = 1, seed = 1) {
         const tree = new THREE.Group();
+        const barkTex = getBarkTexture(THREE);
         const barkMat = new THREE.MeshStandardMaterial({
-            color: unitId === 'clan' ? 0x3E2723 : 0x4E342E,
+            map: barkTex,
+            bumpMap: barkTex,
+            bumpScale: 0.08,
+            color: unitId === 'clan' ? 0x5D4037 : 0x6D4C41,
             roughness: 0.92,
             metalness: 0.02
         });
 
-        // Tronco orgánico suavemente curvado con raíces en la base
-        const trunkGeo = new THREE.CylinderGeometry(0.15 * scale, 0.36 * scale, 2.8 * scale, 18, 6);
+        // Tronco orgánico con ensanchamiento de raíces en la base y ramas superiores
+        const trunkH = (unitId === 'manada' ? 4.2 : 3.0) * scale;
+        const trunkGeo = new THREE.CylinderGeometry(0.16 * scale, 0.44 * scale, trunkH, 20, 8);
         const tPos = trunkGeo.attributes.position;
         for (let i = 0; i < tPos.count; i++) {
             const py = tPos.getY(i);
-            const bend = Math.sin((py / (2.8 * scale) + 0.5) * Math.PI) * 0.14 * scale * Math.sin(seed);
-            tPos.setX(i, tPos.getX(i) + bend);
+            const hNorm = (py + trunkH * 0.5) / trunkH;
+            const rootFlare = hNorm < 0.22 ? (1 + Math.pow(1 - hNorm / 0.22, 2) * 0.45) : 1.0;
+            const bendX = Math.sin(hNorm * Math.PI) * 0.22 * scale * Math.sin(seed);
+            const bendZ = Math.sin(hNorm * Math.PI) * 0.16 * scale * Math.cos(seed * 1.3);
+            tPos.setX(i, tPos.getX(i) * rootFlare + bendX);
+            tPos.setZ(i, tPos.getZ(i) * rootFlare + bendZ);
         }
         trunkGeo.computeVertexNormals();
         const trunk = new THREE.Mesh(trunkGeo, barkMat);
-        trunk.position.y = 1.35 * scale;
+        trunk.position.y = trunkH * 0.48;
         tree.add(trunk);
 
         if (unitId === 'manada') {
-            // Árbol frondoso tropical de la Selva de Seeonee con copa multicapa suave
-            const leafColors = [0x065F46, 0x047857, 0x15803D];
-            const cloudOffsets = [
-                [0, 3.1, 0, 1.75],
-                [-1.05, 2.65, 0.65, 1.35],
-                [1.1, 2.75, -0.55, 1.4],
-                [0.35, 3.65, 0.45, 1.3],
-                [-0.55, 2.9, -0.85, 1.25]
-            ];
-            cloudOffsets.forEach(([cx, cy, cz, cr], idx) => {
-                const mat = new THREE.MeshStandardMaterial({
-                    color: leafColors[(idx + Math.floor(seed)) % leafColors.length],
-                    roughness: 0.76,
-                    metalness: 0.04
-                });
-                const puffGeo = deformGeometrySmooth(
-                    new THREE.SphereGeometry(cr * scale, 22, 18),
-                    0.16,
-                    1.1,
-                    seed + idx * 3.1
+            // Ramas principales de madera que sostienen la copa selvática
+            for (let b = 0; b < 4; b++) {
+                const bAng = (b / 4) * Math.PI * 2 + seed * 0.5;
+                const branch = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.07 * scale, 0.15 * scale, 2.2 * scale, 12),
+                    barkMat
                 );
-                const puff = new THREE.Mesh(puffGeo, mat);
-                puff.position.set(cx * scale, cy * scale, cz * scale);
-                puff.scale.set(1.18, 0.82, 1.14);
-                tree.add(puff);
+                branch.position.set(Math.cos(bAng) * 0.65 * scale, trunkH * 0.88, Math.sin(bAng) * 0.65 * scale);
+                branch.rotation.z = -Math.cos(bAng) * 0.62;
+                branch.rotation.x = Math.sin(bAng) * 0.62;
+                tree.add(branch);
+            }
+
+            // Copa botánica realista mediante planos curvados de follaje con textura de hojas reales y normales esféricas
+            const leafTex = getBotanicalFoliageTexture(THREE);
+            const foliageTints = [0x22C55E, 0x16A34A, 0x15803D, 0x4ADE80];
+            const leafMat = new THREE.MeshStandardMaterial({
+                map: leafTex,
+                color: foliageTints[Math.floor(Math.abs(seed * 10)) % foliageTints.length],
+                alphaTest: 0.14,
+                transparent: true,
+                side: THREE.DoubleSide,
+                roughness: 0.72,
+                metalness: 0.04
+            });
+
+            const clusterCenters = [
+                [0, trunkH * 1.05, 0, 2.8],
+                [-1.35, trunkH * 0.92, 0.85, 2.3],
+                [1.4, trunkH * 0.95, -0.75, 2.35],
+                [0.45, trunkH * 1.18, 0.95, 2.2],
+                [-0.75, trunkH * 1.02, -1.25, 2.25],
+                [0.85, trunkH * 0.88, 1.25, 2.1]
+            ];
+
+            clusterCenters.forEach(([cx, cy, cz, cSize], cIdx) => {
+                // Tres planos botánicos cruzados y ligeramente arqueados por cada racimo de follaje
+                for (let p = 0; p < 3; p++) {
+                    const cardGeo = new THREE.PlaneGeometry(cSize * scale, cSize * scale, 4, 4);
+                    const cPos = cardGeo.attributes.position;
+                    const cNorm = cardGeo.attributes.normal;
+                    for (let k = 0; k < cPos.count; k++) {
+                        const px = cPos.getX(k);
+                        const py = cPos.getY(k);
+                        const archZ = -(px * px + py * py) * 0.08;
+                        cPos.setZ(k, archZ);
+                        // Normales apuntando radialmente hacia arriba/afuera para iluminación suave de copa
+                        const nx = px * 0.35;
+                        const ny = 0.85 + py * 0.25;
+                        const nz = 0.35;
+                        const nLen = Math.hypot(nx, ny, nz) || 1;
+                        cNorm.setXYZ(k, nx / nLen, ny / nLen, nz / nLen);
+                    }
+                    const card = new THREE.Mesh(cardGeo, leafMat);
+                    card.position.set(cx * scale, cy, cz * scale);
+                    card.rotation.y = (p / 3) * Math.PI + cIdx * 0.7 + seed;
+                    card.rotation.x = -0.28 + (p % 2) * 0.42;
+                    tree.add(card);
+                }
             });
         } else {
-            // Pinos y abetos orgánicos con faldas onduladas suaves (5 niveles de ramaje)
+            // Coníferas y abetos alpinos con 6 pisos densos de ramas acanaladas y textura botánica
             const baseLeafColor = unitId === 'clan'
                 ? 0x1E293B
                 : (unitId === 'escultas' ? 0x166534 : (unitId === 'tropa' ? 0x065F46 : 0x15803D));
+            const detailTex = getTerrainDetailTexture(THREE);
             const coneMat = new THREE.MeshStandardMaterial({
                 color: baseLeafColor,
-                roughness: 0.82,
+                bumpMap: detailTex,
+                bumpScale: 0.06,
+                roughness: 0.80,
                 metalness: 0.03
             });
 
-            const tiers = 5;
+            const tiers = 6;
             for (let l = 0; l < tiers; l++) {
-                const r = (1.85 - l * 0.31) * scale;
-                const h = (1.95 - l * 0.22) * scale;
-                const boughGeo = new THREE.ConeGeometry(r, h, 28, 5);
+                const r = (1.92 - l * 0.27) * scale;
+                const h = (1.85 - l * 0.18) * scale;
+                const boughGeo = new THREE.ConeGeometry(r, h, 32, 6);
                 const bPos = boughGeo.attributes.position;
                 for (let k = 0; k < bPos.count; k++) {
                     const vx = bPos.getX(k);
@@ -2498,9 +2652,8 @@
                     const ang = Math.atan2(vz, vx);
                     const rad = Math.hypot(vx, vz);
                     if (rad > 0.05) {
-                        // Ondulación orgánica de las ramas del abeto
-                        const ruffle = 1 + Math.sin(ang * 7 + l * 1.9 + seed) * 0.09 + Math.cos(ang * 11 - seed) * 0.05;
-                        const droop = -Math.pow(rad / r, 1.6) * 0.28 * scale;
+                        const ruffle = 1 + Math.sin(ang * 8 + l * 1.9 + seed) * 0.08 + Math.cos(ang * 13 - seed) * 0.04;
+                        const droop = -Math.pow(rad / r, 1.5) * 0.26 * scale;
                         bPos.setX(k, vx * ruffle);
                         bPos.setY(k, vy + droop);
                         bPos.setZ(k, vz * ruffle);
@@ -2508,29 +2661,49 @@
                 }
                 boughGeo.computeVertexNormals();
                 const bough = new THREE.Mesh(boughGeo, coneMat);
-                bough.position.y = (1.95 + l * 0.88) * scale;
+                bough.position.y = (1.75 + l * 0.76) * scale;
                 tree.add(bough);
             }
 
             if (unitId === 'clan' || unitId === 'escultas') {
-                // Manto suave de nieve en las copas de alta montaña
                 const snowMat = new THREE.MeshStandardMaterial({
                     color: 0xF1F5F9,
                     roughness: 0.45,
                     metalness: 0.08
                 });
                 const snowCapGeo = deformGeometrySmooth(
-                    new THREE.ConeGeometry(0.95 * scale, 1.35 * scale, 24, 4),
-                    0.10,
+                    new THREE.ConeGeometry(0.92 * scale, 1.3 * scale, 24, 4),
+                    0.08,
                     1.8,
                     seed
                 );
                 const snowCap = new THREE.Mesh(snowCapGeo, snowMat);
-                snowCap.position.y = 5.45 * scale;
+                snowCap.position.y = 5.55 * scale;
                 tree.add(snowCap);
             }
         }
         return tree;
+    }
+
+    function createBotanicalBush(THREE, scale = 1.0, seed = 0) {
+        const bush = new THREE.Group();
+        const leafTex = getBotanicalFoliageTexture(THREE);
+        const bushMat = new THREE.MeshStandardMaterial({
+            map: leafTex,
+            color: 0x16A34A,
+            alphaTest: 0.14,
+            transparent: true,
+            side: THREE.DoubleSide,
+            roughness: 0.75
+        });
+        for (let i = 0; i < 4; i++) {
+            const card = new THREE.Mesh(new THREE.PlaneGeometry(2.2 * scale, 1.6 * scale), bushMat);
+            card.position.y = 0.65 * scale;
+            card.rotation.y = (i / 4) * Math.PI + seed;
+            card.rotation.x = (i % 2 === 0 ? 0.22 : -0.22);
+            bush.add(card);
+        }
+        return bush;
     }
 
     function createShoreReedsCluster(THREE, unitId, seed = 0) {
@@ -2570,52 +2743,36 @@
 
     function createCampfireWithGlow(THREE, scale = 1.0) {
         const fireGroup = new THREE.Group();
-        const logMat = new THREE.MeshStandardMaterial({ color: 0x4E342E, roughness: 0.9 });
+        const barkTex = getBarkTexture(THREE);
+        const logMat = new THREE.MeshStandardMaterial({ map: barkTex, color: 0x4E342E, roughness: 0.9 });
         for (let i = 0; i < 6; i++) {
             const ang = (i / 6) * Math.PI;
-            const log = new THREE.Mesh(new THREE.CylinderGeometry(0.14 * scale, 0.17 * scale, 2.2 * scale, 14), logMat);
+            const log = new THREE.Mesh(new THREE.CylinderGeometry(0.13 * scale, 0.16 * scale, 2.1 * scale, 16), logMat);
             log.rotation.z = Math.PI / 2 - 0.18;
             log.rotation.y = ang;
-            log.position.y = 0.22 * scale;
+            log.position.y = 0.20 * scale;
             fireGroup.add(log);
         }
 
-        // Piedras redondeadas de protección alrededor de la hoguera
-        const stoneMat = new THREE.MeshStandardMaterial({ color: 0x57534E, roughness: 0.85 });
-        for (let s = 0; s < 10; s++) {
-            const a = (s / 10) * Math.PI * 2;
-            const st = new THREE.Mesh(new THREE.SphereGeometry(0.24 * scale, 14, 12), stoneMat);
-            st.scale.set(1.2, 0.7, 1.0);
-            st.position.set(Math.cos(a) * 1.25 * scale, 0.12 * scale, Math.sin(a) * 1.25 * scale);
-            fireGroup.add(st);
-        }
+        // Resplandor volumétrico suave de brasas y fuego (sin conos rígidos)
+        const coreSprite = createGlowSprite(THREE, 0xFEF08A, 2.4 * scale, 0.95);
+        coreSprite.position.y = 0.75 * scale;
+        fireGroup.add(coreSprite);
 
-        // Llamas orgánicas multicapa suaves
-        const outerFlameGeo = deformGeometrySmooth(new THREE.ConeGeometry(0.85 * scale, 2.4 * scale, 24, 6), 0.15, 1.5, 2.1);
-        const outerFlame = new THREE.Mesh(
-            outerFlameGeo,
-            new THREE.MeshBasicMaterial({ color: 0xF97316, transparent: true, opacity: 0.88 })
-        );
-        outerFlame.position.y = 1.15 * scale;
-        fireGroup.add(outerFlame);
+        const flameSprite = createGlowSprite(THREE, 0xF97316, 4.2 * scale, 0.85);
+        flameSprite.position.y = 1.05 * scale;
+        fireGroup.add(flameSprite);
 
-        const innerFlameGeo = deformGeometrySmooth(new THREE.ConeGeometry(0.48 * scale, 1.7 * scale, 20, 4), 0.12, 1.8, 4.3);
-        const innerFlame = new THREE.Mesh(
-            innerFlameGeo,
-            new THREE.MeshBasicMaterial({ color: 0xFEF08A, transparent: true, opacity: 0.95 })
-        );
-        innerFlame.position.y = 0.95 * scale;
-        fireGroup.add(innerFlame);
-
-        const halo = createGlowSprite(THREE, 0xFB923C, 7.5 * scale, 0.72);
-        halo.position.y = 1.3 * scale;
+        const halo = createGlowSprite(THREE, 0xEA580C, 8.2 * scale, 0.55);
+        halo.position.y = 1.2 * scale;
         fireGroup.add(halo);
 
         unitLakeState.animatedProps.push({
-            mesh: outerFlame,
-            innerMesh: innerFlame,
+            mesh: flameSprite,
+            innerMesh: coreSprite,
             haloSprite: halo,
-            baseY: 1.15 * scale,
+            baseY: 1.05 * scale,
+            baseScale: 4.2 * scale,
             phase: Math.random() * 6,
             isFlame: true
         });
@@ -2807,207 +2964,78 @@
             }
         } else if (unitId === 'manada') {
             // =================================================================
-            // MUNDO MANADA: LA ROCA DEL CONSEJO EN EL CENTRO DE UN BOSQUE DENSO
+            // MUNDO MANADA: LA ROCA DEL CONSEJO EN UN BOSQUE DENSO BAJO LA LUNA
+            // (Topografía continua esculpida en alta resolución + Shader GLSL
+            //  de estratos de roca y musgo + vegetación botánica real, sin lobos)
             // =================================================================
             const councilGroup = new THREE.Group();
-            const rockBaseMat = new THREE.MeshStandardMaterial({
-                color: 0x64748B,
-                roughness: 0.78,
-                metalness: 0.08
-            });
-            const rockMoonlitMat = new THREE.MeshStandardMaterial({
-                color: 0x94A3B8,
-                emissive: 0x1E293B,
-                emissiveIntensity: 0.22,
-                roughness: 0.68,
-                metalness: 0.12
-            });
 
-            // 1. Macizo rocoso central elevado (La Cima de la Roca del Consejo en (0, y, 0))
-            const mainSlabs = [
-                [0, 1.8, 0, 12.5, 0.32, 1.15, 1.10],
-                [0, 3.6, 0, 10.2, 0.36, 1.10, 1.05],
-                [0, 5.4, -0.3, 7.8, 0.40, 1.08, 1.02],
-                // La Gran Peña de Akela sobresaliendo en la cúspide de la colina
-                [0, 7.6, -1.2, 4.4, 0.48, 1.25, 1.35],
-                [0, 9.2, -1.6, 3.1, 0.42, 1.15, 1.45]
-            ];
-            mainSlabs.forEach(([sx, sy, sz, sr, scaleY, scaleX, scaleZ], idx) => {
-                const slabGeo = deformGeometrySmooth(
-                    new THREE.SphereGeometry(sr, 40, 28),
-                    0.15,
-                    0.75,
-                    40 + idx * 3.7
-                );
-                const slab = new THREE.Mesh(slabGeo, idx >= 3 ? rockMoonlitMat : rockBaseMat);
-                slab.position.set(sx, sy, sz);
-                slab.scale.set(scaleX, scaleY, scaleZ);
-                councilGroup.add(slab);
-            });
-
-            // 2. El Círculo de las Cien Piedras (Rocas dispuestas en anfiteatro donde se sienta la Manada)
-            const sittingStonesCount = 20;
-            for (let s = 0; s < sittingStonesCount; s++) {
-                const ang = (s / sittingStonesCount) * Math.PI * 2;
-                const rad = 7.4 + (s % 2) * 1.8;
-                const bx = Math.cos(ang) * rad;
-                const bz = Math.sin(ang) * rad;
-                const by = 4.6 + Math.cos(s * 1.7) * 0.45;
-                const stoneGeo = deformGeometrySmooth(
-                    new THREE.SphereGeometry(0.95 + (s % 3) * 0.25, 22, 18),
-                    0.18,
-                    1.3,
-                    80 + s
-                );
-                const stone = new THREE.Mesh(stoneGeo, s % 2 === 0 ? rockMoonlitMat : rockBaseMat);
-                stone.position.set(bx, by, bz);
-                stone.scale.set(1.25, 0.58, 1.1);
-                stone.rotation.y = -ang;
-                councilGroup.add(stone);
-            }
-
-            // Función auxiliar para esculpir figuras orgánicas de lobos (Akela y la Manada de Seeonee)
-            const createWolfSculpture = (coatHex, scaleW = 1.0, isHowling = false) => {
-                const wolf = new THREE.Group();
-                const furMat = new THREE.MeshStandardMaterial({
-                    color: coatHex,
-                    roughness: 0.72,
-                    metalness: 0.08
-                });
-                // Torso y pecho
-                const torso = new THREE.Mesh(new THREE.SphereGeometry(0.42 * scaleW, 18, 16), furMat);
-                torso.scale.set(0.85, 1.15, 1.25);
-                torso.position.set(0, 0.48 * scaleW, 0);
-                torso.rotation.x = -0.35;
-                wolf.add(torso);
-
-                const chest = new THREE.Mesh(new THREE.SphereGeometry(0.38 * scaleW, 18, 16), furMat);
-                chest.position.set(0, 0.78 * scaleW, 0.22 * scaleW);
-                wolf.add(chest);
-
-                // Cabeza y hocico erguidos mirando a la Luna / al Consejo
-                const head = new THREE.Mesh(new THREE.SphereGeometry(0.28 * scaleW, 18, 16), furMat);
-                head.position.set(0, 1.12 * scaleW, 0.34 * scaleW);
-                wolf.add(head);
-
-                const snout = new THREE.Mesh(new THREE.ConeGeometry(0.14 * scaleW, 0.42 * scaleW, 16), furMat);
-                snout.position.set(0, (isHowling ? 1.28 : 1.14) * scaleW, 0.56 * scaleW);
-                snout.rotation.x = isHowling ? Math.PI * 0.28 : Math.PI * 0.45;
-                wolf.add(snout);
-
-                // Orejas erguidas de lobo
-                [-0.12, 0.12].forEach(ex => {
-                    const ear = new THREE.Mesh(new THREE.ConeGeometry(0.065 * scaleW, 0.22 * scaleW, 12), furMat);
-                    ear.position.set(ex * scaleW, 1.36 * scaleW, 0.28 * scaleW);
-                    wolf.add(ear);
-                });
-
-                // Cola tupida
-                const tail = new THREE.Mesh(new THREE.CylinderGeometry(0.06 * scaleW, 0.12 * scaleW, 0.65 * scaleW, 12), furMat);
-                tail.position.set(0, 0.32 * scaleW, -0.48 * scaleW);
-                tail.rotation.x = 0.65;
-                wolf.add(tail);
-
-                return wolf;
-            };
-
-            // 3. AKELA (El Gran Lobo Gris Solitario) en lo alto de la Peña del Consejo
-            const akelaWolf = createWolfSculpture(0xCBD5E1, 1.35, true);
-            akelaWolf.position.set(0, 10.35, -1.2);
-            councilGroup.add(akelaWolf);
-
-            // Lobos de la Manada sentados en las rocas del círculo mirando hacia Akela
-            const packAngles = [0.35, 0.95, 1.65, 2.35, 3.1, 3.85, 4.6, 5.4];
-            const wolfCoats = [0x94A3B8, 0x78716C, 0x64748B, 0xA8A29E, 0x475569];
-            packAngles.forEach((wAng, wIdx) => {
-                const rad = 7.4 + (wIdx % 2) * 1.8;
-                const wx = Math.cos(wAng) * rad;
-                const wz = Math.sin(wAng) * rad;
-                const wy = 5.05 + Math.cos(wIdx * 1.7) * 0.35;
-                const packWolf = createWolfSculpture(wolfCoats[wIdx % wolfCoats.length], 0.92, wIdx % 3 === 0);
-                packWolf.position.set(wx, wy, wz);
-                packWolf.lookAt(0, 9.5, -1.2);
-                councilGroup.add(packWolf);
-            });
-
-            // 4. Haz Volumétrico de Luz de Luna Llena bañando la Roca del Consejo desde el cielo
-            const moonBeamGeo = new THREE.CylinderGeometry(3.2, 13.5, 44, 36, 1, true);
-            const moonBeamMat = new THREE.MeshBasicMaterial({
-                color: 0xFEF08A,
-                transparent: true,
-                opacity: 0.085,
-                side: THREE.DoubleSide,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false
-            });
-            const moonBeam = new THREE.Mesh(moonBeamGeo, moonBeamMat);
-            moonBeam.position.set(-2.5, 24.0, -4.0);
-            moonBeam.rotation.z = -0.14;
-            moonBeam.rotation.x = 0.12;
-            councilGroup.add(moonBeam);
-
-            const summitMoonGlow = createGlowSprite(THREE, 0xFEF08A, 16.0, 0.48);
-            summitMoonGlow.position.set(0, 10.5, -1.0);
+            // 1. Luz lunar cenital suave bañando la cúspide de la Roca del Consejo
+            const peakY = getTerrainHeight(0, -2.6);
+            const summitMoonGlow = createGlowSprite(THREE, 0xFEF08A, 22.0, 0.34);
+            summitMoonGlow.position.set(0, peakY + 1.8, -2.4);
             councilGroup.add(summitMoonGlow);
 
-            // Tres Hogueras del Consejo al pie de las rocas para contrastar el ámbar con la luz lunar
-            [[ -6.2, 3.8, 6.2 ], [ 6.4, 3.8, 5.8 ], [ 0.0, 3.6, -8.2 ]].forEach(([fx, fy, fz]) => {
-                const fire = createCampfireWithGlow(THREE, 0.88);
-                fire.position.set(fx, fy, fz);
-                councilGroup.add(fire);
+            // 2. Hoguera ceremonial en la explanada de la Roca del Consejo y braseros de subida
+            const centralFireY = getTerrainHeight(0, 1.4);
+            const mainCouncilFire = createCampfireWithGlow(THREE, 0.95);
+            mainCouncilFire.position.set(0, centralFireY - 0.05, 1.4);
+            councilGroup.add(mainCouncilFire);
+
+            [[-4.8, 5.2], [4.8, 5.2]].forEach(([fx, fz]) => {
+                const fy = getTerrainHeight(fx, fz);
+                const sideFire = createCampfireWithGlow(THREE, 0.68);
+                sideFire.position.set(fx, fy - 0.05, fz);
+                councilGroup.add(sideFire);
             });
 
-            councilGroup.position.set(0, 0.2, 0);
+            // 3. Bruma nocturna baja flotando entre los troncos del bosque denso alrededor de la roca
+            for (let m = 0; m < 14; m++) {
+                const mAng = (m / 14) * Math.PI * 2;
+                const mRad = 18.0 + (m % 3) * 4.5;
+                const mx = Math.cos(mAng) * mRad;
+                const mz = Math.sin(mAng) * mRad;
+                const my = getTerrainHeight(mx, mz) + 1.6 + (m % 2) * 0.8;
+                const mistSprite = createGlowSprite(THREE, 0x94A3B8, 19.0 + (m % 3) * 4.0, 0.12);
+                mistSprite.position.set(mx, my, mz);
+                councilGroup.add(mistSprite);
+            }
+
             group.add(councilGroup);
 
-            // 5. LIANAS TROPICALES Y SOTOBOSQUE DENSO DE LA SELVA DE SEEONEE ALREDEDOR DE LA ROCA
-            const vineMat = new THREE.MeshStandardMaterial({ color: 0x14532D, roughness: 0.85 });
-            const bushColors = [0x064E3B, 0x065F46, 0x14532D, 0x15803D];
-            for (let b = 0; b < 54; b++) {
-                const ang = (b / 54) * Math.PI * 2 + (b % 3) * 0.05;
-                const rad = 15.8 + (b % 5) * 2.8;
+            // 4. SOTOBOSQUE BOTÁNICO DENSO (Helechos y matas de hojas reales con transparencia alfa)
+            // Rodeando la falda de la Roca del Consejo y adentrándose bajo la arboleda
+            for (let b = 0; b < 68; b++) {
+                const ang = (b / 68) * Math.PI * 2 + Math.sin(b * 2.3) * 0.04;
+                const rad = (b < 16)
+                    ? (11.8 + (b % 3) * 1.2) // Matas en las grietas bajas de la roca
+                    : (15.4 + (b % 6) * 2.4 + Math.cos(b * 1.7) * 1.1); // Sotobosque espeso del bosque
                 const bx = Math.cos(ang) * rad;
                 const bz = Math.sin(ang) * rad;
                 const by = getTerrainHeight(bx, bz);
-
-                // Arbustos de helechos y follaje espeso de sotobosque
-                const bushGeo = deformGeometrySmooth(new THREE.SphereGeometry(1.35 + (b % 3) * 0.45, 18, 14), 0.20, 1.4, b * 1.9);
-                const bush = new THREE.Mesh(
-                    bushGeo,
-                    new THREE.MeshStandardMaterial({ color: bushColors[b % bushColors.length], roughness: 0.78 })
-                );
-                bush.position.set(bx, by + 0.35, bz);
-                bush.scale.set(1.35, 0.72, 1.25);
+                const bScale = 0.85 + (b % 4) * 0.28;
+                const bush = createBotanicalBush(THREE, bScale, b * 1.91);
+                bush.position.set(bx, by - 0.12, bz);
                 group.add(bush);
-
-                // Lianas colgantes entre los grandes árboles de la selva
-                if (b % 3 === 0) {
-                    const vRad = 22.5 + (b % 4) * 3.5;
-                    const vx1 = Math.cos(ang) * vRad;
-                    const vz1 = Math.sin(ang) * vRad;
-                    const vx2 = Math.cos(ang + 0.22) * (vRad + 1.5);
-                    const vz2 = Math.sin(ang + 0.22) * (vRad + 1.5);
-                    const vCurve = new THREE.CatmullRomCurve3([
-                        new THREE.Vector3(vx1, by + 7.5, vz1),
-                        new THREE.Vector3((vx1 + vx2) * 0.5, by + 4.2, (vz1 + vz2) * 0.5),
-                        new THREE.Vector3(vx2, by + 8.0, vz2)
-                    ]);
-                    const vineMesh = new THREE.Mesh(new THREE.TubeGeometry(vCurve, 18, 0.08, 8, false), vineMat);
-                    group.add(vineMesh);
-                }
             }
 
-            // 6. LA GRAN LUNA LLENA DEL CONSEJO EN LO ALTO DEL CIELO NOCTURNO DE SEEONEE
+            // 5. LUNA LLENA REALISTA CON CRÁTERES Y MARES LUNARES EN EL CIELO DE SEEONEE
+            const moonTex = getRealisticMoonTexture(THREE);
             const moonMesh = new THREE.Mesh(
-                new THREE.SphereGeometry(8.8, 48, 48),
-                new THREE.MeshBasicMaterial({ color: 0xFEF9C3 })
+                new THREE.SphereGeometry(8.5, 64, 64),
+                new THREE.MeshBasicMaterial({ map: moonTex, color: 0xFFFBEB })
             );
-            moonMesh.position.set(-18, 44, -52);
+            moonMesh.position.set(-18, 43, -52);
+            moonMesh.rotation.y = -0.45;
             group.add(moonMesh);
 
-            const moonHalo = createGlowSprite(THREE, 0xFDE047, 44.0, 0.62);
-            moonHalo.position.set(-18, 44, -51);
-            group.add(moonHalo);
+            const moonCoronaInner = createGlowSprite(THREE, 0xFEF08A, 32.0, 0.55);
+            moonCoronaInner.position.set(-18, 43, -51.5);
+            group.add(moonCoronaInner);
+
+            const moonCoronaOuter = createGlowSprite(THREE, 0x93C5FD, 58.0, 0.28);
+            moonCoronaOuter.position.set(-18, 43, -52.5);
+            group.add(moonCoronaOuter);
         } else if (unitId === 'tropa') {
             // 1. GRAN TORRE DE PIONERISMO EN MADERA REDONDEADA + AMARRES Y PUENTE
             const towerGroup = new THREE.Group();
@@ -3582,12 +3610,32 @@
             const nDetail = fbm2D(x * 0.075 + 4.2, z * 0.075 - 3.1, 3) * 0.35;
 
             if (unitId === 'manada') {
-                // En Manada NO hay lago central: el centro (r < 16.5) es una colina rocosa elevada (La Roca del Consejo)
-                // rodeada de un claro musgoso (r = 16.5..24) y las colinas selváticas de Seeonee (r > 24)
-                const centralHill = Math.max(0, 1.0 - Math.pow(r / 16.5, 1.85)) * 4.4;
-                const rockRugged = (r < 17.0 ? ridgedFbm2D(x * 0.09, z * 0.09, 3) * 0.95 : 0);
-                const outerJungleHills = Math.pow(clamp((r - 22.0) / 68.0, 0, 1), 1.25) * biome.heightScale * (nSmooth * 0.7 + 0.3);
-                return centralHill + rockRugged + 0.35 + nDetail * 0.45 + outerJungleHills;
+                // LA ROCA DEL CONSEJO: Promontorio geológico continuo esculpido en alta resolución en el centro del bosque
+                const ang = Math.atan2(z, x);
+                const radialWarp = fbm2D(Math.cos(ang) * 1.8 + x * 0.08, Math.sin(ang) * 1.8 + z * 0.08, 3) * 1.65;
+                const rWarped = Math.max(0, r + radialWarp * smoothstep(2.0, 15.0, r));
+
+                // Meseta rocosa principal del Consejo (r < 15.2) con escalones y cornisas naturales
+                const plateauBase = smoothstep(15.4, 7.2, rWarped) * 5.15;
+                const amphitheaterRim = Math.exp(-Math.pow((rWarped - 8.2) / 2.1, 2.0)) *
+                    (0.52 + 0.28 * fbm2D(x * 0.24 + 1.7, z * 0.24 - 2.3, 3));
+
+                // La Gran Peña del Consejo (escarpe asimétrico elevado en el lado norte z ≈ -2.6)
+                const cragDist = Math.hypot(x * 0.82, (z + 2.6) * 1.05);
+                const cragPeak = Math.pow(clamp(1.0 - cragDist / 6.8, 0, 1), 1.48) * 4.35;
+
+                // Micro-relieve de estratos y crestas de granito en la roca (sin esferas apiladas)
+                const rockMask = smoothstep(16.2, 9.5, rWarped);
+                const rockCrags = rockMask * (
+                    ridgedFbm2D(x * 0.13 + 3.1, z * 0.13 - 1.4, 4) * 0.92 +
+                    fbm2D(x * 0.26, z * 0.26, 3) * 0.32
+                );
+
+                // Claro del bosque (r = 15.5..21) y colinas densas de la Selva de Seeonee (r > 21)
+                const outerJungleHills = Math.pow(clamp((r - 20.5) / 66.0, 0, 1), 1.22) *
+                    biome.heightScale * (nSmooth * 0.72 + 0.28);
+
+                return plateauBase + amphitheaterRim + cragPeak + rockCrags + 0.32 + nDetail * 0.42 + outerJungleHills;
             }
 
             if (r < 19.5) {
@@ -3606,8 +3654,9 @@
             return lerp(-2.2, beachHeight + mountainHeight, shoreBlend);
         };
 
-        // 1. Terreno 3D de Alta Resolución con Normales Suaves (176x176 subdivisiones, flatShading: false)
-        const terrainGeo = new THREE.PlaneGeometry(220, 220, 176, 176);
+        // 1. Terreno 3D de Alta Resolución con Normales Suaves (220x220 subdivisiones)
+        const terrainSegs = unitId === 'manada' ? 220 : 176;
+        const terrainGeo = new THREE.PlaneGeometry(220, 220, terrainSegs, terrainSegs);
         terrainGeo.rotateX(-Math.PI / 2);
         const posAttr = terrainGeo.attributes.position;
         const colors = new Float32Array(posAttr.count * 3);
@@ -3627,12 +3676,11 @@
             const hNorm = clamp((vy - 0.15) / (biome.heightScale * 0.92), 0, 1);
 
             let rCol, gCol, bCol;
-            if (unitId === 'manada' && r < 16.5) {
-                // Roca granítica/basáltica iluminada por la luna en la colina central del Consejo
-                const rockMix = smoothstep(10.5, 16.5, r);
-                rCol = lerp(0.42, biome.terrainLow[0], rockMix);
-                gCol = lerp(0.45, biome.terrainLow[1], rockMix);
-                bCol = lerp(0.50, biome.terrainLow[2], rockMix);
+            if (unitId === 'manada' && r < 16.2) {
+                const rockMix = smoothstep(10.8, 16.2, r);
+                rCol = lerp(0.44, biome.terrainLow[0], rockMix);
+                gCol = lerp(0.48, biome.terrainLow[1], rockMix);
+                bCol = lerp(0.54, biome.terrainLow[2], rockMix);
             } else if (unitId !== 'manada' && r < 24.5 && vy < 0.85) {
                 const st = smoothstep(20.5, 24.5, r);
                 rCol = lerp(shoreSand[0], biome.terrainLow[0], st);
@@ -3657,16 +3705,132 @@
         terrainGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
         terrainGeo.computeVertexNormals();
 
-        const detailTex = getTerrainDetailTexture(THREE);
-        const terrainMat = new THREE.MeshStandardMaterial({
-            vertexColors: true,
-            map: detailTex,
-            bumpMap: detailTex,
-            bumpScale: 0.18,
-            roughness: 0.86,
-            metalness: 0.04,
-            flatShading: false
-        });
+        let terrainMat;
+        if (unitId === 'manada') {
+            // SHADER GLSL PER-PIXEL DE ESTRATOS DE ROCA GRANÍTICA, LIQUEN, MUSGO DE SELVA Y LUZ DE LUNA/FUEGO
+            terrainMat = new THREE.ShaderMaterial({
+                uniforms: {
+                    uSunDir: { value: new THREE.Vector3(-0.35, 0.78, -0.52).normalize() },
+                    uFogColor: { value: new THREE.Color(biome.fogColor) },
+                    uFogDensity: { value: biome.fogDensity }
+                },
+                vertexShader: `
+                    varying vec3 vWorldPos;
+                    varying vec3 vNormal;
+                    void main() {
+                        vec4 wp = modelMatrix * vec4(position, 1.0);
+                        vWorldPos = wp.xyz;
+                        vNormal = normalize(mat3(modelMatrix) * normal);
+                        gl_Position = projectionMatrix * viewMatrix * wp;
+                    }
+                `,
+                fragmentShader: `
+                    varying vec3 vWorldPos;
+                    varying vec3 vNormal;
+                    uniform vec3 uSunDir;
+                    uniform vec3 uFogColor;
+                    uniform float uFogDensity;
+
+                    float hash2(vec2 p) {
+                        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+                    }
+                    float noise2(vec2 p) {
+                        vec2 i = floor(p);
+                        vec2 f = fract(p);
+                        f = f * f * (3.0 - 2.0 * f);
+                        float a = hash2(i);
+                        float b = hash2(i + vec2(1.0, 0.0));
+                        float c = hash2(i + vec2(0.0, 1.0));
+                        float d = hash2(i + vec2(1.0, 1.0));
+                        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+                    }
+                    float fbm(vec2 p) {
+                        float v = 0.0;
+                        float a = 0.5;
+                        mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
+                        for (int i = 0; i < 5; i++) {
+                            v += a * noise2(p);
+                            p = rot * p * 2.04;
+                            a *= 0.5;
+                        }
+                        return v;
+                    }
+
+                    void main() {
+                        float r = length(vWorldPos.xz);
+                        vec3 n = normalize(vNormal);
+                        float slope = 1.0 - clamp(n.y, 0.0, 1.0);
+
+                        // Detalle per-pixel de estratos geológicos y fisuras en la Roca del Consejo
+                        float nMacro = fbm(vWorldPos.xz * 0.16);
+                        float nMicro = fbm(vWorldPos.xz * 0.85 + vec2(4.2, -3.1));
+                        float strataWave = sin(vWorldPos.y * 5.8 + nMacro * 4.5 + vWorldPos.x * 0.35);
+                        float strata = smoothstep(-0.6, 0.7, strataWave);
+                        float crevices = smoothstep(0.22, 0.55, fbm(vWorldPos.xz * 0.48 + vWorldPos.y * 0.6));
+
+                        // Colores de granito/basalto iluminado por la luna llena
+                        vec3 darkSlate = vec3(0.14, 0.18, 0.24);
+                        vec3 midGranite = vec3(0.32, 0.38, 0.46);
+                        vec3 moonlitGranite = vec3(0.56, 0.63, 0.72);
+                        vec3 rockCol = mix(darkSlate, midGranite, strata * 0.65 + 0.35);
+                        rockCol = mix(rockCol, moonlitGranite, smoothstep(4.2, 9.2, vWorldPos.y) * 0.65 + nMicro * 0.25);
+                        rockCol *= (0.72 + 0.28 * crevices);
+
+                        // Colores de musgo profundo y suelo húmedo del bosque de Seeonee
+                        vec3 deepJungleFloor = vec3(0.03, 0.11, 0.06);
+                        vec3 lushMoss = vec3(0.08, 0.26, 0.13);
+                        vec3 lichenTint = vec3(0.16, 0.34, 0.18);
+                        vec3 forestCol = mix(deepJungleFloor, lushMoss, nMacro * 0.7 + nMicro * 0.3);
+                        forestCol = mix(forestCol, lichenTint, smoothstep(0.55, 0.82, nMicro) * 0.45);
+
+                        // Fusión orgánica entre la Roca del Consejo (r < 15.2 o pendientes escarpadas) y el musgo del bosque
+                        float radialRock = 1.0 - smoothstep(10.8, 15.6, r);
+                        float slopeRock = smoothstep(0.20, 0.46, slope);
+                        float mossInCrevices = smoothstep(0.65, 0.88, n.y) * smoothstep(7.5, 2.5, vWorldPos.y) * 0.45;
+                        float isRock = clamp(max(radialRock, slopeRock * 0.9) - mossInCrevices, 0.0, 1.0);
+
+                        vec3 albedo = mix(forestCol, rockCol, isRock);
+
+                        // Iluminación direccional de la Luna Llena + Luz cenital nocturna
+                        float diff = max(dot(n, uSunDir), 0.0);
+                        vec3 moonLight = vec3(0.86, 0.92, 1.0) * (diff * 0.88);
+                        vec3 ambientLight = mix(vec3(0.08, 0.13, 0.20), vec3(0.18, 0.26, 0.36), n.y * 0.5 + 0.5);
+
+                        // Resplandor plateado en las aristas superiores de la Roca del Consejo
+                        float rim = pow(clamp(n.y, 0.0, 1.0), 3.0) * isRock * smoothstep(3.0, 8.8, vWorldPos.y);
+                        vec3 rimLight = vec3(0.95, 0.93, 0.76) * rim * 0.32;
+
+                        // Iluminación puntual cálida de las hogueras ceremoniales sobre la roca
+                        float dFireMain = length(vWorldPos - vec3(0.0, 5.5, 1.4));
+                        float fireAttenMain = 1.0 / (1.0 + 0.12 * dFireMain + 0.045 * dFireMain * dFireMain);
+                        float dFireL = length(vWorldPos - vec3(-4.8, 4.2, 5.2));
+                        float dFireR = length(vWorldPos - vec3(4.8, 4.2, 5.2));
+                        float fireAttenSide = 1.0 / (1.0 + 0.18 * dFireL * dFireL) + 1.0 / (1.0 + 0.18 * dFireR * dFireR);
+                        vec3 fireGlow = vec3(1.0, 0.52, 0.14) * (fireAttenMain * 1.15 + fireAttenSide * 0.55);
+
+                        vec3 litColor = albedo * (ambientLight + moonLight + fireGlow) + rimLight;
+
+                        // Niebla exponencial atmosférica idéntica a la escena
+                        float dist = length(cameraPosition - vWorldPos);
+                        float fogFactor = 1.0 - exp(- (uFogDensity * dist) * (uFogDensity * dist));
+                        litColor = mix(litColor, uFogColor, clamp(fogFactor, 0.0, 1.0));
+
+                        gl_FragColor = vec4(litColor, 1.0);
+                    }
+                `
+            });
+        } else {
+            const detailTex = getTerrainDetailTexture(THREE);
+            terrainMat = new THREE.MeshStandardMaterial({
+                vertexColors: true,
+                map: detailTex,
+                bumpMap: detailTex,
+                bumpScale: 0.18,
+                roughness: 0.86,
+                metalness: 0.04,
+                flatShading: false
+            });
+        }
         const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
         worldGroup.add(terrainMesh);
 
@@ -3699,20 +3863,20 @@
 
         // 3. Bosque perimetral 360° de alta resolución (En Manada: Selva de Seeonee ultra densa rodeando la Roca del Consejo)
         if (unitId === 'manada') {
-            const jungleTreeCount = 138;
+            const jungleTreeCount = 164;
             for (let t = 0; t < jungleTreeCount; t++) {
                 const ringIdx = t % 4;
-                const angle = (t / jungleTreeCount) * Math.PI * 2 + Math.sin(t * 3.1) * 0.06;
-                // Anillos densos de selva desde r=18.5 hasta r=72 rodeando el claro de la Roca del Consejo
-                const radius = 18.8 + ringIdx * 8.5 + (t % 5) * 2.4 + Math.cos(t * 1.9) * 1.6;
-                // Evitar bloquear exactamente la trayectoria de la cámara (r ≈ 29..35)
-                const safeRadius = (radius > 27.5 && radius < 36.2) ? (radius < 31.8 ? 26.2 : 37.5) : radius;
+                const angle = (t / jungleTreeCount) * Math.PI * 2 + Math.sin(t * 3.1) * 0.05;
+                // Anillos muy tupidos de bosque desde el borde mismo del claro (r=16.5) hasta el fondo (r=74)
+                const radius = 16.6 + ringIdx * 8.2 + (t % 5) * 2.2 + Math.cos(t * 1.9) * 1.4;
+                // Despejar suavemente el carril exacto de paso de la cámara (r ≈ 28.5..35.5)
+                const safeRadius = (radius > 28.2 && radius < 35.8) ? (radius < 32.0 ? 26.8 : 37.2) : radius;
                 const tx = Math.cos(angle) * safeRadius;
                 const tz = Math.sin(angle) * safeRadius;
                 const ty = getTerrainHeight(tx, tz);
-                const sc = 0.92 + (t % 5) * 0.26 + (ringIdx >= 2 ? 0.35 : 0);
+                const sc = 0.96 + (t % 5) * 0.28 + (ringIdx >= 2 ? 0.38 : 0);
                 const tree = createPineOrBiomeTree(THREE, 'manada', sc, t * 1.73);
-                tree.position.set(tx, ty - 0.2, tz);
+                tree.position.set(tx, ty - 0.25, tz);
                 tree.rotation.y = t * 1.3;
                 worldGroup.add(tree);
             }
@@ -3820,16 +3984,18 @@
                 rc.mesh.rotation.z = Math.sin(t * 1.9 + rc.phase) * 0.06;
             });
 
-            // Animar elementos flotantes y hogueras multicapa
+            // Animar elementos flotantes y resplandor volumétrico de hogueras
             unitLakeState.animatedProps.forEach(item => {
                 if (item.isFlame) {
-                    const flicker = 0.90 + Math.sin(t * 10.5 + item.phase) * 0.12;
-                    item.mesh.scale.set(flicker, 0.92 + Math.cos(t * 13.0) * 0.14, flicker);
+                    const bScale = item.baseScale || 4.0;
+                    const flicker = 0.92 + Math.sin(t * 9.5 + item.phase) * 0.10;
+                    item.mesh.scale.set(bScale * flicker, bScale * (0.94 + Math.cos(t * 12.0) * 0.12), 1);
                     if (item.innerMesh) {
-                        item.innerMesh.scale.set(1.0 / flicker, 0.95 + Math.sin(t * 15.0) * 0.15, 1.0 / flicker);
+                        const coreScale = bScale * 0.57;
+                        item.innerMesh.scale.set(coreScale / flicker, coreScale * (0.96 + Math.sin(t * 14.0) * 0.10), 1);
                     }
                     if (item.haloSprite) {
-                        const hScale = 7.2 + Math.sin(t * 8.0 + item.phase) * 0.65;
+                        const hScale = bScale * 1.95 * (0.94 + Math.sin(t * 7.5 + item.phase) * 0.08);
                         item.haloSprite.scale.set(hScale, hScale, 1);
                     }
                 } else {
