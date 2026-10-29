@@ -2532,31 +2532,28 @@
     }
 
     // =========================================================================
-    // ÁRBOLES BOTÁNICOS REALISTAS Y VEGETACIÓN ORGÁNICA (CERO BOLAS / LOW-POLY)
+    // ÁRBOLES Y VEGETACIÓN ESTILIZADA 3D (ESTÉTICA LIMPIA TIPO FIREWATCH / PIXAR)
     // =========================================================================
     function createPineOrBiomeTree(THREE, unitId, scale = 1, seed = 1) {
         const tree = new THREE.Group();
-        const barkTex = getBarkTexture(THREE);
         const barkMat = new THREE.MeshStandardMaterial({
-            map: barkTex,
-            bumpMap: barkTex,
-            bumpScale: 0.08,
-            color: unitId === 'clan' ? 0x5D4037 : 0x6D4C41,
-            roughness: 0.92,
-            metalness: 0.02
+            color: unitId === 'clan' ? 0x4E342E : 0x5D4037,
+            roughness: 0.86,
+            metalness: 0.02,
+            flatShading: false
         });
 
-        // Tronco orgánico con ensanchamiento de raíces en la base y ramas superiores
-        const isBroadleafForest = unitId === 'manada' || unitId === 'castores';
-        const trunkH = (unitId === 'manada' ? 4.2 : (unitId === 'castores' ? 3.8 : 3.0)) * scale;
-        const trunkGeo = new THREE.CylinderGeometry(0.16 * scale, 0.44 * scale, trunkH, 20, 8);
+        // Tronco limpio y estilizado con ensanchamiento suave en la base
+        const isBroadleafStyle = (unitId === 'manada' || unitId === 'castores') && (Math.floor(Math.abs(seed * 10)) % 2 === 0);
+        const trunkH = (isBroadleafStyle ? 3.8 : 3.1) * scale;
+        const trunkGeo = new THREE.CylinderGeometry(0.15 * scale, 0.40 * scale, trunkH, 24, 8);
         const tPos = trunkGeo.attributes.position;
         for (let i = 0; i < tPos.count; i++) {
             const py = tPos.getY(i);
             const hNorm = (py + trunkH * 0.5) / trunkH;
-            const rootFlare = hNorm < 0.22 ? (1 + Math.pow(1 - hNorm / 0.22, 2) * 0.45) : 1.0;
-            const bendX = Math.sin(hNorm * Math.PI) * 0.22 * scale * Math.sin(seed);
-            const bendZ = Math.sin(hNorm * Math.PI) * 0.16 * scale * Math.cos(seed * 1.3);
+            const rootFlare = hNorm < 0.24 ? (1 + Math.pow(1 - hNorm / 0.24, 2) * 0.38) : 1.0;
+            const bendX = Math.sin(hNorm * Math.PI) * 0.16 * scale * Math.sin(seed);
+            const bendZ = Math.sin(hNorm * Math.PI) * 0.12 * scale * Math.cos(seed * 1.3);
             tPos.setX(i, tPos.getX(i) * rootFlare + bendX);
             tPos.setZ(i, tPos.getZ(i) * rootFlare + bendZ);
         }
@@ -2565,88 +2562,65 @@
         trunk.position.y = trunkH * 0.48;
         tree.add(trunk);
 
-        if (isBroadleafForest) {
-            // Ramas principales de madera que sostienen la copa frondosa (Robles/Sauces en Castores, Selva en Manada)
-            for (let b = 0; b < 4; b++) {
-                const bAng = (b / 4) * Math.PI * 2 + seed * 0.5;
+        if (isBroadleafStyle) {
+            // Árbol frondoso estilo Pixar: ramas limpias y volúmenes de copa suaves de alta resolución con degradado de altura
+            for (let b = 0; b < 3; b++) {
+                const bAng = (b / 3) * Math.PI * 2 + seed * 0.5;
                 const branch = new THREE.Mesh(
-                    new THREE.CylinderGeometry(0.07 * scale, 0.15 * scale, 2.2 * scale, 12),
+                    new THREE.CylinderGeometry(0.07 * scale, 0.14 * scale, 1.9 * scale, 16),
                     barkMat
                 );
-                branch.position.set(Math.cos(bAng) * 0.65 * scale, trunkH * 0.88, Math.sin(bAng) * 0.65 * scale);
-                branch.rotation.z = -Math.cos(bAng) * 0.62;
-                branch.rotation.x = Math.sin(bAng) * 0.62;
+                branch.position.set(Math.cos(bAng) * 0.55 * scale, trunkH * 0.86, Math.sin(bAng) * 0.55 * scale);
+                branch.rotation.z = -Math.cos(bAng) * 0.58;
+                branch.rotation.x = Math.sin(bAng) * 0.58;
                 tree.add(branch);
             }
 
-            // Copa botánica realista mediante planos curvados de follaje con textura de hojas reales y normales esféricas
-            const leafTex = getBotanicalFoliageTexture(THREE);
-            const foliageTints = unitId === 'castores'
-                ? [0x22C55E, 0x16A34A, 0x4ADE80, 0x65A30D]
-                : [0x22C55E, 0x16A34A, 0x15803D, 0x4ADE80];
-            const leafMat = new THREE.MeshStandardMaterial({
-                map: leafTex,
-                color: foliageTints[Math.floor(Math.abs(seed * 10)) % foliageTints.length],
-                alphaTest: 0.14,
-                transparent: true,
-                side: THREE.DoubleSide,
-                roughness: 0.72,
-                metalness: 0.04
-            });
+            const palette = unitId === 'castores'
+                ? [0x15803D, 0x16A34A, 0x22C55E]
+                : [0x065F46, 0x15803D, 0x16A34A];
 
-            const clusterCenters = [
-                [0, trunkH * 1.05, 0, 2.8],
-                [-1.35, trunkH * 0.92, 0.85, 2.3],
-                [1.4, trunkH * 0.95, -0.75, 2.35],
-                [0.45, trunkH * 1.18, 0.95, 2.2],
-                [-0.75, trunkH * 1.02, -1.25, 2.25],
-                [0.85, trunkH * 0.88, 1.25, 2.1]
+            const crownPuffs = [
+                [0, trunkH * 1.12, 0, 1.65, 2],
+                [-0.95, trunkH * 0.94, 0.65, 1.32, 0],
+                [1.0, trunkH * 0.96, -0.55, 1.35, 1],
+                [0.25, trunkH * 0.92, -0.95, 1.25, 0],
+                [-0.35, trunkH * 1.02, 0.95, 1.28, 1]
             ];
 
-            clusterCenters.forEach(([cx, cy, cz, cSize], cIdx) => {
-                // Tres planos botánicos cruzados y ligeramente arqueados por cada racimo de follaje
-                for (let p = 0; p < 3; p++) {
-                    const cardGeo = new THREE.PlaneGeometry(cSize * scale, cSize * scale, 4, 4);
-                    const cPos = cardGeo.attributes.position;
-                    const cNorm = cardGeo.attributes.normal;
-                    for (let k = 0; k < cPos.count; k++) {
-                        const px = cPos.getX(k);
-                        const py = cPos.getY(k);
-                        const archZ = -(px * px + py * py) * 0.08;
-                        cPos.setZ(k, archZ);
-                        // Normales apuntando radialmente hacia arriba/afuera para iluminación suave de copa
-                        const nx = px * 0.35;
-                        const ny = 0.85 + py * 0.25;
-                        const nz = 0.35;
-                        const nLen = Math.hypot(nx, ny, nz) || 1;
-                        cNorm.setXYZ(k, nx / nLen, ny / nLen, nz / nLen);
-                    }
-                    const card = new THREE.Mesh(cardGeo, leafMat);
-                    card.position.set(cx * scale, cy, cz * scale);
-                    card.rotation.y = (p / 3) * Math.PI + cIdx * 0.7 + seed;
-                    card.rotation.x = -0.28 + (p % 2) * 0.42;
-                    tree.add(card);
-                }
+            crownPuffs.forEach(([cx, cy, cz, cr, toneIdx], idx) => {
+                const puffGeo = deformGeometrySmooth(
+                    new THREE.SphereGeometry(cr * scale, 36, 28),
+                    0.06,
+                    0.65,
+                    seed + idx * 2.1
+                );
+                const puffMat = new THREE.MeshStandardMaterial({
+                    color: palette[toneIdx],
+                    roughness: 0.78,
+                    metalness: 0.02,
+                    flatShading: false
+                });
+                const puff = new THREE.Mesh(puffGeo, puffMat);
+                puff.position.set(cx * scale, cy, cz * scale);
+                puff.scale.set(1.18, 0.84, 1.14);
+                tree.add(puff);
             });
         } else {
-            // Coníferas y abetos alpinos con 6 pisos densos de ramas acanaladas y textura botánica
-            const baseLeafColor = unitId === 'clan'
-                ? 0x1E293B
-                : (unitId === 'escultas' ? 0x166534 : (unitId === 'tropa' ? 0x065F46 : 0x15803D));
-            const detailTex = getTerrainDetailTexture(THREE);
-            const coneMat = new THREE.MeshStandardMaterial({
-                color: baseLeafColor,
-                bumpMap: detailTex,
-                bumpScale: 0.06,
-                roughness: 0.80,
-                metalness: 0.03
-            });
+            // Pinos y abetos estilizados tipo Firewatch: 6 pisos suaves y sedosos con degradado vertical de color
+            const tierPalette = unitId === 'clan'
+                ? [0x0F172A, 0x1E293B, 0x334155]
+                : (unitId === 'escultas'
+                    ? [0x14532D, 0x166534, 0x15803D]
+                    : (unitId === 'manada'
+                        ? [0x064E3B, 0x065F46, 0x047857]
+                        : [0x14532D, 0x15803D, 0x16A34A]));
 
             const tiers = 6;
             for (let l = 0; l < tiers; l++) {
-                const r = (1.92 - l * 0.27) * scale;
-                const h = (1.85 - l * 0.18) * scale;
-                const boughGeo = new THREE.ConeGeometry(r, h, 32, 6);
+                const r = (1.88 - l * 0.26) * scale;
+                const h = (1.80 - l * 0.17) * scale;
+                const boughGeo = new THREE.ConeGeometry(r, h, 36, 8);
                 const bPos = boughGeo.attributes.position;
                 for (let k = 0; k < bPos.count; k++) {
                     const vx = bPos.getX(k);
@@ -2655,16 +2629,23 @@
                     const ang = Math.atan2(vz, vx);
                     const rad = Math.hypot(vx, vz);
                     if (rad > 0.05) {
-                        const ruffle = 1 + Math.sin(ang * 8 + l * 1.9 + seed) * 0.08 + Math.cos(ang * 13 - seed) * 0.04;
-                        const droop = -Math.pow(rad / r, 1.5) * 0.26 * scale;
-                        bPos.setX(k, vx * ruffle);
+                        const softWave = 1 + Math.sin(ang * 6 + l * 1.5 + seed) * 0.045;
+                        const droop = -Math.pow(rad / r, 1.6) * 0.22 * scale;
+                        bPos.setX(k, vx * softWave);
                         bPos.setY(k, vy + droop);
-                        bPos.setZ(k, vz * ruffle);
+                        bPos.setZ(k, vz * softWave);
                     }
                 }
                 boughGeo.computeVertexNormals();
+                const tone = l < 2 ? tierPalette[0] : (l < 4 ? tierPalette[1] : tierPalette[2]);
+                const coneMat = new THREE.MeshStandardMaterial({
+                    color: tone,
+                    roughness: 0.78,
+                    metalness: 0.02,
+                    flatShading: false
+                });
                 const bough = new THREE.Mesh(boughGeo, coneMat);
-                bough.position.y = (1.75 + l * 0.76) * scale;
+                bough.position.y = (1.72 + l * 0.74) * scale;
                 tree.add(bough);
             }
 
@@ -2675,13 +2656,13 @@
                     metalness: 0.08
                 });
                 const snowCapGeo = deformGeometrySmooth(
-                    new THREE.ConeGeometry(0.92 * scale, 1.3 * scale, 24, 4),
-                    0.08,
-                    1.8,
+                    new THREE.ConeGeometry(0.90 * scale, 1.25 * scale, 28, 4),
+                    0.05,
+                    1.2,
                     seed
                 );
                 const snowCap = new THREE.Mesh(snowCapGeo, snowMat);
-                snowCap.position.y = 5.55 * scale;
+                snowCap.position.y = 5.45 * scale;
                 tree.add(snowCap);
             }
         }
@@ -2690,22 +2671,30 @@
 
     function createBotanicalBush(THREE, scale = 1.0, seed = 0) {
         const bush = new THREE.Group();
-        const leafTex = getBotanicalFoliageTexture(THREE);
-        const bushMat = new THREE.MeshStandardMaterial({
-            map: leafTex,
-            color: 0x16A34A,
-            alphaTest: 0.14,
-            transparent: true,
-            side: THREE.DoubleSide,
-            roughness: 0.75
+        const bushColors = [0x14532D, 0x15803D, 0x16A34A];
+        const lobes = [
+            [0, 0.38, 0, 0.85, 1],
+            [-0.55, 0.28, 0.25, 0.65, 0],
+            [0.52, 0.30, -0.22, 0.68, 2]
+        ];
+        lobes.forEach(([lx, ly, lz, lr, cIdx], idx) => {
+            const lobeGeo = deformGeometrySmooth(
+                new THREE.SphereGeometry(lr * scale, 28, 22),
+                0.06,
+                0.75,
+                seed + idx * 1.7
+            );
+            const lobeMat = new THREE.MeshStandardMaterial({
+                color: bushColors[cIdx],
+                roughness: 0.80,
+                metalness: 0.02,
+                flatShading: false
+            });
+            const lobe = new THREE.Mesh(lobeGeo, lobeMat);
+            lobe.position.set(lx * scale, ly * scale, lz * scale);
+            lobe.scale.set(1.25, 0.68, 1.15);
+            bush.add(lobe);
         });
-        for (let i = 0; i < 4; i++) {
-            const card = new THREE.Mesh(new THREE.PlaneGeometry(2.2 * scale, 1.6 * scale), bushMat);
-            card.position.y = 0.65 * scale;
-            card.rotation.y = (i / 4) * Math.PI + seed;
-            card.rotation.x = (i % 2 === 0 ? 0.22 : -0.22);
-            bush.add(card);
-        }
         return bush;
     }
 
@@ -2746,8 +2735,7 @@
 
     function createCampfireWithGlow(THREE, scale = 1.0) {
         const fireGroup = new THREE.Group();
-        const barkTex = getBarkTexture(THREE);
-        const logMat = new THREE.MeshStandardMaterial({ map: barkTex, color: 0x4E342E, roughness: 0.9 });
+        const logMat = new THREE.MeshStandardMaterial({ color: 0x4E342E, roughness: 0.86 });
         for (let i = 0; i < 6; i++) {
             const ang = (i / 6) * Math.PI;
             const log = new THREE.Mesh(new THREE.CylinderGeometry(0.13 * scale, 0.16 * scale, 2.1 * scale, 16), logMat);
@@ -2834,102 +2822,98 @@
 
         if (unitId === 'castores') {
             // =================================================================
-            // MUNDO CASTORES: EL ESTANQUE DE LOS AMIGOS DEL BOSQUE Y EL GRAN ROBLE
-            // (Madera con corteza real, presa y madriguera de ramas entrelazadas,
-            //  Gran Roble botánico hoja por hoja y sotobosque ribereño sin bolas)
+            // MUNDO CASTORES: ESTÉTICA LIMPIA Y ESTILIZADA 3D (FIREWATCH / PIXAR)
             // =================================================================
-            const barkTex = getBarkTexture(THREE);
-            const barkMat = new THREE.MeshStandardMaterial({
-                map: barkTex,
-                bumpMap: barkTex,
-                bumpScale: 0.08,
-                color: 0x6D4C41,
-                roughness: 0.90
+            const woodWarmMat = new THREE.MeshStandardMaterial({
+                color: 0x795548,
+                roughness: 0.80,
+                metalness: 0.02,
+                flatShading: false
             });
-            const darkWoodMat = new THREE.MeshStandardMaterial({
-                map: barkTex,
-                color: 0x4E342E,
-                roughness: 0.92
+            const woodDarkMat = new THREE.MeshStandardMaterial({
+                color: 0x5D4037,
+                roughness: 0.84,
+                metalness: 0.02,
+                flatShading: false
             });
             const cutWoodMat = new THREE.MeshStandardMaterial({
                 color: 0xE6CCB2,
-                roughness: 0.68
+                roughness: 0.65,
+                flatShading: false
             });
 
-            // 1. LA GRAN PRESA DE TRONCOS ENTRELAZADOS + ESPUMA DE RÍO (Orilla Norte)
+            // 1. LA GRAN PRESA ESTILIZADA DE TRONCOS REDONDEADOS + ESPUMA SUAVE (Orilla Norte)
             const damGroup = new THREE.Group();
-            for (let i = 0; i < 58; i++) {
-                const len = 4.6 + (i % 5) * 1.45;
-                const rad = 0.16 + (i % 4) * 0.055;
-                const logGeo = new THREE.CylinderGeometry(rad * 0.88, rad * 1.08, len, 16);
-                const log = new THREE.Mesh(logGeo, [i % 3 === 0 ? darkWoodMat : barkMat, cutWoodMat, cutWoodMat]);
-                log.rotation.z = Math.PI / 2 + Math.sin(i * 1.9) * 0.18;
-                log.rotation.y = Math.cos(i * 2.3) * 0.42;
-                log.position.set((i - 29) * 0.34, 0.12 + (i % 6) * 0.22, Math.sin(i * 1.1) * 0.78);
+            for (let i = 0; i < 32; i++) {
+                const len = 5.0 + (i % 4) * 1.4;
+                const rad = 0.20 + (i % 3) * 0.05;
+                const logGeo = new THREE.CylinderGeometry(rad, rad * 1.05, len, 22);
+                const log = new THREE.Mesh(logGeo, [i % 2 === 0 ? woodWarmMat : woodDarkMat, cutWoodMat, cutWoodMat]);
+                log.rotation.z = Math.PI / 2 + Math.sin(i * 1.7) * 0.12;
+                log.rotation.y = Math.cos(i * 2.1) * 0.32;
+                log.position.set((i - 16) * 0.56, 0.16 + (i % 4) * 0.24, Math.sin(i * 0.9) * 0.55);
                 damGroup.add(log);
             }
-            // Espuma y bruma suave de agua filtrándose por los troncos de la presa
-            for (let f = -3; f <= 3; f++) {
-                const foam = createGlowSprite(THREE, 0xE0F2FE, 3.8 + Math.abs(f) * 0.5, 0.32);
-                foam.position.set(f * 2.4, 0.35, 0.6);
+            for (let f = -2; f <= 2; f++) {
+                const foam = createGlowSprite(THREE, 0xE0F2FE, 3.6 + Math.abs(f) * 0.4, 0.28);
+                foam.position.set(f * 3.0, 0.32, 0.55);
                 damGroup.add(foam);
             }
             damGroup.position.set(0, 0.05, -21.8);
             group.add(damGroup);
 
-            // 2. LA MADRIGUERA REALISTA DE RAMAS Y TRONCOS ENTRELAZADOS (Cero esferas ni toros)
+            // 2. LA MADRIGUERA ESTILIZADA (Domo de madera suave + costillas limpias + entrada cálida)
             const lodgeGroup = new THREE.Group();
-            for (let s = 0; s < 64; s++) {
-                const sAng = (s / 64) * Math.PI * 2 + (s % 3) * 0.12;
-                // Dejar una abertura cálida natural hacia el estanque (frontal sur)
-                if (Math.cos(sAng - 0.5) > 0.86 && s % 3 !== 0) continue;
-                const sLen = 3.6 + (s % 4) * 0.85;
-                const sRad = 0.11 + (s % 3) * 0.045;
-                const stick = new THREE.Mesh(
-                    new THREE.CylinderGeometry(sRad * 0.7, sRad * 1.15, sLen, 12),
-                    [s % 2 === 0 ? barkMat : darkWoodMat, cutWoodMat, cutWoodMat]
+            const lodgeDomeGeo = deformGeometrySmooth(
+                new THREE.SphereGeometry(3.8, 48, 32, 0, Math.PI * 2, 0, Math.PI * 0.56),
+                0.06,
+                0.75,
+                7.7
+            );
+            const lodgeDome = new THREE.Mesh(lodgeDomeGeo, woodWarmMat);
+            lodgeDome.scale.set(1.16, 0.86, 1.16);
+            lodgeGroup.add(lodgeDome);
+
+            // Vigas limpias y estilizadas que abrazan el domo de la Madriguera
+            for (let rIdx = 0; rIdx < 14; rIdx++) {
+                const rAng = (rIdx / 14) * Math.PI * 2;
+                if (Math.cos(rAng) > 0.78) continue; // Dejar despejada la entrada frontal
+                const rib = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.12, 0.16, 3.4, 16),
+                    [woodDarkMat, cutWoodMat, cutWoodMat]
                 );
-                const ringR = 1.65 + (s % 4) * 0.42;
-                stick.position.set(
-                    Math.sin(sAng) * ringR,
-                    1.15 + (s % 5) * 0.22,
-                    Math.cos(sAng) * ringR
-                );
-                // Inclinar cada tronco hacia la cúspide formando un domo cónico natural de ramas
-                stick.lookAt(Math.sin(sAng * 1.7) * 0.4, 3.2 + (s % 3) * 0.25, Math.cos(sAng * 1.7) * 0.4);
-                stick.rotateX(Math.PI / 2);
-                lodgeGroup.add(stick);
+                rib.position.set(Math.sin(rAng) * 2.65, 1.25, Math.cos(rAng) * 2.65);
+                rib.lookAt(0, 3.3, 0);
+                rib.rotateX(Math.PI / 2);
+                lodgeGroup.add(rib);
             }
-            // Matas de musgo y helechos creciendo entre los troncos de la madriguera
-            for (let mb = 0; mb < 4; mb++) {
-                const mBush = createBotanicalBush(THREE, 0.65, mb * 2.1);
-                const mAng = mb * 1.6 + 1.2;
-                mBush.position.set(Math.cos(mAng) * 2.2, 0.4, Math.sin(mAng) * 2.2);
-                lodgeGroup.add(mBush);
-            }
-            // Luz cálida interior de hogar asomando entre las ramas de la Madriguera
-            const lodgeLightGlow = createGlowSprite(THREE, 0xFDE047, 5.8, 0.72);
-            lodgeLightGlow.position.set(0.4, 1.0, 1.6);
+
+            // Pórtico redondeado de madera e iluminación interior acogedora
+            const arch = new THREE.Mesh(
+                new THREE.TorusGeometry(1.02, 0.22, 20, 36, Math.PI),
+                woodDarkMat
+            );
+            arch.position.set(0, 0.22, 3.35);
+            lodgeGroup.add(arch);
+
+            const lodgeLightGlow = createGlowSprite(THREE, 0xFDE047, 5.4, 0.75);
+            lodgeLightGlow.position.set(0, 0.9, 3.5);
             lodgeGroup.add(lodgeLightGlow);
 
             lodgeGroup.position.set(-13.2, 0.0, -18.0);
-            lodgeGroup.rotation.y = 0.48;
+            lodgeGroup.rotation.y = 0.52;
             group.add(lodgeGroup);
 
-            // Embarcadero rústico de troncos en la orilla del Estanque
+            // Embarcadero estilizado de tablones suaves
             const pierGroup = new THREE.Group();
-            const plankMat = new THREE.MeshStandardMaterial({ map: barkTex, color: 0x8D6E63, roughness: 0.85 });
-            for (let p = 0; p < 11; p++) {
-                const plank = new THREE.Mesh(
-                    new THREE.CylinderGeometry(0.14, 0.14, 2.3, 12),
-                    [plankMat, cutWoodMat, cutWoodMat]
-                );
-                plank.rotation.z = Math.PI / 2;
-                plank.position.set(0, 0.42, p * 0.46);
+            const plankMat = new THREE.MeshStandardMaterial({ color: 0x8D6E63, roughness: 0.78 });
+            for (let p = 0; p < 10; p++) {
+                const plank = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.12, 0.42), plankMat);
+                plank.position.set(0, 0.44, p * 0.50);
                 pierGroup.add(plank);
             }
-            [[-0.95, 0.5], [0.95, 0.5], [-0.95, 4.6], [0.95, 4.6]].forEach(([px, pz]) => {
-                const post = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.15, 1.7, 14), darkWoodMat);
+            [[-0.95, 0.5], [0.95, 0.5], [-0.95, 4.5], [0.95, 4.5]].forEach(([px, pz]) => {
+                const post = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.14, 1.65, 16), woodDarkMat);
                 post.position.set(px, 0.1, pz);
                 pierGroup.add(post);
             });
@@ -2937,115 +2921,85 @@
             pierGroup.rotation.y = 0.32;
             group.add(pierGroup);
 
-            // 3. EL GRAN ROBLE CENTENARIO DE MALAK (Árbol botánico monumental sin esferas, Orilla Este)
+            // 3. EL GRAN ROBLE CENTENARIO DE MALAK (Escultura 3D limpia estilo Pixar / Firewatch, Orilla Este)
             const oakGroup = new THREE.Group();
-            const oakTrunkH = 8.4;
-            const oakTrunkGeo = new THREE.CylinderGeometry(0.95, 2.25, oakTrunkH, 28, 12);
+            const oakTrunkH = 8.0;
+            const oakTrunkGeo = new THREE.CylinderGeometry(0.95, 2.15, oakTrunkH, 32, 10);
             const oPos = oakTrunkGeo.attributes.position;
             for (let i = 0; i < oPos.count; i++) {
                 const py = oPos.getY(i);
                 const hNorm = (py + oakTrunkH * 0.5) / oakTrunkH;
-                const ang = Math.atan2(oPos.getZ(i), oPos.getX(i));
-                // Raíces acanaladas de roble centenario en la base
-                const buttress = hNorm < 0.32
-                    ? (1.0 + Math.pow(1.0 - hNorm / 0.32, 2.0) * (0.55 + 0.32 * Math.sin(ang * 5.0)))
-                    : 1.0;
-                const gnarl = 1.0 + fbm2D(oPos.getX(i) * 0.9, py * 0.6, 2) * 0.12;
-                oPos.setX(i, oPos.getX(i) * buttress * gnarl);
-                oPos.setZ(i, oPos.getZ(i) * buttress * gnarl);
+                const rootFlare = hNorm < 0.28 ? (1.0 + Math.pow(1.0 - hNorm / 0.28, 2.0) * 0.45) : 1.0;
+                oPos.setX(i, oPos.getX(i) * rootFlare);
+                oPos.setZ(i, oPos.getZ(i) * rootFlare);
             }
             oakTrunkGeo.computeVertexNormals();
-            const oakTrunk = new THREE.Mesh(oakTrunkGeo, darkWoodMat);
+            const oakTrunk = new THREE.Mesh(oakTrunkGeo, woodDarkMat);
             oakTrunk.position.y = oakTrunkH * 0.46;
             oakGroup.add(oakTrunk);
 
-            // 6 grandes ramas madres de madera retorcida extendiéndose desde el tronco
-            const limbConfigs = [
-                [0.0, 6.8, 0.55, 4.6],
-                [1.05, 6.4, 0.68, 4.4],
-                [2.1, 6.6, 0.62, 4.5],
-                [3.15, 6.5, 0.66, 4.3],
-                [4.2, 6.7, 0.60, 4.5],
-                [5.25, 6.3, 0.65, 4.4]
-            ];
-            limbConfigs.forEach(([lAng, lY, lTilt, lLen]) => {
-                const limb = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.52, lLen, 16), darkWoodMat);
-                limb.position.set(Math.cos(lAng) * 1.45, lY, Math.sin(lAng) * 1.45);
-                limb.rotation.z = -Math.cos(lAng) * lTilt;
-                limb.rotation.x = Math.sin(lAng) * lTilt;
+            // 5 ramas madres limpias y suaves
+            for (let b = 0; b < 5; b++) {
+                const bAng = (b / 5) * Math.PI * 2;
+                const limb = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.46, 3.8, 18), woodDarkMat);
+                limb.position.set(Math.cos(bAng) * 1.25, 6.4, Math.sin(bAng) * 1.25);
+                limb.rotation.z = -Math.cos(bAng) * 0.58;
+                limb.rotation.x = Math.sin(bAng) * 0.58;
                 oakGroup.add(limb);
-            });
+            }
 
-            // Copa monumental del Gran Roble formada por 30 planos arqueados de hojas botánicas reales
-            const leafTex = getBotanicalFoliageTexture(THREE);
-            const oakLeafTints = [0x16A34A, 0x22C55E, 0x15803D, 0x65A30D, 0x4ADE80];
-            const oakCanopyNodes = [
-                [0, 9.6, 0, 5.4],
-                [-3.2, 8.2, 1.6, 4.6],
-                [3.3, 8.4, -1.4, 4.7],
-                [0.8, 8.0, 3.2, 4.5],
-                [-2.1, 8.3, -2.8, 4.5],
-                [2.4, 9.8, 1.6, 4.4],
-                [-2.5, 9.5, -0.8, 4.3],
-                [0.2, 8.6, -3.3, 4.4],
-                [-1.2, 7.6, 3.1, 4.2],
-                [3.1, 7.8, 2.1, 4.2]
+            // Copa escultural limpia con 7 volúmenes suaves de alta resolución y degradado de luz
+            const oakPalette = [0x14532D, 0x16A34A, 0x22C55E];
+            const oakCrownVolumes = [
+                [0, 9.2, 0, 4.4, 2],
+                [-2.8, 7.8, 1.4, 3.4, 1],
+                [2.9, 8.0, -1.2, 3.5, 1],
+                [0.6, 7.5, 2.6, 3.3, 0],
+                [-1.8, 7.6, -2.3, 3.2, 0],
+                [1.9, 9.5, 1.2, 3.1, 2],
+                [-1.7, 9.3, -0.9, 3.0, 2]
             ];
-            oakCanopyNodes.forEach(([cx, cy, cz, cSize], nIdx) => {
-                const nodeMat = new THREE.MeshStandardMaterial({
-                    map: leafTex,
-                    color: oakLeafTints[nIdx % oakLeafTints.length],
-                    alphaTest: 0.14,
-                    transparent: true,
-                    side: THREE.DoubleSide,
-                    roughness: 0.70,
-                    metalness: 0.03
+            oakCrownVolumes.forEach(([cx, cy, cz, cr, toneIdx], idx) => {
+                const puffGeo = deformGeometrySmooth(
+                    new THREE.SphereGeometry(cr, 40, 32),
+                    0.06,
+                    0.65,
+                    20 + idx * 1.9
+                );
+                const puffMat = new THREE.MeshStandardMaterial({
+                    color: oakPalette[toneIdx],
+                    roughness: 0.76,
+                    metalness: 0.02,
+                    flatShading: false
                 });
-                for (let p = 0; p < 3; p++) {
-                    const cardGeo = new THREE.PlaneGeometry(cSize, cSize, 4, 4);
-                    const cPos = cardGeo.attributes.position;
-                    const cNorm = cardGeo.attributes.normal;
-                    for (let k = 0; k < cPos.count; k++) {
-                        const px = cPos.getX(k);
-                        const py = cPos.getY(k);
-                        cPos.setZ(k, -(px * px + py * py) * 0.055);
-                        const nx = px * 0.28;
-                        const ny = 0.88 + py * 0.22;
-                        const nz = 0.32;
-                        const nLen = Math.hypot(nx, ny, nz) || 1;
-                        cNorm.setXYZ(k, nx / nLen, ny / nLen, nz / nLen);
-                    }
-                    const card = new THREE.Mesh(cardGeo, nodeMat);
-                    card.position.set(cx, cy, cz);
-                    card.rotation.y = (p / 3) * Math.PI + nIdx * 0.85;
-                    card.rotation.x = -0.26 + (p % 2) * 0.38;
-                    oakGroup.add(card);
-                }
+                const puff = new THREE.Mesh(puffGeo, puffMat);
+                puff.position.set(cx, cy, cz);
+                puff.scale.set(1.22, 0.80, 1.18);
+                oakGroup.add(puff);
             });
 
-            // Resplandor solar dorado filtrándose entre las hojas del Gran Roble
-            const oakSunGlow = createGlowSprite(THREE, 0xFEF08A, 14.0, 0.36);
-            oakSunGlow.position.set(0, 8.8, 0);
+            const oakSunGlow = createGlowSprite(THREE, 0xFEF08A, 12.0, 0.38);
+            oakSunGlow.position.set(0, 8.4, 0);
             oakGroup.add(oakSunGlow);
 
             const oakY = getTerrainHeight(25.5, 4.0);
             oakGroup.position.set(25.5, oakY - 0.35, 4.0);
             group.add(oakGroup);
 
-            // 4. SOTOBOSQUE RIBEREÑO BOTÁNICO (Helechos y matas de hojas reales alrededor del estanque)
-            for (let b = 0; b < 58; b++) {
-                const bAng = (b / 58) * Math.PI * 2 + Math.sin(b * 2.1) * 0.05;
-                const bRad = 22.8 + (b % 5) * 2.2 + Math.cos(b * 1.7) * 1.0;
+            // 4. ARBUSTOS ESTILIZADOS DE RIBERA (Volúmenes suaves estilo Pixar)
+            for (let b = 0; b < 34; b++) {
+                const bAng = (b / 34) * Math.PI * 2 + Math.sin(b * 2.1) * 0.05;
+                const bRad = 23.2 + (b % 4) * 2.2;
                 const bx = Math.cos(bAng) * bRad;
                 const bz = Math.sin(bAng) * bRad;
-                if (Math.hypot(bx, bz + 21.8) < 6.5) continue; // Despejar la presa
+                if (Math.hypot(bx, bz + 21.8) < 6.8) continue;
                 const by = getTerrainHeight(bx, bz);
-                const bush = createBotanicalBush(THREE, 0.78 + (b % 4) * 0.24, b * 1.63);
-                bush.position.set(bx, by - 0.12, bz);
+                const bush = createBotanicalBush(THREE, 0.72 + (b % 3) * 0.20, b * 1.63);
+                bush.position.set(bx, by - 0.08, bz);
                 group.add(bush);
             }
 
-            // 5. NENÚFARES BOTÁNICOS Y FLORES DE LOTO EN EL ESTANQUE CRISTALINO
+            // 5. NENÚFARES Y FLORES DE LOTO EN EL ESTANQUE CRISTALINO
             const padMat = new THREE.MeshStandardMaterial({ color: 0x16A34A, roughness: 0.52, side: THREE.DoubleSide });
             const petalMat = new THREE.MeshStandardMaterial({
                 color: 0xF9A8D4,
@@ -4005,23 +3959,20 @@
                         vec3 n = normalize(vNormal);
                         float slope = 1.0 - clamp(n.y, 0.0, 1.0);
 
-                        float nMacro = fbm(vWorldPos.xz * 0.14);
-                        float nMicro = fbm(vWorldPos.xz * 0.95 + vec2(2.7, -1.9));
-                        float pebbleGrain = fbm(vWorldPos.xz * 2.8);
+                        float nMacro = fbm(vWorldPos.xz * 0.10);
+                        float nMicro = fbm(vWorldPos.xz * 0.35 + vec2(2.7, -1.9));
 
-                        // 1. Ribera húmeda del Estanque: limo de río, arena dorada húmeda y micro-cantos rodados
-                        vec3 wetRiverbed = vec3(0.14, 0.16, 0.13);
-                        vec3 dampSand = vec3(0.36, 0.31, 0.22);
-                        vec3 riverPebbles = vec3(0.28, 0.30, 0.27) * (0.75 + 0.5 * pebbleGrain);
-                        vec3 shoreCol = mix(wetRiverbed, dampSand, smoothstep(-0.3, 0.45, vWorldPos.y));
-                        shoreCol = mix(shoreCol, riverPebbles, smoothstep(0.42, 0.72, nMicro) * 0.65);
+                        // 1. Ribera suave y sedosa del Estanque (estilo Firewatch / Pixar, sin grano rugoso)
+                        vec3 wetRiverbed = vec3(0.15, 0.20, 0.16);
+                        vec3 dampSand = vec3(0.38, 0.33, 0.24);
+                        vec3 shoreCol = mix(wetRiverbed, dampSand, smoothstep(-0.3, 0.48, vWorldPos.y));
 
-                        // 2. Pradera ribereña y suelo musgoso del Bosque del Gran Roble
-                        vec3 deepForestMoss = vec3(0.05, 0.24, 0.12);
-                        vec3 sunlitMeadow = vec3(0.14, 0.42, 0.20);
-                        vec3 cloverHighlight = vec3(0.24, 0.52, 0.24);
-                        vec3 meadowCol = mix(deepForestMoss, sunlitMeadow, nMacro * 0.68 + nMicro * 0.32);
-                        meadowCol = mix(meadowCol, cloverHighlight, smoothstep(0.54, 0.84, nMicro) * 0.48);
+                        // 2. Pradera ribereña y suelo musgoso suave del Bosque del Gran Roble
+                        vec3 deepForestMoss = vec3(0.06, 0.26, 0.14);
+                        vec3 sunlitMeadow = vec3(0.14, 0.42, 0.21);
+                        vec3 cloverHighlight = vec3(0.22, 0.50, 0.25);
+                        vec3 meadowCol = mix(deepForestMoss, sunlitMeadow, nMacro * 0.72 + nMicro * 0.28);
+                        meadowCol = mix(meadowCol, cloverHighlight, smoothstep(0.52, 0.84, nMicro) * 0.42);
 
                         // 3. Afloramientos naturales de roca estratificada en las laderas del valle
                         float strata = smoothstep(-0.5, 0.6, sin(vWorldPos.y * 4.5 + nMacro * 3.8));
@@ -4121,12 +4072,12 @@
                 worldGroup.add(tree);
             }
         } else if (unitId === 'castores') {
-            const forestTreeCount = 136;
+            const forestTreeCount = 88;
             for (let t = 0; t < forestTreeCount; t++) {
-                const ringIdx = t % 4;
+                const ringIdx = t % 3;
                 const angle = (t / forestTreeCount) * Math.PI * 2 + Math.sin(t * 2.7) * 0.05;
-                // Anillos densos del Bosque del Gran Roble rodeando el Estanque (r = 25..75)
-                const radius = 25.0 + ringIdx * 8.5 + (t % 5) * 2.3 + Math.cos(t * 1.7) * 1.5;
+                // Anillos limpios del Bosque del Gran Roble rodeando el Estanque (r = 25..66)
+                const radius = 25.2 + ringIdx * 10.5 + (t % 5) * 2.4 + Math.cos(t * 1.7) * 1.5;
                 // Despejar el carril orbital de la cámara (r ≈ 36..44.5)
                 const safeRadius = (radius > 35.5 && radius < 45.0) ? (radius < 40.2 ? 34.2 : 46.2) : radius;
                 const tx = Math.cos(angle) * safeRadius;
