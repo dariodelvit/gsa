@@ -1765,37 +1765,42 @@
         }, durationMs - 120);
     }
 
-    function openUnitSuperZoom(unitIdx) {
+    function populateUnitSuperZoomDOM(unitIdx) {
         const unit = UNITS_DATA[unitIdx] || UNITS_DATA[0];
-        const wasAlreadyOpen = elUnitZoomOverlay?.classList.contains('is-open');
-        clearTimeout(diveTabTimer);
-        isOverviewMode = false;
-        document.body.classList.remove('is-overview-mode');
+        const unitId = unit.id || 'castores';
+        const biome = UNIT_LAKE_BIOMES[unitId] || UNIT_LAKE_BIOMES.castores;
 
-        targetSectorProgress = 1;
-        activeSectorIdx = 1;
         selectedSubIdx = unitIdx;
-
-        // 1. Iniciar el Super-Zoom Hiperespacio directo al núcleo de la estrella de la Unidad
-        superZoomState = {
-            type: 'unit',
-            index: unitIdx,
-            wx: unit.worldX,
-            wy: unit.worldY,
-            zoom: 24.0
-        };
-
-        document.body.classList.add('is-superzoom-open');
-        const diveTime = wasAlreadyOpen ? 240 : 1080;
-        triggerStarDiveFlash(unit.worldX, unit.worldY, wasAlreadyOpen ? 450 : 1180);
+        unitLakeState.unitId = unitId;
+        unitLakeState.activeUnitIdx = unitIdx;
 
         // Aplicar el color e iluminación propios de la Unidad a toda la Tab
         if (elUnitZoomOverlay) {
             elUnitZoomOverlay.style.setProperty('--unit-accent', unit.accentColor || '#38BDF8');
             elUnitZoomOverlay.style.setProperty('--unit-glow', unit.glowColor || 'rgba(56, 189, 248, 0.18)');
+            elUnitZoomOverlay.setAttribute('data-unit-world', unitId);
         }
 
-        // 2. Poblar la Nueva Tab completa de la Unidad + sus ilustraciones, escenas y Kraaletes
+        // Actualizar textos contextuales del bioma y nombres de paradas
+        const biomeTag = document.getElementById('uzWorldBiomeTag');
+        if (biomeTag) biomeTag.textContent = biome.kicker;
+        const loreHeading = document.getElementById('uzLoreHeading');
+        if (loreHeading) loreHeading.textContent = biome.loreHeading;
+
+        const stepButtons = document.querySelectorAll('#uzOrbitStepsNav .uz-orbit-step-btn');
+        stepButtons.forEach((btn, idx) => {
+            const nameSpan = btn.querySelector('.step-name');
+            if (nameSpan && biome.stepNames[idx]) {
+                nameSpan.textContent = biome.stepNames[idx];
+            }
+        });
+
+        const ringCaption = document.querySelector('#uzNextOrbitStepBtn .uz-progress-ring-caption');
+        if (ringCaption) {
+            ringCaption.textContent = unitId === 'manada' ? 'Rodear la Roca' : 'Rodear el lago';
+        }
+
+        // Poblar la Tab completa de la Unidad + sus ilustraciones, escenas y Kraaletes
         const elStarCoords = document.getElementById('uzStarCoords');
         if (elStarCoords) elStarCoords.textContent = `ESTRELLA 0${unitIdx + 1} / 05 · ${unit.colorLabel || 'LÍNEA DE LAS UNIDADES'}`;
         document.getElementById('uzAgePill').textContent = unit.age;
@@ -2020,19 +2025,46 @@
                 });
             });
         }
+    }
 
-        // Configurar el Mundo 3D del Lago para esta Unidad y reiniciar en la Parada 01 (0° del lago)
-        if (elUnitZoomOverlay) {
-            elUnitZoomOverlay.setAttribute('data-unit-world', unit.id);
+    function openUnitSuperZoom(unitIdx) {
+        const unit = UNITS_DATA[unitIdx] || UNITS_DATA[0];
+        const wasAlreadyOpen = elUnitZoomOverlay?.classList.contains('is-open');
+        clearTimeout(diveTabTimer);
+        isOverviewMode = false;
+        document.body.classList.remove('is-overview-mode');
+
+        targetSectorProgress = 1;
+        activeSectorIdx = 1;
+        selectedSubIdx = unitIdx;
+
+        superZoomState = {
+            type: 'unit',
+            index: unitIdx,
+            wx: unit.worldX,
+            wy: unit.worldY,
+            zoom: 24.0
+        };
+
+        // Si ya estamos dentro del Mundo 3D de las Unidades, viajar por el río/bosque en el mismo espacio 3D
+        if (wasAlreadyOpen && unitLakeState.worldBuilt) {
+            clearTimeout(unitLakeState.snapTimer);
+            unitLakeState.orbitTarget = unitIdx * 6;
+            return;
         }
-        setupUnitLakeWorld(unit);
+
+        document.body.classList.add('is-superzoom-open');
+        const diveTime = wasAlreadyOpen ? 240 : 1080;
+        triggerStarDiveFlash(unit.worldX, unit.worldY, wasAlreadyOpen ? 450 : 1180);
+
+        populateUnitSuperZoomDOM(unitIdx);
+        setupUnitLakeWorld(unitIdx);
 
         elCampZoomOverlay?.classList.remove('is-open');
         elCampZoomOverlay?.setAttribute('aria-hidden', 'true');
         elLostZoomOverlay?.classList.remove('is-open');
         elLostZoomOverlay?.setAttribute('aria-hidden', 'true');
 
-        // 3. Dejar tiempo real de inmersión hacia el corazón de la estrella antes de abrir la Tab
         diveTabTimer = setTimeout(() => {
             if (elUnitZoomOverlay) {
                 elUnitZoomOverlay.classList.add('is-open');
@@ -2189,9 +2221,13 @@
         }
     };
 
+    const UNIT_ZONE_SPACING = 165;
+
     const unitLakeState = {
         unitId: 'castores',
-        orbitTarget: 0,      // 0..5 (5 equivale a 360° de vuelta al inicio)
+        activeUnitIdx: 0,
+        worldBuilt: false,
+        orbitTarget: 0,      // 0..28 (cada unidad ocupa 6 unidades: 0..4 paradas + 4..6 cruce de río al siguiente mundo)
         orbitCurrent: 0,
         activeStep: 0,       // 0..4
         snapTimer: null,
@@ -2211,10 +2247,13 @@
         camera: null,
         worldGroup: null,
         skyDome: null,
+        skyUniforms: null,
         waterMesh: null,
         waterUniforms: null,
+        waterUniformsList: [],
+        terrainShaderUniformsList: [],
         rippleRings: [],
-        particles: null,
+        particlesList: [],
         shoreLight: null,
         sunLight: null,
         hemiLight: null,
@@ -2468,17 +2507,58 @@
     }
 
     function syncUnitOrbitDOM(progress, forceStep = null) {
-        const wrapped = ((progress % 5) + 5) % 5;
-        const nearestStep = forceStep !== null ? forceStep : (Math.round(wrapped) % 5);
+        const totalClamped = clamp(progress, 0, 28);
+        const uIdx = Math.min(4, Math.floor(totalClamped / 6));
+        const localProg = totalClamped - uIdx * 6;
+        const isCrossingRiver = localProg > 4.08 && localProg < 5.92 && uIdx < 4;
+
+        // Cambiar automáticamente el DOM a la siguiente Unidad a mitad del cruce del río por el bosque
+        const displayUnitIdx = (localProg >= 5.0 && uIdx < 4) ? (uIdx + 1) : uIdx;
+        if (displayUnitIdx !== unitLakeState.activeUnitIdx) {
+            populateUnitSuperZoomDOM(displayUnitIdx);
+        }
+
+        const effStepPos = localProg >= 5.0 ? (localProg - 6.0) : localProg;
+        const nearestStep = forceStep !== null ? forceStep : clamp(Math.round(effStepPos), 0, 4);
         unitLakeState.activeStep = nearestStep;
+
+        const biomeTag = document.getElementById('uzWorldBiomeTag');
+        const currentUnit = UNITS_DATA[displayUnitIdx] || UNITS_DATA[0];
+        const currentBiome = UNIT_LAKE_BIOMES[currentUnit.id] || UNIT_LAKE_BIOMES.castores;
+
+        if (biomeTag) {
+            if (isCrossingRiver) {
+                const fromName = UNITS_DATA[uIdx]?.shortName || 'Castores';
+                const toName = UNITS_DATA[uIdx + 1]?.shortName || 'Manada';
+                biomeTag.textContent = `🌊 CRUZANDO EL RÍO POR EL BOSQUE · ${fromName.toUpperCase()} → ${toName.toUpperCase()}`;
+            } else {
+                biomeTag.textContent = currentBiome.kicker;
+            }
+        }
+
+        const ringCaption = document.querySelector('#uzNextOrbitStepBtn .uz-progress-ring-caption');
+        if (ringCaption) {
+            if (isCrossingRiver) {
+                ringCaption.textContent = 'Cruzando el río...';
+            } else if (nearestStep === 4 && displayUnitIdx < 4) {
+                ringCaption.textContent = `Cruzar río a ${UNITS_DATA[displayUnitIdx + 1].shortName} →`;
+            } else {
+                ringCaption.textContent = currentUnit.id === 'manada' ? 'Rodear la Roca' : 'Rodear el lago';
+            }
+        }
 
         const screens = document.querySelectorAll('#unitSuperZoomOverlay .uz-orbit-screen');
         screens.forEach((scr, idx) => {
-            let diff = idx - wrapped;
-            if (diff > 2.5) diff -= 5;
-            if (diff < -2.5) diff += 5;
-            const absDiff = Math.abs(diff);
+            if (isCrossingRiver) {
+                scr.classList.remove('is-active');
+                scr.style.opacity = '0';
+                scr.style.transform = 'translate3d(0, -32px, 0) scale(0.95)';
+                scr.style.pointerEvents = 'none';
+                return;
+            }
 
+            const diff = idx - effStepPos;
+            const absDiff = Math.abs(diff);
             const isCurrent = idx === nearestStep;
             scr.classList.toggle('is-active', isCurrent);
 
@@ -2497,37 +2577,49 @@
         });
 
         document.querySelectorAll('#uzOrbitStepsNav .uz-orbit-step-btn').forEach((btn, idx) => {
-            btn.classList.toggle('active', idx === nearestStep);
+            btn.classList.toggle('active', !isCrossingRiver && idx === nearestStep);
         });
 
         const circumference = 276.46;
-        const normOrbit = wrapped / 5;
+        const normOrbit = isCrossingRiver ? ((localProg - 4.0) / 2.0) : (clamp(effStepPos, 0, 4) / 4);
         const ringBar = document.getElementById('uzOrbitRingBar');
         if (ringBar) {
-            const offset = circumference * (1 - clamp(normOrbit + 0.2, 0.2, 1.0));
+            const offset = circumference * (1 - clamp(normOrbit * 0.8 + 0.2, 0.2, 1.0));
             ringBar.style.strokeDashoffset = offset.toFixed(2);
         }
         const angleLabel = document.getElementById('uzOrbitAngleLabel');
         if (angleLabel) {
-            const deg = Math.round(normOrbit * 360) % 360;
-            angleLabel.textContent = `${deg}°`;
+            if (isCrossingRiver) {
+                angleLabel.textContent = 'RÍO';
+            } else {
+                const deg = Math.round((clamp(effStepPos, 0, 4) / 5) * 360) % 360;
+                angleLabel.textContent = `${deg}°`;
+            }
         }
     }
 
     function goToUnitOrbitStep(stepIdx) {
         clearTimeout(unitLakeState.snapTimer);
-        const currentCycle = Math.floor(unitLakeState.orbitCurrent / 5) * 5;
-        let candidate = currentCycle + stepIdx;
-        const diff = candidate - unitLakeState.orbitCurrent;
-        if (diff > 2.5) candidate -= 5;
-        if (diff < -2.5) candidate += 5;
-        unitLakeState.orbitTarget = candidate;
+        const uIdx = unitLakeState.activeUnitIdx || 0;
+        unitLakeState.orbitTarget = uIdx * 6 + clamp(stepIdx, 0, 4);
     }
 
     function scheduleOrbitSnap() {
         clearTimeout(unitLakeState.snapTimer);
         unitLakeState.snapTimer = setTimeout(() => {
-            unitLakeState.orbitTarget = Math.round(unitLakeState.orbitTarget);
+            const tClamped = clamp(unitLakeState.orbitTarget, 0, 28);
+            const uIdx = Math.min(4, Math.floor(tClamped / 6));
+            const local = tClamped - uIdx * 6;
+            if (local <= 4.16 || uIdx >= 4) {
+                unitLakeState.orbitTarget = uIdx * 6 + Math.round(clamp(local, 0, 4));
+            } else {
+                // En el tramo del río entre uIdx (parada 4) y uIdx+1 (parada 0)
+                if (unitLakeState.orbitTarget >= unitLakeState.orbitCurrent || local >= 5.0) {
+                    unitLakeState.orbitTarget = (uIdx + 1) * 6;
+                } else {
+                    unitLakeState.orbitTarget = uIdx * 6 + 4;
+                }
+            }
         }, 160);
     }
 
@@ -2775,9 +2867,6 @@
     // MODELOS 3D DETALLADOS Y ORGÁNICOS DE CADA UNIDAD ALREDEDOR DEL LAGO
     // =========================================================================
     function buildUnitSpecificLandmarks(THREE, group, unitId, getTerrainHeight) {
-        unitLakeState.animatedProps = [];
-        unitLakeState.reedClusters = [];
-
         // 1. Juncos de ribera en el agua (y cantos rodados para Tropa, Escultas y Clan; Castores usa shader GLSL de ribera + vegetación botánica)
         if (unitId !== 'manada') {
             const pebbleColors = unitId === 'escultas'
@@ -3615,7 +3704,7 @@
     }
 
     function createSkyDomeShaderMesh(THREE, biome) {
-        const skyGeo = new THREE.SphereGeometry(210, 64, 32);
+        const skyGeo = new THREE.SphereGeometry(240, 64, 32);
         const skyUniforms = {
             uSkyTop: { value: new THREE.Color(biome.skyTop) },
             uSkyHorizon: { value: new THREE.Color(biome.skyHorizon) },
@@ -3631,7 +3720,7 @@
                 varying vec3 vWorldPos;
                 void main() {
                     vec4 wp = modelMatrix * vec4(position, 1.0);
-                    vWorldPos = wp.xyz;
+                    vWorldPos = position;
                     gl_Position = projectionMatrix * viewMatrix * wp;
                 }
             `,
@@ -3661,7 +3750,7 @@
                 }
             `
         });
-        return new THREE.Mesh(skyGeo, skyMat);
+        return { mesh: new THREE.Mesh(skyGeo, skyMat), uniforms: skyUniforms };
     }
 
     function createSmoothWaterShaderMesh(THREE, biome) {
@@ -3683,6 +3772,7 @@
             vertexShader: `
                 uniform float uTime;
                 varying vec3 vWorldPos;
+                varying vec3 vGlobalPos;
                 varying float vDist;
 
                 void main() {
@@ -3693,7 +3783,8 @@
                                + cos(pos.x * 0.42 + pos.z * 0.38 + uTime * 1.6) * 0.05;
                     pos.y += wave * smoothstep(26.0, 12.0, r);
                     vec4 wp = modelMatrix * vec4(pos, 1.0);
-                    vWorldPos = wp.xyz;
+                    vWorldPos = pos;
+                    vGlobalPos = wp.xyz;
                     gl_Position = projectionMatrix * viewMatrix * wp;
                 }
             `,
@@ -3705,6 +3796,7 @@
                 uniform vec3 uSunColor;
                 uniform vec3 uSunDir;
                 varying vec3 vWorldPos;
+                varying vec3 vGlobalPos;
                 varying float vDist;
 
                 float waveHeight(vec2 p, float t) {
@@ -3724,7 +3816,7 @@
                     float hZ = waveHeight(p + vec2(0.0, eps), uTime);
                     vec3 normal = normalize(vec3(hC - hX, eps * 2.8, hC - hZ));
 
-                    vec3 viewDir = normalize(cameraPosition - vWorldPos);
+                    vec3 viewDir = normalize(cameraPosition - vGlobalPos);
                     float fresnel = pow(1.0 - max(dot(viewDir, normal), 0.0), 3.2);
 
                     // Gradiente de profundidad del lago y reflejo Fresnel del cielo
@@ -3811,99 +3903,295 @@
         return true;
     }
 
-    function setupUnitLakeWorld(unit) {
-        const unitId = unit.id || 'castores';
-        const biome = UNIT_LAKE_BIOMES[unitId] || UNIT_LAKE_BIOMES.castores;
-        unitLakeState.unitId = unitId;
-        unitLakeState.orbitTarget = 0;
-        unitLakeState.orbitCurrent = 0;
-        unitLakeState.activeStep = 0;
+    // Curva serpenteante del río que conecta dos Unidades consecutivas a través del bosque
+    function getCorridorRiverCenterX(corridorIdx, globalZ) {
+        const zStart = -corridorIdx * UNIT_ZONE_SPACING - 21.5;
+        const zEnd = -(corridorIdx + 1) * UNIT_ZONE_SPACING + 21.5;
+        const s = clamp((globalZ - zStart) / (zEnd - zStart), 0, 1);
+        const env = Math.sin(s * Math.PI);
+        return env * (Math.sin(s * Math.PI * 2.0 + corridorIdx * 1.15) * 10.5 + Math.cos(s * Math.PI * 3.0) * 3.8);
+    }
 
-        // Actualizar textos contextuales del bioma y nombres de paradas
-        const biomeTag = document.getElementById('uzWorldBiomeTag');
-        if (biomeTag) biomeTag.textContent = biome.kicker;
-        const loreHeading = document.getElementById('uzLoreHeading');
-        if (loreHeading) loreHeading.textContent = biome.loreHeading;
+    // Construye el tramo de río y bosque denso entre la Unidad `corridorIdx` y la `corridorIdx + 1`
+    function buildRiverForestCorridor(THREE, parentGroup, corridorIdx) {
+        const zStart = -corridorIdx * UNIT_ZONE_SPACING - 21.0;
+        const zEnd = -(corridorIdx + 1) * UNIT_ZONE_SPACING + 21.0;
+        const corridorLen = Math.abs(zEnd - zStart); // ~123m
+        const zMid = (zStart + zEnd) * 0.5;
 
-        const stepButtons = document.querySelectorAll('#uzOrbitStepsNav .uz-orbit-step-btn');
-        stepButtons.forEach((btn, idx) => {
-            const nameSpan = btn.querySelector('.step-name');
-            if (nameSpan && biome.stepNames[idx]) {
-                nameSpan.textContent = biome.stepNames[idx];
-            }
+        const unitFrom = UNITS_DATA[corridorIdx] || UNITS_DATA[0];
+        const unitTo = UNITS_DATA[corridorIdx + 1] || UNITS_DATA[1];
+        const biomeFrom = UNIT_LAKE_BIOMES[unitFrom.id] || UNIT_LAKE_BIOMES.castores;
+        const biomeTo = UNIT_LAKE_BIOMES[unitTo.id] || UNIT_LAKE_BIOMES.manada;
+
+        const corridorGroup = new THREE.Group();
+
+        // 1. Cinta de agua cristalina animada que serpentea por el bosque de un mundo al siguiente
+        const rSegsX = 32;
+        const rSegsZ = 140;
+        const riverGeo = new THREE.PlaneGeometry(11.6, corridorLen + 8.0, rSegsX, rSegsZ);
+        riverGeo.rotateX(-Math.PI / 2);
+        const rPos = riverGeo.attributes.position;
+        for (let i = 0; i < rPos.count; i++) {
+            const lx = rPos.getX(i);
+            const lz = rPos.getZ(i);
+            const gz = zMid + lz;
+            const cx = getCorridorRiverCenterX(corridorIdx, gz);
+            const s = clamp((gz - zStart) / (zEnd - zStart), 0, 1);
+            const widthScale = 1.0 + Math.sin(s * Math.PI * 3.0) * 0.18;
+            rPos.setX(i, cx + lx * widthScale);
+            rPos.setZ(i, gz);
+            rPos.setY(i, 0.03);
+        }
+        riverGeo.computeVertexNormals();
+
+        const riverUniforms = {
+            uTime: { value: 0 },
+            uWaterShallowA: { value: new THREE.Color(biomeFrom.waterColor || 0x10B981) },
+            uWaterShallowB: { value: new THREE.Color(biomeTo.waterColor || 0x0EA5E9) },
+            uWaterDeep: { value: new THREE.Color(0x064E3B) },
+            uSkyHorizon: { value: new THREE.Color(biomeFrom.skyHorizon) },
+            uSunColor: { value: new THREE.Color(0xFEF08A) },
+            uZStart: { value: zStart },
+            uZEnd: { value: zEnd }
+        };
+        unitLakeState.waterUniformsList.push(riverUniforms);
+
+        const riverMat = new THREE.ShaderMaterial({
+            transparent: true,
+            uniforms: riverUniforms,
+            vertexShader: `
+                uniform float uTime;
+                varying vec3 vGlobalPos;
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    vec3 pos = position;
+                    float flowWave = sin(pos.z * 0.45 + uTime * 3.2) * 0.045
+                                   + cos(pos.x * 0.65 - uTime * 2.4) * 0.035;
+                    pos.y += flowWave;
+                    vec4 wp = modelMatrix * vec4(pos, 1.0);
+                    vGlobalPos = wp.xyz;
+                    gl_Position = projectionMatrix * viewMatrix * wp;
+                }
+            `,
+            fragmentShader: `
+                uniform float uTime;
+                uniform vec3 uWaterShallowA;
+                uniform vec3 uWaterShallowB;
+                uniform vec3 uWaterDeep;
+                uniform vec3 uSkyHorizon;
+                uniform vec3 uSunColor;
+                uniform float uZStart;
+                uniform float uZEnd;
+                varying vec3 vGlobalPos;
+                varying vec2 vUv;
+
+                void main() {
+                    float s = clamp((vGlobalPos.z - uZStart) / (uZEnd - uZStart), 0.0, 1.0);
+                    float edgeDist = abs(vUv.x - 0.5) * 2.0;
+
+                    // Corriente fluida del río con espuma suave en las orillas y remolinos
+                    float ripple1 = sin(vGlobalPos.z * 1.35 + uTime * 4.2 + sin(vGlobalPos.x * 0.9) * 1.5);
+                    float ripple2 = cos(vGlobalPos.x * 2.2 - vGlobalPos.z * 0.85 + uTime * 3.1);
+                    float ripples = (ripple1 * 0.5 + ripple2 * 0.5) * 0.5 + 0.5;
+
+                    vec3 shallowCol = mix(uWaterShallowA, uWaterShallowB, s);
+                    vec3 baseCol = mix(uWaterDeep, shallowCol, 0.45 + 0.35 * (1.0 - edgeDist));
+                    baseCol = mix(baseCol, uSkyHorizon * 1.25, 0.28 + ripples * 0.18);
+
+                    // Líneas de espuma blanca estilizada siguiendo la corriente (estética Firewatch / Pixar)
+                    float streamLine = smoothstep(0.76, 0.92, sin(vUv.x * 18.0 + sin(vGlobalPos.z * 0.25 + uTime * 2.6) * 2.2));
+                    float bankFoam = smoothstep(0.68, 0.92, edgeDist) * (0.45 + 0.55 * ripples);
+                    vec3 col = mix(baseCol, vec3(0.92, 0.98, 1.0), clamp(bankFoam * 0.65 + streamLine * 0.22, 0.0, 0.85));
+
+                    float alpha = smoothstep(1.0, 0.78, edgeDist) * 0.94;
+                    gl_FragColor = vec4(col, alpha);
+                }
+            `
+        });
+        const riverMesh = new THREE.Mesh(riverGeo, riverMat);
+        corridorGroup.add(riverMesh);
+
+        // 2. Puente Scout de Madera y Piedras de Vadeo en el corazón del bosque (s = 0.5)
+        const bridgeZ = zMid;
+        const bridgeX = getCorridorRiverCenterX(corridorIdx, bridgeZ);
+        const nextRiverX = getCorridorRiverCenterX(corridorIdx, bridgeZ - 2.0);
+        const riverTangentAngle = Math.atan2(nextRiverX - bridgeX, -2.0);
+
+        const bridgeGroup = new THREE.Group();
+        const woodDarkMat = new THREE.MeshStandardMaterial({ color: 0x4E342E, roughness: 0.82 });
+        const woodPlankMat = new THREE.MeshStandardMaterial({ color: 0x6D4C41, roughness: 0.78 });
+        const ropeMat = new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.74 });
+
+        // Tablones curvados del puente sobre el río
+        const plankCount = 18;
+        for (let p = 0; p < plankCount; p++) {
+            const u = (p / (plankCount - 1)) * 2 - 1; // -1..1 a lo ancho del río
+            const archY = 0.35 + (1 - u * u) * 1.35;
+            const plank = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.12, 3.2), woodPlankMat);
+            plank.position.set(u * 5.4, archY, 0);
+            plank.rotation.z = -u * 0.22;
+            bridgeGroup.add(plank);
+        }
+
+        // Vigas laterales arqueadas y postes con farolillos scouts
+        [-1.42, 1.42].forEach((sideZ) => {
+            [-5.2, -2.6, 0, 2.6, 5.2].forEach((postX, idx) => {
+                const u = postX / 5.4;
+                const archY = 0.35 + (1 - u * u) * 1.35;
+                const post = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 1.45, 12), woodDarkMat);
+                post.position.set(postX, archY + 0.65, sideZ);
+                bridgeGroup.add(post);
+
+                if (idx === 1 || idx === 3) {
+                    const lanternGlow = createGlowSprite(THREE, 0xFDE047, 2.8, 0.82);
+                    lanternGlow.position.set(postX, archY + 1.42, sideZ);
+                    bridgeGroup.add(lanternGlow);
+                }
+            });
+
+            const railCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(-5.2, 1.55, sideZ),
+                new THREE.Vector3(-2.6, 2.42, sideZ),
+                new THREE.Vector3(0.0, 2.82, sideZ),
+                new THREE.Vector3(2.6, 2.42, sideZ),
+                new THREE.Vector3(5.2, 1.55, sideZ)
+            ]);
+            const railMesh = new THREE.Mesh(new THREE.TubeGeometry(railCurve, 28, 0.065, 10, false), ropeMat);
+            bridgeGroup.add(railMesh);
         });
 
-        const ringCaption = document.querySelector('#uzNextOrbitStepBtn .uz-progress-ring-caption');
-        if (ringCaption) {
-            ringCaption.textContent = unitId === 'manada' ? 'Rodear la Roca' : 'Rodear el lago';
+        bridgeGroup.position.set(bridgeX, 0.0, bridgeZ);
+        bridgeGroup.rotation.y = -riverTangentAngle;
+        corridorGroup.add(bridgeGroup);
+
+        // 3. Rocas de río musgosas, troncos caídos, juncos y arbustos a lo largo de ambas orillas
+        const riverRockMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.82, flatShading: false });
+        const mossCapMat = new THREE.MeshStandardMaterial({ color: 0x15803D, roughness: 0.88, flatShading: false });
+
+        for (let i = 0; i < 42; i++) {
+            const s = (i + 0.5) / 42;
+            if (Math.abs(s - 0.5) < 0.06) continue; // dejar libre el puente
+            const gz = lerp(zStart - 3.0, zEnd + 3.0, s);
+            const cx = getCorridorRiverCenterX(corridorIdx, gz);
+            const side = i % 2 === 0 ? 1 : -1;
+            const bankOffset = 5.2 + (i % 4) * 1.15;
+            const rx = cx + side * bankOffset;
+
+            // Roca redondeada estilizada en la orilla
+            const rScale = 0.55 + (i % 3) * 0.28;
+            const rock = new THREE.Mesh(new THREE.IcosahedronGeometry(rScale, 3), i % 3 === 0 ? mossCapMat : riverRockMat);
+            rock.scale.set(1.35, 0.62, 1.15);
+            rock.position.set(rx, 0.18, gz);
+            rock.rotation.y = i * 1.1;
+            corridorGroup.add(rock);
+
+            // Juncos meciéndose junto al agua
+            if (i % 2 === 0) {
+                const reeds = createReedCluster(THREE, 8);
+                reeds.position.set(cx + side * 4.8, 0.02, gz + 0.8);
+                corridorGroup.add(reeds);
+                unitLakeState.reedClusters.push({ mesh: reeds, phase: i * 0.65 });
+            }
+
+            // Piedras de vadeo dentro del cauce
+            if (i % 9 === 0) {
+                for (let st = -1; st <= 1; st++) {
+                    const stepStone = new THREE.Mesh(new THREE.CylinderGeometry(0.58, 0.72, 0.28, 18), riverRockMat);
+                    stepStone.position.set(cx + st * 1.85, 0.08, gz + st * 0.45);
+                    corridorGroup.add(stepStone);
+                }
+            }
         }
 
-        syncUnitOrbitDOM(0, 0);
+        // 4. Bosque denso estilizado (tipo Firewatch / Pixar) flanqueando ambos márgenes del río
+        const corridorTreeCount = 86;
+        for (let t = 0; t < corridorTreeCount; t++) {
+            const s = (t + 0.5) / corridorTreeCount;
+            const gz = lerp(zStart - 2.0, zEnd + 2.0, s);
+            const cx = getCorridorRiverCenterX(corridorIdx, gz);
+            const side = t % 2 === 0 ? 1 : -1;
+            const layer = Math.floor(t / 2) % 3;
+            // Mantener despejado el cauce del río y el carril de vuelo de la cámara (|x - cx| > 9.2)
+            const distFromRiver = 9.6 + layer * 6.8 + (t % 5) * 1.9;
+            const tx = cx + side * distFromRiver;
 
-        if (!ensureUnitLakeThreeScene()) return;
+            const treeBiomeId = s < 0.5 ? unitFrom.id : unitTo.id;
+            const sc = 0.92 + (t % 5) * 0.25 + (layer === 2 ? 0.32 : 0);
+            const tree = createPineOrBiomeTree(THREE, treeBiomeId, sc, t * 1.91 + corridorIdx * 13);
+            const bankElevation = smoothstep(5.5, 22.0, distFromRiver) * 2.4;
+            tree.position.set(tx, bankElevation, gz);
+            tree.rotation.y = t * 1.37;
+            corridorGroup.add(tree);
 
-        const THREE = window.THREE;
-        const { scene, worldGroup, hemiLight, sunLight, shoreLight } = unitLakeState;
-
-        while (worldGroup.children.length > 0) {
-            const child = worldGroup.children[0];
-            worldGroup.remove(child);
+            if (t % 2 === 0) {
+                const bushColor = s < 0.5 ? 0x16A34A : 0x15803D;
+                const bush = createBotanicalBush(THREE, bushColor, 0.85 + (t % 3) * 0.22);
+                bush.position.set(cx + side * (7.2 + (t % 3) * 1.4), 0.32, gz + 0.9);
+                corridorGroup.add(bush);
+            }
         }
-        unitLakeState.rippleRings = [];
 
-        // Configurar atmósfera y luces del bioma
-        scene.fog.color.setHex(biome.fogColor);
-        scene.fog.density = biome.fogDensity * 0.85;
-        hemiLight.color.setHex(biome.hemiSky);
-        hemiLight.groundColor.setHex(biome.hemiGround);
-        sunLight.color.setHex(biome.sunColor);
-        sunLight.position.set(biome.sunPos[0], biome.sunPos[1], biome.sunPos[2]);
-        shoreLight.color.setHex(biome.shoreLightColor);
-        if (unitId === 'manada') {
-            shoreLight.position.set(0, 12.5, 0);
-        } else {
-            shoreLight.position.set(0, 6.0, -22);
-        }
+        parentGroup.add(corridorGroup);
+    }
 
-        // 0. Cúpula Celeste 3D Atmosférica (Sky Dome con dispersión Mie)
-        const skyDome = createSkyDomeShaderMesh(THREE, biome);
-        worldGroup.add(skyDome);
-        unitLakeState.skyDome = skyDome;
+    // Construye una de las 5 zonas de Unidad dentro del mismo espacio 3D continuo
+    function buildSingleUnitZone(THREE, parentGroup, uIdx) {
+        const unit = UNITS_DATA[uIdx] || UNITS_DATA[0];
+        const unitId = unit.id || 'castores';
+        const biome = UNIT_LAKE_BIOMES[unitId] || UNIT_LAKE_BIOMES.castores;
+        const centerZ = -uIdx * UNIT_ZONE_SPACING;
 
-        // Función de topografía orgánica FBM C2-continua (sin aristas poligonales)
+        const zoneGroup = new THREE.Group();
+        zoneGroup.position.set(0, 0, centerZ);
+
         const isAlpine = unitId === 'escultas' || unitId === 'clan';
         const getTerrainHeight = (x, z) => {
             const r = Math.hypot(x, z);
             const nSmooth = fbm2D(x * 0.028, z * 0.028, 5) * 0.5 + 0.5;
             const nDetail = fbm2D(x * 0.075 + 4.2, z * 0.075 - 3.1, 3) * 0.35;
 
+            // Despejar y excavar suavemente el valle del río en el norte (z < -19) y sur (z > 19) para conectar las Unidades
+            let riverValleyMask = 1.0;
+            let riverBedDepth = 0.0;
+            const globalZ = z + centerZ;
+            if (z < -18.5 && uIdx < 4) {
+                const rCx = getCorridorRiverCenterX(uIdx, globalZ);
+                const dRiver = Math.abs(x - rCx);
+                const northBlend = smoothstep(-18.5, -24.5, z);
+                riverValleyMask = lerp(1.0, smoothstep(5.5, 22.0, dRiver), northBlend);
+                riverBedDepth = northBlend * (1.0 - smoothstep(3.2, 5.8, dRiver)) * 1.65;
+            } else if (z > 18.5 && uIdx > 0) {
+                const rCx = getCorridorRiverCenterX(uIdx - 1, globalZ);
+                const dRiver = Math.abs(x - rCx);
+                const southBlend = smoothstep(18.5, 24.5, z);
+                riverValleyMask = lerp(1.0, smoothstep(5.5, 22.0, dRiver), southBlend);
+                riverBedDepth = southBlend * (1.0 - smoothstep(3.2, 5.8, dRiver)) * 1.65;
+            }
+
             if (unitId === 'manada') {
-                // LA ROCA DEL CONSEJO: Promontorio geológico continuo esculpido en alta resolución en el centro del bosque
                 const ang = Math.atan2(z, x);
                 const radialWarp = fbm2D(Math.cos(ang) * 1.8 + x * 0.08, Math.sin(ang) * 1.8 + z * 0.08, 3) * 1.65;
                 const rWarped = Math.max(0, r + radialWarp * smoothstep(2.0, 15.0, r));
 
-                // Meseta rocosa principal del Consejo (r < 15.2) con escalones y cornisas naturales
                 const plateauBase = smoothstep(15.4, 7.2, rWarped) * 5.15;
                 const amphitheaterRim = Math.exp(-Math.pow((rWarped - 8.2) / 2.1, 2.0)) *
                     (0.52 + 0.28 * fbm2D(x * 0.24 + 1.7, z * 0.24 - 2.3, 3));
 
-                // La Gran Peña del Consejo (escarpe asimétrico elevado en el lado norte z ≈ -2.6)
                 const cragDist = Math.hypot(x * 0.82, (z + 2.6) * 1.05);
                 const cragPeak = Math.pow(clamp(1.0 - cragDist / 6.8, 0, 1), 1.48) * 4.35;
 
-                // Micro-relieve de estratos y crestas de granito en la roca (sin esferas apiladas)
                 const rockMask = smoothstep(16.2, 9.5, rWarped);
                 const rockCrags = rockMask * (
                     ridgedFbm2D(x * 0.13 + 3.1, z * 0.13 - 1.4, 4) * 0.92 +
                     fbm2D(x * 0.26, z * 0.26, 3) * 0.32
                 );
 
-                // Claro del bosque (r = 15.5..21) y colinas densas de la Selva de Seeonee (r > 21)
                 const outerJungleHills = Math.pow(clamp((r - 20.5) / 66.0, 0, 1), 1.22) *
-                    biome.heightScale * (nSmooth * 0.72 + 0.28);
+                    biome.heightScale * (nSmooth * 0.72 + 0.28) * riverValleyMask;
 
-                return plateauBase + amphitheaterRim + cragPeak + rockCrags + 0.32 + nDetail * 0.42 + outerJungleHills;
+                return plateauBase + amphitheaterRim + cragPeak + rockCrags + 0.32 + nDetail * 0.42 + outerJungleHills - riverBedDepth;
             }
 
             if (r < 19.5) {
@@ -3917,14 +4205,15 @@
                 : fbm2D(x * 0.042 - 2.0, z * 0.042 + 1.8, 4) * 0.45 + 0.45;
 
             const beachHeight = 0.28 + nDetail * 0.35;
-            const mountainHeight = hillEnvelope * biome.heightScale * (nSmooth * 0.65 + nRidge * 0.65 + nDetail * 0.2);
+            const mountainHeight = hillEnvelope * biome.heightScale * (nSmooth * 0.65 + nRidge * 0.65 + nDetail * 0.2) * riverValleyMask;
 
-            return lerp(-2.2, beachHeight + mountainHeight, shoreBlend);
+            return lerp(-2.2, beachHeight + mountainHeight - riverBedDepth, shoreBlend);
         };
 
-        // 1. Terreno 3D de Alta Resolución con Normales Suaves (220x220 subdivisiones)
-        const terrainSegs = (unitId === 'manada' || unitId === 'castores' || unitId === 'tropa') ? 220 : 176;
-        const terrainGeo = new THREE.PlaneGeometry(220, 220, terrainSegs, terrainSegs);
+        // 1. Terreno 3D de Alta Resolución (220m x 166m para enlazar perfectamente con el siguiente sector a 165m)
+        const terrainSegsX = (unitId === 'manada' || unitId === 'castores' || unitId === 'tropa') ? 200 : 160;
+        const terrainSegsZ = (unitId === 'manada' || unitId === 'castores' || unitId === 'tropa') ? 160 : 132;
+        const terrainGeo = new THREE.PlaneGeometry(220, UNIT_ZONE_SPACING + 2, terrainSegsX, terrainSegsZ);
         terrainGeo.rotateX(-Math.PI / 2);
         const posAttr = terrainGeo.attributes.position;
         const colors = new Float32Array(posAttr.count * 3);
@@ -3975,25 +4264,29 @@
 
         let terrainMat;
         if (unitId === 'manada') {
-            // SHADER GLSL PER-PIXEL DE ESTRATOS DE ROCA GRANÍTICA, LIQUEN, MUSGO DE SELVA Y LUZ DE LUNA/FUEGO
+            const tUniforms = {
+                uSunDir: { value: new THREE.Vector3(-0.35, 0.78, -0.52).normalize() },
+                uFogColor: { value: new THREE.Color(biome.fogColor) },
+                uFogDensity: { value: biome.fogDensity }
+            };
+            unitLakeState.terrainShaderUniformsList.push(tUniforms);
             terrainMat = new THREE.ShaderMaterial({
-                uniforms: {
-                    uSunDir: { value: new THREE.Vector3(-0.35, 0.78, -0.52).normalize() },
-                    uFogColor: { value: new THREE.Color(biome.fogColor) },
-                    uFogDensity: { value: biome.fogDensity }
-                },
+                uniforms: tUniforms,
                 vertexShader: `
                     varying vec3 vWorldPos;
+                    varying vec3 vGlobalPos;
                     varying vec3 vNormal;
                     void main() {
                         vec4 wp = modelMatrix * vec4(position, 1.0);
-                        vWorldPos = wp.xyz;
+                        vWorldPos = position;
+                        vGlobalPos = wp.xyz;
                         vNormal = normalize(mat3(modelMatrix) * normal);
                         gl_Position = projectionMatrix * viewMatrix * wp;
                     }
                 `,
                 fragmentShader: `
                     varying vec3 vWorldPos;
+                    varying vec3 vGlobalPos;
                     varying vec3 vNormal;
                     uniform vec3 uSunDir;
                     uniform vec3 uFogColor;
@@ -4029,14 +4322,12 @@
                         vec3 n = normalize(vNormal);
                         float slope = 1.0 - clamp(n.y, 0.0, 1.0);
 
-                        // Detalle per-pixel de estratos geológicos y fisuras en la Roca del Consejo
                         float nMacro = fbm(vWorldPos.xz * 0.16);
                         float nMicro = fbm(vWorldPos.xz * 0.85 + vec2(4.2, -3.1));
                         float strataWave = sin(vWorldPos.y * 5.8 + nMacro * 4.5 + vWorldPos.x * 0.35);
                         float strata = smoothstep(-0.6, 0.7, strataWave);
                         float crevices = smoothstep(0.22, 0.55, fbm(vWorldPos.xz * 0.48 + vWorldPos.y * 0.6));
 
-                        // Colores de granito/basalto iluminado por la luna llena
                         vec3 darkSlate = vec3(0.14, 0.18, 0.24);
                         vec3 midGranite = vec3(0.32, 0.38, 0.46);
                         vec3 moonlitGranite = vec3(0.56, 0.63, 0.72);
@@ -4044,14 +4335,12 @@
                         rockCol = mix(rockCol, moonlitGranite, smoothstep(4.2, 9.2, vWorldPos.y) * 0.65 + nMicro * 0.25);
                         rockCol *= (0.72 + 0.28 * crevices);
 
-                        // Colores de musgo profundo y suelo húmedo del bosque de Seeonee
                         vec3 deepJungleFloor = vec3(0.03, 0.11, 0.06);
                         vec3 lushMoss = vec3(0.08, 0.26, 0.13);
                         vec3 lichenTint = vec3(0.16, 0.34, 0.18);
                         vec3 forestCol = mix(deepJungleFloor, lushMoss, nMacro * 0.7 + nMicro * 0.3);
                         forestCol = mix(forestCol, lichenTint, smoothstep(0.55, 0.82, nMicro) * 0.45);
 
-                        // Fusión orgánica entre la Roca del Consejo (r < 15.2 o pendientes escarpadas) y el musgo del bosque
                         float radialRock = 1.0 - smoothstep(10.8, 15.6, r);
                         float slopeRock = smoothstep(0.20, 0.46, slope);
                         float mossInCrevices = smoothstep(0.65, 0.88, n.y) * smoothstep(7.5, 2.5, vWorldPos.y) * 0.45;
@@ -4059,16 +4348,13 @@
 
                         vec3 albedo = mix(forestCol, rockCol, isRock);
 
-                        // Iluminación direccional de la Luna Llena + Luz cenital nocturna
                         float diff = max(dot(n, uSunDir), 0.0);
                         vec3 moonLight = vec3(0.86, 0.92, 1.0) * (diff * 0.88);
                         vec3 ambientLight = mix(vec3(0.08, 0.13, 0.20), vec3(0.18, 0.26, 0.36), n.y * 0.5 + 0.5);
 
-                        // Resplandor plateado en las aristas superiores de la Roca del Consejo
                         float rim = pow(clamp(n.y, 0.0, 1.0), 3.0) * isRock * smoothstep(3.0, 8.8, vWorldPos.y);
                         vec3 rimLight = vec3(0.95, 0.93, 0.76) * rim * 0.32;
 
-                        // Iluminación puntual cálida de las hogueras ceremoniales sobre la roca
                         float dFireMain = length(vWorldPos - vec3(0.0, 5.5, 1.4));
                         float fireAttenMain = 1.0 / (1.0 + 0.12 * dFireMain + 0.045 * dFireMain * dFireMain);
                         float dFireL = length(vWorldPos - vec3(-4.8, 4.2, 5.2));
@@ -4078,8 +4364,7 @@
 
                         vec3 litColor = albedo * (ambientLight + moonLight + fireGlow) + rimLight;
 
-                        // Niebla exponencial atmosférica idéntica a la escena
-                        float dist = length(cameraPosition - vWorldPos);
+                        float dist = length(cameraPosition - vGlobalPos);
                         float fogFactor = 1.0 - exp(- (uFogDensity * dist) * (uFogDensity * dist));
                         litColor = mix(litColor, uFogColor, clamp(fogFactor, 0.0, 1.0));
 
@@ -4088,25 +4373,29 @@
                 `
             });
         } else if (unitId === 'castores') {
-            // SHADER GLSL PER-PIXEL DE RIBERA HÚMEDA, CANTOS DE RÍO, PRADERA DE MUSGO Y AFLORAMIENTOS DE ROCA (CASTORES)
+            const tUniforms = {
+                uSunDir: { value: new THREE.Vector3(38, 42, -28).normalize() },
+                uFogColor: { value: new THREE.Color(biome.fogColor) },
+                uFogDensity: { value: biome.fogDensity }
+            };
+            unitLakeState.terrainShaderUniformsList.push(tUniforms);
             terrainMat = new THREE.ShaderMaterial({
-                uniforms: {
-                    uSunDir: { value: new THREE.Vector3(38, 42, -28).normalize() },
-                    uFogColor: { value: new THREE.Color(biome.fogColor) },
-                    uFogDensity: { value: biome.fogDensity }
-                },
+                uniforms: tUniforms,
                 vertexShader: `
                     varying vec3 vWorldPos;
+                    varying vec3 vGlobalPos;
                     varying vec3 vNormal;
                     void main() {
                         vec4 wp = modelMatrix * vec4(position, 1.0);
-                        vWorldPos = wp.xyz;
+                        vWorldPos = position;
+                        vGlobalPos = wp.xyz;
                         vNormal = normalize(mat3(modelMatrix) * normal);
                         gl_Position = projectionMatrix * viewMatrix * wp;
                     }
                 `,
                 fragmentShader: `
                     varying vec3 vWorldPos;
+                    varying vec3 vGlobalPos;
                     varying vec3 vNormal;
                     uniform vec3 uSunDir;
                     uniform vec3 uFogColor;
@@ -4145,35 +4434,29 @@
                         float nMacro = fbm(vWorldPos.xz * 0.10);
                         float nMicro = fbm(vWorldPos.xz * 0.35 + vec2(2.7, -1.9));
 
-                        // 1. Ribera suave y sedosa del Estanque (estilo Firewatch / Pixar, sin grano rugoso)
                         vec3 wetRiverbed = vec3(0.15, 0.20, 0.16);
                         vec3 dampSand = vec3(0.38, 0.33, 0.24);
                         vec3 shoreCol = mix(wetRiverbed, dampSand, smoothstep(-0.3, 0.48, vWorldPos.y));
 
-                        // 2. Pradera ribereña y suelo musgoso suave del Bosque del Gran Roble
                         vec3 deepForestMoss = vec3(0.06, 0.26, 0.14);
                         vec3 sunlitMeadow = vec3(0.14, 0.42, 0.21);
                         vec3 cloverHighlight = vec3(0.22, 0.50, 0.25);
                         vec3 meadowCol = mix(deepForestMoss, sunlitMeadow, nMacro * 0.72 + nMicro * 0.28);
                         meadowCol = mix(meadowCol, cloverHighlight, smoothstep(0.52, 0.84, nMicro) * 0.42);
 
-                        // 3. Afloramientos naturales de roca estratificada en las laderas del valle
                         float strata = smoothstep(-0.5, 0.6, sin(vWorldPos.y * 4.5 + nMacro * 3.8));
                         vec3 valleyRock = mix(vec3(0.24, 0.27, 0.26), vec3(0.44, 0.47, 0.45), strata * 0.6 + 0.4);
                         float isRockSlope = smoothstep(0.22, 0.46, slope) * smoothstep(0.8, 3.5, vWorldPos.y);
 
-                        // Transición suave entre la orilla húmeda del estanque, la pradera de musgo y la roca de ladera
                         float shoreToMeadow = smoothstep(20.6, 24.4, r) * smoothstep(0.12, 0.78, vWorldPos.y);
                         vec3 albedo = mix(shoreCol, meadowCol, clamp(shoreToMeadow, 0.0, 1.0));
                         albedo = mix(albedo, valleyRock, isRockSlope * 0.85);
 
-                        // Iluminación solar dorada del valle + Luz hemisférica celeste/bosque
                         float diff = max(dot(n, uSunDir), 0.0);
                         vec3 sunLight = vec3(1.0, 0.93, 0.72) * (diff * 0.92);
                         vec3 ambientLight = mix(vec3(0.09, 0.22, 0.15), vec3(0.32, 0.52, 0.64), n.y * 0.5 + 0.5);
 
-                        // Brillo húmedo sutil en el borde del agua y luz cálida junto a la Madriguera y la Presa
-                        vec3 viewDir = normalize(cameraPosition - vWorldPos);
+                        vec3 viewDir = normalize(cameraPosition - vGlobalPos);
                         vec3 halfVec = normalize(uSunDir + viewDir);
                         float wetMask = (1.0 - clamp(shoreToMeadow, 0.0, 1.0)) * smoothstep(-0.2, 0.42, vWorldPos.y);
                         float wetSpec = pow(max(dot(n, halfVec), 0.0), 32.0) * wetMask * 0.28;
@@ -4184,8 +4467,7 @@
 
                         vec3 litColor = albedo * (ambientLight + sunLight + warmHearth) + vec3(1.0, 0.96, 0.82) * wetSpec;
 
-                        // Niebla exponencial atmosférica idéntica a la escena
-                        float dist = length(cameraPosition - vWorldPos);
+                        float dist = length(cameraPosition - vGlobalPos);
                         float fogFactor = 1.0 - exp(- (uFogDensity * dist) * (uFogDensity * dist));
                         litColor = mix(litColor, uFogColor, clamp(fogFactor, 0.0, 1.0));
 
@@ -4194,25 +4476,29 @@
                 `
             });
         } else if (unitId === 'tropa') {
-            // SHADER GLSL SUAVE DE PRADERA ESMERALDA DE LOHENGRIN, RIBERA DE JADE Y LADERAS DE PIZARRA (TROPA)
+            const tUniforms = {
+                uSunDir: { value: new THREE.Vector3(30, 38, 35).normalize() },
+                uFogColor: { value: new THREE.Color(biome.fogColor) },
+                uFogDensity: { value: biome.fogDensity }
+            };
+            unitLakeState.terrainShaderUniformsList.push(tUniforms);
             terrainMat = new THREE.ShaderMaterial({
-                uniforms: {
-                    uSunDir: { value: new THREE.Vector3(30, 38, 35).normalize() },
-                    uFogColor: { value: new THREE.Color(biome.fogColor) },
-                    uFogDensity: { value: biome.fogDensity }
-                },
+                uniforms: tUniforms,
                 vertexShader: `
                     varying vec3 vWorldPos;
+                    varying vec3 vGlobalPos;
                     varying vec3 vNormal;
                     void main() {
                         vec4 wp = modelMatrix * vec4(position, 1.0);
-                        vWorldPos = wp.xyz;
+                        vWorldPos = position;
+                        vGlobalPos = wp.xyz;
                         vNormal = normalize(mat3(modelMatrix) * normal);
                         gl_Position = projectionMatrix * viewMatrix * wp;
                     }
                 `,
                 fragmentShader: `
                     varying vec3 vWorldPos;
+                    varying vec3 vGlobalPos;
                     varying vec3 vNormal;
                     uniform vec3 uSunDir;
                     uniform vec3 uFogColor;
@@ -4251,13 +4537,11 @@
                         float nMacro = fbm(vWorldPos.xz * 0.11);
                         float nMicro = fbm(vWorldPos.xz * 0.36 + vec2(1.8, -2.4));
 
-                        // Ribera de jade suave y pradera alpina de Lohengrin
                         vec3 jadeShore = vec3(0.08, 0.24, 0.18);
                         vec3 deepEmeraldMeadow = vec3(0.04, 0.26, 0.16);
                         vec3 sunlitAlpineGrass = vec3(0.10, 0.38, 0.24);
                         vec3 meadowCol = mix(deepEmeraldMeadow, sunlitAlpineGrass, nMacro * 0.72 + nMicro * 0.28);
 
-                        // Estratos suaves de roca alpina en las laderas del valle
                         float strata = smoothstep(-0.5, 0.6, sin(vWorldPos.y * 4.2 + nMacro * 3.6));
                         vec3 alpineSlate = mix(vec3(0.16, 0.24, 0.22), vec3(0.32, 0.42, 0.38), strata * 0.6 + 0.4);
                         float isRockSlope = smoothstep(0.20, 0.44, slope) * smoothstep(0.8, 4.0, vWorldPos.y);
@@ -4270,14 +4554,13 @@
                         vec3 sunLight = vec3(0.75, 0.98, 0.86) * (diff * 0.88);
                         vec3 ambientLight = mix(vec3(0.05, 0.18, 0.14), vec3(0.22, 0.48, 0.38), n.y * 0.5 + 0.5);
 
-                        // Resplandor cálido de la hoguera de la Corte de Honor en la orilla norte
                         float dFire = length(vWorldPos - vec3(4.8, 1.2, -23.0));
                         float fireAtten = 1.0 / (1.0 + 0.09 * dFire * dFire);
                         vec3 fireGlow = vec3(1.0, 0.62, 0.18) * (fireAtten * 0.85);
 
                         vec3 litColor = albedo * (ambientLight + sunLight + fireGlow);
 
-                        float dist = length(cameraPosition - vWorldPos);
+                        float dist = length(cameraPosition - vGlobalPos);
                         float fogFactor = 1.0 - exp(- (uFogDensity * dist) * (uFogDensity * dist));
                         litColor = mix(litColor, uFogColor, clamp(fogFactor, 0.0, 1.0));
 
@@ -4298,14 +4581,13 @@
             });
         }
         const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
-        worldGroup.add(terrainMesh);
+        zoneGroup.add(terrainMesh);
 
-        // 2. El Lago Central 3D (Solo en Castores, Tropa, Escultas y Clan; en Manada el centro es la Roca del Consejo)
+        // 2. El Lago Central 3D (en Castores, Tropa, Escultas y Clan; en Manada el centro es la Roca del Consejo)
         if (unitId !== 'manada') {
             const waterObj = createSmoothWaterShaderMesh(THREE, biome);
-            worldGroup.add(waterObj.mesh);
-            unitLakeState.waterMesh = waterObj.mesh;
-            unitLakeState.waterUniforms = waterObj.uniforms;
+            zoneGroup.add(waterObj.mesh);
+            unitLakeState.waterUniformsList.push(waterObj.uniforms);
 
             const rippleMat = new THREE.MeshBasicMaterial({
                 color: 0xFFFFFF,
@@ -4319,45 +4601,46 @@
                 ringGeo.rotateX(-Math.PI / 2);
                 const ringMesh = new THREE.Mesh(ringGeo, rippleMat.clone());
                 ringMesh.position.y = 0.06;
-                worldGroup.add(ringMesh);
+                zoneGroup.add(ringMesh);
                 unitLakeState.rippleRings.push({ mesh: ringMesh, phase: rIdx * 0.25 });
             }
-        } else {
-            unitLakeState.waterMesh = null;
-            unitLakeState.waterUniforms = null;
         }
+
+        // Helper para dejar despejada la desembocadura norte/sur del río en el anillo de árboles
+        const isInsideRiverMouth = (tx, tz) => {
+            if (tz < -18.0 && uIdx < 4 && Math.abs(tx - getCorridorRiverCenterX(uIdx, tz + centerZ)) < 10.5) return true;
+            if (tz > 18.0 && uIdx > 0 && Math.abs(tx - getCorridorRiverCenterX(uIdx - 1, tz + centerZ)) < 10.5) return true;
+            return false;
+        };
 
         // 3. Bosque perimetral 360° de alta resolución
         if (unitId === 'manada') {
-            const jungleTreeCount = 164;
+            const jungleTreeCount = 152;
             for (let t = 0; t < jungleTreeCount; t++) {
                 const ringIdx = t % 4;
                 const angle = (t / jungleTreeCount) * Math.PI * 2 + Math.sin(t * 3.1) * 0.05;
-                // Anillos muy tupidos de bosque desde el borde mismo del claro (r=16.5) hasta el fondo (r=74)
                 const radius = 16.6 + ringIdx * 8.2 + (t % 5) * 2.2 + Math.cos(t * 1.9) * 1.4;
-                // Despejar suavemente el carril exacto de paso de la cámara (r ≈ 28.5..35.5)
                 const safeRadius = (radius > 28.2 && radius < 35.8) ? (radius < 32.0 ? 26.8 : 37.2) : radius;
                 const tx = Math.cos(angle) * safeRadius;
                 const tz = Math.sin(angle) * safeRadius;
+                if (Math.abs(tz) > 76 || isInsideRiverMouth(tx, tz)) continue;
                 const ty = getTerrainHeight(tx, tz);
                 const sc = 0.96 + (t % 5) * 0.28 + (ringIdx >= 2 ? 0.38 : 0);
                 const tree = createPineOrBiomeTree(THREE, 'manada', sc, t * 1.73);
                 tree.position.set(tx, ty - 0.25, tz);
                 tree.rotation.y = t * 1.3;
-                worldGroup.add(tree);
+                zoneGroup.add(tree);
             }
         } else if (unitId === 'castores') {
-            const forestTreeCount = 88;
+            const forestTreeCount = 86;
             for (let t = 0; t < forestTreeCount; t++) {
                 const ringIdx = t % 3;
                 const angle = (t / forestTreeCount) * Math.PI * 2 + Math.sin(t * 2.7) * 0.05;
-                // Anillos limpios del Bosque del Gran Roble rodeando el Estanque (r = 25..66)
                 const radius = 25.2 + ringIdx * 10.5 + (t % 5) * 2.4 + Math.cos(t * 1.7) * 1.5;
-                // Despejar el carril orbital de la cámara (r ≈ 36..44.5)
                 const safeRadius = (radius > 35.5 && radius < 45.0) ? (radius < 40.2 ? 34.2 : 46.2) : radius;
                 const tx = Math.cos(angle) * safeRadius;
                 const tz = Math.sin(angle) * safeRadius;
-                // Respetar el espacio de la Gran Presa (norte) y del Gran Roble (este)
+                if (Math.abs(tz) > 76 || isInsideRiverMouth(tx, tz)) continue;
                 if (Math.hypot(tx, tz + 22.0) < 9.0) continue;
                 if (Math.hypot(tx - 25.5, tz - 4.0) < 8.5) continue;
 
@@ -4367,10 +4650,10 @@
                 const tree = createPineOrBiomeTree(THREE, 'castores', sc, t * 1.57);
                 tree.position.set(tx, ty - 0.22, tz);
                 tree.rotation.y = t * 1.25;
-                worldGroup.add(tree);
+                zoneGroup.add(tree);
             }
         } else if (unitId === 'tropa') {
-            const pineTreeCount = 84;
+            const pineTreeCount = 82;
             for (let t = 0; t < pineTreeCount; t++) {
                 const ringIdx = t % 3;
                 const angle = (t / pineTreeCount) * Math.PI * 2 + Math.sin(t * 2.3) * 0.05;
@@ -4378,6 +4661,7 @@
                 const safeRadius = (radius > 35.0 && radius < 44.5) ? (radius < 39.8 ? 33.8 : 45.8) : radius;
                 const tx = Math.cos(angle) * safeRadius;
                 const tz = Math.sin(angle) * safeRadius;
+                if (Math.abs(tz) > 76 || isInsideRiverMouth(tx, tz)) continue;
                 if (Math.hypot(tx + 1.0, tz + 24.0) < 9.5) continue;
 
                 const ty = getTerrainHeight(tx, tz);
@@ -4386,15 +4670,16 @@
                 const tree = createPineOrBiomeTree(THREE, 'tropa', sc, t * 1.49);
                 tree.position.set(tx, ty - 0.18, tz);
                 tree.rotation.y = t * 1.15;
-                worldGroup.add(tree);
+                zoneGroup.add(tree);
             }
         } else {
-            const treeCount = unitId === 'clan' ? 30 : (unitId === 'escultas' ? 34 : 56);
+            const treeCount = unitId === 'clan' ? 30 : 34;
             for (let t = 0; t < treeCount; t++) {
                 const angle = (t / treeCount) * Math.PI * 2 + Math.sin(t * 2.1) * 0.07;
                 const radius = 25.2 + (t % 6) * 3.8 + Math.cos(t * 1.7) * 1.8;
                 const tx = Math.cos(angle) * radius;
                 const tz = Math.sin(angle) * radius;
+                if (Math.abs(tz) > 76 || isInsideRiverMouth(tx, tz)) continue;
                 if (Math.hypot(tx, tz + 24) < 8.0) continue;
 
                 const ty = getTerrainHeight(tx, tz);
@@ -4403,15 +4688,15 @@
                 const tree = createPineOrBiomeTree(THREE, unitId, sc, t * 1.37);
                 tree.position.set(tx, ty - 0.15, tz);
                 tree.rotation.y = t * 1.1;
-                worldGroup.add(tree);
+                zoneGroup.add(tree);
             }
         }
 
-        // 4. Hitos 3D orgánicos y detallados de cada Unidad
-        buildUnitSpecificLandmarks(THREE, worldGroup, unitId, getTerrainHeight);
+        // 4. Hitos 3D orgánicos y detallados de esta Unidad
+        buildUnitSpecificLandmarks(THREE, zoneGroup, unitId, getTerrainHeight);
 
-        // 5. Partículas atmosféricas suaves con textura radial (luciérnagas, polen, pavesas o nieve)
-        const pCount = 180;
+        // 5. Partículas atmosféricas suaves de esta zona
+        const pCount = 140;
         const pGeo = new THREE.BufferGeometry();
         const pPos = new Float32Array(pCount * 3);
         for (let i = 0; i < pCount; i++) {
@@ -4432,8 +4717,100 @@
             depthWrite: false
         });
         const particles = new THREE.Points(pGeo, pMat);
-        worldGroup.add(particles);
-        unitLakeState.particles = particles;
+        zoneGroup.add(particles);
+        unitLakeState.particlesList.push({ points: particles, isSnow: unitId === 'clan' });
+
+        parentGroup.add(zoneGroup);
+    }
+
+    function setupUnitLakeWorld(unitOrIdx) {
+        const startUnitIdx = typeof unitOrIdx === 'number'
+            ? clamp(unitOrIdx, 0, 4)
+            : Math.max(0, UNITS_DATA.findIndex(u => u.id === (unitOrIdx?.id || 'castores')));
+        const unit = UNITS_DATA[startUnitIdx] || UNITS_DATA[0];
+        const unitId = unit.id || 'castores';
+        const biome = UNIT_LAKE_BIOMES[unitId] || UNIT_LAKE_BIOMES.castores;
+
+        unitLakeState.unitId = unitId;
+        unitLakeState.activeUnitIdx = startUnitIdx;
+        unitLakeState.orbitTarget = startUnitIdx * 6;
+        unitLakeState.orbitCurrent = startUnitIdx * 6;
+        unitLakeState.activeStep = 0;
+
+        syncUnitOrbitDOM(unitLakeState.orbitCurrent, 0);
+
+        if (!ensureUnitLakeThreeScene()) return;
+
+        const THREE = window.THREE;
+        const { scene, worldGroup, hemiLight, sunLight, shoreLight } = unitLakeState;
+
+        // Construir el Mundo 3D Unificado (las 5 Unidades + los 4 Ríos por el Bosque que las conectan) una sola vez
+        if (!unitLakeState.worldBuilt) {
+            while (worldGroup.children.length > 0) {
+                worldGroup.remove(worldGroup.children[0]);
+            }
+            unitLakeState.rippleRings = [];
+            unitLakeState.animatedProps = [];
+            unitLakeState.reedClusters = [];
+            unitLakeState.waterUniformsList = [];
+            unitLakeState.terrainShaderUniformsList = [];
+            unitLakeState.particlesList = [];
+
+            const skyObj = createSkyDomeShaderMesh(THREE, biome);
+            worldGroup.add(skyObj.mesh);
+            unitLakeState.skyDome = skyObj.mesh;
+            unitLakeState.skyUniforms = skyObj.uniforms;
+
+            for (let uIdx = 0; uIdx < UNITS_DATA.length; uIdx++) {
+                buildSingleUnitZone(THREE, worldGroup, uIdx);
+                if (uIdx < UNITS_DATA.length - 1) {
+                    buildRiverForestCorridor(THREE, worldGroup, uIdx);
+                }
+            }
+            unitLakeState.worldBuilt = true;
+        }
+
+        // Configurar atmósfera y luces iniciales para la unidad seleccionada
+        scene.fog.color.setHex(biome.fogColor);
+        scene.fog.density = biome.fogDensity * 0.85;
+        hemiLight.color.setHex(biome.hemiSky);
+        hemiLight.groundColor.setHex(biome.hemiGround);
+        sunLight.color.setHex(biome.sunColor);
+        sunLight.position.set(biome.sunPos[0], biome.sunPos[1], biome.sunPos[2]);
+        shoreLight.color.setHex(biome.shoreLightColor);
+    }
+
+    // Calcula la posición y punto de mira orbital exactos para la Unidad `uIdx` en `localStep` (0..4)
+    function computeUnitOrbitalCameraPose(uIdx, localStep, smoothMouseX, smoothMouseY) {
+        const unit = UNITS_DATA[uIdx] || UNITS_DATA[0];
+        const biome = UNIT_LAKE_BIOMES[unit.id] || UNIT_LAKE_BIOMES.castores;
+        const centerZ = -uIdx * UNIT_ZONE_SPACING;
+
+        const wrapped = ((localStep % 5) + 5) % 5;
+        const idxA = Math.floor(wrapped) % 5;
+        const idxB = (idxA + 1) % 5;
+        const frac = smoothstep(0, 1, wrapped - Math.floor(wrapped));
+
+        const stopA = biome.cameraStops[idxA];
+        const stopB = biome.cameraStops[idxB];
+
+        const camRadius = lerp(stopA.radius, stopB.radius, frac);
+        const camHeight = lerp(stopA.height, stopB.height, frac) + smoothMouseY * 2.2;
+        const lookY = lerp(stopA.lookY, stopB.lookY, frac) - smoothMouseY * 1.1;
+
+        const orbitAngle = (localStep / 5) * Math.PI * 2 + smoothMouseX * 0.16;
+
+        const camX = Math.sin(orbitAngle) * camRadius;
+        const camZ = centerZ + Math.cos(orbitAngle) * camRadius;
+
+        const lookOffset = unit.id === 'manada' ? 0.6 : 3.2;
+        const lookX = Math.cos(orbitAngle) * lookOffset;
+        const lookZ = centerZ - Math.sin(orbitAngle) * lookOffset;
+
+        return {
+            camX, camY: camHeight, camZ,
+            lookX, lookY, lookZ
+        };
     }
 
     function renderUnitLakeFrame(now) {
@@ -4441,43 +4818,135 @@
         unitLakeState.rafId = requestAnimationFrame(renderUnitLakeFrame);
 
         const t = now * 0.001;
-        unitLakeState.orbitCurrent = lerp(unitLakeState.orbitCurrent, unitLakeState.orbitTarget, 0.075);
+        unitLakeState.orbitTarget = clamp(unitLakeState.orbitTarget, 0, 28);
+
+        // Velocidad cinematográfica suave cuando cruzamos el río por el bosque entre dos Unidades
+        const uIdxCheck = Math.min(4, Math.floor(clamp(unitLakeState.orbitCurrent, 0, 28) / 6));
+        const localCheck = unitLakeState.orbitCurrent - uIdxCheck * 6;
+        const isRiverFlight = (localCheck > 4.02 && localCheck < 5.98) || Math.abs(unitLakeState.orbitTarget - unitLakeState.orbitCurrent) > 1.25;
+        const lerpSpeed = isRiverFlight ? 0.036 : 0.075;
+
+        unitLakeState.orbitCurrent = lerp(unitLakeState.orbitCurrent, unitLakeState.orbitTarget, lerpSpeed);
         unitLakeState.smoothMouseX = lerp(unitLakeState.smoothMouseX, unitLakeState.mouseX, 0.08);
         unitLakeState.smoothMouseY = lerp(unitLakeState.smoothMouseY, unitLakeState.mouseY, 0.08);
 
         syncUnitOrbitDOM(unitLakeState.orbitCurrent);
 
-        const biome = UNIT_LAKE_BIOMES[unitLakeState.unitId] || UNIT_LAKE_BIOMES.castores;
+        const THREE = window.THREE;
+        if (THREE && unitLakeState.renderer && unitLakeState.scene && unitLakeState.camera) {
+            const totalClamped = clamp(unitLakeState.orbitCurrent, 0, 28);
+            const uIdx = Math.min(4, Math.floor(totalClamped / 6));
+            const localProg = totalClamped - uIdx * 6;
 
-        if (unitLakeState.renderer && unitLakeState.scene && unitLakeState.camera) {
-            const wrapped = ((unitLakeState.orbitCurrent % 5) + 5) % 5;
-            const idxA = Math.floor(wrapped) % 5;
-            const idxB = (idxA + 1) % 5;
-            const frac = smoothstep(0, 1, wrapped - Math.floor(wrapped));
+            const unitA = UNITS_DATA[uIdx] || UNITS_DATA[0];
+            const unitB = UNITS_DATA[Math.min(4, uIdx + 1)] || unitA;
+            const biomeA = UNIT_LAKE_BIOMES[unitA.id] || UNIT_LAKE_BIOMES.castores;
+            const biomeB = UNIT_LAKE_BIOMES[unitB.id] || biomeA;
 
-            const stopA = biome.cameraStops[idxA];
-            const stopB = biome.cameraStops[idxB];
+            let camX, camY, camZ, lookX, lookY, lookZ;
+            let biomeBlend = 0.0;
 
-            const camRadius = lerp(stopA.radius, stopB.radius, frac);
-            const camHeight = lerp(stopA.height, stopB.height, frac) + unitLakeState.smoothMouseY * 2.2;
-            const lookY = lerp(stopA.lookY, stopB.lookY, frac) - unitLakeState.smoothMouseY * 1.1;
+            if (localProg <= 4.0 || uIdx >= 4) {
+                const pose = computeUnitOrbitalCameraPose(
+                    uIdx,
+                    clamp(localProg, 0, 4),
+                    unitLakeState.smoothMouseX,
+                    unitLakeState.smoothMouseY
+                );
+                camX = pose.camX;
+                camY = pose.camY;
+                camZ = pose.camZ;
+                lookX = pose.lookX;
+                lookY = pose.lookY;
+                lookZ = pose.lookZ;
+                biomeBlend = 0.0;
+            } else {
+                // Travesía 3D continua cruzando el río por el bosque desde la Unidad `uIdx` (parada 4) hasta `uIdx + 1` (parada 0)
+                const tCrossRaw = clamp((localProg - 4.0) / 2.0, 0, 1);
+                const tCross = smoothstep(0, 1, tCrossRaw);
+                biomeBlend = tCross;
 
-            const orbitAngle = (unitLakeState.orbitCurrent / 5) * Math.PI * 2 + unitLakeState.smoothMouseX * 0.16;
+                const poseStart = computeUnitOrbitalCameraPose(uIdx, 4.0, unitLakeState.smoothMouseX * (1 - tCross), unitLakeState.smoothMouseY);
+                const poseEnd = computeUnitOrbitalCameraPose(uIdx + 1, 0.0, unitLakeState.smoothMouseX * tCross, unitLakeState.smoothMouseY);
 
-            const camX = Math.sin(orbitAngle) * camRadius;
-            const camZ = Math.cos(orbitAngle) * camRadius;
+                const zStart = -uIdx * UNIT_ZONE_SPACING - 21.0;
+                const zEnd = -(uIdx + 1) * UNIT_ZONE_SPACING + 21.0;
+                const zMid = (zStart + zEnd) * 0.5;
+                const zNextCenter = -(uIdx + 1) * UNIT_ZONE_SPACING;
 
-            unitLakeState.camera.position.set(camX, camHeight, camZ);
-            // En Manada la cámara orbita enfocando directamente la cima central de la Roca del Consejo
-            const lookOffset = unitLakeState.unitId === 'manada' ? 0.6 : 3.2;
-            const lookTargetX = Math.cos(orbitAngle) * lookOffset;
-            const lookTargetZ = -Math.sin(orbitAngle) * lookOffset;
-            unitLakeState.camera.lookAt(lookTargetX, lookY, lookTargetZ);
+                const zWp1 = lerp(zStart, zEnd, 0.22);
+                const zWp2 = zMid;
+                const zWp3 = lerp(zStart, zEnd, 0.78);
 
-            // Actualizar tiempo del shader líquido del lago
-            if (unitLakeState.waterUniforms) {
-                unitLakeState.waterUniforms.uTime.value = t;
+                const camCurve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(poseStart.camX, poseStart.camY, poseStart.camZ),
+                    new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp1) + 2.8, 5.4 + unitLakeState.smoothMouseY * 1.4, zWp1),
+                    new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp2) - 1.4, 4.1 + unitLakeState.smoothMouseY * 1.2, zWp2),
+                    new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp3) - 4.2, 6.6 + unitLakeState.smoothMouseY * 1.5, zWp3),
+                    new THREE.Vector3(poseEnd.camX, poseEnd.camY, poseEnd.camZ)
+                ]);
+
+                const lookCurve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(poseStart.lookX, poseStart.lookY, poseStart.lookZ),
+                    new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp2), 1.6, zWp2),
+                    new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp3), 2.1, zWp3 - 14.0),
+                    new THREE.Vector3(0.0, unitB.id === 'manada' ? 4.8 : 2.5, zNextCenter),
+                    new THREE.Vector3(poseEnd.lookX, poseEnd.lookY, poseEnd.lookZ)
+                ]);
+
+                const cPt = camCurve.getPoint(tCross);
+                const lPt = lookCurve.getPoint(tCross);
+                camX = cPt.x;
+                camY = cPt.y;
+                camZ = cPt.z;
+                lookX = lPt.x;
+                lookY = lPt.y;
+                lookZ = lPt.z;
             }
+
+            unitLakeState.camera.position.set(camX, camY, camZ);
+            unitLakeState.camera.lookAt(lookX, lookY, lookZ);
+
+            // Mantener la cúpula celeste centrada en la cámara e interpolar suavemente la atmósfera entre biomas al cruzar el río
+            if (unitLakeState.skyDome) {
+                unitLakeState.skyDome.position.copy(unitLakeState.camera.position);
+            }
+            if (unitLakeState.skyUniforms) {
+                unitLakeState.skyUniforms.uSkyTop.value.setHex(biomeA.skyTop).lerp(new THREE.Color(biomeB.skyTop), biomeBlend);
+                unitLakeState.skyUniforms.uSkyHorizon.value.setHex(biomeA.skyHorizon).lerp(new THREE.Color(biomeB.skyHorizon), biomeBlend);
+                unitLakeState.skyUniforms.uSunColor.value.setHex(biomeA.sunColor).lerp(new THREE.Color(biomeB.sunColor), biomeBlend);
+                const dirA = new THREE.Vector3(biomeA.sunPos[0], biomeA.sunPos[1], biomeA.sunPos[2]).normalize();
+                const dirB = new THREE.Vector3(biomeB.sunPos[0], biomeB.sunPos[1], biomeB.sunPos[2]).normalize();
+                unitLakeState.skyUniforms.uSunDir.value.copy(dirA).lerp(dirB, biomeBlend).normalize();
+            }
+
+            const blendedFogCol = new THREE.Color(biomeA.fogColor).lerp(new THREE.Color(biomeB.fogColor), biomeBlend);
+            const blendedFogDens = lerp(biomeA.fogDensity, biomeB.fogDensity, biomeBlend);
+            unitLakeState.scene.fog.color.copy(blendedFogCol);
+            unitLakeState.scene.fog.density = blendedFogDens * 0.82;
+
+            unitLakeState.terrainShaderUniformsList.forEach(tu => {
+                tu.uFogColor.value.copy(blendedFogCol);
+                tu.uFogDensity.value = blendedFogDens * 0.85;
+            });
+
+            if (unitLakeState.hemiLight) {
+                unitLakeState.hemiLight.color.setHex(biomeA.hemiSky).lerp(new THREE.Color(biomeB.hemiSky), biomeBlend);
+                unitLakeState.hemiLight.groundColor.setHex(biomeA.hemiGround).lerp(new THREE.Color(biomeB.hemiGround), biomeBlend);
+            }
+            if (unitLakeState.sunLight) {
+                unitLakeState.sunLight.color.setHex(biomeA.sunColor).lerp(new THREE.Color(biomeB.sunColor), biomeBlend);
+            }
+            if (unitLakeState.shoreLight) {
+                unitLakeState.shoreLight.color.setHex(biomeA.shoreLightColor).lerp(new THREE.Color(biomeB.shoreLightColor), biomeBlend);
+                const activeZ = -Math.round(uIdx + biomeBlend) * UNIT_ZONE_SPACING;
+                unitLakeState.shoreLight.position.set(0, 9.0, activeZ);
+            }
+
+            // Actualizar tiempo de todos los lagos y tramos de río
+            unitLakeState.waterUniformsList.forEach(wu => {
+                wu.uTime.value = t;
+            });
 
             // Animar los anillos concéntricos suaves en el agua
             unitLakeState.rippleRings.forEach((ringObj) => {
@@ -4487,7 +4956,7 @@
                 ringObj.mesh.material.opacity = Math.sin(cycle * Math.PI) * 0.20;
             });
 
-            // Animar mecida suave de juncos en la orilla
+            // Animar mecida suave de juncos en la orilla y en el río
             unitLakeState.reedClusters.forEach(rc => {
                 rc.mesh.rotation.z = Math.sin(t * 1.9 + rc.phase) * 0.06;
             });
@@ -4511,19 +4980,19 @@
                 }
             });
 
-            // Animar partículas flotantes sobre el lago
-            if (unitLakeState.particles) {
-                unitLakeState.particles.rotation.y = t * 0.035;
-                const pAttr = unitLakeState.particles.geometry.attributes.position;
+            // Animar partículas flotantes en cada zona
+            unitLakeState.particlesList.forEach(pObj => {
+                pObj.points.rotation.y = t * 0.035;
+                const pAttr = pObj.points.geometry.attributes.position;
                 for (let i = 0; i < pAttr.count; i++) {
                     let py = pAttr.getY(i);
-                    py += (unitLakeState.unitId === 'clan' ? -0.022 : 0.016);
+                    py += (pObj.isSnow ? -0.022 : 0.016);
                     if (py > 19) py = 0.8;
                     if (py < 0.6) py = 18.5;
                     pAttr.setY(i, py);
                 }
                 pAttr.needsUpdate = true;
-            }
+            });
 
             unitLakeState.renderer.render(unitLakeState.scene, unitLakeState.camera);
         }
@@ -4543,16 +5012,39 @@
         }
     }
 
+    // Avanza o retrocede una parada (y si estás en la parada 5 de una unidad, cruza el río por el bosque hacia la siguiente unidad)
+    function stepUnitOrbitBy(dir) {
+        clearTimeout(unitLakeState.snapTimer);
+        const cur = clamp(unitLakeState.orbitTarget, 0, 28);
+        const uIdx = Math.min(4, Math.floor(cur / 6));
+        const localStep = Math.round(clamp(cur - uIdx * 6, 0, 4));
+        if (dir > 0) {
+            if (localStep < 4) {
+                unitLakeState.orbitTarget = uIdx * 6 + localStep + 1;
+            } else if (uIdx < 4) {
+                // ¡Al terminar las 5 paradas (ej. Castores), cruza el río por el bosque hacia la siguiente Unidad (ej. Manada)!
+                unitLakeState.orbitTarget = (uIdx + 1) * 6;
+            } else {
+                unitLakeState.orbitTarget = 0;
+            }
+        } else {
+            if (localStep > 0) {
+                unitLakeState.orbitTarget = uIdx * 6 + localStep - 1;
+            } else if (uIdx > 0) {
+                unitLakeState.orbitTarget = (uIdx - 1) * 6 + 4;
+            }
+        }
+    }
+
     // Eventos interactivos de la experiencia orbital (Rueda, Botones de Parada, ProgressRing, Teclado y Touch)
     (function bindUnitOrbitEvents() {
         const overlay = document.getElementById('unitSuperZoomOverlay');
         if (!overlay) return;
 
-        // 1. Rueda del ratón / Trackpad: órbita suave de 360° alrededor del lago
+        // 1. Rueda del ratón / Trackpad: órbita suave y cruce del río por el bosque al terminar la 5ª parada
         overlay.addEventListener('wheel', (e) => {
             if (!overlay.classList.contains('is-open')) return;
 
-            // Si el cursor está sobre un contenedor con scroll interno (Kraaletes o Salidas Drive) y aún tiene recorrido, permitir su scroll natural
             const scrollable = e.target.closest('[data-orbit-scrollable="true"]');
             if (scrollable && scrollable.scrollHeight > scrollable.clientHeight + 4) {
                 const atTop = scrollable.scrollTop <= 2;
@@ -4565,8 +5057,8 @@
 
             e.preventDefault();
             e.stopPropagation();
-            const stepDelta = clamp(e.deltaY, -140, 140) * 0.0042;
-            unitLakeState.orbitTarget += stepDelta;
+            const stepDelta = clamp(e.deltaY, -140, 140) * 0.0046;
+            unitLakeState.orbitTarget = clamp(unitLakeState.orbitTarget + stepDelta, 0, 28);
             scheduleOrbitSnap();
         }, { passive: false });
 
@@ -4579,7 +5071,7 @@
             if (unitLakeState.isDraggingBg) {
                 const dx = e.clientX - unitLakeState.dragLastX;
                 unitLakeState.dragLastX = e.clientX;
-                unitLakeState.orbitTarget -= dx * 0.0055;
+                unitLakeState.orbitTarget = clamp(unitLakeState.orbitTarget - dx * 0.0055, 0, 28);
             }
         });
 
@@ -4597,7 +5089,7 @@
             }
         });
 
-        // 3. Soporte táctil (Swipe vertical u horizontal para rodear el lago)
+        // 3. Soporte táctil (Swipe vertical u horizontal para rodear el lago y cruzar el río)
         overlay.addEventListener('touchstart', (e) => {
             if (!e.touches.length) return;
             unitLakeState.touchStartY = e.touches[0].clientY;
@@ -4615,7 +5107,7 @@
             unitLakeState.touchStartX = e.touches[0].clientX;
 
             const primaryDelta = Math.abs(dy) > Math.abs(dx) ? dy : dx;
-            unitLakeState.orbitTarget += primaryDelta * 0.0065;
+            unitLakeState.orbitTarget = clamp(unitLakeState.orbitTarget + primaryDelta * 0.0065, 0, 28);
             scheduleOrbitSnap();
         }, { passive: true });
 
@@ -4627,10 +5119,9 @@
             });
         });
 
-        // 5. Anillo de Progreso (ProgressRing): avanza a la siguiente orilla del lago (y da la vuelta 360°)
+        // 5. Anillo de Progreso (ProgressRing): avanza a la siguiente parada y al acabar cruza el río a la siguiente Unidad
         document.getElementById('uzNextOrbitStepBtn')?.addEventListener('click', () => {
-            clearTimeout(unitLakeState.snapTimer);
-            unitLakeState.orbitTarget = Math.round(unitLakeState.orbitTarget) + 1;
+            stepUnitOrbitBy(1);
         });
 
         // 6. Teclas de flecha cuando estás dentro de una Unidad
@@ -4639,10 +5130,10 @@
             if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
             if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
                 e.preventDefault();
-                unitLakeState.orbitTarget = Math.round(unitLakeState.orbitTarget) + 1;
+                stepUnitOrbitBy(1);
             } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
                 e.preventDefault();
-                unitLakeState.orbitTarget = Math.round(unitLakeState.orbitTarget) - 1;
+                stepUnitOrbitBy(-1);
             }
         });
     })();
