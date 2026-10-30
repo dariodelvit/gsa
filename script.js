@@ -265,10 +265,10 @@
             dx: 120,
             dy: -80,
             r: 7.2,
-            lead: 'Nombrada en honor a la imponente Canal de Trea en los Picos de Europa. En la Unidad Esculta los adolescentes son los verdaderos protagonistas: trabajan mediante «Empresas Escultas» autogestionadas, afrontan travesías de alta montaña, vivacs bajo las estrellas y retos de superación.',
-            lawQuote: '«No hay senda demasiado empinada cuando toda la Unidad camina al mismo paso hacia la cumbre.» — Espíritu de la Canal de Trea',
+            lead: 'Al ascender por la montaña arbolada y cruzar el sagrado Torii de los Ninjas se abre el territorio de la Unidad Esculta Trea: ambientada en los Ninjas en el Descenso del Sena, donde los jóvenes protagonizan sus propias «Empresas Escultas» autogestionadas, surcan aguas bravas en piragua y superan travesías de montaña.',
+            lawQuote: '«Tras cruzar el Torii de la montaña, toda la Unidad rema y camina al mismo paso hacia la cumbre.» — Espíritu Ninja y Descenso · Unidad Esculta Trea',
             heroSvg: `
-                <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Canal de Trea">
+                <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Unidad Esculta Trea">
                     <defs>
                         <linearGradient id="skyEsculta" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stop-color="#1C130E"/>
@@ -279,15 +279,15 @@
                     <rect width="560" height="320" fill="url(#skyEsculta)"/>
                     <polygon points="0,320 190,65 360,320" fill="#2E1B0F"/>
                     <polygon points="210,320 405,48 560,320" fill="#5C3A21"/>
-                    <path d="M 190 65 L 255 180 L 295 240 L 245 320" stroke="#E6CCB2" stroke-width="3" stroke-dasharray="6 5" fill="none"/>
-                    <text x="24" y="34" fill="#EDE0D4" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ LA CANAL DE TREA · PICOS DE EUROPA Y EMPRESA ESCULTA</text>
+                    <path d="M 190 65 L 255 180 L 295 240 L 245 320" stroke="#38BDF8" stroke-width="5" fill="none"/>
+                    <text x="24" y="34" fill="#EDE0D4" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ ESCULTAS TREA · EL TORII DE LOS NINJAS Y EL DESCENSO DEL SENA</text>
                 </svg>
             `,
             salidas: [],
             pillars: [
-                { title: 'La Empresa Esculta Autogestionada', desc: 'Retos ambiciosos ideados, presupuestados, financiados y evaluados íntegramente por los jóvenes en Asamblea.' },
-                { title: 'Espíritu Montañero y Superación', desc: 'Marchas de varios días por cordilleras, orientación nocturna y vivac en altura.' },
-                { title: 'Cohesión y Pensamiento Crítico', desc: 'Sentido de pertenencia, debates actuales y servicio activo a la comunidad.' }
+                { title: 'Ninjas en el Descenso del Sena y Empresas Escultas', desc: 'Retos y aventuras de acción ideados, presupuestados, financiados y vividos íntegramente por los propios escultas en Asamblea.' },
+                { title: 'El Camino del Torii y Superación en Montaña', desc: 'Ascensiones por laderas boscosas, orientación, vivac bajo las estrellas y espíritu de superación colectiva.' },
+                { title: 'Unidad, Cohesión y Servicio Activo', desc: 'Sentido de pertenencia en el dojo esculta, pensamiento crítico y preparación para alcanzar las cumbres del Clan.' }
             ],
             kraalTitle: 'Kraal de la Unidad Esculta Trea',
             kraalSub: 'Scouters de Escultas (Kraaletes de Trea)',
@@ -318,29 +318,29 @@
             dx: 240,
             dy: -160,
             r: 7.6,
-            lead: 'En la cumbre de la línea ascendente, bajo el nombre de la mítica montaña del Himalaya (Ama Dablam). El Clan es una comunidad de jóvenes adultos que reman su propia canoa: caminan con la Horquilla Rover, lideran proyectos de impacto social y se preparan para dar el paso como futuros Scouters del grupo.',
-            lawQuote: '«Rema tu propia canoa: elige tu rumbo con libertad y pon tu vida en servicio de los demás.» — Lema Rover «Servir»',
+            lead: 'En lo más alto de la cordillera, por encima del mar de nubes y tras subir escalando la gran pared de roca, brilla la Laguna Azul del Clan Ama Dablam: el manantial sagrado del que nace todo el río que desciende por la montaña alimentando a Escultas, Tropa, Manada y hasta el Estanque de los Castores.',
+            lawQuote: '«Rema tu propia canoa en la Laguna Azul sobre las nubes y deja que tu servicio fluya como el río hacia todo el Grupo.» — Lema Rover «Servir»',
             heroSvg: `
-                <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la cumbre del Ama Dablam">
+                <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Laguna Azul del Clan Ama Dablam">
                     <defs>
                         <linearGradient id="skyClan" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#090A0F"/>
-                            <stop offset="55%" stop-color="#450A0A"/>
-                            <stop offset="100%" stop-color="#991B1B"/>
+                            <stop offset="0%" stop-color="#082F49"/>
+                            <stop offset="55%" stop-color="#0284C7"/>
+                            <stop offset="100%" stop-color="#38BDF8"/>
                         </linearGradient>
                     </defs>
                     <rect width="560" height="320" fill="url(#skyClan)"/>
-                    <polygon points="60,320 280,42 500,320" fill="#2A0808" stroke="#D9383A" stroke-width="2"/>
+                    <polygon points="60,320 280,42 500,320" fill="#1E293B" stroke="#38BDF8" stroke-width="2"/>
                     <polygon points="280,42 225,112 280,96 335,112" fill="#F8FAFC"/>
                     <circle cx="280" cy="22" r="4" fill="#FFFFFF"/>
-                    <text x="24" y="34" fill="#FECACA" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ CUMBRE AMA DABLAM (6.812m) · LEMA «SERVIR»</text>
+                    <text x="24" y="34" fill="#E0F2FE" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ LA LAGUNA AZUL SOBRE LAS NUBES · CLAN AMA DABLAM</text>
                 </svg>
             `,
             salidas: [],
             pillars: [
-                { title: 'La Horquilla Rover y el Proyecto de Vida', desc: 'Símbolo de la elección consciente entre caminos para construir un futuro comprometido.' },
-                { title: 'Lema «Servir» en Acción', desc: 'Voluntariado social, cooperación, apoyo a las ramas menores y ciudadanía activa.' },
-                { title: 'De Rover a Scouter (El Cierre del Ciclo)', desc: 'Formación como monitores de tiempo libre para devolver al grupo todo lo aprendido.' }
+                { title: 'La Laguna Azul por Encima de las Nubes (Origen del Río)', desc: 'Alcanzada escalando por encima del mar de nubes: de sus aguas cristalinas nace el gran río que baja dando vida a todas las unidades hasta el Estanque de los Castores.' },
+                { title: 'La Horquilla Rover y el Lema «Servir»', desc: 'Símbolo de la elección consciente del propio camino, el voluntariado social y el apoyo constante a las ramas menores.' },
+                { title: 'De Rover a Scouter (El Manantial del Grupo)', desc: 'Como el agua que baja desde la Laguna Azul hasta los Castores, los Rovers se forman para devolver al grupo todo lo aprendido.' }
             ],
             kraalTitle: 'Kraal del Clan Ama Dablam',
             kraalSub: 'Acompañantes Rovers (Kraaletes de Clan)',
@@ -2168,64 +2168,66 @@
             ]
         },
         escultas: {
-            kicker: '(01 / 05) · MUNDO ESCULTAS · IBÓN GLACIAL DE LA CANAL DE TREA (PICOS DE EUROPA)',
-            loreHeading: 'Espíritu Montañero y Empresa · Unidad Esculta Trea',
-            stepNames: ['Ibón de Trea', 'Senda y Ley', 'Empresas', 'Kraal Esculta', 'Travesías Drive'],
-            skyTop: 0x140E0A,
-            skyHorizon: 0x3B2618,
-            fogColor: 0x24170F,
-            fogDensity: 0.0086,
-            waterColor: 0x0284C7,
-            waterEmissive: 0x1E3A5F,
+            kicker: '(01 / 05) · MUNDO ESCULTAS · MONTAÑA DE LOS NINJAS Y EL DESCENSO DEL SENA (TREA)',
+            loreHeading: 'Ninjas en el Descenso del Sena y Empresas Escultas · Unidad Esculta Trea',
+            stepNames: ['Descenso Ninja', 'Torii y Senda', 'Empresas', 'Kraal Esculta', 'Travesías Drive'],
+            skyTop: 0x0F172A,
+            skyHorizon: 0x451A03,
+            fogColor: 0x1E1B18,
+            fogDensity: 0.0075,
+            waterColor: 0x0EA5E9,
+            waterEmissive: 0x0369A1,
             sunColor: 0xFDBA74,
             sunPos: [-38, 44, 26],
-            hemiSky: 0xE6CCB2,
+            hemiSky: 0xFDE68A,
             hemiGround: 0x2E1B0F,
-            shoreLightColor: 0xF59E0B,
-            terrainLow: [0.26, 0.20, 0.16],
-            terrainMid: [0.42, 0.33, 0.26],
-            terrainHigh: [0.76, 0.72, 0.68],
+            shoreLightColor: 0xEF4444,
+            terrainLow: [0.18, 0.24, 0.16],
+            terrainMid: [0.36, 0.28, 0.22],
+            terrainHigh: [0.68, 0.64, 0.60],
             heightScale: 24.0,
-            particleColor: 0xFED7AA,
+            particleColor: 0xFCA5A5,
             cameraStops: [
-                { radius: 44, height: 13.0, lookY: 3.0 },
-                { radius: 38, height: 9.5, lookY: 2.5 },
-                { radius: 41, height: 14.2, lookY: 2.2 },
-                { radius: 39, height: 10.2, lookY: 2.4 },
-                { radius: 45, height: 15.5, lookY: 3.2 }
+                { radius: 42, height: 12.5, lookY: 2.8 },
+                { radius: 37, height: 9.2, lookY: 2.4 },
+                { radius: 40, height: 13.6, lookY: 2.2 },
+                { radius: 38, height: 10.0, lookY: 2.4 },
+                { radius: 44, height: 14.8, lookY: 3.0 }
             ]
         },
         clan: {
-            kicker: '(01 / 05) · MUNDO CLAN · LAGO GLACIAL DEL AMA DABLAM (HIMALAYA · 6.812M)',
-            loreHeading: 'Rema Tu Propia Canoa · Clan Rover Ama Dablam',
-            stepNames: ['Lago Glaciar', 'Horquilla y Ley', 'Camino Rover', 'Kraal de Clan', 'Rutas Drive'],
-            skyTop: 0x090406,
-            skyHorizon: 0x3B0A14,
-            fogColor: 0x1F070C,
-            fogDensity: 0.0084,
-            waterColor: 0xBE123C,
-            waterEmissive: 0x1E293B,
-            sunColor: 0xFDA4AF,
-            sunPos: [0, 46, -45],
-            hemiSky: 0xF43F5E,
-            hemiGround: 0x1E1B4B,
-            shoreLightColor: 0xEF4444,
-            terrainLow: [0.18, 0.16, 0.20],
-            terrainMid: [0.36, 0.22, 0.26],
-            terrainHigh: [0.92, 0.94, 0.98],
+            kicker: '(01 / 05) · MUNDO CLAN · LA LAGUNA AZUL POR ENCIMA DE LAS NUBES (ORIGEN DEL RÍO)',
+            loreHeading: 'La Laguna Azul sobre el Mar de Nubes · Clan Rover Ama Dablam',
+            stepNames: ['Laguna Azul', 'Horquilla y Ley', 'Camino Rover', 'Kraal de Clan', 'Rutas Drive'],
+            skyTop: 0x082F49,
+            skyHorizon: 0x7DD3FC,
+            fogColor: 0x38BDF8,
+            fogDensity: 0.0048,
+            waterColor: 0x38BDF8,
+            waterEmissive: 0x0284C7,
+            sunColor: 0xFEF08A,
+            sunPos: [0, 56, -42],
+            hemiSky: 0xE0F2FE,
+            hemiGround: 0x0C4A6E,
+            shoreLightColor: 0x38BDF8,
+            terrainLow: [0.22, 0.34, 0.44],
+            terrainMid: [0.46, 0.56, 0.66],
+            terrainHigh: [0.94, 0.97, 1.00],
             heightScale: 27.5,
-            particleColor: 0xFECDD3,
+            particleColor: 0xE0F2FE,
             cameraStops: [
-                { radius: 44, height: 12.8, lookY: 3.5 },
+                { radius: 43, height: 12.8, lookY: 3.2 },
                 { radius: 38, height: 9.2, lookY: 2.6 },
                 { radius: 41, height: 13.8, lookY: 2.4 },
                 { radius: 39, height: 10.0, lookY: 2.5 },
-                { radius: 46, height: 15.0, lookY: 3.4 }
+                { radius: 45, height: 14.8, lookY: 3.2 }
             ]
         }
     };
 
     const UNIT_ZONE_SPACING = 165;
+    // Alturas Y de cada mundo: Castores(0), Manada(0), Tropa(0), Escultas(+32m en la montaña tras el Torii), Clan(+78m Laguna Azul sobre las nubes)
+    const UNIT_ZONE_ELEVATIONS = [0, 0, 0, 32, 78];
 
     const unitLakeState = {
         unitId: 'castores',
@@ -2532,9 +2534,15 @@
 
         if (biomeTag) {
             if (isCrossingRiver) {
-                const fromName = UNITS_DATA[uIdx]?.shortName || 'Castores';
-                const toName = UNITS_DATA[uIdx + 1]?.shortName || 'Manada';
-                biomeTag.textContent = `🌊 CRUZANDO EL RÍO POR EL BOSQUE · ${fromName.toUpperCase()} → ${toName.toUpperCase()}`;
+                if (uIdx === 2) {
+                    biomeTag.textContent = '⛩️ SUBIENDO LA MONTAÑA ARBOLADA · EL TORII DE LOS NINJAS · TROPA → ESCULTAS';
+                } else if (uIdx === 3) {
+                    biomeTag.textContent = '🧗 ESCALANDO HACIA EL MAR DE NUBES · LA LAGUNA AZUL · ESCULTAS → CLAN';
+                } else {
+                    const fromName = UNITS_DATA[uIdx]?.shortName || 'Castores';
+                    const toName = UNITS_DATA[uIdx + 1]?.shortName || 'Manada';
+                    biomeTag.textContent = `🌊 CRUZANDO EL RÍO POR EL BOSQUE · ${fromName.toUpperCase()} → ${toName.toUpperCase()}`;
+                }
             } else {
                 biomeTag.textContent = currentBiome.kicker;
             }
@@ -2543,9 +2551,17 @@
         const ringCaption = document.querySelector('#uzNextOrbitStepBtn .uz-progress-ring-caption');
         if (ringCaption) {
             if (isCrossingRiver) {
-                ringCaption.textContent = 'Cruzando el río...';
+                ringCaption.textContent = uIdx === 2
+                    ? 'Subiendo al Torii...'
+                    : (uIdx === 3 ? 'Escalando a las nubes...' : 'Cruzando el río...');
             } else if (nearestStep === 4 && displayUnitIdx < 4) {
-                ringCaption.textContent = `Cruzar río a ${UNITS_DATA[displayUnitIdx + 1].shortName} →`;
+                if (displayUnitIdx === 2) {
+                    ringCaption.textContent = 'Subir montaña y Torii →';
+                } else if (displayUnitIdx === 3) {
+                    ringCaption.textContent = 'Escalar a la Laguna Azul →';
+                } else {
+                    ringCaption.textContent = `Cruzar río a ${UNITS_DATA[displayUnitIdx + 1].shortName} →`;
+                }
             } else {
                 ringCaption.textContent = currentUnit.id === 'manada' ? 'Rodear la Roca' : 'Rodear el lago';
             }
@@ -2865,6 +2881,181 @@
         });
 
         return fireGroup;
+    }
+
+    // Construye un Torii Japonés / Ninja estilizado 3D (tipo Firewatch / Pixar) con farolillos colgantes
+    function createJapaneseToriiGate(THREE, scale = 1.0) {
+        const torii = new THREE.Group();
+        const vermilionMat = new THREE.MeshStandardMaterial({
+            color: 0xDC2626,
+            emissive: 0x7F1D1D,
+            emissiveIntensity: 0.16,
+            roughness: 0.58,
+            metalness: 0.06,
+            flatShading: false
+        });
+        const charcoalMat = new THREE.MeshStandardMaterial({
+            color: 0x1E293B,
+            roughness: 0.50,
+            metalness: 0.14,
+            flatShading: false
+        });
+        const goldMat = new THREE.MeshStandardMaterial({
+            color: 0xFBBF24,
+            emissive: 0xD97706,
+            emissiveIntensity: 0.35,
+            roughness: 0.32,
+            metalness: 0.68
+        });
+
+        // 1. Dos columnas principales (Hashira) con basas de piedra negra (Kamebara)
+        [-3.4, 3.4].forEach((px) => {
+            const baseStone = new THREE.Mesh(new THREE.CylinderGeometry(0.54 * scale, 0.64 * scale, 1.05 * scale, 24), charcoalMat);
+            baseStone.position.set(px * scale, 0.52 * scale, 0);
+            torii.add(baseStone);
+
+            const pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.36 * scale, 0.44 * scale, 7.6 * scale, 28), vermilionMat);
+            pillar.position.set(px * scale, 4.15 * scale, 0);
+            pillar.rotation.z = px < 0 ? -0.025 : 0.025;
+            torii.add(pillar);
+        });
+
+        // 2. Travesaño inferior rojo (Nuki) con cuñas negras (Kusabi)
+        const nuki = new THREE.Mesh(new THREE.BoxGeometry(9.2 * scale, 0.44 * scale, 0.36 * scale), vermilionMat);
+        nuki.position.set(0, 6.05 * scale, 0);
+        torii.add(nuki);
+
+        [-3.4, 3.4].forEach((px) => {
+            const wedge = new THREE.Mesh(new THREE.BoxGeometry(0.95 * scale, 0.62 * scale, 0.46 * scale), charcoalMat);
+            wedge.position.set(px * scale, 6.05 * scale, 0);
+            torii.add(wedge);
+        });
+
+        // 3. Dintel superior curvado (Kasagi + Shimaki)
+        const kasagiCurve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(-5.3 * scale, 7.95 * scale, 0),
+            new THREE.Vector3(-2.6 * scale, 7.55 * scale, 0),
+            new THREE.Vector3(0.0, 7.45 * scale, 0),
+            new THREE.Vector3(2.6 * scale, 7.55 * scale, 0),
+            new THREE.Vector3(5.3 * scale, 7.95 * scale, 0)
+        ]);
+        const shimakiMesh = new THREE.Mesh(new THREE.TubeGeometry(kasagiCurve, 32, 0.28 * scale, 16, false), vermilionMat);
+        shimakiMesh.scale.set(1.0, 0.85, 1.15);
+        torii.add(shimakiMesh);
+
+        const kasagiTopCurve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(-5.6 * scale, 8.32 * scale, 0),
+            new THREE.Vector3(-2.7 * scale, 7.86 * scale, 0),
+            new THREE.Vector3(0.0, 7.75 * scale, 0),
+            new THREE.Vector3(2.7 * scale, 7.86 * scale, 0),
+            new THREE.Vector3(5.6 * scale, 8.32 * scale, 0)
+        ]);
+        const kasagiMesh = new THREE.Mesh(new THREE.TubeGeometry(kasagiTopCurve, 36, 0.32 * scale, 18, false), charcoalMat);
+        kasagiMesh.scale.set(1.0, 0.72, 1.35);
+        torii.add(kasagiMesh);
+
+        // 4. Puntal central (Gakuzuka) con placa dorada Ninja/Esculta
+        const centerStrut = new THREE.Mesh(new THREE.BoxGeometry(0.42 * scale, 1.45 * scale, 0.32 * scale), vermilionMat);
+        centerStrut.position.set(0, 6.75 * scale, 0);
+        torii.add(centerStrut);
+
+        const plaqueFrame = new THREE.Mesh(new THREE.BoxGeometry(0.88 * scale, 1.15 * scale, 0.40 * scale), charcoalMat);
+        plaqueFrame.position.set(0, 6.78 * scale, 0);
+        torii.add(plaqueFrame);
+
+        const plaqueEmblem = new THREE.Mesh(new THREE.BoxGeometry(0.64 * scale, 0.88 * scale, 0.44 * scale), goldMat);
+        plaqueEmblem.position.set(0, 6.78 * scale, 0);
+        torii.add(plaqueEmblem);
+
+        // 5. Dos farolillos japoneses colgantes (Chōchin) bajo el travesaño
+        const lanternMat = new THREE.MeshStandardMaterial({
+            color: 0xFEF08A,
+            emissive: 0xF59E0B,
+            emissiveIntensity: 0.85,
+            roughness: 0.4
+        });
+        [-2.2, 2.2].forEach((lx) => {
+            const lantern = new THREE.Mesh(new THREE.SphereGeometry(0.32 * scale, 18, 14), lanternMat);
+            lantern.scale.set(0.85, 1.25, 0.85);
+            lantern.position.set(lx * scale, 5.42 * scale, 0);
+            torii.add(lantern);
+
+            const lGlow = createGlowSprite(THREE, 0xFDE047, 2.8 * scale, 0.78);
+            lGlow.position.set(lx * scale, 5.42 * scale, 0);
+            torii.add(lGlow);
+        });
+
+        return torii;
+    }
+
+    // Construye un farolillo tradicional japonés de piedra (Tōrō)
+    function createStoneToroLantern(THREE, scale = 1.0) {
+        const toro = new THREE.Group();
+        const stoneMat = new THREE.MeshStandardMaterial({ color: 0x64748B, roughness: 0.84, flatShading: false });
+        const fireMat = new THREE.MeshStandardMaterial({
+            color: 0xFEF08A,
+            emissive: 0xF97316,
+            emissiveIntensity: 0.9,
+            roughness: 0.3
+        });
+
+        const base = new THREE.Mesh(new THREE.CylinderGeometry(0.45 * scale, 0.58 * scale, 0.35 * scale, 16), stoneMat);
+        base.position.y = 0.17 * scale;
+        toro.add(base);
+
+        const post = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * scale, 0.28 * scale, 1.25 * scale, 16), stoneMat);
+        post.position.y = 0.92 * scale;
+        toro.add(post);
+
+        const platform = new THREE.Mesh(new THREE.CylinderGeometry(0.48 * scale, 0.38 * scale, 0.22 * scale, 6), stoneMat);
+        platform.position.y = 1.62 * scale;
+        toro.add(platform);
+
+        const fireBox = new THREE.Mesh(new THREE.CylinderGeometry(0.30 * scale, 0.30 * scale, 0.48 * scale, 6), fireMat);
+        fireBox.position.y = 1.95 * scale;
+        toro.add(fireBox);
+
+        const roof = new THREE.Mesh(new THREE.ConeGeometry(0.68 * scale, 0.48 * scale, 6), stoneMat);
+        roof.position.y = 2.38 * scale;
+        toro.add(roof);
+
+        const glow = createGlowSprite(THREE, 0xFBBF24, 2.4 * scale, 0.72);
+        glow.position.y = 1.95 * scale;
+        toro.add(glow);
+
+        return toro;
+    }
+
+    // Construye un banco de nubes 3D esponjosas (estilo Pixar / Firewatch) para el Mar de Nubes bajo la Laguna Azul del Clan
+    function createFluffyCloudCluster(THREE, scale = 1.0, seed = 0) {
+        const cloud = new THREE.Group();
+        const cloudMat = new THREE.MeshStandardMaterial({
+            color: 0xFFFFFF,
+            emissive: 0xBAE6FD,
+            emissiveIntensity: 0.28,
+            roughness: 0.92,
+            metalness: 0.0,
+            flatShading: false
+        });
+
+        const puffs = [
+            [0, 0.35, 0, 2.45],
+            [-1.85, 0.12, 0.45, 1.85],
+            [1.92, 0.15, -0.35, 1.95],
+            [-0.75, 0.05, -1.35, 1.65],
+            [0.85, 0.08, 1.42, 1.72],
+            [-3.2, -0.15, -0.25, 1.45],
+            [3.25, -0.12, 0.35, 1.50]
+        ];
+        puffs.forEach(([px, py, pz, pr], idx) => {
+            const sphere = new THREE.Mesh(new THREE.SphereGeometry(pr * scale, 22, 16), cloudMat);
+            const jx = Math.sin(seed + idx * 1.7) * 0.25 * scale;
+            const jz = Math.cos(seed + idx * 2.3) * 0.25 * scale;
+            sphere.position.set(px * scale + jx, py * scale, pz * scale + jz);
+            sphere.scale.set(1.28, 0.64, 1.18);
+            cloud.add(sphere);
+        });
+        return cloud;
     }
 
     // =========================================================================
@@ -3492,88 +3683,204 @@
             campFire.position.set(4.8, getTerrainHeight(4.8, -23.0), -23.0);
             group.add(campFire);
         } else if (unitId === 'escultas') {
-            // 1. MACIZO CALIZO ESCULPIDO DE LOS PICOS DE EUROPA (CANAL DE TREA)
-            const limestoneMat = new THREE.MeshStandardMaterial({
-                color: 0xD6D3D1,
-                roughness: 0.76,
-                metalness: 0.06
-            });
-            const peakCoords = [
-                [0, -35, 10.5, 29, 1],
-                [-17, -31, 8.8, 25, 2],
-                [18, -30, 9.2, 26, 3],
-                [32, 6, 8.2, 22, 4],
-                [-31, 11, 8.6, 23, 5]
-            ];
-            peakCoords.forEach(([px, pz, pr, ph, seed]) => {
-                const spireGeo = new THREE.ConeGeometry(pr, ph, 48, 20);
-                const sPos = spireGeo.attributes.position;
-                for (let k = 0; k < sPos.count; k++) {
-                    const vx = sPos.getX(k);
-                    const vy = sPos.getY(k);
-                    const vz = sPos.getZ(k);
-                    const n = ridgedFbm2D(vx * 0.14 + seed, vz * 0.14 + vy * 0.08, 3);
-                    const scaleFactor = 0.82 + n * 0.36;
-                    sPos.setX(k, vx * scaleFactor);
-                    sPos.setZ(k, vz * scaleFactor);
-                }
-                spireGeo.computeVertexNormals();
-                const spire = new THREE.Mesh(spireGeo, limestoneMat);
-                spire.position.set(px, ph * 0.44, pz);
-                group.add(spire);
+            // =================================================================
+            // MUNDO ESCULTAS: NINJAS EN EL DESCENSO DEL SENA Y MONTAÑA DE TREA
+            // (Torii sagrado sobre el agua, Dojo/Pabellón Ninja, piraguas del
+            //  descenso entre rápidos y cascada que baja de la Laguna Azul)
+            // =================================================================
+            // 1. TORII SAGRADO DE LOS NINJAS EN LA ENTRADA SUR DEL RÍO + FAROLILLOS DE PIEDRA (TŌRŌ)
+            const waterTorii = createJapaneseToriiGate(THREE, 0.92);
+            waterTorii.position.set(0.0, 0.0, 19.5);
+            group.add(waterTorii);
+
+            [[-6.2, 21.5], [6.2, 21.5], [-10.5, -21.0], [10.5, -21.0], [21.8, -4.5], [-21.8, 5.5]].forEach(([tx, tz]) => {
+                const toro = createStoneToroLantern(THREE, 1.05);
+                toro.position.set(tx, Math.max(0.1, getTerrainHeight(tx, tz)), tz);
+                group.add(toro);
             });
 
-            // 2. TIENDAS GEODÉSICAS DE VIVAC DE ALTA MONTAÑA + JITOS DE PIEDRA
-            const vivacCoords = [[-11.5, -22.8, 0.4], [13.5, -21.8, -0.5], [21.5, 15.5, 1.2]];
-            const domeMat = new THREE.MeshStandardMaterial({
-                color: 0xEA580C,
+            // 2. DOJO / PABELLÓN NINJA DE MONTAÑA EN LA ORILLA NORTE (CON TEJADO PAGODA ESCALONADO)
+            const dojoGroup = new THREE.Group();
+            const darkWoodMat = new THREE.MeshStandardMaterial({ color: 0x291D18, roughness: 0.78 });
+            const redLacquerMat = new THREE.MeshStandardMaterial({ color: 0xDC2626, roughness: 0.55 });
+            const roofTileMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.52, metalness: 0.14 });
+            const shojiMat = new THREE.MeshStandardMaterial({
+                color: 0xFEF3C7,
                 emissive: 0xF59E0B,
-                emissiveIntensity: 0.35,
-                roughness: 0.50
+                emissiveIntensity: 0.58,
+                roughness: 0.45
             });
-            const ribMat = new THREE.MeshStandardMaterial({ color: 0xE2E8F0, roughness: 0.3, metalness: 0.6 });
 
-            vivacCoords.forEach(([vx, vz, rot]) => {
-                const vivacGroup = new THREE.Group();
-                const dome = new THREE.Mesh(
-                    new THREE.SphereGeometry(2.05, 32, 24, 0, Math.PI * 2, 0, Math.PI * 0.52),
-                    domeMat
+            // Plataforma de piedra y madera del Dojo
+            const dojoBase = new THREE.Mesh(new THREE.BoxGeometry(9.2, 1.1, 6.4), new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.85 }));
+            dojoBase.position.y = 0.55;
+            dojoGroup.add(dojoBase);
+
+            // Cuerpo principal con paneles luminosos Shōji y columnas rojas
+            const shojiCore = new THREE.Mesh(new THREE.BoxGeometry(7.2, 3.2, 4.6), shojiMat);
+            shojiCore.position.y = 2.65;
+            dojoGroup.add(shojiCore);
+
+            [-3.65, -1.2, 1.2, 3.65].forEach((cx) => {
+                [-2.35, 2.35].forEach((cz) => {
+                    const col = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.18, 3.4, 16), redLacquerMat);
+                    col.position.set(cx, 2.7, cz);
+                    dojoGroup.add(col);
+                });
+            });
+
+            // Doble tejado japonés curvado (Irimoya / Pagoda estilizada)
+            const lowerRoof = new THREE.Mesh(new THREE.ConeGeometry(6.8, 2.1, 4), roofTileMat);
+            lowerRoof.rotation.y = Math.PI / 4;
+            lowerRoof.scale.set(1.22, 1.0, 0.88);
+            lowerRoof.position.y = 5.1;
+            dojoGroup.add(lowerRoof);
+
+            const upperCore = new THREE.Mesh(new THREE.BoxGeometry(4.6, 1.8, 3.2), darkWoodMat);
+            upperCore.position.y = 6.2;
+            dojoGroup.add(upperCore);
+
+            const upperRoof = new THREE.Mesh(new THREE.ConeGeometry(4.9, 1.95, 4), roofTileMat);
+            upperRoof.rotation.y = Math.PI / 4;
+            upperRoof.scale.set(1.22, 1.0, 0.88);
+            upperRoof.position.y = 7.85;
+            dojoGroup.add(upperRoof);
+
+            const dojoGlow = createGlowSprite(THREE, 0xFBBF24, 7.5, 0.72);
+            dojoGlow.position.set(0, 3.2, 2.2);
+            dojoGroup.add(dojoGlow);
+
+            dojoGroup.position.set(-7.8, getTerrainHeight(-7.8, -24.5), -24.5);
+            dojoGroup.rotation.y = 0.24;
+            group.add(dojoGroup);
+
+            // 3. PIRAGUAS / KAYAKS DEL DESCENSO DEL SENA NAVEGANDO LOS RÁPIDOS DE LA LAGUNA
+            const kayakConfigs = [
+                { x: -5.2, z: -4.5, rot: 0.35, color: 0xDC2626, phase: 0.4 },
+                { x: 4.8, z: 3.2, rot: -0.22, color: 0x0EA5E9, phase: 1.7 },
+                { x: -1.4, z: 10.6, rot: 0.12, color: 0xF59E0B, phase: 2.9 }
+            ];
+            const paddleShaftMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.4, metalness: 0.3 });
+            const paddleBladeMat = new THREE.MeshStandardMaterial({ color: 0xFDE047, roughness: 0.4 });
+
+            kayakConfigs.forEach((cfg) => {
+                const kayakGroup = new THREE.Group();
+                const hullCurve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(-2.3, 0.26, 0),
+                    new THREE.Vector3(-1.2, 0.02, 0),
+                    new THREE.Vector3(0, -0.04, 0),
+                    new THREE.Vector3(1.2, 0.02, 0),
+                    new THREE.Vector3(2.3, 0.26, 0)
+                ]);
+                const hullMat = new THREE.MeshStandardMaterial({ color: cfg.color, roughness: 0.35, metalness: 0.12 });
+                const hull = new THREE.Mesh(new THREE.TubeGeometry(hullCurve, 28, 0.48, 18, false), hullMat);
+                hull.scale.set(1.0, 0.48, 0.74);
+                kayakGroup.add(hull);
+
+                // Bañera (cockpit) oscura del kayak y pala de doble hoja cruzada
+                const cockpit = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.36, 0.36, 0.18, 18),
+                    new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.7 })
                 );
-                dome.scale.set(1.15, 0.9, 1.0);
-                vivacGroup.add(dome);
+                cockpit.scale.set(1.5, 1.0, 0.85);
+                cockpit.position.set(0, 0.16, 0);
+                kayakGroup.add(cockpit);
 
-                // Varillas geodésicas cruzadas
-                [0.5, -0.5].forEach(rAng => {
-                    const rib = new THREE.Mesh(new THREE.TorusGeometry(2.06, 0.035, 12, 32, Math.PI), ribMat);
-                    rib.rotation.y = rAng;
-                    vivacGroup.add(rib);
+                const paddle = new THREE.Group();
+                const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 2.5, 10), paddleShaftMat);
+                shaft.rotation.x = Math.PI / 2;
+                paddle.add(shaft);
+                [-1.22, 1.22].forEach((bz) => {
+                    const blade = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.03, 0.48), paddleBladeMat);
+                    blade.position.set(0, 0, bz);
+                    paddle.add(blade);
                 });
+                paddle.position.set(0.1, 0.28, 0);
+                paddle.rotation.y = 0.35;
+                kayakGroup.add(paddle);
 
-                const glow = createGlowSprite(THREE, 0xFDBA74, 4.8, 0.65);
-                glow.position.y = 1.0;
-                vivacGroup.add(glow);
-
-                vivacGroup.position.set(vx, getTerrainHeight(vx, vz), vz);
-                vivacGroup.rotation.y = rot;
-                group.add(vivacGroup);
+                kayakGroup.position.set(cfg.x, 0.12, cfg.z);
+                kayakGroup.rotation.y = cfg.rot;
+                group.add(kayakGroup);
+                unitLakeState.animatedProps.push({ mesh: kayakGroup, baseY: 0.12, phase: cfg.phase });
             });
 
-            // Jitos de piedra (Cairns) marcando la senda montañera
-            const cairnMat = new THREE.MeshStandardMaterial({ color: 0xE7E5E4, roughness: 0.8 });
-            [[-4, -22.5], [0, -23.2], [5, -22.6], [9, -22.0]].forEach(([jx, jz]) => {
-                const cairn = new THREE.Group();
-                const jy = getTerrainHeight(jx, jz);
-                [0.42, 0.32, 0.23, 0.15].forEach((cr, level) => {
-                    const st = new THREE.Mesh(new THREE.SphereGeometry(cr, 16, 14), cairnMat);
-                    st.scale.set(1.2, 0.68, 1.05);
-                    st.position.y = level * 0.32 + 0.15;
-                    cairn.add(st);
-                });
-                cairn.position.set(jx, jy, jz);
-                group.add(cairn);
+            // Puertas de Slalom del Descenso y rocas de rápido emergiendo del agua
+            const rapidRockMat = new THREE.MeshStandardMaterial({ color: 0x64748B, roughness: 0.8 });
+            [[-8.5, -8.2], [7.8, -5.5], [-6.4, 6.2], [8.2, 8.8]].forEach(([rx, rz], idx) => {
+                const rRock = new THREE.Mesh(new THREE.IcosahedronGeometry(1.15, 2), rapidRockMat);
+                rRock.scale.set(1.3, 0.65, 1.1);
+                rRock.position.set(rx, 0.15, rz);
+                rRock.rotation.y = idx * 1.2;
+                group.add(rRock);
             });
+
+            // Estandartes verticales Ninja (Nobori) ondeando en la orilla
+            const bannerMat = new THREE.MeshStandardMaterial({
+                color: 0xDC2626,
+                emissive: 0x991B1B,
+                emissiveIntensity: 0.25,
+                side: THREE.DoubleSide
+            });
+            [[14.5, -21.0], [18.5, -17.5], [-16.5, -19.5], [22.0, 11.5]].forEach(([bx, bz]) => {
+                const nobori = new THREE.Group();
+                const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 4.2, 10), darkWoodMat);
+                pole.position.y = 2.1;
+                nobori.add(pole);
+                const cloth = new THREE.Mesh(new THREE.PlaneGeometry(0.85, 2.6), bannerMat);
+                cloth.position.set(0.46, 2.65, 0);
+                nobori.add(cloth);
+                nobori.position.set(bx, getTerrainHeight(bx, bz), bz);
+                group.add(nobori);
+            });
+
+            const campFire = createCampfireWithGlow(THREE, 1.15);
+            campFire.position.set(4.5, getTerrainHeight(4.5, -22.5), -22.5);
+            group.add(campFire);
         } else if (unitId === 'clan') {
-            // 1. LA GRAN CUMBRE ESCULPIDA DEL AMA DABLAM (6.812M) Y SU GLACIAR COLGANTE
+            // =================================================================
+            // MUNDO CLAN: LA LAGUNA AZUL POR ENCIMA DE LAS NUBES (ORIGEN DEL RÍO)
+            // (Mar de nubes esponjosas 3D a los pies de la laguna, cumbre del
+            //  Ama Dablam, Horquilla Rover, Canoa y Manantial que alimenta todo el valle)
+            // =================================================================
+            // 1. MAR DE NUBES 3D (360° POR DEBAJO DEL BORDE DE LA LAGUNA AZUL)
+            const cloudRingCounts = [18, 22];
+            cloudRingCounts.forEach((count, ringIdx) => {
+                const baseRad = ringIdx === 0 ? 34.0 : 56.0;
+                const baseY = ringIdx === 0 ? -5.8 : -9.2;
+                for (let c = 0; c < count; c++) {
+                    const ang = (c / count) * Math.PI * 2 + ringIdx * 0.25;
+                    const rad = baseRad + Math.sin(c * 2.3) * 4.5;
+                    const cx = Math.cos(ang) * rad;
+                    const cz = Math.sin(ang) * rad;
+                    const cScale = (ringIdx === 0 ? 1.85 : 2.65) + (c % 3) * 0.35;
+                    const cloud = createFluffyCloudCluster(THREE, cScale, c * 1.7 + ringIdx * 7);
+                    cloud.position.set(cx, baseY + Math.cos(c * 1.9) * 1.2, cz);
+                    cloud.rotation.y = ang + Math.PI * 0.5;
+                    group.add(cloud);
+                }
+            });
+
+            // 2. MANANTIAL SAGRADO DE LA LAGUNA AZUL (SUR, Z = +21.5): NACIMIENTO DEL RÍO QUE BAJA HASTA CASTORES
+            const springGroup = new THREE.Group();
+            const springStoneMat = new THREE.MeshStandardMaterial({
+                color: 0xE2E8F0,
+                roughness: 0.55,
+                metalness: 0.1
+            });
+            for (let s = -4; s <= 4; s++) {
+                if (Math.abs(s) <= 1) continue; // canal central de salida del agua
+                const boulder = new THREE.Mesh(new THREE.IcosahedronGeometry(0.95 + (Math.abs(s) % 2) * 0.35, 3), springStoneMat);
+                boulder.scale.set(1.3, 0.75, 1.15);
+                boulder.position.set(s * 1.45, 0.35, 21.8 + Math.abs(s) * 0.25);
+                springGroup.add(boulder);
+            }
+            const springGlow = createGlowSprite(THREE, 0x38BDF8, 9.5, 0.85);
+            springGlow.position.set(0, 0.8, 22.0);
+            springGroup.add(springGlow);
+            group.add(springGroup);
+
+            // 3. LA GRAN CUMBRE ESCULPIDA DEL AMA DABLAM (6.812M) Y SU GLACIAR COLGANTE AZUL
             const amaGroup = new THREE.Group();
             const peakGeo = new THREE.ConeGeometry(15.5, 38, 64, 28);
             const pPos = peakGeo.attributes.position;
@@ -3591,23 +3898,22 @@
             const mainPeak = new THREE.Mesh(
                 peakGeo,
                 new THREE.MeshStandardMaterial({
-                    color: 0xF1F5F9,
-                    roughness: 0.48,
+                    color: 0xF8FAFC,
+                    roughness: 0.44,
                     metalness: 0.12
                 })
             );
             mainPeak.position.set(0, 17.5, -39);
             amaGroup.add(mainPeak);
 
-            // El "Dablam" (glaciar colgante esculpido suavemente)
             const glacierGeo = deformGeometrySmooth(new THREE.SphereGeometry(4.4, 32, 24), 0.16, 0.9, 9.2);
             const hangingGlacier = new THREE.Mesh(
                 glacierGeo,
                 new THREE.MeshStandardMaterial({
                     color: 0xE0F2FE,
                     emissive: 0x38BDF8,
-                    emissiveIntensity: 0.25,
-                    roughness: 0.30,
+                    emissiveIntensity: 0.38,
+                    roughness: 0.26,
                     metalness: 0.20
                 })
             );
@@ -3616,7 +3922,7 @@
             amaGroup.add(hangingGlacier);
             group.add(amaGroup);
 
-            // 2. LA HORQUILLA ROVER ORGÁNICA ESCULPIDA CON CURVAS SUAVES (TUBEGEOMETRY)
+            // 4. LA HORQUILLA ROVER ORGÁNICA ESCULPIDA CON CURVAS SUAVES (TUBEGEOMETRY)
             const horquillaGroup = new THREE.Group();
             const staffMat = new THREE.MeshStandardMaterial({
                 color: 0x991B1B,
@@ -3647,14 +3953,14 @@
             ]);
             horquillaGroup.add(new THREE.Mesh(new THREE.TubeGeometry(rightBranch, 20, 0.16, 16, false), staffMat));
 
-            const roverGlow = createGlowSprite(THREE, 0xEF4444, 7.5, 0.72);
+            const roverGlow = createGlowSprite(THREE, 0x38BDF8, 7.5, 0.72);
             roverGlow.position.set(0, 8.4, 0);
             horquillaGroup.add(roverGlow);
 
             horquillaGroup.position.set(-13.5, getTerrainHeight(-13.5, -22.8), -22.8);
             group.add(horquillaGroup);
 
-            // 3. CANOA ROVER ESCULPIDA EN MADERA («REMA TU PROPIA CANOA») Y TÉMPANOS SUAVES
+            // 5. CANOA ROVER ESCULPIDA EN MADERA («REMA TU PROPIA CANOA») EN LA LAGUNA AZUL
             const canoeGroup = new THREE.Group();
             const hullCurve = new THREE.CatmullRomCurve3([
                 new THREE.Vector3(-2.6, 0.38, 0),
@@ -3671,7 +3977,6 @@
             hullMesh.scale.set(1.0, 0.52, 0.82);
             canoeGroup.add(hullMesh);
 
-            // Bancos de madera de la canoa
             const seatMat = new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.6 });
             [-0.9, 0, 0.9].forEach(sx => {
                 const seat = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.06, 0.78), seatMat);
@@ -3684,15 +3989,15 @@
             group.add(canoeGroup);
             unitLakeState.animatedProps.push({ mesh: canoeGroup, baseY: 0.16, phase: 1.2 });
 
-            // Bloques de hielo glaciar redondeados y translúcidos sobre el agua
+            // Cristales de hielo azul turquesa flotando sobre la Laguna Azul
             const iceMat = new THREE.MeshStandardMaterial({
                 color: 0xE0F2FE,
-                emissive: 0x0284C7,
-                emissiveIntensity: 0.18,
-                roughness: 0.22,
+                emissive: 0x38BDF8,
+                emissiveIntensity: 0.32,
+                roughness: 0.18,
                 metalness: 0.15,
                 transparent: true,
-                opacity: 0.88
+                opacity: 0.90
             });
             for (let k = 0; k < 14; k++) {
                 const ang = (k / 14) * Math.PI * 2 + 0.2;
@@ -3907,21 +4212,39 @@
         return true;
     }
 
-    // Curva serpenteante del río que conecta dos Unidades consecutivas a través del bosque
+    // Curva serpenteante del río que conecta dos Unidades consecutivas a través del bosque y la montaña
     function getCorridorRiverCenterX(corridorIdx, globalZ) {
         const zStart = -corridorIdx * UNIT_ZONE_SPACING - 21.5;
         const zEnd = -(corridorIdx + 1) * UNIT_ZONE_SPACING + 21.5;
         const s = clamp((globalZ - zStart) / (zEnd - zStart), 0, 1);
         const env = Math.sin(s * Math.PI);
-        return env * (Math.sin(s * Math.PI * 2.0 + corridorIdx * 1.15) * 10.5 + Math.cos(s * Math.PI * 3.0) * 3.8);
+        const amp = corridorIdx === 3 ? 4.5 : (corridorIdx === 2 ? 7.5 : 10.5);
+        return env * (Math.sin(s * Math.PI * 2.0 + corridorIdx * 1.15) * amp + Math.cos(s * Math.PI * 3.0) * 3.2);
     }
 
-    // Construye el tramo de río y bosque denso entre la Unidad `corridorIdx` y la `corridorIdx + 1`
+    // Altura Y continua del río/montaña entre la Unidad `corridorIdx` y la `corridorIdx + 1`
+    function getCorridorRiverElevationY(corridorIdx, globalZ) {
+        const zStart = -corridorIdx * UNIT_ZONE_SPACING - 21.0;
+        const zEnd = -(corridorIdx + 1) * UNIT_ZONE_SPACING + 21.0;
+        const yStart = UNIT_ZONE_ELEVATIONS[corridorIdx] || 0;
+        const yEnd = UNIT_ZONE_ELEVATIONS[corridorIdx + 1] || 0;
+        const s = clamp((globalZ - zStart) / (zEnd - zStart), 0, 1);
+        if (corridorIdx === 3) {
+            // Pared de escalada escarpada hacia la Laguna Azul del Clan por encima de las nubes
+            return lerp(yStart, yEnd, Math.pow(smoothstep(0, 1, s), 0.92));
+        }
+        return lerp(yStart, yEnd, smoothstep(0, 1, s));
+    }
+
+    // Construye el tramo de río, montaña arbolada con Torii Ninja (corridorIdx=2) o escalada a las nubes (corridorIdx=3)
     function buildRiverForestCorridor(THREE, parentGroup, corridorIdx) {
         const zStart = -corridorIdx * UNIT_ZONE_SPACING - 21.0;
         const zEnd = -(corridorIdx + 1) * UNIT_ZONE_SPACING + 21.0;
+        const yStart = UNIT_ZONE_ELEVATIONS[corridorIdx] || 0;
+        const yEnd = UNIT_ZONE_ELEVATIONS[corridorIdx + 1] || 0;
         const corridorLen = Math.abs(zEnd - zStart); // ~123m
         const zMid = (zStart + zEnd) * 0.5;
+        const yMid = getCorridorRiverElevationY(corridorIdx, zMid);
 
         const unitFrom = UNITS_DATA[corridorIdx] || UNITS_DATA[0];
         const unitTo = UNITS_DATA[corridorIdx + 1] || UNITS_DATA[1];
@@ -3930,10 +4253,52 @@
 
         const corridorGroup = new THREE.Group();
 
-        // 1. Cinta de agua cristalina animada que serpentea por el bosque de un mundo al siguiente
-        const rSegsX = 32;
-        const rSegsZ = 140;
-        const riverGeo = new THREE.PlaneGeometry(11.6, corridorLen + 8.0, rSegsX, rSegsZ);
+        // 0. Si el tramo sube en altura (Tropa -> Escultas por la montaña, o Escultas -> Clan escalando), construir ladera/pared 3D continua
+        if (Math.abs(yEnd - yStart) > 1.0) {
+            const slopeGeo = new THREE.PlaneGeometry(96, corridorLen + 14.0, 64, 96);
+            slopeGeo.rotateX(-Math.PI / 2);
+            const sPos = slopeGeo.attributes.position;
+            const sCols = new Float32Array(sPos.count * 3);
+
+            for (let i = 0; i < sPos.count; i++) {
+                const lx = sPos.getX(i);
+                const lz = sPos.getZ(i);
+                const gz = zMid + lz;
+                const cx = getCorridorRiverCenterX(corridorIdx, gz);
+                const baseRy = getCorridorRiverElevationY(corridorIdx, gz);
+                const dRiver = Math.abs(lx - cx);
+
+                // Valle lateral junto al río/cascada y laderas de montaña/roca a los lados
+                const channelCarve = (1.0 - smoothstep(3.8, 7.2, dRiver)) * 0.65;
+                const sideWall = smoothstep(6.5, 42.0, dRiver) * (corridorIdx === 3 ? 16.5 : 9.5) *
+                    (0.55 + 0.45 * fbm2D(lx * 0.06, gz * 0.06, 3));
+                const cragNoise = ridgedFbm2D(lx * 0.11 + corridorIdx, gz * 0.11, 3) * (corridorIdx === 3 ? 2.2 : 0.9) * smoothstep(5.2, 16.0, dRiver);
+
+                sPos.setX(i, lx);
+                sPos.setZ(i, gz);
+                sPos.setY(i, baseRy - channelCarve + sideWall + cragNoise - 0.18);
+
+                const isRock = corridorIdx === 3 || dRiver > 16.0;
+                sCols[i * 3] = isRock ? 0.36 : 0.14;
+                sCols[i * 3 + 1] = isRock ? 0.38 : 0.34;
+                sCols[i * 3 + 2] = isRock ? 0.42 : 0.18;
+            }
+            slopeGeo.setAttribute('color', new THREE.BufferAttribute(sCols, 3));
+            slopeGeo.computeVertexNormals();
+
+            const slopeMat = new THREE.MeshStandardMaterial({
+                vertexColors: true,
+                roughness: 0.86,
+                metalness: 0.04,
+                flatShading: false
+            });
+            corridorGroup.add(new THREE.Mesh(slopeGeo, slopeMat));
+        }
+
+        // 1. Cinta de agua cristalina animada (que nace en la Laguna Azul del Clan y baja en cascada/río hasta el Estanque de Castores)
+        const rSegsX = 28;
+        const rSegsZ = 128;
+        const riverGeo = new THREE.PlaneGeometry(11.4, corridorLen + 8.0, rSegsX, rSegsZ);
         riverGeo.rotateX(-Math.PI / 2);
         const rPos = riverGeo.attributes.position;
         for (let i = 0; i < rPos.count; i++) {
@@ -3941,19 +4306,20 @@
             const lz = rPos.getZ(i);
             const gz = zMid + lz;
             const cx = getCorridorRiverCenterX(corridorIdx, gz);
+            const ry = getCorridorRiverElevationY(corridorIdx, gz);
             const s = clamp((gz - zStart) / (zEnd - zStart), 0, 1);
-            const widthScale = 1.0 + Math.sin(s * Math.PI * 3.0) * 0.18;
+            const widthScale = (corridorIdx === 3 ? 0.78 : 1.0) + Math.sin(s * Math.PI * 3.0) * 0.16;
             rPos.setX(i, cx + lx * widthScale);
             rPos.setZ(i, gz);
-            rPos.setY(i, 0.03);
+            rPos.setY(i, ry + 0.05);
         }
         riverGeo.computeVertexNormals();
 
         const riverUniforms = {
             uTime: { value: 0 },
             uWaterShallowA: { value: new THREE.Color(biomeFrom.waterColor || 0x10B981) },
-            uWaterShallowB: { value: new THREE.Color(biomeTo.waterColor || 0x0EA5E9) },
-            uWaterDeep: { value: new THREE.Color(0x064E3B) },
+            uWaterShallowB: { value: new THREE.Color(biomeTo.waterColor || 0x38BDF8) },
+            uWaterDeep: { value: new THREE.Color(corridorIdx >= 2 ? 0x0369A1 : 0x064E3B) },
             uSkyHorizon: { value: new THREE.Color(biomeFrom.skyHorizon) },
             uSunColor: { value: new THREE.Color(0xFEF08A) },
             uZStart: { value: zStart },
@@ -3971,7 +4337,7 @@
                 void main() {
                     vUv = uv;
                     vec3 pos = position;
-                    float flowWave = sin(pos.z * 0.45 + uTime * 3.2) * 0.045
+                    float flowWave = sin(pos.z * 0.45 - uTime * 3.8) * 0.045
                                    + cos(pos.x * 0.65 - uTime * 2.4) * 0.035;
                     pos.y += flowWave;
                     vec4 wp = modelMatrix * vec4(pos, 1.0);
@@ -3995,19 +4361,18 @@
                     float s = clamp((vGlobalPos.z - uZStart) / (uZEnd - uZStart), 0.0, 1.0);
                     float edgeDist = abs(vUv.x - 0.5) * 2.0;
 
-                    // Corriente fluida del río con espuma suave en las orillas y remolinos
-                    float ripple1 = sin(vGlobalPos.z * 1.35 + uTime * 4.2 + sin(vGlobalPos.x * 0.9) * 1.5);
-                    float ripple2 = cos(vGlobalPos.x * 2.2 - vGlobalPos.z * 0.85 + uTime * 3.1);
+                    // El agua fluye desde la Laguna Azul del Clan hacia abajo hasta el Estanque de los Castores
+                    float ripple1 = sin(vGlobalPos.z * 1.35 - uTime * 4.8 + sin(vGlobalPos.x * 0.9) * 1.5);
+                    float ripple2 = cos(vGlobalPos.x * 2.2 + vGlobalPos.z * 0.85 - uTime * 3.4);
                     float ripples = (ripple1 * 0.5 + ripple2 * 0.5) * 0.5 + 0.5;
 
                     vec3 shallowCol = mix(uWaterShallowA, uWaterShallowB, s);
-                    vec3 baseCol = mix(uWaterDeep, shallowCol, 0.45 + 0.35 * (1.0 - edgeDist));
+                    vec3 baseCol = mix(uWaterDeep, shallowCol, 0.48 + 0.36 * (1.0 - edgeDist));
                     baseCol = mix(baseCol, uSkyHorizon * 1.25, 0.28 + ripples * 0.18);
 
-                    // Líneas de espuma blanca estilizada siguiendo la corriente (estética Firewatch / Pixar)
-                    float streamLine = smoothstep(0.76, 0.92, sin(vUv.x * 18.0 + sin(vGlobalPos.z * 0.25 + uTime * 2.6) * 2.2));
-                    float bankFoam = smoothstep(0.68, 0.92, edgeDist) * (0.45 + 0.55 * ripples);
-                    vec3 col = mix(baseCol, vec3(0.92, 0.98, 1.0), clamp(bankFoam * 0.65 + streamLine * 0.22, 0.0, 0.85));
+                    float streamLine = smoothstep(0.72, 0.92, sin(vUv.x * 18.0 + sin(vGlobalPos.z * 0.28 - uTime * 3.2) * 2.2));
+                    float bankFoam = smoothstep(0.64, 0.92, edgeDist) * (0.45 + 0.55 * ripples);
+                    vec3 col = mix(baseCol, vec3(0.94, 0.99, 1.0), clamp(bankFoam * 0.68 + streamLine * 0.28, 0.0, 0.88));
 
                     float alpha = smoothstep(1.0, 0.78, edgeDist) * 0.94;
                     gl_FragColor = vec4(col, alpha);
@@ -4017,121 +4382,220 @@
         const riverMesh = new THREE.Mesh(riverGeo, riverMat);
         corridorGroup.add(riverMesh);
 
-        // 2. Puente Scout de Madera y Piedras de Vadeo en el corazón del bosque (s = 0.5)
-        const bridgeZ = zMid;
-        const bridgeX = getCorridorRiverCenterX(corridorIdx, bridgeZ);
-        const nextRiverX = getCorridorRiverCenterX(corridorIdx, bridgeZ - 2.0);
-        const riverTangentAngle = Math.atan2(nextRiverX - bridgeX, -2.0);
+        // 2. HITO CENTRAL DEL CORREDOR SEGÚN EL TRAMO:
+        const midX = getCorridorRiverCenterX(corridorIdx, zMid);
+        const nextRiverX = getCorridorRiverCenterX(corridorIdx, zMid - 2.0);
+        const riverTangentAngle = Math.atan2(nextRiverX - midX, -2.0);
 
-        const bridgeGroup = new THREE.Group();
-        const woodDarkMat = new THREE.MeshStandardMaterial({ color: 0x4E342E, roughness: 0.82 });
-        const woodPlankMat = new THREE.MeshStandardMaterial({ color: 0x6D4C41, roughness: 0.78 });
-        const ropeMat = new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.74 });
+        if (corridorIdx === 2) {
+            // =================================================================
+            // CORREDOR 2 (TROPA → ESCULTAS): SUBIDA DE MONTAÑA CON ÁRBOLES Y
+            // EL GRAN TORII DE LOS NINJAS A MITAD DE CAMINO (s = 0.5)
+            // =================================================================
+            const toriiShrineGroup = new THREE.Group();
 
-        // Tablones curvados del puente sobre el río
-        const plankCount = 18;
-        for (let p = 0; p < plankCount; p++) {
-            const u = (p / (plankCount - 1)) * 2 - 1; // -1..1 a lo ancho del río
-            const archY = 0.35 + (1 - u * u) * 1.35;
-            const plank = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.12, 3.2), woodPlankMat);
-            plank.position.set(u * 5.4, archY, 0);
-            plank.rotation.z = -u * 0.22;
-            bridgeGroup.add(plank);
-        }
+            // Escalones de piedra de montaña subiendo bajo el Torii de los Ninjas
+            const stepStoneMat = new THREE.MeshStandardMaterial({ color: 0x64748B, roughness: 0.82 });
+            for (let st = -8; st <= 8; st++) {
+                const stepZ = st * 1.85;
+                const gz = zMid + stepZ;
+                const sx = getCorridorRiverCenterX(corridorIdx, gz);
+                const sy = getCorridorRiverElevationY(corridorIdx, gz);
+                [-5.6, 5.6].forEach((sideOffset) => {
+                    const stepBlock = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.38, 1.35), stepStoneMat);
+                    stepBlock.position.set(sx + sideOffset, sy + 0.18, gz);
+                    corridorGroup.add(stepBlock);
+                });
+            }
 
-        // Vigas laterales arqueadas y postes con farolillos scouts
-        [-1.42, 1.42].forEach((sideZ) => {
-            [-5.2, -2.6, 0, 2.6, 5.2].forEach((postX, idx) => {
-                const u = postX / 5.4;
-                const archY = 0.35 + (1 - u * u) * 1.35;
-                const post = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 1.45, 12), woodDarkMat);
-                post.position.set(postX, archY + 0.65, sideZ);
-                bridgeGroup.add(post);
+            // El Gran Torii de los Ninjas en el corazón de la montaña arbolada
+            const midTorii = createJapaneseToriiGate(THREE, 1.42);
+            toriiShrineGroup.add(midTorii);
 
-                if (idx === 1 || idx === 3) {
-                    const lanternGlow = createGlowSprite(THREE, 0xFDE047, 2.8, 0.82);
-                    lanternGlow.position.set(postX, archY + 1.42, sideZ);
-                    bridgeGroup.add(lanternGlow);
-                }
+            // Farolillos de piedra (Tōrō) escoltando el Torii a mitad de camino
+            [[-5.8, 4.2], [5.8, 4.2], [-5.8, -4.2], [5.8, -4.2]].forEach(([lx, lz]) => {
+                const toro = createStoneToroLantern(THREE, 1.18);
+                toro.position.set(lx, 0.1, lz);
+                toriiShrineGroup.add(toro);
             });
 
-            const railCurve = new THREE.CatmullRomCurve3([
-                new THREE.Vector3(-5.2, 1.55, sideZ),
-                new THREE.Vector3(-2.6, 2.42, sideZ),
-                new THREE.Vector3(0.0, 2.82, sideZ),
-                new THREE.Vector3(2.6, 2.42, sideZ),
-                new THREE.Vector3(5.2, 1.55, sideZ)
-            ]);
-            const railMesh = new THREE.Mesh(new THREE.TubeGeometry(railCurve, 28, 0.065, 10, false), ropeMat);
-            bridgeGroup.add(railMesh);
-        });
+            const toriiAura = createGlowSprite(THREE, 0xEF4444, 14.0, 0.48);
+            toriiAura.position.set(0, 6.2, 0);
+            toriiShrineGroup.add(toriiAura);
 
-        bridgeGroup.position.set(bridgeX, 0.0, bridgeZ);
-        bridgeGroup.rotation.y = -riverTangentAngle;
-        corridorGroup.add(bridgeGroup);
+            toriiShrineGroup.position.set(midX, yMid - 0.15, zMid);
+            toriiShrineGroup.rotation.y = -riverTangentAngle;
+            corridorGroup.add(toriiShrineGroup);
+        } else if (corridorIdx === 3) {
+            // =================================================================
+            // CORREDOR 3 (ESCULTAS → CLAN): VÍA DE ESCALADA EN PARED DE ROCA
+            // JUNTO A LA GRAN CASCADA + ATRAVESANDO EL MAR DE NUBES 3D
+            // =================================================================
+            // A. Cuerdas fijas de escalada rojas y doradas + pitones y presas en la roca junto a la cascada
+            const ropePtsLeft = [];
+            const ropePtsRight = [];
+            const pitonMat = new THREE.MeshStandardMaterial({ color: 0xFBBF24, roughness: 0.3, metalness: 0.8 });
+            const ledgeRockMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.84 });
 
-        // 3. Rocas de río musgosas, troncos caídos, juncos y arbustos a lo largo de ambas orillas
+            const climbSteps = 16;
+            for (let c = 0; c <= climbSteps; c++) {
+                const s = c / climbSteps;
+                const gz = lerp(zStart - 4.0, zEnd + 4.0, s);
+                const cx = getCorridorRiverCenterX(corridorIdx, gz);
+                const cy = getCorridorRiverElevationY(corridorIdx, gz);
+
+                const lx = cx - 5.4 + Math.sin(c * 1.3) * 0.55;
+                const rx = cx + 5.4 + Math.cos(c * 1.1) * 0.55;
+                ropePtsLeft.push(new THREE.Vector3(lx, cy + 1.15, gz));
+                ropePtsRight.push(new THREE.Vector3(rx, cy + 1.15, gz));
+
+                // Repisas de roca para escalar y mosquetones/pitones brillantes
+                if (c > 0 && c < climbSteps) {
+                    const ledge = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.55, 1.9), ledgeRockMat);
+                    ledge.position.set(lx, cy + 0.15, gz);
+                    ledge.rotation.y = (c % 3 - 1) * 0.2;
+                    corridorGroup.add(ledge);
+
+                    const piton = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.055, 10, 20), pitonMat);
+                    piton.position.set(lx, cy + 1.25, gz);
+                    corridorGroup.add(piton);
+                }
+            }
+
+            const climbRopeCurveL = new THREE.CatmullRomCurve3(ropePtsLeft);
+            const climbRopeCurveR = new THREE.CatmullRomCurve3(ropePtsRight);
+            const redRopeMat = new THREE.MeshStandardMaterial({
+                color: 0xEF4444,
+                emissive: 0x991B1B,
+                emissiveIntensity: 0.35,
+                roughness: 0.55
+            });
+            const goldRopeMat = new THREE.MeshStandardMaterial({
+                color: 0xFBBF24,
+                emissive: 0xD97706,
+                emissiveIntensity: 0.35,
+                roughness: 0.55
+            });
+            corridorGroup.add(new THREE.Mesh(new THREE.TubeGeometry(climbRopeCurveL, 64, 0.085, 10, false), redRopeMat));
+            corridorGroup.add(new THREE.Mesh(new THREE.TubeGeometry(climbRopeCurveR, 64, 0.085, 10, false), goldRopeMat));
+
+            // B. El Mar de Nubes 3D (Y = +52m..+68m) que la cámara atraviesa al subir escalando hacia la Laguna Azul
+            for (let cl = 0; cl < 28; cl++) {
+                const s = 0.38 + (cl / 28) * 0.44;
+                const gz = lerp(zStart, zEnd, s);
+                const cx = getCorridorRiverCenterX(corridorIdx, gz);
+                const cy = getCorridorRiverElevationY(corridorIdx, gz);
+                const side = cl % 2 === 0 ? 1 : -1;
+                const offset = (cl % 4 === 0) ? (side * 4.5) : (side * (9.5 + (cl % 5) * 5.2));
+                const cloudScale = 1.65 + (cl % 4) * 0.45;
+                const cloud = createFluffyCloudCluster(THREE, cloudScale, cl * 2.1);
+                cloud.position.set(cx + offset, cy + 2.8 + (cl % 3) * 1.8, gz);
+                corridorGroup.add(cloud);
+            }
+        } else {
+            // CORREDORES 0 Y 1 (CASTORES → MANADA → TROPA): Puente Scout de Madera con farolillos
+            const bridgeGroup = new THREE.Group();
+            const woodDarkMat = new THREE.MeshStandardMaterial({ color: 0x4E342E, roughness: 0.82 });
+            const woodPlankMat = new THREE.MeshStandardMaterial({ color: 0x6D4C41, roughness: 0.78 });
+            const ropeMat = new THREE.MeshStandardMaterial({ color: 0xD97706, roughness: 0.74 });
+
+            const plankCount = 18;
+            for (let p = 0; p < plankCount; p++) {
+                const u = (p / (plankCount - 1)) * 2 - 1;
+                const archY = 0.35 + (1 - u * u) * 1.35;
+                const plank = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.12, 3.2), woodPlankMat);
+                plank.position.set(u * 5.4, archY, 0);
+                plank.rotation.z = -u * 0.22;
+                bridgeGroup.add(plank);
+            }
+
+            [-1.42, 1.42].forEach((sideZ) => {
+                [-5.2, -2.6, 0, 2.6, 5.2].forEach((postX, idx) => {
+                    const u = postX / 5.4;
+                    const archY = 0.35 + (1 - u * u) * 1.35;
+                    const post = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 1.45, 12), woodDarkMat);
+                    post.position.set(postX, archY + 0.65, sideZ);
+                    bridgeGroup.add(post);
+
+                    if (idx === 1 || idx === 3) {
+                        const lanternGlow = createGlowSprite(THREE, 0xFDE047, 2.8, 0.82);
+                        lanternGlow.position.set(postX, archY + 1.42, sideZ);
+                        bridgeGroup.add(lanternGlow);
+                    }
+                });
+
+                const railCurve = new THREE.CatmullRomCurve3([
+                    new THREE.Vector3(-5.2, 1.55, sideZ),
+                    new THREE.Vector3(-2.6, 2.42, sideZ),
+                    new THREE.Vector3(0.0, 2.82, sideZ),
+                    new THREE.Vector3(2.6, 2.42, sideZ),
+                    new THREE.Vector3(5.2, 1.55, sideZ)
+                ]);
+                const railMesh = new THREE.Mesh(new THREE.TubeGeometry(railCurve, 28, 0.065, 10, false), ropeMat);
+                bridgeGroup.add(railMesh);
+            });
+
+            bridgeGroup.position.set(midX, yMid, zMid);
+            bridgeGroup.rotation.y = -riverTangentAngle;
+            corridorGroup.add(bridgeGroup);
+        }
+
+        // 3. Rocas de río/montaña, juncos y piedras a lo largo de ambas orillas
         const riverRockMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.82, flatShading: false });
         const mossCapMat = new THREE.MeshStandardMaterial({ color: 0x15803D, roughness: 0.88, flatShading: false });
 
-        for (let i = 0; i < 42; i++) {
-            const s = (i + 0.5) / 42;
-            if (Math.abs(s - 0.5) < 0.06) continue; // dejar libre el puente
+        for (let i = 0; i < 40; i++) {
+            const s = (i + 0.5) / 40;
+            if (Math.abs(s - 0.5) < 0.07) continue;
             const gz = lerp(zStart - 3.0, zEnd + 3.0, s);
             const cx = getCorridorRiverCenterX(corridorIdx, gz);
+            const ry = getCorridorRiverElevationY(corridorIdx, gz);
             const side = i % 2 === 0 ? 1 : -1;
             const bankOffset = 5.2 + (i % 4) * 1.15;
             const rx = cx + side * bankOffset;
 
-            // Roca redondeada estilizada en la orilla
-            const rScale = 0.55 + (i % 3) * 0.28;
-            const rock = new THREE.Mesh(new THREE.IcosahedronGeometry(rScale, 3), i % 3 === 0 ? mossCapMat : riverRockMat);
-            rock.scale.set(1.35, 0.62, 1.15);
-            rock.position.set(rx, 0.18, gz);
+            const rScale = (corridorIdx === 3 ? 0.85 : 0.55) + (i % 3) * 0.28;
+            const rock = new THREE.Mesh(
+                new THREE.IcosahedronGeometry(rScale, 3),
+                (corridorIdx < 3 && i % 3 === 0) ? mossCapMat : riverRockMat
+            );
+            rock.scale.set(1.35, corridorIdx === 3 ? 0.95 : 0.62, 1.15);
+            rock.position.set(rx, ry + 0.18, gz);
             rock.rotation.y = i * 1.1;
             corridorGroup.add(rock);
 
-            // Juncos meciéndose junto al agua
-            if (i % 2 === 0) {
+            if (corridorIdx < 3 && i % 2 === 0) {
                 const reeds = createShoreReedsCluster(THREE, unitFrom.id, i * 0.65);
-                reeds.position.set(cx + side * 4.8, 0.02, gz + 0.8);
+                reeds.position.set(cx + side * 4.8, ry + 0.02, gz + 0.8);
                 corridorGroup.add(reeds);
                 unitLakeState.reedClusters.push({ mesh: reeds, phase: i * 0.65 });
             }
-
-            // Piedras de vadeo dentro del cauce
-            if (i % 9 === 0) {
-                for (let st = -1; st <= 1; st++) {
-                    const stepStone = new THREE.Mesh(new THREE.CylinderGeometry(0.58, 0.72, 0.28, 18), riverRockMat);
-                    stepStone.position.set(cx + st * 1.85, 0.08, gz + st * 0.45);
-                    corridorGroup.add(stepStone);
-                }
-            }
         }
 
-        // 4. Bosque denso estilizado (tipo Firewatch / Pixar) flanqueando ambos márgenes del río
-        const corridorTreeCount = 62;
+        // 4. Bosque denso estilizado (tipo Firewatch / Pixar) flanqueando el río y subiendo por la montaña
+        const corridorTreeCount = corridorIdx === 3 ? 28 : 64;
         for (let t = 0; t < corridorTreeCount; t++) {
             const s = (t + 0.5) / corridorTreeCount;
+            if (corridorIdx === 3 && s > 0.62) continue; // por encima de las nubes desaparece el bosque
             const gz = lerp(zStart - 2.0, zEnd + 2.0, s);
             const cx = getCorridorRiverCenterX(corridorIdx, gz);
+            const ry = getCorridorRiverElevationY(corridorIdx, gz);
             const side = t % 2 === 0 ? 1 : -1;
             const layer = Math.floor(t / 2) % 3;
-            // Mantener despejado el cauce del río y el carril de vuelo de la cámara (|x - cx| > 9.2)
             const distFromRiver = 9.6 + layer * 6.8 + (t % 5) * 1.9;
             const tx = cx + side * distFromRiver;
 
             const treeBiomeId = s < 0.5 ? unitFrom.id : unitTo.id;
             const sc = 0.92 + (t % 5) * 0.25 + (layer === 2 ? 0.32 : 0);
             const tree = createPineOrBiomeTree(THREE, treeBiomeId, sc, t * 1.91 + corridorIdx * 13);
-            const bankElevation = smoothstep(5.5, 22.0, distFromRiver) * 2.4;
+            const bankElevation = ry + smoothstep(5.5, 22.0, distFromRiver) * 2.4;
             tree.position.set(tx, bankElevation, gz);
             tree.rotation.y = t * 1.37;
             corridorGroup.add(tree);
 
-            if (t % 2 === 0) {
+            if (t % 2 === 0 && corridorIdx < 3) {
                 const bush = createBotanicalBush(THREE, 0.85 + (t % 3) * 0.22, t * 1.31);
-                bush.position.set(cx + side * (7.2 + (t % 3) * 1.4), 0.32, gz + 0.9);
+                bush.position.set(cx + side * (7.2 + (t % 3) * 1.4), ry + 0.32, gz + 0.9);
                 corridorGroup.add(bush);
             }
         }
@@ -4145,9 +4609,10 @@
         const unitId = unit.id || 'castores';
         const biome = UNIT_LAKE_BIOMES[unitId] || UNIT_LAKE_BIOMES.castores;
         const centerZ = -uIdx * UNIT_ZONE_SPACING;
+        const centerY = UNIT_ZONE_ELEVATIONS[uIdx] || 0;
 
         const zoneGroup = new THREE.Group();
-        zoneGroup.position.set(0, 0, centerZ);
+        zoneGroup.position.set(0, centerY, centerZ);
 
         const isAlpine = unitId === 'escultas' || unitId === 'clan';
         const getTerrainHeight = (x, z) => {
@@ -4788,6 +5253,7 @@
         const unit = UNITS_DATA[uIdx] || UNITS_DATA[0];
         const biome = UNIT_LAKE_BIOMES[unit.id] || UNIT_LAKE_BIOMES.castores;
         const centerZ = -uIdx * UNIT_ZONE_SPACING;
+        const centerY = UNIT_ZONE_ELEVATIONS[uIdx] || 0;
 
         const wrapped = ((localStep % 5) + 5) % 5;
         const idxA = Math.floor(wrapped) % 5;
@@ -4799,7 +5265,7 @@
 
         const camRadius = lerp(stopA.radius, stopB.radius, frac);
         const camHeight = lerp(stopA.height, stopB.height, frac) + smoothMouseY * 2.2;
-        const lookY = lerp(stopA.lookY, stopB.lookY, frac) - smoothMouseY * 1.1;
+        const localLookY = lerp(stopA.lookY, stopB.lookY, frac) - smoothMouseY * 1.1;
 
         const orbitAngle = (localStep / 5) * Math.PI * 2 + smoothMouseX * 0.16;
 
@@ -4811,8 +5277,8 @@
         const lookZ = centerZ - Math.sin(orbitAngle) * lookOffset;
 
         return {
-            camX, camY: camHeight, camZ,
-            lookX, lookY, lookZ
+            camX, camY: centerY + camHeight, camZ,
+            lookX, lookY: centerY + localLookY, lookZ
         };
     }
 
@@ -4823,11 +5289,11 @@
         const t = now * 0.001;
         unitLakeState.orbitTarget = clamp(unitLakeState.orbitTarget, 0, 28);
 
-        // Velocidad cinematográfica suave cuando cruzamos el río por el bosque entre dos Unidades
+        // Velocidad cinematográfica suave cuando cruzamos el río/montaña/escalada entre dos Unidades
         const uIdxCheck = Math.min(4, Math.floor(clamp(unitLakeState.orbitCurrent, 0, 28) / 6));
         const localCheck = unitLakeState.orbitCurrent - uIdxCheck * 6;
         const isRiverFlight = (localCheck > 4.02 && localCheck < 5.98) || Math.abs(unitLakeState.orbitTarget - unitLakeState.orbitCurrent) > 1.25;
-        const lerpSpeed = isRiverFlight ? 0.036 : 0.075;
+        const lerpSpeed = isRiverFlight ? 0.034 : 0.075;
 
         unitLakeState.orbitCurrent = lerp(unitLakeState.orbitCurrent, unitLakeState.orbitTarget, lerpSpeed);
         unitLakeState.smoothMouseX = lerp(unitLakeState.smoothMouseX, unitLakeState.mouseX, 0.08);
@@ -4864,7 +5330,7 @@
                 lookZ = pose.lookZ;
                 biomeBlend = 0.0;
             } else {
-                // Travesía 3D continua cruzando el río por el bosque desde la Unidad `uIdx` (parada 4) hasta `uIdx + 1` (parada 0)
+                // Travesía 3D continua entre la Unidad `uIdx` (parada 4) y `uIdx + 1` (parada 0)
                 const tCrossRaw = clamp((localProg - 4.0) / 2.0, 0, 1);
                 const tCross = smoothstep(0, 1, tCrossRaw);
                 biomeBlend = tCross;
@@ -4876,26 +5342,70 @@
                 const zEnd = -(uIdx + 1) * UNIT_ZONE_SPACING + 21.0;
                 const zMid = (zStart + zEnd) * 0.5;
                 const zNextCenter = -(uIdx + 1) * UNIT_ZONE_SPACING;
+                const yNextCenter = UNIT_ZONE_ELEVATIONS[uIdx + 1] || 0;
 
                 const zWp1 = lerp(zStart, zEnd, 0.22);
                 const zWp2 = zMid;
                 const zWp3 = lerp(zStart, zEnd, 0.78);
 
-                const camCurve = new THREE.CatmullRomCurve3([
-                    new THREE.Vector3(poseStart.camX, poseStart.camY, poseStart.camZ),
-                    new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp1) + 2.8, 5.4 + unitLakeState.smoothMouseY * 1.4, zWp1),
-                    new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp2) - 1.4, 4.1 + unitLakeState.smoothMouseY * 1.2, zWp2),
-                    new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp3) - 4.2, 6.6 + unitLakeState.smoothMouseY * 1.5, zWp3),
-                    new THREE.Vector3(poseEnd.camX, poseEnd.camY, poseEnd.camZ)
-                ]);
+                const yWp1 = getCorridorRiverElevationY(uIdx, zWp1);
+                const yWp2 = getCorridorRiverElevationY(uIdx, zWp2);
+                const yWp3 = getCorridorRiverElevationY(uIdx, zWp3);
 
-                const lookCurve = new THREE.CatmullRomCurve3([
-                    new THREE.Vector3(poseStart.lookX, poseStart.lookY, poseStart.lookZ),
-                    new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp2), 1.6, zWp2),
-                    new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp3), 2.1, zWp3 - 14.0),
-                    new THREE.Vector3(0.0, unitB.id === 'manada' ? 4.8 : 2.5, zNextCenter),
-                    new THREE.Vector3(poseEnd.lookX, poseEnd.lookY, poseEnd.lookZ)
-                ]);
+                let camCurve, lookCurve;
+
+                if (uIdx === 2) {
+                    // Tramo Tropa → Escultas: subida por montaña arbolada atravesando el Torii de los Ninjas a mitad de camino
+                    camCurve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(poseStart.camX, poseStart.camY, poseStart.camZ),
+                        new THREE.Vector3(getCorridorRiverCenterX(2, zWp1) + 2.2, yWp1 + 4.8 + unitLakeState.smoothMouseY * 1.3, zWp1),
+                        new THREE.Vector3(getCorridorRiverCenterX(2, zWp2), yWp2 + 3.8 + unitLakeState.smoothMouseY * 1.1, zWp2),
+                        new THREE.Vector3(getCorridorRiverCenterX(2, zWp3) - 2.6, yWp3 + 5.6 + unitLakeState.smoothMouseY * 1.4, zWp3),
+                        new THREE.Vector3(poseEnd.camX, poseEnd.camY, poseEnd.camZ)
+                    ]);
+
+                    lookCurve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(poseStart.lookX, poseStart.lookY, poseStart.lookZ),
+                        new THREE.Vector3(getCorridorRiverCenterX(2, zWp2), yWp2 + 4.4, zWp2),
+                        new THREE.Vector3(getCorridorRiverCenterX(2, zWp3), yWp3 + 2.8, zWp3 - 12.0),
+                        new THREE.Vector3(0.0, yNextCenter + 2.8, zNextCenter),
+                        new THREE.Vector3(poseEnd.lookX, poseEnd.lookY, poseEnd.lookZ)
+                    ]);
+                } else if (uIdx === 3) {
+                    // Tramo Escultas → Clan: ascenso escalando por la pared de roca junto a la cascada, atravesando el mar de nubes 3D hasta emerger en la Laguna Azul
+                    camCurve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(poseStart.camX, poseStart.camY, poseStart.camZ),
+                        new THREE.Vector3(getCorridorRiverCenterX(3, zWp1) - 3.4, yWp1 + 4.2 + unitLakeState.smoothMouseY * 1.3, zWp1),
+                        new THREE.Vector3(getCorridorRiverCenterX(3, zWp2) - 2.6, yWp2 + 4.5 + unitLakeState.smoothMouseY * 1.2, zWp2),
+                        new THREE.Vector3(getCorridorRiverCenterX(3, zWp3) - 2.0, yWp3 + 5.8 + unitLakeState.smoothMouseY * 1.4, zWp3),
+                        new THREE.Vector3(poseEnd.camX, poseEnd.camY, poseEnd.camZ)
+                    ]);
+
+                    lookCurve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(poseStart.lookX, poseStart.lookY, poseStart.lookZ),
+                        new THREE.Vector3(getCorridorRiverCenterX(3, zWp2) - 1.2, yWp2 + 7.5, zWp2 - 6.0),
+                        new THREE.Vector3(getCorridorRiverCenterX(3, zWp3), yWp3 + 5.2, zWp3 - 12.0),
+                        new THREE.Vector3(0.0, yNextCenter + 3.2, zNextCenter),
+                        new THREE.Vector3(poseEnd.lookX, poseEnd.lookY, poseEnd.lookZ)
+                    ]);
+                } else {
+                    // Tramos del valle (Castores → Manada y Manada → Tropa): cruzando el río por el bosque
+                    camCurve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(poseStart.camX, poseStart.camY, poseStart.camZ),
+                        new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp1) + 2.8, yWp1 + 5.4 + unitLakeState.smoothMouseY * 1.4, zWp1),
+                        new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp2) - 1.4, yWp2 + 4.1 + unitLakeState.smoothMouseY * 1.2, zWp2),
+                        new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp3) - 4.2, yWp3 + 6.6 + unitLakeState.smoothMouseY * 1.5, zWp3),
+                        new THREE.Vector3(poseEnd.camX, poseEnd.camY, poseEnd.camZ)
+                    ]);
+
+                    lookCurve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(poseStart.lookX, poseStart.lookY, poseStart.lookZ),
+                        new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp2), yWp2 + 1.6, zWp2),
+                        new THREE.Vector3(getCorridorRiverCenterX(uIdx, zWp3), yWp3 + 2.1, zWp3 - 14.0),
+                        new THREE.Vector3(0.0, yNextCenter + (unitB.id === 'manada' ? 4.8 : 2.5), zNextCenter),
+                        new THREE.Vector3(poseEnd.lookX, poseEnd.lookY, poseEnd.lookZ)
+                    ]);
+                }
 
                 const cPt = camCurve.getPoint(tCross);
                 const lPt = lookCurve.getPoint(tCross);
@@ -4943,7 +5453,8 @@
             if (unitLakeState.shoreLight) {
                 unitLakeState.shoreLight.color.setHex(biomeA.shoreLightColor).lerp(new THREE.Color(biomeB.shoreLightColor), biomeBlend);
                 const activeZ = -Math.round(uIdx + biomeBlend) * UNIT_ZONE_SPACING;
-                unitLakeState.shoreLight.position.set(0, 9.0, activeZ);
+                const activeY = lerp(UNIT_ZONE_ELEVATIONS[uIdx] || 0, UNIT_ZONE_ELEVATIONS[Math.min(4, uIdx + 1)] || 0, biomeBlend);
+                unitLakeState.shoreLight.position.set(0, activeY + 9.0, activeZ);
             }
 
             // Actualizar tiempo de todos los lagos y tramos de río
