@@ -3103,25 +3103,25 @@ body.anniversary-50-mode .hud-scroll-fill {
    ========================================================================== */
 #unitSuperZoomOverlay.unit-orbit-world-view {
     overflow: hidden;
-    background: #040911;
+    background: #38BDF8;
     user-select: none;
 }
 
-/* Fondos atmosféricos por cada Mundo / Planeta de Unidad */
+/* Fondos atmosféricos diurnos y soleados por cada Mundo / Planeta de Unidad */
 #unitSuperZoomOverlay[data-unit-world="castores"] {
-    background: radial-gradient(circle at 50% 42%, #0E4F79 0%, #072844 55%, #03111F 100%);
+    background: radial-gradient(circle at 50% 38%, #E0F2FE 0%, #7DD3FC 55%, #0284C7 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="manada"] {
-    background: radial-gradient(circle at 50% 38%, #4C225C 0%, #211130 55%, #0B0613 100%);
+    background: radial-gradient(circle at 50% 38%, #FEF9C3 0%, #7DD3FC 55%, #0369A1 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="tropa"] {
-    background: radial-gradient(circle at 50% 42%, #065F46 0%, #032B21 55%, #01130E 100%);
+    background: radial-gradient(circle at 50% 38%, #D1FAE5 0%, #6EE7B7 50%, #0284C7 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="escultas"] {
-    background: radial-gradient(circle at 50% 40%, #4A2E1B 0%, #24160D 55%, #0D0805 100%);
+    background: radial-gradient(circle at 50% 38%, #FEF3C7 0%, #7DD3FC 55%, #0369A1 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="clan"] {
-    background: radial-gradient(circle at 50% 38%, #4C0D19 0%, #22060B 55%, #090305 100%);
+    background: radial-gradient(circle at 50% 38%, #F0F9FF 0%, #7DD3FC 55%, #0284C7 100%);
 }
 
 .unit-orbit-webgl-wrap {
@@ -3141,8 +3141,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(180deg, rgba(3, 6, 12, 0.68) 0%, rgba(3, 6, 12, 0.08) 24%, rgba(3, 6, 12, 0.12) 68%, rgba(3, 6, 12, 0.82) 100%),
-        radial-gradient(circle at 50% 50%, transparent 38%, rgba(2, 4, 9, 0.56) 100%);
+        linear-gradient(180deg, rgba(8, 24, 44, 0.28) 0%, rgba(8, 24, 44, 0.0) 18%, rgba(8, 24, 44, 0.0) 74%, rgba(8, 24, 44, 0.46) 100%);
     pointer-events: none;
 }
 
