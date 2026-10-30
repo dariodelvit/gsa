@@ -2058,7 +2058,11 @@
         triggerStarDiveFlash(unit.worldX, unit.worldY, wasAlreadyOpen ? 450 : 1180);
 
         populateUnitSuperZoomDOM(unitIdx);
-        setupUnitLakeWorld(unitIdx);
+        try {
+            setupUnitLakeWorld(unitIdx);
+        } catch (err) {
+            console.error('Error inicializando el mundo 3D de Unidades:', err);
+        }
 
         elCampZoomOverlay?.classList.remove('is-open');
         elCampZoomOverlay?.setAttribute('aria-hidden', 'true');
@@ -4089,7 +4093,7 @@
 
             // Juncos meciéndose junto al agua
             if (i % 2 === 0) {
-                const reeds = createReedCluster(THREE, 8);
+                const reeds = createShoreReedsCluster(THREE, unitFrom.id, i * 0.65);
                 reeds.position.set(cx + side * 4.8, 0.02, gz + 0.8);
                 corridorGroup.add(reeds);
                 unitLakeState.reedClusters.push({ mesh: reeds, phase: i * 0.65 });
@@ -4106,7 +4110,7 @@
         }
 
         // 4. Bosque denso estilizado (tipo Firewatch / Pixar) flanqueando ambos márgenes del río
-        const corridorTreeCount = 86;
+        const corridorTreeCount = 62;
         for (let t = 0; t < corridorTreeCount; t++) {
             const s = (t + 0.5) / corridorTreeCount;
             const gz = lerp(zStart - 2.0, zEnd + 2.0, s);
@@ -4126,8 +4130,7 @@
             corridorGroup.add(tree);
 
             if (t % 2 === 0) {
-                const bushColor = s < 0.5 ? 0x16A34A : 0x15803D;
-                const bush = createBotanicalBush(THREE, bushColor, 0.85 + (t % 3) * 0.22);
+                const bush = createBotanicalBush(THREE, 0.85 + (t % 3) * 0.22, t * 1.31);
                 bush.position.set(cx + side * (7.2 + (t % 3) * 1.4), 0.32, gz + 0.9);
                 corridorGroup.add(bush);
             }
@@ -4211,8 +4214,8 @@
         };
 
         // 1. Terreno 3D de Alta Resolución (220m x 166m para enlazar perfectamente con el siguiente sector a 165m)
-        const terrainSegsX = (unitId === 'manada' || unitId === 'castores' || unitId === 'tropa') ? 200 : 160;
-        const terrainSegsZ = (unitId === 'manada' || unitId === 'castores' || unitId === 'tropa') ? 160 : 132;
+        const terrainSegsX = (unitId === 'manada' || unitId === 'castores' || unitId === 'tropa') ? 148 : 120;
+        const terrainSegsZ = (unitId === 'manada' || unitId === 'castores' || unitId === 'tropa') ? 116 : 96;
         const terrainGeo = new THREE.PlaneGeometry(220, UNIT_ZONE_SPACING + 2, terrainSegsX, terrainSegsZ);
         terrainGeo.rotateX(-Math.PI / 2);
         const posAttr = terrainGeo.attributes.position;
