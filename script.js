@@ -1751,7 +1751,7 @@
     // =========================================================================
     let diveTabTimer = null;
 
-    function triggerStarDiveFlash(wx, wy, durationMs = 1150) {
+    function triggerStarDiveFlash(wx, wy, durationMs = 260) {
         hyperspaceJump = {
             start: performance.now(),
             duration: durationMs,
@@ -1762,7 +1762,7 @@
         elStarDiveFlash.classList.add('is-flashing');
         setTimeout(() => {
             elStarDiveFlash.classList.remove('is-flashing');
-        }, durationMs - 120);
+        }, Math.max(80, durationMs - 50));
     }
 
     function populateUnitSuperZoomDOM(unitIdx) {
@@ -2054,8 +2054,8 @@
         }
 
         document.body.classList.add('is-superzoom-open');
-        const diveTime = wasAlreadyOpen ? 240 : 1080;
-        triggerStarDiveFlash(unit.worldX, unit.worldY, wasAlreadyOpen ? 450 : 1180);
+        const diveTime = wasAlreadyOpen ? 120 : 200;
+        triggerStarDiveFlash(unit.worldX, unit.worldY, wasAlreadyOpen ? 180 : 280);
 
         populateUnitSuperZoomDOM(unitIdx);
         try {
@@ -2085,24 +2085,24 @@
     const UNIT_LAKE_BIOMES = {
         castores: {
             kicker: '(01 / 05) · MUNDO CASTORES · EL ESTANQUE DEL GRAN ROBLE Y RÍO GRAN HERMANO',
-            loreHeading: 'La Vida en el Estanque Soleado · Colonia Ohiensis',
+            loreHeading: 'La Vida en el Estanque · Colonia Ohiensis',
             stepNames: ['El Estanque', 'Presa y Ley', 'Etapas Castor', 'Kraaletes', 'Salidas Drive'],
-            skyTop: 0x0284C7,
-            skyHorizon: 0xBAE6FD,
-            fogColor: 0xD8F3FE,
-            fogDensity: 0.0038,
-            waterColor: 0x38BDF8,
-            waterEmissive: 0x0284C7,
-            sunColor: 0xFFFBEB,
-            sunPos: [45, 72, -32],
-            hemiSky: 0xF0F9FF,
-            hemiGround: 0x4D7C0F,
-            shoreLightColor: 0xFDE047,
-            terrainLow: [0.22, 0.62, 0.30],
-            terrainMid: [0.16, 0.52, 0.25],
-            terrainHigh: [0.34, 0.68, 0.42],
+            skyTop: 0x1A5276,
+            skyHorizon: 0x6FA8DC,
+            fogColor: 0x5B8FA8,
+            fogDensity: 0.0052,
+            waterColor: 0x1B9CFC,
+            waterEmissive: 0x0A3D62,
+            sunColor: 0xFFEAA7,
+            sunPos: [42, 58, -32],
+            hemiSky: 0x85C1E9,
+            hemiGround: 0x274E13,
+            shoreLightColor: 0xF39C12,
+            terrainLow: [0.14, 0.38, 0.18],
+            terrainMid: [0.11, 0.32, 0.15],
+            terrainHigh: [0.22, 0.44, 0.26],
             heightScale: 11.5,
-            particleColor: 0xFEF9C3,
+            particleColor: 0xFDE68A,
             cameraStops: [
                 { radius: 42, height: 11.5, lookY: 1.8 },
                 { radius: 37, height: 8.5, lookY: 1.5 },
@@ -2112,25 +2112,25 @@
             ]
         },
         manada: {
-            kicker: '(01 / 05) · MUNDO MANADA · LA ROCA DEL CONSEJO EN LA SELVA SOLEADA DE SEEONEE',
+            kicker: '(01 / 05) · MUNDO MANADA · LA ROCA DEL CONSEJO EN LA SELVA DE SEEONEE',
             loreHeading: 'La Roca del Consejo en el Claro de Seeonee · Manada Khanhiwara',
             stepNames: ['Roca del Consejo', 'Selva y Ley', 'Senda Mowgli', 'Viejos Lobos', 'Cazas Drive'],
-            skyTop: 0x0369A1,
-            skyHorizon: 0xBAE6FD,
-            fogColor: 0xDCFCE7,
-            fogDensity: 0.0040,
-            waterColor: 0x06B6D4,
-            waterEmissive: 0x0284C7,
-            sunColor: 0xFEF08A,
-            sunPos: [-35, 75, -28],
-            hemiSky: 0xF0F9FF,
-            hemiGround: 0x3F6212,
-            shoreLightColor: 0xFDE047,
-            terrainLow: [0.18, 0.56, 0.26],
-            terrainMid: [0.22, 0.64, 0.30],
-            terrainHigh: [0.32, 0.70, 0.38],
+            skyTop: 0x154360,
+            skyHorizon: 0x6AA39E,
+            fogColor: 0x4E807B,
+            fogDensity: 0.0055,
+            waterColor: 0x16A085,
+            waterEmissive: 0x0B4F6C,
+            sunColor: 0xF9E79F,
+            sunPos: [-35, 60, -28],
+            hemiSky: 0x7FB3D5,
+            hemiGround: 0x1E3F20,
+            shoreLightColor: 0xF39C12,
+            terrainLow: [0.11, 0.34, 0.16],
+            terrainMid: [0.14, 0.40, 0.19],
+            terrainHigh: [0.22, 0.46, 0.25],
             heightScale: 15.5,
-            particleColor: 0xFEF08A,
+            particleColor: 0xF9E79F,
             cameraStops: [
                 { radius: 33, height: 12.2, lookY: 7.4 },
                 { radius: 29, height: 10.4, lookY: 7.8 },
@@ -2143,22 +2143,22 @@
             kicker: '(01 / 05) · MUNDO TROPA · EL LAGO DE LOHENGRIN (EL CABALLERO DEL CISNE) Y VALLE DE PATRULLAS',
             loreHeading: 'La Leyenda del Caballero del Cisne y Vida en Patrulla · Tropa Lohengrin',
             stepNames: ['Barca del Cisne', 'Honor y Grial', 'Patrullas', 'Kraal Tropa', 'Aymaras Drive'],
-            skyTop: 0x0284C7,
-            skyHorizon: 0xA7F3D0,
-            fogColor: 0xD1FAE5,
-            fogDensity: 0.0038,
-            waterColor: 0x2DD4BF,
-            waterEmissive: 0x0284C7,
-            sunColor: 0xFFFBEB,
-            sunPos: [38, 74, 35],
-            hemiSky: 0xF0FDF4,
-            hemiGround: 0x15803D,
-            shoreLightColor: 0x6EE7B7,
-            terrainLow: [0.16, 0.58, 0.34],
-            terrainMid: [0.22, 0.66, 0.40],
-            terrainHigh: [0.42, 0.74, 0.54],
+            skyTop: 0x144955,
+            skyHorizon: 0x62A89B,
+            fogColor: 0x4A857B,
+            fogDensity: 0.0052,
+            waterColor: 0x1ABC9C,
+            waterEmissive: 0x0A3D62,
+            sunColor: 0xFFEAA7,
+            sunPos: [38, 60, 35],
+            hemiSky: 0x76D7C4,
+            hemiGround: 0x145A32,
+            shoreLightColor: 0x48C9B0,
+            terrainLow: [0.11, 0.36, 0.21],
+            terrainMid: [0.15, 0.42, 0.25],
+            terrainHigh: [0.28, 0.48, 0.35],
             heightScale: 16.0,
-            particleColor: 0xA7F3D0,
+            particleColor: 0xA3E4D7,
             cameraStops: [
                 { radius: 42, height: 11.5, lookY: 1.8 },
                 { radius: 36, height: 8.5, lookY: 1.6 },
@@ -2171,22 +2171,22 @@
             kicker: '(01 / 05) · MUNDO ESCULTAS · MONTAÑA DE LOS NINJAS Y EL DESCENSO DEL SENA (TREA)',
             loreHeading: 'Ninjas en el Descenso del Sena y Empresas Escultas · Unidad Esculta Trea',
             stepNames: ['Descenso Ninja', 'Torii y Senda', 'Empresas', 'Kraal Esculta', 'Travesías Drive'],
-            skyTop: 0x0284C7,
-            skyHorizon: 0xE0F2FE,
-            fogColor: 0xE0F2FE,
-            fogDensity: 0.0036,
-            waterColor: 0x38BDF8,
-            waterEmissive: 0x0284C7,
-            sunColor: 0xFFFBEB,
-            sunPos: [-42, 74, 28],
-            hemiSky: 0xF0F9FF,
-            hemiGround: 0x4D7C0F,
-            shoreLightColor: 0xFDE047,
-            terrainLow: [0.26, 0.56, 0.28],
-            terrainMid: [0.48, 0.46, 0.40],
-            terrainHigh: [0.82, 0.80, 0.78],
+            skyTop: 0x1B4F72,
+            skyHorizon: 0x73A5C6,
+            fogColor: 0x5C8AA8,
+            fogDensity: 0.0048,
+            waterColor: 0x2E86C1,
+            waterEmissive: 0x0A3D62,
+            sunColor: 0xFDEBD0,
+            sunPos: [-42, 62, 28],
+            hemiSky: 0x85C1E9,
+            hemiGround: 0x2E4053,
+            shoreLightColor: 0xE74C3C,
+            terrainLow: [0.16, 0.35, 0.18],
+            terrainMid: [0.32, 0.31, 0.28],
+            terrainHigh: [0.56, 0.56, 0.55],
             heightScale: 24.0,
-            particleColor: 0xFEF3C7,
+            particleColor: 0xFADBD8,
             cameraStops: [
                 { radius: 42, height: 12.5, lookY: 2.8 },
                 { radius: 37, height: 9.2, lookY: 2.4 },
@@ -2199,22 +2199,22 @@
             kicker: '(01 / 05) · MUNDO CLAN · LA LAGUNA AZUL POR ENCIMA DE LAS NUBES (ORIGEN DEL RÍO)',
             loreHeading: 'La Laguna Azul sobre el Mar de Nubes · Clan Rover Ama Dablam',
             stepNames: ['Laguna Azul', 'Horquilla y Ley', 'Camino Rover', 'Kraal de Clan', 'Rutas Drive'],
-            skyTop: 0x0369A1,
-            skyHorizon: 0xF0F9FF,
-            fogColor: 0xE0F2FE,
-            fogDensity: 0.0026,
-            waterColor: 0x38BDF8,
-            waterEmissive: 0x0284C7,
-            sunColor: 0xFFFFFF,
-            sunPos: [18, 82, -42],
-            hemiSky: 0xFFFFFF,
-            hemiGround: 0x7DD3FC,
-            shoreLightColor: 0x7DD3FC,
-            terrainLow: [0.38, 0.54, 0.68],
-            terrainMid: [0.64, 0.74, 0.84],
-            terrainHigh: [0.98, 0.99, 1.00],
+            skyTop: 0x154360,
+            skyHorizon: 0x7FB3D5,
+            fogColor: 0x6897BB,
+            fogDensity: 0.0038,
+            waterColor: 0x2980B9,
+            waterEmissive: 0x0A3D62,
+            sunColor: 0xFEF9E7,
+            sunPos: [18, 66, -42],
+            hemiSky: 0xAED6F1,
+            hemiGround: 0x34495E,
+            shoreLightColor: 0x5DADE2,
+            terrainLow: [0.26, 0.36, 0.46],
+            terrainMid: [0.46, 0.54, 0.62],
+            terrainHigh: [0.78, 0.82, 0.86],
             heightScale: 27.5,
-            particleColor: 0xFFFFFF,
+            particleColor: 0xD6EAF8,
             cameraStops: [
                 { radius: 43, height: 12.8, lookY: 3.2 },
                 { radius: 38, height: 9.2, lookY: 2.6 },
@@ -5913,6 +5913,36 @@
         }
     });
 
+    // =========================================================================
+    // 8C. VISOR UNIVERSAL DE FOTOGRAFÍAS EN PANTALLA COMPLETA (LIGHTBOX)
+    // =========================================================================
+    const elLightbox = document.getElementById('cosmosLightbox');
+    const elLightboxImg = document.getElementById('cosmosLightboxImg');
+    const elLightboxTitle = document.getElementById('cosmosLightboxTitle');
+    const elLightboxCaption = document.getElementById('cosmosLightboxCaption');
+    const elBtnCloseLightbox = document.getElementById('btnCloseLightbox');
+
+    function openLightbox(src, title = 'Fotografía', caption = 'Grupo Scout Acrux 518') {
+        if (!elLightbox || !elLightboxImg) return;
+        elLightboxImg.src = src;
+        if (elLightboxTitle) elLightboxTitle.textContent = title;
+        if (elLightboxCaption) elLightboxCaption.textContent = caption;
+        elLightbox.classList.add('is-open');
+        elLightbox.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeLightbox() {
+        if (!elLightbox) return;
+        elLightbox.classList.remove('is-open');
+        elLightbox.setAttribute('aria-hidden', 'true');
+        if (elLightboxImg) elLightboxImg.src = '';
+    }
+
+    elBtnCloseLightbox?.addEventListener('click', closeLightbox);
+    elLightbox?.addEventListener('click', (e) => {
+        if (e.target === elLightbox) closeLightbox();
+    });
+
     function openCampSuperZoom(campIdx) {
         if (!CAMPS_DATA || CAMPS_DATA.length === 0) return;
         const camp = CAMPS_DATA[campIdx] || CAMPS_DATA[0];
@@ -5936,7 +5966,7 @@
         activeSectorIdx = 2;
         selectedSubIdx = campIdx;
 
-        // 1. Iniciar el Super-Zoom Hiperespacio directo al núcleo de la estrella del Campamento
+        // 1. Iniciar el Super-Zoom Hiperespacio directo al núcleo de la estrella del Campamento (ultrarrápido)
         superZoomState = {
             type: 'camp',
             index: campIdx,
@@ -5946,8 +5976,8 @@
         };
 
         document.body.classList.add('is-superzoom-open');
-        const diveTime = wasAlreadyOpen ? 240 : 1080;
-        triggerStarDiveFlash(camp.worldX, camp.worldY, wasAlreadyOpen ? 450 : 1180);
+        const diveTime = wasAlreadyOpen ? 100 : 180;
+        triggerStarDiveFlash(camp.worldX, camp.worldY, wasAlreadyOpen ? 160 : 260);
 
         // 2. Poblar la Nueva Tab del Campamento: Lugar, Descripción, 3 Fotos de Muestra y Formulario Drive
         const kicker = document.getElementById('czKicker');
@@ -5988,27 +6018,40 @@
             } else {
                 const samplePhotos = photos.slice(0, 3);
                 threePhotosGrid.innerHTML = samplePhotos.map((ph, i) => `
-                    <article class="camp-photo-card">
+                    <article class="camp-photo-card" data-lightbox-src="${ph.src}" data-lightbox-title="${ph.title || camp.name}" data-lightbox-meta="Foto 0${i + 1}/03 · ${camp.name}">
                         <div class="camp-photo-img-wrap">
-                            <span class="camp-photo-badge">FOTO DE EJEMPLO 0${i + 1} / 03</span>
+                            <span class="camp-photo-badge">MUESTRA 0${i + 1} / 03 · DRIVE</span>
                             <img src="${ph.src}" alt="${ph.title || 'Foto de campamento'}" loading="lazy" referrerpolicy="no-referrer">
+                            <span class="camp-photo-enlarge-hint">🔍 Ampliar</span>
                         </div>
                         <div class="camp-photo-caption">
-                            <strong>${ph.title || 'Foto de campamento'}</strong>
-                            <span>${ph.meta || `Muestra 0${i + 1}/03 · Carpeta Google Drive`}</span>
+                            <strong>${ph.title || camp.name}</strong>
+                            <span>${ph.meta || `Muestra fotográfica sincronizada desde Google Drive`}</span>
                         </div>
                     </article>
                 `).join('');
+
+                threePhotosGrid.querySelectorAll('.camp-photo-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const src = card.getAttribute('data-lightbox-src');
+                        const title = card.getAttribute('data-lightbox-title');
+                        const meta = card.getAttribute('data-lightbox-meta');
+                        openLightbox(src, title, meta);
+                    });
+                });
             }
         }
 
         const campSw = document.getElementById('czCampSwitcher');
         if (campSw) {
-            campSw.innerHTML = CAMPS_DATA.map((c, i) => `
-                <button type="button" class="star-node-chip ${c.isRedStar ? 'is-red-chip' : ''} ${i === campIdx ? 'active' : ''}" data-jump-camp="${i}">
-                    ${c.starSymbol}
-                </button>
-            `).join('');
+            campSw.innerHTML = CAMPS_DATA.map((c, i) => {
+                const seasonIcon = c.seasonType === 'easter' ? '🌸' : (c.isRedStar ? '🔴' : '☀️');
+                return `
+                    <button type="button" class="star-node-chip ${c.isRedStar ? 'is-red-chip' : ''} ${i === campIdx ? 'active' : ''}" data-jump-camp="${i}" title="${c.name}">
+                        <span>${seasonIcon} ${c.starSymbol}</span>
+                    </button>
+                `;
+            }).join('');
             campSw.querySelectorAll('[data-jump-camp]').forEach(btn => {
                 btn.addEventListener('click', () => {
                     openCampSuperZoom(parseInt(btn.getAttribute('data-jump-camp'), 10));
@@ -6034,6 +6077,17 @@
     // 8B. ENTRAR EN LA ESTRELLA DE OBJETOS PERDIDOS («EL BAÚL») Y SUS MINI-ESTRELLAS (CAJONES DRIVE)
     // =========================================================================
     let activeLostCajonIdx = 0;
+    let activeLostCategory = 'all';
+
+    const checkLostCategoryMatch = (it, cat) => {
+        if (!cat || cat === 'all') return true;
+        const text = `${it.name || ''} ${it.desc || ''} ${it.file || ''}`.toLowerCase();
+        if (cat === 'ropa') return /sudadera|camiset|polo|pantalon|pantalón|polar|forro|calcetin|calcetín|braga|guante|bufanda|gorro|gorra|bañador|banador|toalla|chandal|anorak|chaqueta/.test(text);
+        if (cat === 'cantimplora') return /cantimplora|botella|poto|plato|cubierto|vaso|fiambrera|termo|navaja/.test(text);
+        if (cat === 'calzado') return /bota|zapatilla|chancla|calzado|zapato|sandalia/.test(text);
+        if (cat === 'saco') return /saco|esterilla|aislante|colchoneta|manta|cojin|funda/.test(text);
+        return true;
+    };
 
     function renderLostCajonView(cajonIdx) {
         const folderPill = document.getElementById('lzActiveFolderPill');
@@ -6063,7 +6117,7 @@
 
         if (folderPill) folderPill.textContent = `📁 ${cajon.drivePath}`;
         if (cajonTitle) cajonTitle.textContent = cajon.folderName;
-        if (cajonSub) cajonSub.textContent = `${cajon.subtitle} · (${cajon.items.length} fotos en esta carpeta de Google Drive)`;
+        if (cajonSub) cajonSub.textContent = `${cajon.subtitle} · (${cajon.items.length} prendas en esta carpeta de Google Drive)`;
         if (openDriveBtn) {
             openDriveBtn.style.display = '';
             openDriveBtn.href = cajon.driveUrl || 'https://drive.google.com';
@@ -6073,7 +6127,7 @@
         if (sw) {
             sw.innerHTML = LOST_CAJONES_DATA.map((cj, i) => `
                 <button type="button" class="star-node-chip ${i === activeLostCajonIdx ? 'active' : ''}" data-cajon-switch="${i}">
-                    ${cj.starSymbol}
+                    <span>📦 ${cj.starSymbol}</span>
                 </button>
             `).join('');
             sw.querySelectorAll('[data-cajon-switch]').forEach(btn => {
@@ -6090,7 +6144,7 @@
                     <span class="cajon-star-orb">★</span>
                     <div class="cajon-ministar-meta">
                         <strong>${cj.starSymbol}</strong>
-                        <span>📁 ${cj.folderName} (${cj.items.length} fotos)</span>
+                        <span>📁 ${cj.folderName} (${cj.items.length} prendas)</span>
                     </div>
                 </button>
             `).join('');
@@ -6101,9 +6155,16 @@
             });
         }
 
-        // Renderizar galería de fotos de objetos perdidos del Cajón seleccionado
+        // Renderizar galería de fotos de objetos perdidos del Cajón seleccionado con búsqueda y filtros
         const renderPhotos = () => {
-            const q = (document.getElementById('lzPhotoSearch')?.value || '').toLowerCase().trim();
+            const searchInput = document.getElementById('lzPhotoSearch');
+            const clearBtn = document.getElementById('lzClearSearchBtn');
+            const q = (searchInput?.value || '').toLowerCase().trim();
+
+            if (clearBtn) {
+                clearBtn.style.display = q ? 'flex' : 'none';
+            }
+
             if (!grid) return;
 
             if (!cajon.items || cajon.items.length === 0) {
@@ -6111,23 +6172,25 @@
                 return;
             }
 
-            const filtered = cajon.items.filter(it =>
-                !q ||
-                (it.name && it.name.toLowerCase().includes(q)) ||
-                (it.desc && it.desc.toLowerCase().includes(q)) ||
-                (it.file && it.file.toLowerCase().includes(q))
-            );
+            const filtered = cajon.items.filter(it => {
+                const matchCategory = checkLostCategoryMatch(it, activeLostCategory);
+                if (!matchCategory) return false;
+                if (!q) return true;
+                return (it.name && it.name.toLowerCase().includes(q)) ||
+                       (it.desc && it.desc.toLowerCase().includes(q)) ||
+                       (it.file && it.file.toLowerCase().includes(q));
+            });
 
             if (filtered.length === 0) {
-                grid.innerHTML = `<p style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: rgba(255,255,255,0.7); font-size: 1rem;">No hay fotos que coincidan con esa búsqueda en este Cajón de Google Drive.</p>`;
+                grid.innerHTML = `<p style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: rgba(255,255,255,0.7); font-size: 1rem;">No hay prendas que coincidan con los filtros seleccionados.</p>`;
                 return;
             }
 
             grid.innerHTML = filtered.map(it => {
                 const imgSrc = it.img || it.photoUrl || '';
                 return `
-                <article class="lost-photo-card">
-                    <div class="lost-photo-art">
+                <article class="lost-photo-card" data-item-name="${it.name}">
+                    <div class="lost-photo-art" title="Clic para ampliar foto">
                         ${it.svg ? it.svg : `<img src="${imgSrc}" alt="${it.name}" loading="lazy" referrerpolicy="no-referrer">`}
                         <span class="lost-drive-file-chip">📄 ${it.file}</span>
                     </div>
@@ -6137,31 +6200,68 @@
                             <p>${it.desc}</p>
                         </div>
                         <div class="lost-photo-footer">
-                            <span class="star-pillar-tag">📍 ${it.status}</span>
-                            <button type="button" class="rescue-flare-btn" data-claim-item="${it.name}">🙋‍♂️ ¡Es mío! Reclamar</button>
+                            <span class="star-pillar-tag">📍 Sede Rueda 53</span>
+                            <button type="button" class="lost-claim-btn" data-claim-item="${it.name}">🙋‍♂️ ¡Es mío! Reclamar</button>
                         </div>
                     </div>
                 </article>
             `;
             }).join('');
 
+            grid.querySelectorAll('.lost-photo-art').forEach(art => {
+                art.addEventListener('click', () => {
+                    const img = art.querySelector('img');
+                    if (img && img.src) {
+                        const card = art.closest('.lost-photo-card');
+                        const title = card?.querySelector('h4')?.textContent || 'Prenda u Objeto Perdido';
+                        const file = art.querySelector('.lost-drive-file-chip')?.textContent || '';
+                        openLightbox(img.src, title, `${cajon.folderName} · ${file}`);
+                    }
+                });
+            });
+
             grid.querySelectorAll('[data-claim-item]').forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     const itemName = btn.getAttribute('data-claim-item');
                     const banner = document.getElementById('lzClaimBanner');
+                    const waText = `Hola Acrux, he visto en la web en El Baúl la prenda "${itemName}" (${cajon.folderName}) y es mía. Me gustaría pasar a recogerla este sábado por la base de Carretera de Rueda 53. ¡Muchas gracias!`;
+                    const waUrl = `https://wa.me/34616289119?text=${encodeURIComponent(waText)}`;
                     if (banner) {
                         banner.style.display = 'block';
-                        banner.innerHTML = `<strong>✅ Solicitud registrada para «${itemName}» (${cajon.folderName}):</strong> Pásate cualquier sábado a las <strong>16:30 h o 19:00 h</strong> por nuestra Base de <strong>Carretera de Rueda, 53</strong> para recogerlo.`;
+                        banner.innerHTML = `<strong>✅ Solicitud registrada para «${itemName}» (${cajon.folderName}):</strong> Hemos abierto WhatsApp para avisar a Coordinación. Pásate cualquier sábado de <strong>16:30 a 19:00 h</strong> por nuestra Base de <strong>Carretera de Rueda, 53</strong> para recogerlo.`;
                     }
+                    window.open(waUrl, '_blank', 'noopener');
                 });
             });
         };
 
-        renderPhotos();
+        // Escuchadores de filtros por categoría
+        document.querySelectorAll('#lzCategoryFilters .lost-filter-chip').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('#lzCategoryFilters .lost-filter-chip').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeLostCategory = btn.getAttribute('data-cat') || 'all';
+                renderPhotos();
+            };
+        });
+
+        // Escuchador de buscador reactivo
         const searchInput = document.getElementById('lzPhotoSearch');
         if (searchInput) {
             searchInput.oninput = renderPhotos;
         }
+
+        const clearBtn = document.getElementById('lzClearSearchBtn');
+        if (clearBtn && searchInput) {
+            clearBtn.onclick = () => {
+                searchInput.value = '';
+                clearBtn.style.display = 'none';
+                renderPhotos();
+            };
+        }
+
+        renderPhotos();
     }
 
     function openLostSuperZoom(cajonIdx = 0) {
@@ -6196,8 +6296,8 @@
         };
 
         document.body.classList.add('is-superzoom-open');
-        const diveTime = wasAlreadyOpen ? 240 : 1080;
-        triggerStarDiveFlash(targetWx, targetWy, wasAlreadyOpen ? 450 : 1180);
+        const diveTime = wasAlreadyOpen ? 100 : 180;
+        triggerStarDiveFlash(targetWx, targetWy, wasAlreadyOpen ? 160 : 260);
 
         renderLostCajonView(cajonIdx);
 
@@ -6238,7 +6338,7 @@
         };
 
         document.body.classList.add('is-superzoom-open');
-        triggerStarDiveFlash(targetWx, targetWy, 1180);
+        triggerStarDiveFlash(targetWx, targetWy, 260);
 
         elUnitZoomOverlay?.classList.remove('is-open');
         elUnitZoomOverlay?.setAttribute('aria-hidden', 'true');
@@ -6249,11 +6349,12 @@
 
         diveTabTimer = setTimeout(() => {
             openDrawerModal('identity');
-        }, 1050);
+        }, 180);
     }
 
     function closeAllSuperZooms(resetPan = true) {
         clearTimeout(diveTabTimer);
+        closeLightbox();
         stopUnitLakeOrbitLoop();
         if (superZoomState) {
             hyperspaceJump = {
@@ -7152,6 +7253,10 @@
 
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            if (elLightbox?.classList.contains('is-open')) {
+                closeLightbox();
+                return;
+            }
             if (elAnniversaryModal?.classList.contains('is-open')) {
                 closeAnniversaryModal();
                 return;

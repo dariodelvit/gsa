@@ -75,7 +75,7 @@ body.cosmos-body {
     );
 }
 
-/* Viñeta ligera de Hiperespacio (deja ver las estelas estilo Star Wars en el Canvas) */
+/* Viñeta ligera de Hiperespacio (transición ultrarrápida y enérgica sin congelamiento) */
 .star-dive-flash {
     position: fixed;
     inset: 0;
@@ -84,12 +84,13 @@ body.cosmos-body {
     opacity: 0;
     background: radial-gradient(
         circle at 50% 50%,
-        rgba(255, 255, 255, 0.12) 0%,
-        rgba(255, 255, 255, 0.04) 42%,
-        rgba(186, 230, 253, 0.14) 78%,
-        rgba(255, 255, 255, 0.22) 100%
+        rgba(255, 255, 255, 0.16) 0%,
+        rgba(255, 255, 255, 0.05) 42%,
+        rgba(186, 230, 253, 0.16) 78%,
+        rgba(255, 255, 255, 0.25) 100%
     );
-    transition: opacity 0.48s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.18s ease-out;
+    will-change: opacity;
 }
 
 .star-dive-flash.is-flashing {
@@ -730,7 +731,7 @@ body.cosmos-body {
 }
 
 /* ==========================================================================
-   NUEVA TAB / VISTA COMPLETA DE ESTRELLA (UNIDADES Y CAMPAMENTOS TRAS SUPER-ZOOM)
+   NUEVA TAB / VISTA COMPLETA DE ESTRELLA (UNIDADES, CAMPAMENTOS Y BAÚL)
    ========================================================================== */
 .star-tab-view {
     --unit-accent: #38BDF8;
@@ -741,18 +742,28 @@ body.cosmos-body {
     width: 100vw;
     height: 100vh;
     background: radial-gradient(circle at 50% 0%, var(--unit-glow) 0%, rgba(6, 8, 13, 0.94) 52%, rgba(4, 4, 6, 0.98) 100%);
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     display: flex;
     flex-direction: column;
     opacity: 0;
     visibility: hidden;
     pointer-events: none !important;
-    transform: scale(0.94);
-    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                visibility 0.45s,
-                background 0.4s ease;
+    transform: scale(0.97) translateZ(0);
+    will-change: transform, opacity;
+    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.22s;
+}
+
+/* Pestaña Campamentos: Atmósfera de Fuego Scout y Sol Estival */
+.star-tab-camp-view {
+    background: radial-gradient(circle at 50% 8%, rgba(245, 158, 11, 0.14) 0%, rgba(12, 14, 20, 0.94) 48%, rgba(5, 6, 9, 0.98) 100%);
+}
+
+/* Pestaña El Baúl: Atmósfera de Cristal Índigo y Zafiro Cósmico */
+.star-tab-lost-view {
+    background: radial-gradient(circle at 50% 8%, rgba(99, 102, 241, 0.16) 0%, rgba(10, 12, 22, 0.94) 48%, rgba(4, 5, 8, 0.98) 100%);
 }
 
 .star-tab-view:not(.is-open) * {
@@ -763,7 +774,7 @@ body.cosmos-body {
     opacity: 1;
     visibility: visible;
     pointer-events: auto !important;
-    transform: scale(1);
+    transform: scale(1) translateZ(0);
 }
 
 .star-tab-view.is-open * {
@@ -776,55 +787,115 @@ body.cosmos-body {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
-    padding: 1.15rem 2.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.11);
-    background: rgba(8, 9, 13, 0.78);
+    padding: 1.05rem 2.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(8, 10, 16, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     flex-shrink: 0;
 }
 
 .star-tab-back-btn {
     background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     color: #FFFFFF;
-    padding: 0.5rem 1.05rem;
+    padding: 0.52rem 1.15rem;
     border-radius: 999px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.5rem;
     cursor: pointer;
-    transition: all 0.22s ease;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.star-tab-back-btn .back-arrow {
+    transition: transform 0.2s ease;
 }
 
 .star-tab-back-btn:hover {
     background: #FFFFFF;
     color: #040406;
     border-color: #FFFFFF;
+    transform: translateX(-2px);
+    box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25);
+}
+
+.star-tab-back-btn:hover .back-arrow {
+    transform: translateX(-3px);
+}
+
+.star-tab-back-btn kbd {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 0.12rem 0.38rem;
+    border-radius: 4px;
+    font-size: 0.62rem;
+    font-family: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.star-tab-back-btn:hover kbd {
+    background: rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.2);
 }
 
 .star-tab-switcher {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.35rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.25rem;
+    gap: 0.45rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.28rem;
     border-radius: 999px;
+    max-width: 60vw;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.star-tab-switcher::-webkit-scrollbar {
+    display: none;
 }
 
 .star-tab-coords {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.64rem;
+    font-size: 0.65rem;
     letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.52);
+    color: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.star-tab-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #F59E0B;
+    box-shadow: 0 0 10px #F59E0B;
+    display: inline-block;
+    animation: statusPulse 2s infinite ease-in-out;
+}
+
+.star-tab-status-dot.lost-dot {
+    background: #6366F1;
+    box-shadow: 0 0 10px #6366F1;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
 }
 
 .star-tab-container {
     flex: 1;
     overflow-y: auto;
-    padding: 2.4rem 3.2rem 3.5rem 3.2rem;
+    padding: 2.2rem 3rem 3.5rem 3rem;
     max-width: 1240px;
     width: 100%;
     margin: 0 auto;
@@ -1485,205 +1556,248 @@ body.cosmos-body {
 /* ==========================================================================
    TAB DE CAMPAMENTO: 3 FOTOS DE EJEMPLO + DESCRIPCIÓN + LUGAR + BOTÓN DRIVE
    ========================================================================== */
+/* ==========================================================================
+   TAB DE CAMPAMENTO: INTERFAZ DE EXPEDICIÓN SCOUT (DOSSIER + BÓVEDA DRIVE)
+   ========================================================================== */
 .camp-drive-hero {
     display: grid;
-    grid-template-columns: 1.35fr 0.85fr;
-    gap: 2rem;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 20px;
-    padding: 1.85rem 2.1rem;
-    margin-bottom: 2.1rem;
+    grid-template-columns: 1.25fr 0.95fr;
+    gap: 2.2rem;
+    align-items: stretch;
+    background: linear-gradient(145deg, rgba(245, 158, 11, 0.05) 0%, rgba(14, 16, 24, 0.88) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.28);
+    border-radius: 22px;
+    padding: 2.2rem 2.4rem;
+    margin-bottom: 2.4rem;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.72), 0 0 35px rgba(245, 158, 11, 0.12);
+    position: relative;
+    overflow: hidden;
 }
 
-.camp-drive-cta-box {
-    background: rgba(8, 9, 13, 0.82);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-left: 3px solid #D9383A;
-    border-radius: 16px;
-    padding: 1.35rem 1.45rem;
+.camp-drive-hero::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.camp-hero-info {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    gap: 1.1rem;
+}
+
+.camp-badge {
+    background: rgba(245, 158, 11, 0.18) !important;
+    border-color: rgba(245, 158, 11, 0.45) !important;
+    color: #FBBF24 !important;
+}
+
+.camp-main-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.35rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin: 0;
+    background: linear-gradient(180deg, #FFFFFF 30%, #E2E8F0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.camp-main-desc {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.82);
+    margin: 0;
+}
+
+.camp-highlights-pills {
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.55rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.camp-hpill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    color: rgba(255, 255, 255, 0.78);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    letter-spacing: 0.03em;
+}
+
+/* Bóveda Google Drive de Recuerdos */
+.camp-drive-cta-box {
+    background: rgba(9, 11, 18, 0.88);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: 18px;
+    padding: 1.65rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.95rem;
+    box-shadow: inset 0 0 25px rgba(245, 158, 11, 0.06);
+    position: relative;
+}
+
+.camp-vault-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
 }
 
 .camp-drive-kicker {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.61rem;
-    letter-spacing: 0.12em;
-    color: #E05254;
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
+    color: #F59E0B;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
 .camp-drive-cta-box strong {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.12rem;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: #FFFFFF;
 }
 
-.camp-drive-cta-box p {
-    font-size: 0.81rem;
-    line-height: 1.5;
-    color: var(--ice-grey);
-    margin: 0 0 0.35rem 0;
-}
-
-.camp-drive-btn {
-    text-decoration: none;
-    justify-content: center;
-    width: 100%;
-    box-sizing: border-box;
-    cursor: pointer;
-    white-space: nowrap;
+.camp-vault-desc {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.72);
+    margin: 0;
 }
 
 .camp-unlock-form {
     display: flex;
     flex-direction: column;
-    gap: 0.55rem;
-    margin-top: 0.45rem;
+    gap: 0.6rem;
 }
 
 .camp-unlock-input-wrap {
     display: flex;
-    gap: 0.55rem;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.camp-input-with-icon {
+    position: relative;
+    display: flex;
     align-items: center;
 }
 
-.camp-unlock-input-wrap .dossier-form-input {
-    margin-bottom: 0;
-    flex: 1;
-    font-size: 0.85rem;
+.camp-input-icon {
+    position: absolute;
+    left: 1rem;
+    font-size: 0.95rem;
+    pointer-events: none;
+    opacity: 0.85;
 }
 
-.camp-unlock-input-wrap .camp-drive-btn {
-    width: auto;
-    flex-shrink: 0;
-    padding: 0.65rem 1.15rem;
-    font-size: 0.84rem;
+.camp-pass-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 2.7rem !important;
+    background: rgba(4, 5, 8, 0.88) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-radius: 12px !important;
+    color: #FFFFFF !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.84rem !important;
+    transition: all 0.22s ease !important;
+    margin-bottom: 0 !important;
 }
 
-@media (max-width: 680px) {
-    .camp-unlock-input-wrap {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .camp-unlock-input-wrap .camp-drive-btn {
-        width: 100%;
-    }
+.camp-pass-input:focus {
+    border-color: #F59E0B !important;
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.35) !important;
+    outline: none !important;
+}
+
+.camp-drive-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.72rem 1.25rem !important;
+    font-size: 0.86rem !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #D97706 0%, #B45309 100%) !important;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 20px rgba(217, 119, 6, 0.35) !important;
+    cursor: pointer;
+    transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.camp-drive-btn:hover {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.55) !important;
 }
 
 .camp-unlock-feedback {
     display: block;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.76rem;
-    letter-spacing: 0.04em;
+    font-size: 0.74rem;
     min-height: 1.1rem;
     color: var(--ice-muted);
     transition: color 0.2s ease;
 }
 
-.camp-unlock-feedback.is-error {
-    color: #EF4444;
-}
+.camp-unlock-feedback.is-error { color: #EF4444; }
+.camp-unlock-feedback.is-success { color: #22C55E; }
+.camp-unlock-feedback.is-loading { color: #FBBF24; }
 
-.camp-unlock-feedback.is-success {
-    color: #22C55E;
-}
-
-.camp-unlock-feedback.is-loading {
-    color: #F3E5AB;
-}
-
-.camp-photos-empty-card {
-    grid-column: 1 / -1;
-    background: rgba(8, 9, 13, 0.65);
-    border: 1px dashed rgba(255, 255, 255, 0.22);
-    border-radius: 16px;
-    padding: 3rem 2rem;
-    text-align: center;
-    color: var(--ice-muted);
-}
-
-.camp-photos-empty-icon {
-    font-size: 2.2rem;
-    margin-bottom: 0.65rem;
-    opacity: 0.85;
-}
-
-.camp-photos-empty-card h4 {
-    font-family: 'Outfit', sans-serif;
-    color: #FFFFFF;
-    font-size: 1.15rem;
-    margin: 0 0 0.35rem 0;
-}
-
-.camp-photos-empty-card p {
-    font-size: 0.88rem;
-    margin: 0;
-    color: var(--ice-grey);
-}
-
-/* Kraaletes con cromo vertical */
-.kraalete-card.has-cromo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0.85rem;
-}
-
-.kraalete-cromo-wrap {
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
-    background: rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-}
-
-.kraalete-cromo-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.kraalete-card:hover .kraalete-cromo-wrap img {
-    transform: scale(1.05);
+/* Grid de Fotografías del Campamento */
+.camp-three-photos-section {
+    margin-top: 1rem;
 }
 
 .camp-three-photos-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.35rem;
+    gap: 1.45rem;
+    margin-top: 1.2rem;
 }
 
 .camp-photo-card {
-    background: rgba(10, 12, 18, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 16px;
+    background: rgba(10, 12, 20, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.28s ease,
+                box-shadow 0.28s ease;
+    cursor: pointer;
 }
 
 .camp-photo-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.55);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+    transform: translateY(-5px);
+    border-color: rgba(245, 158, 11, 0.6);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(245, 158, 11, 0.2);
 }
 
 .camp-photo-img-wrap {
     position: relative;
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 10;
     overflow: hidden;
-    background: #040406;
+    background: #040508;
 }
 
 .camp-photo-img-wrap img {
@@ -1691,70 +1805,160 @@ body.cosmos-body {
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.45s ease;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .camp-photo-card:hover .camp-photo-img-wrap img {
-    transform: scale(1.04);
+    transform: scale(1.06);
 }
 
 .camp-photo-badge {
     position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    padding: 0.22rem 0.62rem;
+    top: 0.85rem;
+    left: 0.85rem;
+    padding: 0.25rem 0.68rem;
     border-radius: 999px;
-    background: rgba(4, 4, 6, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(4, 5, 8, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: #FFFFFF;
+    backdrop-filter: blur(10px);
+    letter-spacing: 0.05em;
+}
+
+.camp-photo-enlarge-hint {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    padding: 0.24rem 0.62rem;
+    border-radius: 999px;
+    background: rgba(245, 158, 11, 0.9);
+    color: #040406;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.6rem;
-    color: #FFFFFF;
-    backdrop-filter: blur(8px);
+    font-weight: 700;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: all 0.22s ease;
+}
+
+.camp-photo-card:hover .camp-photo-enlarge-hint {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .camp-photo-caption {
-    padding: 1rem 1.15rem;
+    padding: 1.1rem 1.25rem;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.3rem;
 }
 
 .camp-photo-caption strong {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.98rem;
+    font-size: 1.05rem;
+    font-weight: 600;
     color: #FFFFFF;
 }
 
 .camp-photo-caption span {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.66rem;
-    color: var(--ice-muted);
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.62);
 }
 
 /* ==========================================================================
-   TAB DE LA ESTRELLA DE OBJETOS PERDIDOS «EL BAÚL» (MINI-ESTRELLAS = CAJONES DRIVE)
+   TAB DE LA ESTRELLA DE OBJETOS PERDIDOS «EL BAÚL» (REDiseñada)
    ========================================================================== */
 .lost-superstar-hero {
     display: grid;
-    grid-template-columns: 1.1fr 1.1fr;
-    gap: 1.85rem;
+    grid-template-columns: 1.25fr 0.95fr;
+    gap: 2.2rem;
     align-items: stretch;
-    background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 20px;
-    padding: 1.75rem 2rem;
-    margin-bottom: 2rem;
+    background: linear-gradient(145deg, rgba(99, 102, 241, 0.06) 0%, rgba(12, 14, 26, 0.88) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.28);
+    border-radius: 22px;
+    padding: 2.2rem 2.4rem;
+    margin-bottom: 2.2rem;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.72), 0 0 35px rgba(99, 102, 241, 0.14);
+    position: relative;
+    overflow: hidden;
 }
 
+.lost-badge {
+    background: rgba(99, 102, 241, 0.2) !important;
+    border-color: rgba(99, 102, 241, 0.45) !important;
+    color: #A5B4FC !important;
+}
+
+.lost-main-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.35rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.lost-main-desc {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.82);
+    margin: 0;
+}
+
+.lost-key-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lost-key-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 0.8rem 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.lost-key-icon {
+    font-size: 1.35rem;
+    flex-shrink: 0;
+}
+
+.lost-key-card strong {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.84rem;
+    color: #FFFFFF;
+}
+
+.lost-key-card span {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin-top: 0.12rem;
+}
+
+/* Casilleros de Mini-Estrellas (Cajones Drive) */
 .lost-cajones-constellation-box {
-    background: radial-gradient(circle at 50% 50%, rgba(217, 56, 58, 0.12) 0%, rgba(6, 8, 14, 0.92) 75%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 16px;
-    padding: 1.1rem 1.25rem;
+    background: rgba(8, 10, 18, 0.92);
+    border: 1px solid rgba(99, 102, 241, 0.32);
+    border-radius: 18px;
+    padding: 1.4rem 1.55rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 0.9rem;
+    gap: 0.95rem;
+    box-shadow: inset 0 0 25px rgba(99, 102, 241, 0.06);
 }
 
 .cajones-map-header {
@@ -1764,84 +1968,87 @@ body.cosmos-body {
     flex-wrap: wrap;
     gap: 0.5rem;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    color: var(--ice-grey);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    color: #A5B4FC;
 }
 
 .cajon-drive-ext-link {
     color: #FFFFFF;
     text-decoration: none;
-    padding: 0.28rem 0.7rem;
+    padding: 0.32rem 0.8rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(99, 102, 241, 0.18);
+    border: 1px solid rgba(99, 102, 241, 0.45);
+    font-size: 0.68rem;
     transition: all 0.2s ease;
 }
 
 .cajon-drive-ext-link:hover {
-    background: #FFFFFF;
-    color: #040406;
+    background: #6366F1;
+    color: #FFFFFF;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.45);
 }
 
 .cajones-ministar-map {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.7rem;
+    gap: 0.75rem;
 }
 
 .cajon-ministar-node {
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 12px;
-    padding: 0.78rem 0.95rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    padding: 0.85rem 1rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.85rem;
     cursor: pointer;
     text-align: left;
     color: #FFFFFF;
-    transition: all 0.22s ease;
+    transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cajon-ministar-node:hover {
-    background: rgba(255, 255, 255, 0.09);
-    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(99, 102, 241, 0.12);
+    border-color: rgba(99, 102, 241, 0.55);
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .cajon-ministar-node.active {
-    background: rgba(176, 35, 36, 0.24);
-    border-color: #FFFFFF;
-    box-shadow: 0 0 22px rgba(217, 56, 58, 0.35);
+    background: rgba(99, 102, 241, 0.25);
+    border-color: #818CF8;
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.45);
 }
 
 .cajon-star-orb {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    background: radial-gradient(circle, #FFFFFF 0%, rgba(255, 255, 255, 0.25) 55%, transparent 100%);
-    border: 1px solid rgba(255, 255, 255, 0.65);
+    background: radial-gradient(circle, #FFFFFF 0%, rgba(129, 140, 248, 0.45) 55%, transparent 100%);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #040406;
     font-weight: 700;
     flex-shrink: 0;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 14px rgba(129, 140, 248, 0.6);
 }
 
 .cajon-ministar-meta {
     display: flex;
     flex-direction: column;
-    gap: 0.12rem;
+    gap: 0.15rem;
     min-width: 0;
 }
 
 .cajon-ministar-meta strong {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.92rem;
+    font-size: 0.94rem;
     color: #FFFFFF;
     white-space: nowrap;
     overflow: hidden;
@@ -1850,62 +2057,161 @@ body.cosmos-body {
 
 .cajon-ministar-meta span {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.61rem;
-    color: var(--ice-muted);
+    font-size: 0.63rem;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+/* Buscador y Filtros de El Baúl */
+.lost-cajon-gallery-section {
+    margin-top: 1rem;
 }
 
 .lost-gallery-header {
-    justify-content: space-between;
+    display: flex;
     align-items: flex-end;
+    justify-content: space-between;
     flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
 }
 
-.lost-gallery-controls {
-    min-width: 280px;
+.lost-search-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 320px;
 }
 
-.lost-gallery-controls .dossier-form-input {
-    margin-bottom: 0;
+.lost-search-icon {
+    position: absolute;
+    left: 1rem;
+    font-size: 0.95rem;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.lost-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 2.7rem !important;
+    padding-right: 2.4rem !important;
+    background: rgba(10, 12, 20, 0.88) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-radius: 12px !important;
+    color: #FFFFFF !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.88rem !important;
+    margin-bottom: 0 !important;
+}
+
+.lost-search-input:focus {
+    border-color: #818CF8 !important;
+    box-shadow: 0 0 18px rgba(99, 102, 241, 0.35) !important;
+    outline: none !important;
+}
+
+.lost-search-clear-btn {
+    position: absolute;
+    right: 0.85rem;
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    color: #FFFFFF;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.72rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lost-search-clear-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.lost-filter-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.6rem;
+}
+
+.lost-filter-chip {
+    padding: 0.42rem 0.95rem;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lost-filter-chip:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.lost-filter-chip.active {
+    background: #6366F1;
+    color: #FFFFFF;
+    border-color: #818CF8;
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.45);
 }
 
 .lost-claim-banner {
-    margin-bottom: 1.2rem;
-    padding: 0.95rem 1.25rem;
-    border-radius: 12px;
-    background: rgba(176, 35, 36, 0.24);
-    border: 1px solid rgba(217, 56, 58, 0.6);
+    margin-bottom: 1.5rem;
+    padding: 1.1rem 1.45rem;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.18) 0%, rgba(22, 101, 52, 0.28) 100%);
+    border: 1px solid rgba(34, 197, 94, 0.5);
     color: #FFFFFF;
-    font-size: 0.86rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    animation: claimFadeIn 0.3s ease-out;
+}
+
+@keyframes claimFadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .lost-photos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
-    gap: 1.2rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.4rem;
 }
 
 .lost-photo-card {
-    background: rgba(10, 12, 18, 0.86);
+    background: rgba(10, 12, 20, 0.92);
     border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 16px;
+    border-radius: 18px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.24s ease, border-color 0.24s ease;
+    transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.26s ease,
+                box-shadow 0.26s ease;
 }
 
 .lost-photo-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(255, 255, 255, 0.42);
+    transform: translateY(-4px);
+    border-color: rgba(129, 140, 248, 0.6);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(99, 102, 241, 0.2);
 }
 
 .lost-photo-art {
     position: relative;
     width: 100%;
-    height: 175px;
+    aspect-ratio: 4 / 3;
     background: #06080E;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;
+    cursor: pointer;
 }
 
 .lost-photo-art svg,
@@ -1914,41 +2220,48 @@ body.cosmos-body {
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.4s ease;
+}
+
+.lost-photo-card:hover .lost-photo-art img {
+    transform: scale(1.05);
 }
 
 .lost-drive-file-chip {
     position: absolute;
-    bottom: 0.6rem;
-    left: 0.6rem;
-    padding: 0.18rem 0.55rem;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    padding: 0.22rem 0.62rem;
     border-radius: 6px;
-    background: rgba(4, 4, 6, 0.82);
+    background: rgba(4, 5, 8, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.2);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    color: var(--ice-grey);
+    font-size: 0.62rem;
+    color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
 }
 
 .lost-photo-body {
-    padding: 1rem 1.15rem;
+    padding: 1.15rem 1.25rem;
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 0.75rem;
+    gap: 0.95rem;
 }
 
 .lost-photo-body h4 {
     font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
     color: #FFFFFF;
-    margin: 0 0 0.3rem 0;
+    margin: 0 0 0.35rem 0;
 }
 
 .lost-photo-body p {
-    font-size: 0.8rem;
-    line-height: 1.48;
-    color: var(--ice-grey);
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.75);
     margin: 0;
 }
 
@@ -1956,19 +2269,156 @@ body.cosmos-body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
-    padding-top: 0.55rem;
+    gap: 0.65rem;
+    padding-top: 0.75rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lost-claim-btn {
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.2) 0%, rgba(18, 140, 126, 0.2) 100%);
+    border: 1px solid rgba(37, 211, 102, 0.5);
+    color: #4ADE80;
+    padding: 0.42rem 0.88rem;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    white-space: nowrap;
+}
+
+.lost-claim-btn:hover {
+    background: #25D366;
+    color: #040406;
+    border-color: #25D366;
+    font-weight: 700;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.45);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   11. VISOR DE FOTOGRAFÍAS EN PANTALLA COMPLETA (LIGHTBOX UNIVERSAL)
+   ========================================================================== */
+.cosmos-lightbox-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    background: rgba(3, 4, 7, 0.92);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none !important;
+    transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.24s;
+}
+
+.cosmos-lightbox-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto !important;
+}
+
+.cosmos-lightbox-dialog {
+    max-width: 1080px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: rgba(10, 12, 20, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9);
+    transform: scale(0.96);
+    transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cosmos-lightbox-backdrop.is-open .cosmos-lightbox-dialog {
+    transform: scale(1);
+}
+
+.cosmos-lightbox-close {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.1rem;
+    z-index: 5;
+    background: rgba(4, 5, 8, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cosmos-lightbox-close:hover {
+    background: #FFFFFF;
+    color: #040406;
+}
+
+.cosmos-lightbox-frame {
+    width: 100%;
+    max-height: 72vh;
+    background: #020305;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.cosmos-lightbox-frame img {
+    max-width: 100%;
+    max-height: 72vh;
+    object-fit: contain;
+    display: block;
+}
+
+.cosmos-lightbox-info {
+    padding: 1.1rem 1.6rem;
+    background: rgba(8, 10, 16, 0.98);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.cosmos-lightbox-info strong {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    color: #FFFFFF;
+}
+
+.cosmos-lightbox-info span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.65);
 }
 
 @media (max-width: 960px) {
     .camp-drive-hero,
     .lost-superstar-hero,
-    .camp-three-photos-grid {
+    .camp-three-photos-grid,
+    .lost-key-cards-grid {
         grid-template-columns: 1fr;
     }
     .cajones-ministar-map {
         grid-template-columns: 1fr;
+    }
+    .lost-gallery-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .lost-search-input-wrap {
+        min-width: auto;
+        width: 100%;
     }
 }
 
@@ -2150,15 +2600,23 @@ body.cosmos-body {
 
 .cosmos-drawer-modal {
     width: 100%;
-    max-width: 980px;
-    max-height: 85vh;
-    background: linear-gradient(160deg, rgba(14, 16, 22, 0.96) 0%, rgba(8, 9, 13, 0.98) 100%);
+    max-width: 1060px;
+    max-height: 88vh;
+    background: linear-gradient(160deg, rgba(14, 16, 26, 0.97) 0%, rgba(7, 8, 14, 0.99) 100%);
     border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 22px;
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85);
+    border-radius: 24px;
+    box-shadow: 0 35px 100px rgba(0, 0, 0, 0.92), 0 0 45px rgba(217, 56, 58, 0.12);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    transform: scale(0.97);
+    transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cosmos-drawer-backdrop.is-open .cosmos-drawer-modal {
+    transform: scale(1);
 }
 
 .drawer-modal-header {
@@ -3103,25 +3561,25 @@ body.anniversary-50-mode .hud-scroll-fill {
    ========================================================================== */
 #unitSuperZoomOverlay.unit-orbit-world-view {
     overflow: hidden;
-    background: #38BDF8;
+    background: #1B4F72;
     user-select: none;
 }
 
-/* Fondos atmosféricos diurnos y soleados por cada Mundo / Planeta de Unidad */
+/* Fondos atmosféricos diurnos realistas por cada Mundo / Planeta de Unidad */
 #unitSuperZoomOverlay[data-unit-world="castores"] {
-    background: radial-gradient(circle at 50% 38%, #E0F2FE 0%, #7DD3FC 55%, #0284C7 100%);
+    background: radial-gradient(circle at 50% 38%, #6FA8DC 0%, #2E6B9E 55%, #153B5C 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="manada"] {
-    background: radial-gradient(circle at 50% 38%, #FEF9C3 0%, #7DD3FC 55%, #0369A1 100%);
+    background: radial-gradient(circle at 50% 38%, #6AA39E 0%, #2C5E63 55%, #132E35 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="tropa"] {
-    background: radial-gradient(circle at 50% 38%, #D1FAE5 0%, #6EE7B7 50%, #0284C7 100%);
+    background: radial-gradient(circle at 50% 38%, #62A89B 0%, #26615B 55%, #11302E 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="escultas"] {
-    background: radial-gradient(circle at 50% 38%, #FEF3C7 0%, #7DD3FC 55%, #0369A1 100%);
+    background: radial-gradient(circle at 50% 38%, #73A5C6 0%, #2E5B82 55%, #16304A 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="clan"] {
-    background: radial-gradient(circle at 50% 38%, #F0F9FF 0%, #7DD3FC 55%, #0284C7 100%);
+    background: radial-gradient(circle at 50% 38%, #7FB3D5 0%, #29628A 55%, #12324A 100%);
 }
 
 .unit-orbit-webgl-wrap {
@@ -3141,7 +3599,8 @@ body.anniversary-50-mode .hud-scroll-fill {
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(180deg, rgba(8, 24, 44, 0.28) 0%, rgba(8, 24, 44, 0.0) 18%, rgba(8, 24, 44, 0.0) 74%, rgba(8, 24, 44, 0.46) 100%);
+        linear-gradient(180deg, rgba(6, 16, 28, 0.42) 0%, rgba(6, 16, 28, 0.0) 22%, rgba(6, 16, 28, 0.05) 70%, rgba(6, 16, 28, 0.62) 100%),
+        radial-gradient(circle at 50% 50%, transparent 52%, rgba(6, 16, 28, 0.28) 100%);
     pointer-events: none;
 }
 

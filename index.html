@@ -263,15 +263,16 @@
     <!-- ======================================================================
          7. NUEVA TAB COMPLETA DE CAMPAMENTO (3 FOTOS DE EJEMPLO + DESCRIPCIÓN + LUGAR + GOOGLE DRIVE)
          ====================================================================== -->
-    <section class="star-tab-view" id="campSuperZoomOverlay" aria-hidden="true">
+    <section class="star-tab-view star-tab-camp-view" id="campSuperZoomOverlay" aria-hidden="true">
         <header class="star-tab-topbar">
             <button type="button" class="star-tab-back-btn" id="btnCloseCampZoom">
-                <span>←</span> Volver a la Constelación de Campamentos [ESC]
+                <span class="back-arrow">←</span> Volver al Cosmos <kbd>[ESC]</kbd>
             </button>
 
-            <div class="star-tab-switcher" id="czCampSwitcher" role="tablist" aria-label="Pestañas de Campamentos"></div>
+            <div class="star-tab-switcher camp-switcher-dock" id="czCampSwitcher" role="tablist" aria-label="Pestañas de Campamentos"></div>
 
             <div class="star-tab-coords">
+                <span class="star-tab-status-dot"></span>
                 <span id="czSeasonPill">ESTRELLA DE CAMPAMENTO</span>
             </div>
         </header>
@@ -280,21 +281,32 @@
             <div class="star-tab-hero camp-drive-hero">
                 <div class="camp-hero-info">
                     <div class="star-tab-meta-row">
-                        <span class="sz-constellation-badge" id="czKicker">✦ ESTRELLA DE CAMPAMENTO</span>
+                        <span class="sz-constellation-badge camp-badge" id="czKicker">✦ ESTRELLA DE CAMPAMENTO</span>
                         <span class="sz-age-pill" id="czLocationPill">📍 Lugar del Campamento</span>
                         <span class="sz-motto-banner" id="czDriveFolderBadge">📁 Google Drive · Álbum Oficial</span>
                     </div>
-                    <h2 class="sz-unit-title" id="czTitle">Campamento</h2>
-                    <p class="sz-unit-lead" id="czDesc"></p>
+                    <h2 class="sz-unit-title camp-main-title" id="czTitle">Campamento</h2>
+                    <p class="sz-unit-lead camp-main-desc" id="czDesc"></p>
+
+                    <div class="camp-highlights-pills">
+                        <span class="camp-hpill">🏕️ Acampada en Tiendas / Albergue</span>
+                        <span class="camp-hpill">👥 5 Ramas Scout en Naturaleza</span>
+                        <span class="camp-hpill">🔒 Álbum Oficial Google Drive</span>
+                    </div>
                 </div>
 
                 <div class="camp-drive-cta-box">
-                    <span class="camp-drive-kicker">☁️ CONECTADO A CARPETA DE GOOGLE DRIVE</span>
-                    <strong id="czDriveFolderTitle">Álbum Completo del Campamento</strong>
-                    <p>Estas 3 fotografías son una muestra automática de la carpeta. Accede al Drive para ver y descargar todas las fotos.</p>
+                    <div class="camp-vault-header">
+                        <span class="camp-drive-kicker">☁️ BÓVEDA DE RECUERDOS · GOOGLE DRIVE</span>
+                        <strong id="czDriveFolderTitle">Álbum Completo del Campamento</strong>
+                    </div>
+                    <p class="camp-vault-desc">Muestra previa de 3 fotos. Las familias pueden introducir la contraseña del campamento para desbloquear y descargar todas las fotografías en alta calidad.</p>
                     <div class="camp-unlock-form" id="czUnlockForm">
                         <div class="camp-unlock-input-wrap">
-                            <input type="password" id="czDrivePassInput" class="dossier-form-input" placeholder="🔑 Contraseña para ver el álbum completo...">
+                            <div class="camp-input-with-icon">
+                                <span class="camp-input-icon">🔑</span>
+                                <input type="password" id="czDrivePassInput" class="dossier-form-input camp-pass-input" placeholder="Contraseña del campamento...">
+                            </div>
                             <button type="button" class="btn-cosmos-primary camp-drive-btn" id="czUnlockDriveBtn">
                                 <span>📂 Desbloquear Google Drive</span>
                                 <span class="btn-arrow">↗</span>
@@ -309,9 +321,9 @@
             <div class="camp-three-photos-section">
                 <div class="sz-section-header">
                     <div>
-                        <span class="sz-section-index">MUESTRA AUTOMÁTICA DE CARPETA (3 FOTOS DE EJEMPLO)</span>
-                        <h3>3 Fotografías Destacadas del Campamento</h3>
-                        <p id="czPhotosSub">Vista previa extraída de la carpeta de Google Drive del campamento</p>
+                        <span class="sz-section-index">📸 BITÁCORA GRÁFICA · 3 FOTOGRAFÍAS DESTACADAS</span>
+                        <h3>Momentos de la Expedición</h3>
+                        <p id="czPhotosSub">Vista previa extraída de la carpeta de Google Drive del campamento (haz clic en cualquier foto para ampliarla)</p>
                     </div>
                 </div>
                 <div class="camp-three-photos-grid" id="czThreePhotosGrid"></div>
@@ -322,16 +334,17 @@
     <!-- ======================================================================
          7B. NUEVA TAB DE LA ESTRELLA «EL BAÚL» (OBJETOS PERDIDOS · MINI-ESTRELLAS = CAJONES DRIVE)
          ====================================================================== -->
-    <section class="star-tab-view" id="lostSuperZoomOverlay" aria-hidden="true">
+    <section class="star-tab-view star-tab-lost-view" id="lostSuperZoomOverlay" aria-hidden="true">
         <header class="star-tab-topbar">
             <button type="button" class="star-tab-back-btn" id="btnCloseLostZoom">
-                <span>←</span> Salir de «El Baúl» al Mapa Estelar [ESC]
+                <span class="back-arrow">←</span> Salir al Cosmos <kbd>[ESC]</kbd>
             </button>
 
-            <div class="star-tab-switcher" id="lzCajonSwitcher" role="tablist" aria-label="Mini-Estrellas Cajones de Drive"></div>
+            <div class="star-tab-switcher lost-cajon-switcher-dock" id="lzCajonSwitcher" role="tablist" aria-label="Mini-Estrellas Cajones de Drive"></div>
 
             <div class="star-tab-coords">
-                <span id="lzFolderCoords">✦ CONSTELACIÓN EL BAÚL · OBJETOS PERDIDOS</span>
+                <span class="star-tab-status-dot lost-dot"></span>
+                <span id="lzFolderCoords">✦ SECTOR IV · EL BAÚL DE MATERIAL PERDIDO</span>
             </div>
         </header>
 
@@ -339,20 +352,43 @@
             <div class="star-tab-hero lost-superstar-hero">
                 <div class="lost-hero-info">
                     <div class="star-tab-meta-row">
-                        <span class="sz-constellation-badge">✦ ESTRELLA «EL BAÚL»</span>
+                        <span class="sz-constellation-badge lost-badge">📦 SISTEMA DE MATERIAL PERDIDO</span>
                         <span class="sz-age-pill" id="lzActiveFolderPill">📁 Carpeta Drive: Cajón 01</span>
-                        <span class="sz-motto-banner">Recogida: Sábados 16:30 – 19:00 h (Crtra. de Rueda, 53)</span>
                     </div>
-                    <h2 class="sz-unit-title">El Baúl · <span class="ice-italic">Objetos Perdidos</span></h2>
-                    <p class="sz-unit-lead">En la estrella <strong>«El Baúl»</strong> se encuentran las <strong>Mini-Estrellas (Cajones)</strong>. Cada cajón corresponde a una <strong>carpeta de Google Drive</strong> donde se suben las fotos de los objetos perdidos en cada campamento o actividad.</p>
+                    <h2 class="sz-unit-title lost-main-title">El Baúl · <span class="ice-italic">Objetos Perdidos</span></h2>
+                    <p class="sz-unit-lead lost-main-desc">En los campamentos y salidas siempre aparece material sin identificar. Cada <strong>Mini-Estrella (Cajón)</strong> corresponde a una carpeta viva de <strong>Google Drive</strong> donde catalogamos las prendas encontradas para que las familias puedan reclamarlas.</p>
+
+                    <div class="lost-key-cards-grid">
+                        <div class="lost-key-card">
+                            <span class="lost-key-icon">📍</span>
+                            <div>
+                                <strong>Punto de Recogida</strong>
+                                <span>Base Acrux · Crtra. de Rueda, 53</span>
+                            </div>
+                        </div>
+                        <div class="lost-key-card">
+                            <span class="lost-key-icon">🕓</span>
+                            <div>
+                                <strong>Horario de Entrega</strong>
+                                <span>Sábados 16:30 a 19:00 h</span>
+                            </div>
+                        </div>
+                        <div class="lost-key-card">
+                            <span class="lost-key-icon">💬</span>
+                            <div>
+                                <strong>Reclamación Rápida</strong>
+                                <span>Avisa en 1 clic por WhatsApp</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Mapa interactivo interior de Mini-Estrellas (Cajones / Carpetas de Google Drive) -->
                 <div class="lost-cajones-constellation-box">
                     <div class="cajones-map-header">
-                        <span>✦ PULSA UNA MINI-ESTRELLA (CAJÓN / CARPETA DRIVE)</span>
+                        <span>✦ CAJONES DE MATERIAL (CARPETAS DRIVE)</span>
                         <a href="https://drive.google.com" target="_blank" rel="noopener" class="cajon-drive-ext-link" id="lzOpenDriveFolderBtn">
-                            📂 Abrir esta carpeta en Google Drive ↗
+                            📂 Abrir Carpeta en Google Drive ↗
                         </a>
                     </div>
                     <div class="cajones-ministar-map" id="lzMiniStarsMap"></div>
@@ -368,8 +404,21 @@
                         <p id="lzCurrentCajonSub">Fotografías sincronizadas de la carpeta de objetos perdidos</p>
                     </div>
                     <div class="lost-gallery-controls">
-                        <input type="text" id="lzPhotoSearch" class="dossier-form-input" placeholder="🔎 Buscar prenda u objeto en este cajón...">
+                        <div class="lost-search-input-wrap">
+                            <span class="lost-search-icon">🔎</span>
+                            <input type="text" id="lzPhotoSearch" class="dossier-form-input lost-search-input" placeholder="Buscar sudadera, cantimplora, botas...">
+                            <button type="button" class="lost-search-clear-btn" id="lzClearSearchBtn" title="Limpiar búsqueda" style="display:none;">✕</button>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Filtros rápidos por tipo de objeto -->
+                <div class="lost-filter-chips-row" id="lzCategoryFilters">
+                    <button type="button" class="lost-filter-chip active" data-cat="all">✦ Todas las prendas</button>
+                    <button type="button" class="lost-filter-chip" data-cat="ropa">👕 Ropa y Sudaderas</button>
+                    <button type="button" class="lost-filter-chip" data-cat="cantimplora">💧 Cantimploras y Menaje</button>
+                    <button type="button" class="lost-filter-chip" data-cat="calzado">👟 Calzado y Botas</button>
+                    <button type="button" class="lost-filter-chip" data-cat="saco">⛺ Sacos y Aislantes</button>
                 </div>
 
                 <div id="lzClaimBanner" class="lost-claim-banner" style="display:none;"></div>
@@ -455,6 +504,24 @@
                         <span>Ver en Google Drive ↗</span>
                     </a>
                 </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         11. VISOR DE FOTOGRAFÍAS EN PANTALLA COMPLETA (LIGHTBOX)
+         ====================================================================== -->
+    <div class="cosmos-lightbox-backdrop" id="cosmosLightbox" aria-hidden="true">
+        <div class="cosmos-lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="cosmosLightboxTitle">
+            <button type="button" class="cosmos-lightbox-close" id="btnCloseLightbox" aria-label="Cerrar visor de fotografía">
+                ✕ Cerrar [ESC]
+            </button>
+            <div class="cosmos-lightbox-frame">
+                <img src="" alt="Fotografía ampliada" id="cosmosLightboxImg">
+            </div>
+            <div class="cosmos-lightbox-info">
+                <strong id="cosmosLightboxTitle">Fotografía</strong>
+                <span id="cosmosLightboxCaption">Grupo Scout Acrux 518</span>
             </div>
         </div>
     </div>
