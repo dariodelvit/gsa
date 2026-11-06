@@ -3578,7 +3578,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     background: radial-gradient(circle at 50% 28%, #2E2428 0%, #171215 52%, #070608 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="clan"] {
-    background: radial-gradient(circle at 50% 28%, #1A2E47 0%, #0C1826 52%, #04080E 100%);
+    background: radial-gradient(circle at 50% 25%, #3B4C5E 0%, #1A2A3A 52%, #09111A 100%) !important;
 }
 
 .unit-orbit-webgl-wrap {

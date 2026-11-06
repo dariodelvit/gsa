@@ -2170,7 +2170,7 @@
         escultas: {
             kicker: '(01 / 05) · MUNDO ESCULTAS · MONTAÑA DE LOS NINJAS Y EL DESCENSO DEL SENA (TREA)',
             loreHeading: 'Ninjas en el Descenso del Sena y Empresas Escultas · Unidad Esculta Trea',
-            stepNames: ['Descenso Ninja', 'Torii y Senda', 'Empresas', 'Kraal Esculta', 'Travesías Drive'],
+            stepNames: ['Cañón del Río', 'Torii y Senda', 'Empresas', 'Kraal Esculta', 'Travesías Drive'],
             skyTop: 0x121624,
             skyHorizon: 0x3D3540,
             fogColor: 0x242028,
@@ -2199,22 +2199,22 @@
             kicker: '(01 / 05) · MUNDO CLAN · LA LAGUNA AZUL POR ENCIMA DE LAS NUBES (ORIGEN DEL RÍO)',
             loreHeading: 'La Laguna Azul sobre el Mar de Nubes · Clan Rover Ama Dablam',
             stepNames: ['Laguna Azul', 'Horquilla y Ley', 'Camino Rover', 'Kraal de Clan', 'Rutas Drive'],
-            skyTop: 0x06101E,
-            skyHorizon: 0x243B55,
-            fogColor: 0x162638,
-            fogDensity: 0.0022,
-            waterColor: 0x1E607A,
-            waterEmissive: 0x082233,
-            sunColor: 0xE2F1FF,
+            skyTop: 0x0F2942,
+            skyHorizon: 0xFDE68A,
+            fogColor: 0xE2D5B5,
+            fogDensity: 0.0014,
+            waterColor: 0x14B8A6,
+            waterEmissive: 0x0D4F6B,
+            sunColor: 0xFFE4B5,
             sunPos: [20, 80, -45],
-            hemiSky: 0x9CC0DC,
-            hemiGround: 0x26303D,
-            shoreLightColor: 0x38BDF8,
-            terrainLow: [0.26, 0.33, 0.40],
-            terrainMid: [0.45, 0.51, 0.58],
-            terrainHigh: [0.76, 0.81, 0.86],
+            hemiSky: 0xFFF3C4,
+            hemiGround: 0x2D4C2B,
+            shoreLightColor: 0xFBBF24,
+            terrainLow: [0.22, 0.46, 0.24],
+            terrainMid: [0.48, 0.44, 0.38],
+            terrainHigh: [0.96, 0.90, 0.82],
             heightScale: 27.5,
-            particleColor: 0xD6EAF8,
+            particleColor: 0xFEF08A,
             cameraStops: [
                 { radius: 43, height: 12.8, lookY: 3.2 },
                 { radius: 38, height: 9.2, lookY: 2.6 },
@@ -2717,9 +2717,9 @@
                 tree.add(puff);
             });
         } else {
-            // Pinos y abetos estilizados con verdes pino y bosque nórdico naturales
+            // Pinos y abetos estilizados con verdes pino y bosque alpino naturales
             const tierPalette = unitId === 'clan'
-                ? [0x1A2E3B, 0x243E4D, 0x385766]
+                ? [0x1E3F29, 0x2A5434, 0x3D6E42]
                 : [0x1B3B24, 0x254D2E, 0x35633B];
 
             const tiers = 6;
@@ -2753,23 +2753,6 @@
                 const bough = new THREE.Mesh(boughGeo, coneMat);
                 bough.position.y = (1.72 + l * 0.74) * scale;
                 tree.add(bough);
-            }
-
-            if (unitId === 'clan' || unitId === 'escultas') {
-                const snowMat = new THREE.MeshStandardMaterial({
-                    color: 0xD8E4EC,
-                    roughness: 0.65,
-                    metalness: 0.04
-                });
-                const snowCapGeo = deformGeometrySmooth(
-                    new THREE.ConeGeometry(0.90 * scale, 1.25 * scale, 28, 4),
-                    0.05,
-                    1.2,
-                    seed
-                );
-                const snowCap = new THREE.Mesh(snowCapGeo, snowMat);
-                snowCap.position.y = 5.45 * scale;
-                tree.add(snowCap);
             }
         }
         return tree;
@@ -2806,7 +2789,7 @@
 
     function createShoreReedsCluster(THREE, unitId, seed = 0) {
         const cluster = new THREE.Group();
-        const reedColor = unitId === 'clan' ? 0x385766 : (unitId === 'manada' ? 0x1E3F26 : 0x254D2E);
+        const reedColor = unitId === 'clan' ? 0x2A5434 : (unitId === 'manada' ? 0x1E3F26 : 0x254D2E);
         const stemMat = new THREE.MeshStandardMaterial({ color: reedColor, roughness: 0.7 });
         const headMat = new THREE.MeshStandardMaterial({ color: 0x5C3A21, roughness: 0.9 });
 
@@ -3056,11 +3039,11 @@
     // MODELOS 3D DETALLADOS Y ORGÁNICOS DE CADA UNIDAD ALREDEDOR DEL LAGO
     // =========================================================================
     function buildUnitSpecificLandmarks(THREE, group, unitId, getTerrainHeight) {
-        // 1. Juncos de ribera en el agua (y cantos rodados para Tropa, Escultas y Clan; Castores usa shader GLSL de ribera + vegetación botánica)
-        if (unitId !== 'manada') {
-            const pebbleColors = unitId === 'escultas'
-                ? [0x9CA3AF, 0xCBD5E1, 0x64748B]
-                : (unitId === 'clan' ? [0x475569, 0x64748B, 0x94A3B8] : [0x57534E, 0x78716C, 0x44403C]);
+        // 1. Juncos de ribera en el agua (y cantos rodados para Tropa y Clan; Escultas es un cañón fluvial sin estanque circular)
+        if (unitId !== 'manada' && unitId !== 'escultas') {
+            const pebbleColors = unitId === 'clan'
+                ? [0x78716C, 0xA8A29E, 0x57534E]
+                : [0x57534E, 0x78716C, 0x44403C];
 
             for (let i = 0; i < 36; i++) {
                 const ang = (i / 36) * Math.PI * 2 + Math.sin(i * 1.9) * 0.08;
@@ -3089,7 +3072,7 @@
                     group.add(boulder);
                 }
 
-                if ((unitId === 'castores' || unitId === 'tropa' || i % 2 === 0) && unitId !== 'escultas') {
+                if (unitId === 'castores' || unitId === 'tropa' || i % 2 === 0) {
                     const reeds = createShoreReedsCluster(THREE, unitId, i);
                     reeds.position.set(Math.cos(ang + 0.04) * 21.8, -0.05, Math.sin(ang + 0.04) * 21.8);
                     group.add(reeds);
@@ -3678,22 +3661,63 @@
             group.add(campFire);
         } else if (unitId === 'escultas') {
             // =================================================================
-            // MUNDO ESCULTAS: NINJAS EN EL DESCENSO DEL SENA Y MONTAÑA DE TREA
-            // (Torii sagrado sobre el agua, Dojo/Pabellón Ninja, piraguas del
-            //  descenso entre rápidos y cascada que baja de la Laguna Azul)
+            // MUNDO ESCULTAS: NINJAS EN EL DESCENSO DEL SENA Y CAÑÓN DE TREA
+            // (Cañón fluvial sin estanque circular, Torii de orilla a orilla,
+            //  Dojo Ninja en la terraza izquierda y piraguas sorteando rápidos)
             // =================================================================
-            // 1. TORII SAGRADO DE LOS NINJAS EN LA ENTRADA SUR DEL RÍO + FAROLILLOS DE PIEDRA (TŌRŌ)
-            const waterTorii = createJapaneseToriiGate(THREE, 0.92);
-            waterTorii.position.set(0.0, 0.0, 19.5);
+            const getEscultasRiverX = (zVal) => Math.sin(zVal * 0.095) * 6.5;
+            const getEscultasRiverTangentAngle = (zVal) => Math.atan2(Math.cos(zVal * 0.095) * 6.5 * 0.095, 1.0);
+
+            // 0. ROCAS NATURALES DE CAÑÓN EN AMBAS ORILLAS DEL RÍO BRAVO
+            const bankRockColors = [0x64748B, 0x475569, 0x94A3B8];
+            for (let bIdx = 0; bIdx < 28; bIdx++) {
+                const bz = -22.0 + (bIdx / 27) * 44.0;
+                const side = bIdx % 2 === 0 ? -1 : 1;
+                const bankDist = 6.8 + (bIdx % 3) * 0.9;
+                const bx = getEscultasRiverX(bz) + side * bankDist;
+                const by = getTerrainHeight(bx, bz);
+                const rSize = 0.65 + (bIdx % 4) * 0.35;
+                const boulderGeo = deformGeometrySmooth(
+                    new THREE.SphereGeometry(rSize, 20, 16),
+                    0.22,
+                    1.35,
+                    bIdx * 1.7
+                );
+                const boulderMat = new THREE.MeshStandardMaterial({
+                    color: bankRockColors[bIdx % bankRockColors.length],
+                    roughness: 0.86,
+                    metalness: 0.04
+                });
+                const boulder = new THREE.Mesh(boulderGeo, boulderMat);
+                boulder.position.set(bx, by + 0.05, bz);
+                boulder.scale.set(1.35, 0.68 + (bIdx % 3) * 0.12, 1.15);
+                boulder.rotation.y = bIdx * 1.1;
+                group.add(boulder);
+            }
+
+            // 1. TORII SAGRADO CRUZANDO DE ORILLA A ORILLA SOBRE EL CAUCE DEL RÍO (Z = 16.0)
+            const toriiZ = 16.0;
+            const toriiX = getEscultasRiverX(toriiZ);
+            const waterTorii = createJapaneseToriiGate(THREE, 1.24);
+            waterTorii.position.set(toriiX, -0.35, toriiZ);
+            waterTorii.rotation.y = getEscultasRiverTangentAngle(toriiZ);
             group.add(waterTorii);
 
-            [[-6.2, 21.5], [6.2, 21.5], [-10.5, -21.0], [10.5, -21.0], [21.8, -4.5], [-21.8, 5.5]].forEach(([tx, tz]) => {
+            // Farolillos de piedra (Tōrō) flanqueando las riberas del cañón y la subida al Dojo
+            [
+                [getEscultasRiverX(19.5) - 7.8, 19.5],
+                [getEscultasRiverX(19.5) + 7.8, 19.5],
+                [getEscultasRiverX(-18.5) - 7.8, -18.5],
+                [getEscultasRiverX(-18.5) + 7.8, -18.5],
+                [-11.2, -11.5],
+                [-11.2, -4.5]
+            ].forEach(([tx, tz]) => {
                 const toro = createStoneToroLantern(THREE, 1.05);
                 toro.position.set(tx, Math.max(0.1, getTerrainHeight(tx, tz)), tz);
                 group.add(toro);
             });
 
-            // 2. DOJO / PABELLÓN NINJA DE MONTAÑA EN LA ORILLA NORTE (CON TEJADO PAGODA ESCALONADO)
+            // 2. DOJO / PABELLÓN NINJA EN LA TERRAZA ELEVADA DE LA RIBERA IZQUIERDA (X = -15.5, Z = -8.0)
             const dojoGroup = new THREE.Group();
             const darkWoodMat = new THREE.MeshStandardMaterial({ color: 0x291D18, roughness: 0.78 });
             const redLacquerMat = new THREE.MeshStandardMaterial({ color: 0xDC2626, roughness: 0.55 });
@@ -3706,8 +3730,8 @@
             });
 
             // Plataforma de piedra y madera del Dojo
-            const dojoBase = new THREE.Mesh(new THREE.BoxGeometry(9.2, 1.1, 6.4), new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.85 }));
-            dojoBase.position.y = 0.55;
+            const dojoBase = new THREE.Mesh(new THREE.BoxGeometry(9.2, 1.4, 6.4), new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.85 }));
+            dojoBase.position.y = 0.45;
             dojoGroup.add(dojoBase);
 
             // Cuerpo principal con paneles luminosos Shōji y columnas rojas
@@ -3740,19 +3764,24 @@
             upperRoof.position.y = 7.85;
             dojoGroup.add(upperRoof);
 
-            const dojoGlow = createGlowSprite(THREE, 0xFBBF24, 7.5, 0.72);
+            const dojoGlow = createGlowSprite(THREE, 0xFBBF24, 7.5, 0.65);
             dojoGlow.position.set(0, 3.2, 2.2);
             dojoGroup.add(dojoGlow);
 
-            dojoGroup.position.set(-7.8, getTerrainHeight(-7.8, -24.5), -24.5);
-            dojoGroup.rotation.y = 0.24;
+            dojoGroup.position.set(-15.5, getTerrainHeight(-15.5, -8.0), -8.0);
+            dojoGroup.rotation.y = Math.PI * 0.42; // Mirando hacia el cañón del río
             group.add(dojoGroup);
 
-            // 3. PIRAGUAS / KAYAKS DEL DESCENSO DEL SENA NAVEGANDO LOS RÁPIDOS DE LA LAGUNA
+            // Hoguera en la terraza elevada frente al Dojo Ninja
+            const campFire = createCampfireWithGlow(THREE, 1.15);
+            campFire.position.set(-10.2, getTerrainHeight(-10.2, -5.5), -5.5);
+            group.add(campFire);
+
+            // 3. PIRAGUAS / KAYAKS DEL DESCENSO DEL SENA ALINEADOS CON LA CURVA Y TANGENTE DEL RÍO
             const kayakConfigs = [
-                { x: -5.2, z: -4.5, rot: 0.35, color: 0xDC2626, phase: 0.4 },
-                { x: 4.8, z: 3.2, rot: -0.22, color: 0x0EA5E9, phase: 1.7 },
-                { x: -1.4, z: 10.6, rot: 0.12, color: 0xF59E0B, phase: 2.9 }
+                { z: -11.5, laneOffset: -1.1, color: 0xDC2626, phase: 0.4 },
+                { z: -0.5, laneOffset: 1.2, color: 0x0EA5E9, phase: 1.7 },
+                { z: 9.2, laneOffset: -0.9, color: 0xF59E0B, phase: 2.9 }
             ];
             const paddleShaftMat = new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.4, metalness: 0.3 });
             const paddleBladeMat = new THREE.MeshStandardMaterial({ color: 0xFDE047, roughness: 0.4 });
@@ -3771,7 +3800,6 @@
                 hull.scale.set(1.0, 0.48, 0.74);
                 kayakGroup.add(hull);
 
-                // Bañera (cockpit) oscura del kayak y pala de doble hoja cruzada
                 const cockpit = new THREE.Mesh(
                     new THREE.CylinderGeometry(0.36, 0.36, 0.18, 18),
                     new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.7 })
@@ -3793,30 +3821,42 @@
                 paddle.rotation.y = 0.35;
                 kayakGroup.add(paddle);
 
-                kayakGroup.position.set(cfg.x, 0.12, cfg.z);
-                kayakGroup.rotation.y = cfg.rot;
+                const kx = getEscultasRiverX(cfg.z) + cfg.laneOffset;
+                const tangentYaw = -Math.PI * 0.5 + getEscultasRiverTangentAngle(cfg.z);
+                kayakGroup.position.set(kx, 0.20, cfg.z);
+                kayakGroup.rotation.y = tangentYaw;
                 group.add(kayakGroup);
-                unitLakeState.animatedProps.push({ mesh: kayakGroup, baseY: 0.12, phase: cfg.phase });
+                unitLakeState.animatedProps.push({ mesh: kayakGroup, baseY: 0.20, phase: cfg.phase });
             });
 
-            // Puertas de Slalom del Descenso y rocas de rápido emergiendo del agua
-            const rapidRockMat = new THREE.MeshStandardMaterial({ color: 0x64748B, roughness: 0.8 });
-            [[-8.5, -8.2], [7.8, -5.5], [-6.4, 6.2], [8.2, 8.8]].forEach(([rx, rz], idx) => {
-                const rRock = new THREE.Mesh(new THREE.IcosahedronGeometry(1.15, 2), rapidRockMat);
-                rRock.scale.set(1.3, 0.65, 1.1);
-                rRock.position.set(rx, 0.15, rz);
+            // Rocas de rápidos emergiendo en el cauce del río que los kayaks sortean
+            const rapidRockMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.82 });
+            [
+                { z: -15.5, offset: 1.8 },
+                { z: -6.2, offset: -1.9 },
+                { z: 4.2, offset: 1.7 },
+                { z: 12.8, offset: -2.1 }
+            ].forEach((rk, idx) => {
+                const rRock = new THREE.Mesh(new THREE.IcosahedronGeometry(1.05, 2), rapidRockMat);
+                rRock.scale.set(1.3, 0.62, 1.1);
+                rRock.position.set(getEscultasRiverX(rk.z) + rk.offset, 0.12, rk.z);
                 rRock.rotation.y = idx * 1.2;
                 group.add(rRock);
             });
 
-            // Estandartes verticales Ninja (Nobori) ondeando en la orilla
+            // Estandartes verticales Ninja (Nobori) en las riberas del cañón y la terraza del Dojo
             const bannerMat = new THREE.MeshStandardMaterial({
                 color: 0xDC2626,
                 emissive: 0x991B1B,
-                emissiveIntensity: 0.25,
+                emissiveIntensity: 0.22,
                 side: THREE.DoubleSide
             });
-            [[14.5, -21.0], [18.5, -17.5], [-16.5, -19.5], [22.0, 11.5]].forEach(([bx, bz]) => {
+            [
+                [-11.5, -13.5],
+                [-11.5, -2.5],
+                [getEscultasRiverX(-12.0) + 9.2, -12.0],
+                [getEscultasRiverX(8.0) + 9.2, 8.0]
+            ].forEach(([bx, bz]) => {
                 const nobori = new THREE.Group();
                 const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 4.2, 10), darkWoodMat);
                 pole.position.y = 2.1;
@@ -3827,15 +3867,11 @@
                 nobori.position.set(bx, getTerrainHeight(bx, bz), bz);
                 group.add(nobori);
             });
-
-            const campFire = createCampfireWithGlow(THREE, 1.15);
-            campFire.position.set(4.5, getTerrainHeight(4.5, -22.5), -22.5);
-            group.add(campFire);
         } else if (unitId === 'clan') {
             // =================================================================
-            // MUNDO CLAN: LA LAGUNA AZUL POR ENCIMA DE LAS NUBES (ORIGEN DEL RÍO)
-            // (Mar de nubes esponjosas 3D a los pies de la laguna, cumbre del
-            //  Ama Dablam, Horquilla Rover, Canoa y Manantial que alimenta todo el valle)
+            // MUNDO CLAN: SHANGRI-LA / VALLE ALPINO IDÍLICO EN HORA DORADA SOBRE LAS NUBES
+            // (Mar de nubes esponjosas 3D, cumbre del Ama Dablam con Alpenglow cálido,
+            //  praderas floridas, hoguera Rover, Horquilla Rover y Canoa en aguas cristalinas)
             // =================================================================
             // 1. MAR DE NUBES 3D (360° POR DEBAJO DEL BORDE DE LA LAGUNA AZUL)
             const cloudRingCounts = [18, 22];
@@ -3858,9 +3894,9 @@
             // 2. MANANTIAL SAGRADO DE LA LAGUNA AZUL (SUR, Z = +21.5): NACIMIENTO DEL RÍO QUE BAJA HASTA CASTORES
             const springGroup = new THREE.Group();
             const springStoneMat = new THREE.MeshStandardMaterial({
-                color: 0xE2E8F0,
-                roughness: 0.55,
-                metalness: 0.1
+                color: 0xD6CFC2,
+                roughness: 0.65,
+                metalness: 0.06
             });
             for (let s = -4; s <= 4; s++) {
                 if (Math.abs(s) <= 1) continue; // canal central de salida del agua
@@ -3869,12 +3905,12 @@
                 boulder.position.set(s * 1.45, 0.35, 21.8 + Math.abs(s) * 0.25);
                 springGroup.add(boulder);
             }
-            const springGlow = createGlowSprite(THREE, 0x38BDF8, 9.5, 0.85);
+            const springGlow = createGlowSprite(THREE, 0xFBBF24, 8.5, 0.68);
             springGlow.position.set(0, 0.8, 22.0);
             springGroup.add(springGlow);
             group.add(springGroup);
 
-            // 3. LA GRAN CUMBRE ESCULPIDA DEL AMA DABLAM (6.812M) Y SU GLACIAR COLGANTE AZUL
+            // 3. LA GRAN CUMBRE ESCULPIDA DEL AMA DABLAM (6.812M) BAÑADA EN LUZ DORADA DE ATARDECER (ALPENGLOW)
             const amaGroup = new THREE.Group();
             const peakGeo = new THREE.ConeGeometry(15.5, 38, 64, 28);
             const pPos = peakGeo.attributes.position;
@@ -3892,7 +3928,9 @@
             const mainPeak = new THREE.Mesh(
                 peakGeo,
                 new THREE.MeshStandardMaterial({
-                    color: 0xF8FAFC,
+                    color: 0xFFF5E6,
+                    emissive: 0xD97706,
+                    emissiveIntensity: 0.12,
                     roughness: 0.44,
                     metalness: 0.12
                 })
@@ -3904,11 +3942,11 @@
             const hangingGlacier = new THREE.Mesh(
                 glacierGeo,
                 new THREE.MeshStandardMaterial({
-                    color: 0xE0F2FE,
-                    emissive: 0x38BDF8,
-                    emissiveIntensity: 0.38,
-                    roughness: 0.26,
-                    metalness: 0.20
+                    color: 0xFEF3C7,
+                    emissive: 0xF59E0B,
+                    emissiveIntensity: 0.16,
+                    roughness: 0.32,
+                    metalness: 0.14
                 })
             );
             hangingGlacier.scale.set(1.25, 0.78, 0.85);
@@ -3947,14 +3985,19 @@
             ]);
             horquillaGroup.add(new THREE.Mesh(new THREE.TubeGeometry(rightBranch, 20, 0.16, 16, false), staffMat));
 
-            const roverGlow = createGlowSprite(THREE, 0x38BDF8, 7.5, 0.72);
+            const roverGlow = createGlowSprite(THREE, 0xFBBF24, 7.5, 0.68);
             roverGlow.position.set(0, 8.4, 0);
             horquillaGroup.add(roverGlow);
 
             horquillaGroup.position.set(-13.5, getTerrainHeight(-13.5, -22.8), -22.8);
             group.add(horquillaGroup);
 
-            // 5. CANOA ROVER ESCULPIDA EN MADERA («REMA TU PROPIA CANOA») EN LA LAGUNA AZUL
+            // Hoguera Rover cálida junto al embarcadero de la canoa y la Horquilla Rover
+            const roverCampfire = createCampfireWithGlow(THREE, 1.2);
+            roverCampfire.position.set(-8.2, getTerrainHeight(-8.2, -22.2), -22.2);
+            group.add(roverCampfire);
+
+            // 5. CANOA ROVER ESCULPIDA EN MADERA («REMA TU PROPIA CANOA») EN LA LAGUNA AZUL SERENA
             const canoeGroup = new THREE.Group();
             const hullCurve = new THREE.CatmullRomCurve3([
                 new THREE.Vector3(-2.6, 0.38, 0),
@@ -3983,25 +4026,30 @@
             group.add(canoeGroup);
             unitLakeState.animatedProps.push({ mesh: canoeGroup, baseY: 0.16, phase: 1.2 });
 
-            // Cristales de hielo azul turquesa flotando sobre la Laguna Azul
-            const iceMat = new THREE.MeshStandardMaterial({
-                color: 0xE0F2FE,
-                emissive: 0x38BDF8,
-                emissiveIntensity: 0.32,
-                roughness: 0.18,
-                metalness: 0.15,
-                transparent: true,
-                opacity: 0.90
-            });
-            for (let k = 0; k < 14; k++) {
-                const ang = (k / 14) * Math.PI * 2 + 0.2;
-                const rad = 9.5 + (k % 4) * 2.6;
-                const iceGeo = deformGeometrySmooth(new THREE.SphereGeometry(0.75 + (k % 3) * 0.32, 24, 18), 0.16, 1.4, k * 2.1);
-                const ice = new THREE.Mesh(iceGeo, iceMat);
-                ice.position.set(Math.cos(ang) * rad, 0.06, Math.sin(ang) * rad);
-                ice.scale.set(1.45, 0.36, 1.2);
-                group.add(ice);
-                unitLakeState.animatedProps.push({ mesh: ice, baseY: 0.06, phase: k * 0.9 });
+            // 6. ARBUSTOS FLORIDOS ALPINOS ALREDEDOR DE LA PRADERA DE LA LAGUNA AZUL (r entre 22.5 y 28.5)
+            const flowerColors = [0xFDE047, 0xFBBF24, 0xFDA4AF, 0xFEF3C7];
+            for (let b = 0; b < 24; b++) {
+                const ang = (b / 24) * Math.PI * 2 + Math.sin(b * 1.7) * 0.08;
+                const rad = 22.8 + (b % 4) * 1.45;
+                const bx = Math.cos(ang) * rad;
+                const bz = Math.sin(ang) * rad;
+                if (bz > 17.5) continue; // dejar despejado el manantial sur
+                const by = getTerrainHeight(bx, bz);
+                const bush = createBotanicalBush(THREE, 0.82 + (b % 3) * 0.22, b * 1.9);
+                const blossomMat = new THREE.MeshStandardMaterial({
+                    color: flowerColors[b % flowerColors.length],
+                    emissive: flowerColors[b % flowerColors.length],
+                    emissiveIntensity: 0.22,
+                    roughness: 0.5
+                });
+                for (let f = 0; f < 3; f++) {
+                    const blossom = new THREE.Mesh(new THREE.SphereGeometry(0.14, 10, 8), blossomMat);
+                    blossom.position.set((f - 1) * 0.36, 0.62 + (f % 2) * 0.12, (f % 2 === 0 ? 0.24 : -0.22));
+                    bush.add(blossom);
+                }
+                bush.position.set(bx, by - 0.05, bz);
+                bush.rotation.y = b * 1.3;
+                group.add(bush);
             }
         }
     }
@@ -4846,6 +4894,24 @@
                 return plateauBase + amphitheaterRim + cragPeak + rockCrags + 0.32 + nDetail * 0.42 + outerJungleHills - riverBedDepth - bypassCarve + corridorYDelta;
             }
 
+            if (unitId === 'escultas') {
+                const riverCenterX = Math.sin(z * 0.095) * 6.5;
+                const distToRiver = Math.abs(x - riverCenterX);
+                if (distToRiver < 7.5) {
+                    return -2.4 + smoothstep(4.5, 7.5, distToRiver) * 2.6 + corridorYDelta;
+                }
+                const bankBlend = smoothstep(7.5, 14.5, distToRiver);
+                // Explanada lateral en la ribera izquierda (x ~ -15.5, z ~ -8.0) para el Dojo Ninja
+                const dojoDist = Math.hypot((x + 15.5) * 0.85, (z + 8.0) * 0.75);
+                const dojoTerraceMask = 1.0 - smoothstep(5.5, 11.5, dojoDist);
+                const canyonWall = Math.pow(clamp((distToRiver - 7.5) / 58.0, 0, 1), 1.15) *
+                    biome.heightScale * (nSmooth * 0.55 + ridgedFbm2D(x * 0.035 + 1.5, z * 0.035, 4) * 0.75) * riverValleyMask;
+                const naturalHeight = 0.35 + nDetail * 0.35 + canyonWall;
+                const terraceHeight = 2.6 + nDetail * 0.12;
+                const finalBankHeight = lerp(naturalHeight, terraceHeight, dojoTerraceMask);
+                return lerp(0.2, finalBankHeight, bankBlend) - riverBedDepth + corridorYDelta;
+            }
+
             if (r < 19.5) {
                 return -3.4 + smoothstep(12.0, 19.5, r) * 1.2;
             }
@@ -4871,7 +4937,7 @@
         const colors = new Float32Array(posAttr.count * 3);
 
         const shoreSand = unitId === 'clan'
-            ? [0.46, 0.56, 0.66]
+            ? [0.42, 0.52, 0.34]
             : (unitId === 'escultas' ? [0.58, 0.52, 0.42] : [0.48, 0.56, 0.36]);
 
         for (let i = 0; i < posAttr.count; i++) {
@@ -4890,7 +4956,13 @@
                 rCol = lerp(0.62, biome.terrainLow[0], rockMix);
                 gCol = lerp(0.66, biome.terrainLow[1], rockMix);
                 bCol = lerp(0.70, biome.terrainLow[2], rockMix);
-            } else if (unitId !== 'manada' && r < 24.5 && vy < 0.85) {
+            } else if (unitId === 'escultas' && Math.abs(vx - Math.sin(vz * 0.095) * 6.5) < 11.0 && vy < 0.85) {
+                const dRiv = Math.abs(vx - Math.sin(vz * 0.095) * 6.5);
+                const st = smoothstep(6.8, 11.0, dRiv);
+                rCol = lerp(shoreSand[0], biome.terrainLow[0], st);
+                gCol = lerp(shoreSand[1], biome.terrainLow[1], st);
+                bCol = lerp(shoreSand[2], biome.terrainLow[2], st);
+            } else if (unitId !== 'manada' && unitId !== 'escultas' && r < 24.5 && vy < 0.85) {
                 const st = smoothstep(20.5, 24.5, r);
                 rCol = lerp(shoreSand[0], biome.terrainLow[0], st);
                 gCol = lerp(shoreSand[1], biome.terrainLow[1], st);
@@ -5231,8 +5303,8 @@
         const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
         zoneGroup.add(terrainMesh);
 
-        // 2. El Lago Central 3D (en Castores, Tropa, Escultas y Clan) o el Río de la Selva que bordea la Roca del Consejo (en Manada)
-        if (unitId !== 'manada') {
+        // 2. El Lago Central 3D (en Castores, Tropa y Clan), el Río de Aguas Bravas del Cañón (en Escultas) o el Río de la Selva (en Manada)
+        if (unitId !== 'manada' && unitId !== 'escultas') {
             const waterObj = createSmoothWaterShaderMesh(THREE, biome);
             zoneGroup.add(waterObj.mesh);
             unitLakeState.waterUniformsList.push(waterObj.uniforms);
@@ -5252,6 +5324,108 @@
                 zoneGroup.add(ringMesh);
                 unitLakeState.rippleRings.push({ mesh: ringMesh, phase: rIdx * 0.25 });
             }
+        } else if (unitId === 'escultas') {
+            // En Escultas: Río de Aguas Bravas serpenteando entre el Desfiladero de Trea (sin estanque circular)
+            const rapidsGeo = new THREE.PlaneGeometry(14.5, 52.0, 32, 96);
+            rapidsGeo.rotateX(-Math.PI / 2);
+            const rPos = rapidsGeo.attributes.position;
+            for (let i = 0; i < rPos.count; i++) {
+                const lx = rPos.getX(i);
+                const lz = rPos.getZ(i);
+                const riverCenterX = Math.sin(lz * 0.095) * 6.5;
+                rPos.setX(i, riverCenterX + lx);
+                rPos.setZ(i, lz);
+                rPos.setY(i, 0.15);
+            }
+            rapidsGeo.computeVertexNormals();
+
+            const rapidsUniforms = {
+                uTime: { value: 0 },
+                uFlowSpeed: { value: 8.5 },
+                uWaterShallow: { value: new THREE.Color(biome.waterColor) },
+                uWaterDeep: { value: new THREE.Color(biome.waterEmissive) },
+                uSkyHorizon: { value: new THREE.Color(biome.skyHorizon) },
+                uSunColor: { value: new THREE.Color(biome.sunColor) },
+                uSunDir: { value: new THREE.Vector3(-0.35, 0.72, 0.35).normalize() }
+            };
+            unitLakeState.waterUniformsList.push(rapidsUniforms);
+
+            const rapidsMat = new THREE.ShaderMaterial({
+                transparent: true,
+                depthWrite: false,
+                uniforms: rapidsUniforms,
+                vertexShader: `
+                    uniform float uTime;
+                    uniform float uFlowSpeed;
+                    varying vec2 vUv;
+                    varying vec3 vGlobalPos;
+                    varying vec3 vNormal;
+                    void main() {
+                        vUv = uv;
+                        vec3 pos = position;
+                        pos.y += sin(pos.z * 0.95 - uTime * uFlowSpeed) * 0.085 + cos(pos.x * 1.4 + uTime * 3.8) * 0.035;
+                        vec4 wp = modelMatrix * vec4(pos, 1.0);
+                        vGlobalPos = wp.xyz;
+                        vNormal = normalize(mat3(modelMatrix) * normal);
+                        gl_Position = projectionMatrix * viewMatrix * wp;
+                    }
+                `,
+                fragmentShader: `
+                    uniform float uTime;
+                    uniform float uFlowSpeed;
+                    uniform vec3 uWaterShallow;
+                    uniform vec3 uWaterDeep;
+                    uniform vec3 uSkyHorizon;
+                    uniform vec3 uSunColor;
+                    uniform vec3 uSunDir;
+                    varying vec2 vUv;
+                    varying vec3 vGlobalPos;
+                    varying vec3 vNormal;
+
+                    float rapidsCaustics(vec2 p, float t, float speed) {
+                        vec2 p1 = p * 2.1 + vec2(sin(p.y * 0.6), -t * speed * 0.65);
+                        vec2 p2 = p * 2.7 + vec2(cos(p.x * 0.6), -t * speed * 0.85);
+                        float c1 = sin(p1.x + sin(p1.y * 1.6)) * 0.5 + 0.5;
+                        float c2 = cos(p2.y + cos(p2.x * 1.6)) * 0.5 + 0.5;
+                        return pow(c1 * c2, 1.45) * 2.3;
+                    }
+
+                    void main() {
+                        float edgeDist = abs(vUv.x - 0.5) * 2.0;
+                        float fZ = vGlobalPos.z * 1.85 - uTime * uFlowSpeed - edgeDist * 2.4;
+                        float wave1 = sin(fZ + sin(vUv.x * 15.0)) * 0.5 + 0.5;
+                        float wave2 = cos(fZ * 1.9 - cos(vUv.x * 20.0)) * 0.5 + 0.5;
+                        float ripples = wave1 * 0.58 + wave2 * 0.42;
+
+                        vec3 norm = normalize(vNormal + vec3((wave1 - 0.5) * 0.26, 0.84, (wave2 - 0.5) * 0.30));
+                        vec3 viewDir = normalize(cameraPosition - vGlobalPos);
+                        float nDotV = clamp(dot(viewDir, norm), 0.0, 1.0);
+                        float fresnel = 0.02 + 0.98 * pow(1.0 - nDotV, 4.5);
+
+                        vec3 baseCol = mix(uWaterDeep, uWaterShallow, 0.48 + 0.52 * (1.0 - edgeDist));
+                        float caust = rapidsCaustics(vec2(vUv.x * 9.5, vGlobalPos.z * 0.32), uTime, uFlowSpeed);
+                        baseCol += caust * (1.0 - edgeDist * 0.40) * (0.35 + 0.65 * nDotV) * vec3(0.75, 0.90, 0.96) * 0.16;
+
+                        vec3 waterWithSky = mix(baseCol, uSkyHorizon, clamp(fresnel * 0.55, 0.0, 0.68));
+
+                        vec3 halfVec = normalize(uSunDir + viewDir);
+                        float nDotH = max(dot(norm, halfVec), 0.0);
+                        float sunGlint = pow(nDotH, 180.0) * 1.65 + pow(nDotH, 48.0) * 0.18;
+
+                        // Espuma viva de aguas bravas en rápidos y riberas rocosas
+                        float rapidStreaks = smoothstep(0.48, 0.88, sin(vUv.x * 28.0 + sin(fZ * 0.55) * 2.2));
+                        float boulderWake = smoothstep(0.55, 0.92, cos(vGlobalPos.z * 0.55 - uTime * 3.2) * sin(vUv.x * 18.0));
+                        float bankFoam = smoothstep(0.56, 0.90, edgeDist) * (0.50 + 0.50 * ripples);
+                        float totalFoam = clamp(bankFoam * 0.54 + rapidStreaks * 0.38 + boulderWake * 0.28 + pow(ripples, 3.2) * 0.32, 0.0, 0.78);
+
+                        vec3 foamWhite = vec3(0.88, 0.93, 0.96);
+                        vec3 col = mix(waterWithSky + uSunColor * sunGlint, foamWhite, totalFoam);
+                        float alpha = smoothstep(1.0, 0.75, edgeDist) * 0.94;
+                        gl_FragColor = vec4(col, alpha);
+                    }
+                `
+            });
+            zoneGroup.add(new THREE.Mesh(rapidsGeo, rapidsMat));
         } else {
             // En Manada: Tramo de río continuo que bordea la Roca del Consejo por el Este (uniendo el río de Tropa con el de Castores)
             const bypassGeo = new THREE.PlaneGeometry(11.6, 46.0, 24, 64);
@@ -5354,11 +5528,12 @@
             zoneGroup.add(new THREE.Mesh(bypassGeo, bypassMat));
         }
 
-        // Helper para dejar despejada la desembocadura norte/sur del río (y el canal lateral de Manada) en el anillo de árboles
+        // Helper para dejar despejada la desembocadura norte/sur del río (y el canal de Manada/Escultas) en el anillo de árboles
         const isInsideRiverMouth = (tx, tz) => {
             if (tz < -18.0 && uIdx < 4 && Math.abs(tx - getCorridorRiverCenterX(uIdx, tz + centerZ)) < 11.5) return true;
             if (tz > 18.0 && uIdx > 0 && Math.abs(tx - getCorridorRiverCenterX(uIdx - 1, tz + centerZ)) < 11.5) return true;
             if (unitId === 'manada' && Math.abs(tz) < 23.0 && Math.abs(tx - getManadaBypassRiverX(tz)) < 9.5) return true;
+            if (unitId === 'escultas' && Math.abs(tx - Math.sin(tz * 0.095) * 6.5) < 9.5) return true;
             return false;
         };
 
@@ -5421,8 +5596,31 @@
                 tree.rotation.y = t * 1.15;
                 zoneGroup.add(tree);
             }
+        } else if (unitId === 'escultas') {
+            // Laderas boscosas a ambos lados del cañón fluvial de Trea (despejando el cauce y la terraza del Dojo Ninja)
+            const canyonTreeCount = 56;
+            for (let t = 0; t < canyonTreeCount; t++) {
+                const side = (t % 2 === 0) ? 1 : -1;
+                const row = Math.floor(t / 2);
+                const tz = -26.0 + (row / 27) * 52.0 + Math.sin(t * 2.1) * 1.8;
+                const riverCenterX = Math.sin(tz * 0.095) * 6.5;
+                const bankDist = 11.2 + (t % 4) * 6.4 + Math.cos(t * 1.7) * 2.0;
+                const tx = riverCenterX + side * bankDist;
+                if (Math.abs(tz) > 76 || isInsideRiverMouth(tx, tz)) continue;
+                // No tapar la explanada del Dojo Ninja (x = -15.5, z = -8.0) ni el Torii (z = 16.0)
+                if (Math.hypot(tx + 15.5, tz + 8.0) < 8.5) continue;
+                if (Math.hypot(tx - Math.sin(16.0 * 0.095) * 6.5, tz - 16.0) < 9.0) continue;
+
+                const ty = getTerrainHeight(tx, tz);
+                if (ty < 0.25) continue;
+                const sc = 0.84 + (t % 4) * 0.24;
+                const tree = createPineOrBiomeTree(THREE, 'escultas', sc, t * 1.37);
+                tree.position.set(tx, ty - 0.18, tz);
+                tree.rotation.y = t * 1.1;
+                zoneGroup.add(tree);
+            }
         } else {
-            const treeCount = unitId === 'clan' ? 30 : 34;
+            const treeCount = 38;
             for (let t = 0; t < treeCount; t++) {
                 const angle = (t / treeCount) * Math.PI * 2 + Math.sin(t * 2.1) * 0.07;
                 const radius = 25.2 + (t % 6) * 3.8 + Math.cos(t * 1.7) * 1.8;
@@ -5430,10 +5628,11 @@
                 const tz = Math.sin(angle) * radius;
                 if (Math.abs(tz) > 76 || isInsideRiverMouth(tx, tz)) continue;
                 if (Math.hypot(tx, tz + 24) < 8.0) continue;
+                if (Math.hypot(tx, tz - 21.5) < 6.5) continue;
 
                 const ty = getTerrainHeight(tx, tz);
                 if (ty < 0.25) continue;
-                const sc = 0.78 + (t % 4) * 0.22;
+                const sc = 0.82 + (t % 4) * 0.24;
                 const tree = createPineOrBiomeTree(THREE, unitId, sc, t * 1.37);
                 tree.position.set(tx, ty - 0.15, tz);
                 tree.rotation.y = t * 1.1;
@@ -5467,7 +5666,7 @@
         });
         const particles = new THREE.Points(pGeo, pMat);
         zoneGroup.add(particles);
-        unitLakeState.particlesList.push({ points: particles, isSnow: unitId === 'clan' });
+        unitLakeState.particlesList.push({ points: particles, isSnow: false });
 
         parentGroup.add(zoneGroup);
     }
