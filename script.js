@@ -580,15 +580,15 @@
         {
             index: 0,
             roman: 'I',
-            code: 'SECTOR I / V · CRUX AUSTRALIS (LA CRUZ DEL SUR)',
+            code: 'SECTOR I / IV · CRUX AUSTRALIS (LA CRUZ DEL SUR)',
             subtitle: 'ESTRELLA GUÍA · VALLADOLID (DESDE 1977)',
             coords: 'RA 12h 26m · DEC -63° 05\'',
             headingHTML: 'Cruz del Sur <span class="ice-italic">Acrux 518</span>',
-            desc: 'La constelación de la Cruz del Sur (Crux) preside nuestra insignia estelar. En su base brilla Acrux (Alfa Crucis), la estrella más luminosa y el faro guía de los exploradores desde 1977. Pulsa en Acrux para conocer la historia de nuestro grupo scout.',
+            desc: 'La Cruz del Sur preside nuestra insignia desde 1977. En su pie brilla Acrux, el faro guía de nuestro grupo en Valladolid. Entra en Acrux para descubrir nuestra historia, la Base de Carretera de Rueda 53, Coordinación y cómo venir a probar un sábado.',
             worldX: 0,
             worldY: 0,
             baseZoom: 1.06,
-            primaryBtnText: '✦ Conoce Acrux 518 y su Historia',
+            primaryBtnText: '✦ Entrar en Acrux · Historia, Base y Contacto',
             stars: [
                 {
                     id: 'acrux',
@@ -659,43 +659,43 @@
         {
             index: 1,
             roman: 'II',
-            code: 'SECTOR II / V · LÍNEA DE LAS UNIDADES',
-            subtitle: 'CONSTELACIÓN EN LÍNEA RECTA · CLIC EN UNA ESTRELLA PARA SUPER-ZOOM A SU TAB',
+            code: 'SECTOR II / IV · LÍNEA DE LAS UNIDADES',
+            subtitle: 'CINCO RAMAS EDUCATIVAS · DE 6 A 21 AÑOS',
             coords: 'RA 15h 40m · DEC -48° 15\'',
             headingHTML: 'El Camino de <span class="ice-italic">las Unidades</span>',
-            desc: 'Nuestras 5 unidades trazan una constelación en línea recta ascendente desde Castores hasta el Clan. Haz clic en cualquiera de las 5 estrellas para viajar con un Super-Zoom a su interior y abrir su pestaña con toda la información y sus Kraaletes.',
+            desc: 'Cinco estrellas trazan nuestro camino educativo desde los 6 hasta los 21 años: Colonia Ohiensis, Manada Khanhiwara, Tropa Lohengrin, Unidad Esculta Trea y Clan Rover Ama Dablam. Adéntrate en cada mundo para conocer su marco simbólico, sus Kraaletes y sus salidas.',
             worldX: UNITS_ORIGIN_X,
             worldY: UNITS_ORIGIN_Y,
             baseZoom: 1.0,
-            primaryBtnText: '✦ Entrar en la Estrella de esta Unidad (Super-Zoom)'
+            primaryBtnText: '✦ Explorar el Mundo 3D de esta Unidad'
         },
         {
             index: 2,
             roman: 'III',
-            code: 'SECTOR III / V · CONSTELACIÓN DE CAMPAMENTOS',
-            subtitle: 'CADA ESTRELLA ES UN CAMPAMENTO · CLIC PARA SUPER-ZOOM A SU TAB',
+            code: 'SECTOR III / IV · CONSTELACIÓN DE CAMPAMENTOS',
+            subtitle: 'EXPEDICIONES DE VERANO Y SEMANA SANTA · GOOGLE DRIVE',
             coords: 'RA 19h 12m · DEC -24° 50\'',
             headingHTML: 'Constelación de <span class="ice-italic">Campamentos</span>',
-            desc: 'Actualmente no hay carpetas de campamentos publicadas en el Google Drive del grupo.',
+            desc: 'Cada estrella guarda la memoria viva de nuestras acampadas de verano y Semana Santa en plena naturaleza. Explora ambas constelaciones para revivir las expediciones y desbloquear los álbumes fotográficos del grupo.',
             worldX: CAMPS_ORIGIN_X,
             worldY: CAMPS_ORIGIN_Y,
             baseZoom: 1.02,
-            primaryBtnText: '✦ Entrar en la Estrella del Campamento (Super-Zoom)',
+            primaryBtnText: '✦ Abrir Expediente y Álbum del Campamento',
             stars: [],
             edges: []
         },
         {
             index: 3,
             roman: 'IV',
-            code: 'SECTOR IV / V · CONSTELACIÓN «EL BAÚL» (OBJETOS PERDIDOS)',
-            subtitle: 'ENTRA EN LA ESTRELLA «EL BAÚL» PARA ABRIR LOS CAJONES (CARPETAS DE GOOGLE DRIVE)',
+            code: 'SECTOR IV / IV · CONSTELACIÓN «EL BAÚL» (OBJETOS PERDIDOS)',
+            subtitle: 'ARCHIVO DE MATERIAL PERDIDO · CARPETAS GOOGLE DRIVE',
             coords: 'RA 22h 08m · DEC -12° 33\'',
             headingHTML: 'El Baúl · <span class="ice-italic">Objetos Perdidos</span>',
-            desc: 'La constelación de «El Baúl» guarda en su interior las Mini-Estrellas llamadas «Cajones» (cada una sincronizada con una carpeta de Google Drive). Haz clic en la estrella «El Baúl» o en cualquier Cajón para adentrarte en ella y ver las fotos de los objetos perdidos.',
+            desc: 'El archivo estelar donde reunimos las prendas y el material extraviado tras cada acampada y salida. Explora los cajones sincronizados con Google Drive para localizar tu equipo y reclamarlo antes del próximo sábado en la Base.',
             worldX: 420,
             worldY: 1580,
             baseZoom: 1.04,
-            primaryBtnText: '✦ Entrar en «El Baúl» (Super-Zoom)',
+            primaryBtnText: '✦ Abrir «El Baúl» de Objetos Perdidos',
             stars: [
                 {
                     id: 'estrella-el-baul',
@@ -716,74 +716,6 @@
                 }
             ],
             edges: []
-        },
-        {
-            index: 4,
-            roman: 'V',
-            code: 'SECTOR V / V · BASES, COORDINACIÓN Y REDES',
-            subtitle: 'COORDENADAS EN VALLADOLID · EQUIPO Y CANALES OFICIALES',
-            coords: '41° 37\' N · 4° 44\' W (VALLADOLID)',
-            headingHTML: 'Nuestras <span class="ice-italic">Bases y Contacto</span>',
-            desc: 'Nuestra Base oficial en Valladolid es el punto de encuentro de las cinco unidades cada sábado. Contacta con Coordinación, ven a probar un sábado gratis o síguenos en nuestras redes sociales.',
-            worldX: -1380,
-            worldY: 480,
-            baseZoom: 1.05,
-            primaryBtnText: '⚜️ Abrir Panel de Bases, Coordinación y Redes',
-            stars: [
-                {
-                    id: 'base-central',
-                    symbol: 'α Bases del Grupo',
-                    dx: 0,
-                    dy: -140,
-                    r: 9.0,
-                    color: '#FFFFFF',
-                    halo: 'rgba(217, 56, 58, 0.40)',
-                    badge: 'Base Principal · CP 47008',
-                    title: 'Bases del Grupo: Carretera de Rueda, 53 (Valladolid)',
-                    body: 'Nuestro local y centro de intendencia en Valladolid. Aquí nos reunimos todos los sábados lectivos de 16:30 a 19:00 h para juegos, talleres y asambleas.',
-                    pillars: ['📍 Carretera de Rueda, 53', '🕓 Sábados de 16:30 a 19:00 h', '🚌 Auvasa Líneas 1 y 2']
-                },
-                {
-                    id: 'canal-coordinacion',
-                    symbol: 'β Coordinación',
-                    dx: 135,
-                    dy: -25,
-                    r: 7.8,
-                    color: '#FFFFFF',
-                    halo: 'rgba(255, 255, 255, 0.35)',
-                    badge: 'Atención a Familias',
-                    title: 'Equipo de Coordinación: JJ, Raksha y Hugo',
-                    body: 'Habla directamente por teléfono, WhatsApp o correo electrónico con los coordinadores de grupo para consultar plazas por año de nacimiento o cualquier duda.',
-                    pillars: ['💬 WhatsApp Directo', '📞 Llamada Telefónica', '✉️ Correo Oficial']
-                },
-                {
-                    id: 'base-inscripcion',
-                    symbol: 'γ Sábado de Prueba',
-                    dx: -130,
-                    dy: 25,
-                    r: 7.8,
-                    color: '#FFFFFF',
-                    halo: 'rgba(52, 211, 153, 0.35)',
-                    badge: '6 a 21 Años · Sin Compromiso',
-                    title: 'Ven a Probar un Sábado Gratis con tu Rama',
-                    body: 'Cualquier niño, niña o joven de 6 a 21 años puede venir a probar un sábado gratis sin compromiso para conocer su unidad y a sus scouters.',
-                    pillars: ['1. Elige tu Unidad', '2. Ven a las 16:30 h', '3. ¡Vive la Aventura!']
-                },
-                {
-                    id: 'redes-sociales',
-                    symbol: 'δ Redes Sociales',
-                    dx: 30,
-                    dy: 140,
-                    r: 8.2,
-                    color: '#FFFFFF',
-                    halo: 'rgba(225, 48, 108, 0.38)',
-                    badge: 'Canales Oficiales',
-                    title: 'Redes Sociales Oficiales del Grupo Scout Acrux 518',
-                    body: 'Sigue el día a día, fotos de acampadas, salidas y noticias del grupo y de sus ramas en Instagram, Facebook y canales oficiales.',
-                    pillars: ['📸 @gruposcoutacrux518', '📸 @escultas_trea', '📸 @clan_amadablam', '📘 Facebook Acrux']
-                }
-            ],
-            edges: [[0, 1], [1, 3], [3, 2], [2, 0], [0, 3]]
         }
     ];
 
@@ -836,8 +768,8 @@
         return created;
     }
 
-    // 1. Registrar Sector I (Cruz del Sur), Sector IV (Objetos Perdidos) y Sector V (Bases)
-    [0, 3, 4].forEach(sIdx => {
+    // 1. Registrar Sector I (Cruz del Sur) y Sector IV (Objetos Perdidos)
+    [0, 3].forEach(sIdx => {
         const sec = SECTORS[sIdx];
         sec.runtimeNodes = registerStarCluster(sec.stars, sec.edges, sec.worldX, sec.worldY, {
             sectorIndex: sIdx,
@@ -1017,10 +949,10 @@
         // Ajuste dinámico del encuadre astronómico del Sector III
         if (hasBothCampsConstellations) {
             SECTORS[2].baseZoom = 0.94;
-            SECTORS[2].desc = 'En este sector brillan dos constelaciones independientes: arriba, la Constelación Estival (campamentos de verano); abajo, la Constelación Equinoccial (campamentos de Semana Santa y primavera). Haz clic en cualquier estrella para entrar en ella.';
+            SECTORS[2].desc = 'Cada estrella guarda la memoria viva de nuestras acampadas: arriba brilla la Constelación Estival (verano) y abajo la Constelación Equinoccial (Semana Santa y primavera). Adéntrate en cada expedición para revivirla y abrir su álbum en Google Drive.';
         } else {
             SECTORS[2].baseZoom = 1.02;
-            SECTORS[2].desc = 'Constelación oficial de campamentos del Grupo Scout ACRUX 518 sincronizada con Google Drive.';
+            SECTORS[2].desc = 'Cada estrella guarda la memoria viva de nuestras acampadas del Grupo Scout ACRUX 518. Adéntrate en cada expedición para revivirla y abrir su álbum oficial en Google Drive.';
         }
 
         // Helper para generar etiquetas compactas de 2 líneas y evitar colisiones de texto
@@ -1640,23 +1572,16 @@
                 if (elPrimaryBtn) elPrimaryBtn.style.display = '';
             }
 
-            // Botón de Volver al Inicio en Sector V
-            const returnBtn = document.getElementById('btnSectorVReturn');
-            if (returnBtn) {
-                returnBtn.style.display = sIdx === 4 ? 'inline-flex' : 'none';
-            }
-
             // Actualizar etiqueta del HUD inferior
             const progressEl = document.getElementById('hudProgressPercent');
             if (progressEl) {
                 const sectorNames = [
-                    '01 / 05 · Cruz del Sur',
-                    '02 / 05 · Unidades',
-                    '03 / 05 · Campamentos',
-                    '04 / 05 · El Baúl',
-                    '05 / 05 · Bases y Contacto'
+                    '01 / 04 · Cruz del Sur',
+                    '02 / 04 · Unidades',
+                    '03 / 04 · Campamentos',
+                    '04 / 04 · El Baúl'
                 ];
-                progressEl.textContent = sectorNames[sIdx] || `0${sIdx + 1} / 05`;
+                progressEl.textContent = sectorNames[sIdx] || `0${sIdx + 1} / 04`;
             }
 
             if (elStarNodesWrap) {
@@ -2535,7 +2460,7 @@
         if (biomeTag) {
             if (isCrossingRiver) {
                 if (uIdx === 2) {
-                    biomeTag.textContent = '⛩️ SUBIENDO LA MONTAÑA ARBOLADA · EL TORII DE LOS NINJAS · TROPA → ESCULTAS';
+                    biomeTag.textContent = '🏔️ SUBIENDO LA MONTAÑA DE TREA · TROPA → ESCULTAS';
                 } else if (uIdx === 3) {
                     biomeTag.textContent = '🧗 ESCALANDO HACIA EL MAR DE NUBES · LA LAGUNA AZUL · ESCULTAS → CLAN';
                 } else {
@@ -2552,11 +2477,11 @@
         if (ringCaption) {
             if (isCrossingRiver) {
                 ringCaption.textContent = uIdx === 2
-                    ? 'Subiendo al Torii...'
+                    ? 'Subiendo la montaña...'
                     : (uIdx === 3 ? 'Escalando a las nubes...' : 'Cruzando el río...');
             } else if (nearestStep === 4 && displayUnitIdx < 4) {
                 if (displayUnitIdx === 2) {
-                    ringCaption.textContent = 'Subir montaña y Torii →';
+                    ringCaption.textContent = 'Subir la montaña →';
                 } else if (displayUnitIdx === 3) {
                     ringCaption.textContent = 'Escalar a la Laguna Azul →';
                 } else {
@@ -4602,46 +4527,7 @@
         const nextRiverX = getCorridorRiverCenterX(corridorIdx, zMid - 2.0);
         const riverTangentAngle = Math.atan2(nextRiverX - midX, -2.0);
 
-        if (corridorIdx === 2) {
-            // =================================================================
-            // CORREDOR 2 (TROPA → ESCULTAS): SUBIDA DE MONTAÑA CON ÁRBOLES Y
-            // EL GRAN TORII DE LOS NINJAS A MITAD DE CAMINO (s = 0.5)
-            // =================================================================
-            const toriiShrineGroup = new THREE.Group();
-
-            // Escalones de piedra de montaña subiendo bajo el Torii de los Ninjas
-            const stepStoneMat = new THREE.MeshStandardMaterial({ color: 0x64748B, roughness: 0.82 });
-            for (let st = -8; st <= 8; st++) {
-                const stepZ = st * 1.85;
-                const gz = zMid + stepZ;
-                const sx = getCorridorRiverCenterX(corridorIdx, gz);
-                const sy = getCorridorRiverElevationY(corridorIdx, gz);
-                [-5.6, 5.6].forEach((sideOffset) => {
-                    const stepBlock = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.38, 1.35), stepStoneMat);
-                    stepBlock.position.set(sx + sideOffset, sy + 0.18, gz);
-                    corridorGroup.add(stepBlock);
-                });
-            }
-
-            // El Gran Torii de los Ninjas en el corazón de la montaña arbolada
-            const midTorii = createJapaneseToriiGate(THREE, 1.42);
-            toriiShrineGroup.add(midTorii);
-
-            // Farolillos de piedra (Tōrō) escoltando el Torii a mitad de camino
-            [[-5.8, 4.2], [5.8, 4.2], [-5.8, -4.2], [5.8, -4.2]].forEach(([lx, lz]) => {
-                const toro = createStoneToroLantern(THREE, 1.18);
-                toro.position.set(lx, 0.1, lz);
-                toriiShrineGroup.add(toro);
-            });
-
-            const toriiAura = createGlowSprite(THREE, 0xEF4444, 14.0, 0.48);
-            toriiAura.position.set(0, 6.2, 0);
-            toriiShrineGroup.add(toriiAura);
-
-            toriiShrineGroup.position.set(midX, yMid - 0.15, zMid);
-            toriiShrineGroup.rotation.y = -riverTangentAngle;
-            corridorGroup.add(toriiShrineGroup);
-        } else if (corridorIdx === 3) {
+        if (corridorIdx === 3) {
             // =================================================================
             // CORREDOR 3 (ESCULTAS → CLAN): VÍA DE ESCALADA EN PARED DE ROCA
             // JUNTO A LA GRAN CASCADA + ATRAVESANDO EL MAR DE NUBES 3D
@@ -4707,7 +4593,7 @@
                 cloud.position.set(cx + offset, cy + 2.8 + (cl % 3) * 1.8, gz);
                 corridorGroup.add(cloud);
             }
-        } else {
+        } else if (corridorIdx < 2) {
             // CORREDORES 0 Y 1 (CASTORES → MANADA → TROPA): Puente Scout de Madera con farolillos
             const bridgeGroup = new THREE.Group();
             const woodDarkMat = new THREE.MeshStandardMaterial({ color: 0x4E342E, roughness: 0.82 });
@@ -4761,7 +4647,7 @@
 
         for (let i = 0; i < 40; i++) {
             const s = (i + 0.5) / 40;
-            if (Math.abs(s - 0.5) < 0.07) continue;
+            if (corridorIdx < 2 && Math.abs(s - 0.5) < 0.07) continue;
             const gz = lerp(zStart - 3.0, zEnd + 3.0, s);
             const cx = getCorridorRiverCenterX(corridorIdx, gz);
             const ry = getCorridorRiverElevationY(corridorIdx, gz);
@@ -7627,11 +7513,10 @@
         }
         if (elProgressPercent) {
             const sectorNames = [
-                '01 / 05 · Cruz del Sur',
-                '02 / 05 · Unidades',
-                '03 / 05 · Campamentos',
-                '04 / 05 · El Baúl',
-                '05 / 05 · Bases y Contacto'
+                '01 / 04 · Cruz del Sur',
+                '02 / 04 · Unidades',
+                '03 / 04 · Campamentos',
+                '04 / 04 · El Baúl'
             ];
             elProgressPercent.textContent = sectorNames[activeSectorIdx] || `0${activeSectorIdx + 1} / 0${SECTORS.length}`;
         }
@@ -7726,16 +7611,116 @@
         ctx.fill();
 
         // ---------------------------------------------------------------------
-        // B. HILO SUTIL ENTRE SECTORES DEL MAPA ESTELAR
+        // B. NEBULOSAS ATMOSFÉRICAS MULTICAPA Y RETÍCULAS DE CARTA ASTRONÓMICA POR SECTOR
         // ---------------------------------------------------------------------
+        const sectorNebulaPalettes = [
+            // Sector I (Cruz del Sur): carmesí imperial y azul profundo
+            {
+                outer: 'rgba(30, 64, 175, 0.045)',
+                mid: 'rgba(176, 35, 36, 0.068)',
+                inner: 'rgba(220, 38, 38, 0.042)',
+                offsetX: -55,
+                offsetY: 45
+            },
+            // Sector II (Unidades): turquesa / esmeralda estelar
+            {
+                outer: 'rgba(16, 185, 129, 0.038)',
+                mid: 'rgba(56, 189, 248, 0.058)',
+                inner: 'rgba(125, 211, 252, 0.042)',
+                offsetX: 60,
+                offsetY: -35
+            },
+            // Sector III (Campamentos): ámbar / dorado cálido
+            {
+                outer: 'rgba(217, 119, 6, 0.038)',
+                mid: 'rgba(245, 158, 11, 0.054)',
+                inner: 'rgba(253, 224, 71, 0.036)',
+                offsetX: -45,
+                offsetY: -40
+            },
+            // Sector IV (El Baúl): índigo / zafiro
+            {
+                outer: 'rgba(59, 130, 246, 0.040)',
+                mid: 'rgba(99, 102, 241, 0.058)',
+                inner: 'rgba(165, 180, 252, 0.040)',
+                offsetX: 45,
+                offsetY: 35
+            }
+        ];
+
         ctx.save();
+        SECTORS.forEach((sec, idx) => {
+            const sc = worldToScreen(sec.worldX, sec.worldY);
+            const rOuter = Math.max(120, 420 * camera.zoom);
+            const rInner = Math.max(70, 240 * camera.zoom);
+
+            if (sc.x < -rOuter * 1.4 || sc.x > vw + rOuter * 1.4 ||
+                sc.y < -rOuter * 1.4 || sc.y > vh + rOuter * 1.4) {
+                return;
+            }
+
+            const pal = sectorNebulaPalettes[idx] || sectorNebulaPalettes[0];
+
+            // Capa 1: Nebulosa exterior difusa (420 * camera.zoom)
+            const gNeb1 = ctx.createRadialGradient(sc.x, sc.y, 0, sc.x, sc.y, rOuter);
+            gNeb1.addColorStop(0, pal.mid);
+            gNeb1.addColorStop(0.52, pal.outer);
+            gNeb1.addColorStop(1, 'rgba(4, 4, 6, 0)');
+            ctx.fillStyle = gNeb1;
+            ctx.beginPath();
+            ctx.arc(sc.x, sc.y, rOuter, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Capa 2: Núcleo desplazado de polvo estelar (240 * camera.zoom)
+            const nx = sc.x + pal.offsetX * camera.zoom;
+            const ny = sc.y + pal.offsetY * camera.zoom;
+            const gNeb2 = ctx.createRadialGradient(nx, ny, 0, nx, ny, rInner);
+            gNeb2.addColorStop(0, pal.inner);
+            gNeb2.addColorStop(0.55, pal.outer);
+            gNeb2.addColorStop(1, 'rgba(4, 4, 6, 0)');
+            ctx.fillStyle = gNeb2;
+            ctx.beginPath();
+            ctx.arc(nx, ny, rInner, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Retícula astronómica sutil de carta de navegación celeste (radio 210 * camera.zoom + marcas cardinales)
+            if (!superZoomState) {
+                const retR = 210 * camera.zoom;
+                ctx.save();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([3, 7]);
+                ctx.beginPath();
+                ctx.arc(sc.x, sc.y, retR, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // 4 Marcas cardinales sutiles (N, S, E, W)
+                const tickLen = 9 * clamp(camera.zoom, 0.6, 1.4);
+                ctx.beginPath();
+                // Norte y Sur
+                ctx.moveTo(sc.x, sc.y - retR - tickLen);
+                ctx.lineTo(sc.x, sc.y - retR + tickLen);
+                ctx.moveTo(sc.x, sc.y + retR - tickLen);
+                ctx.lineTo(sc.x, sc.y + retR + tickLen);
+                // Este y Oeste
+                ctx.moveTo(sc.x - retR - tickLen, sc.y);
+                ctx.lineTo(sc.x - retR + tickLen, sc.y);
+                ctx.moveTo(sc.x + retR - tickLen, sc.y);
+                ctx.lineTo(sc.x + retR + tickLen, sc.y);
+                ctx.stroke();
+                ctx.restore();
+            }
+        });
+
+        // Hilo sutil entre los 4 sectores del Mapa Estelar
         ctx.beginPath();
         SECTORS.forEach((sec, idx) => {
             const sc = worldToScreen(sec.worldX, sec.worldY);
             if (idx === 0) ctx.moveTo(sc.x, sc.y);
             else ctx.lineTo(sc.x, sc.y);
         });
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
         ctx.lineWidth = 1;
         ctx.setLineDash([4, 10]);
         ctx.stroke();
@@ -7899,7 +7884,7 @@
         }
 
         // ---------------------------------------------------------------------
-        // E. LÍNEAS DE CONSTELACIÓN (BLANCO PURO CON TOQUE ROJO MUY SUTIL)
+        // E. LÍNEAS ASTRONÓMICAS RECTAS CON DEGRADADO LINEAL ENTRE NODOS
         // ---------------------------------------------------------------------
         for (let i = 0; i < worldEdges.length; i++) {
             const ed = worldEdges[i];
@@ -7919,62 +7904,55 @@
             const dyC = pointer.lerpY - my;
             const dMid = Math.hypot(dxC, dyC);
 
-            let bendX = 0;
-            let bendY = 0;
             if (!superZoomState && dMid < 160) {
                 const inf = Math.pow(1 - dMid / 160, 1.6);
-                bendX = dxC * inf * 0.28;
-                bendY = dyC * inf * 0.28;
                 ed.glow += (inf - ed.glow) * 0.2;
             } else {
                 ed.glow += (0 - ed.glow) * 0.1;
             }
 
-            ed.vx += (bendX - ed.ctrlX) * 0.14;
-            ed.vy += (bendY - ed.ctrlY) * 0.14;
-            ed.vx *= 0.78;
-            ed.vy *= 0.78;
-            ed.ctrlX += ed.vx;
-            ed.ctrlY += ed.vy;
-
             const isFocusedSector = ed.sectorIndex === activeSectorIdx;
-            const alpha = Math.min(0.92, (isFocusedSector ? 0.52 : 0.2) + ed.glow * 0.42);
+            const alphaEnd = Math.min(0.92, (isFocusedSector ? 0.58 : 0.24) + ed.glow * 0.38);
+            const alphaMid = Math.min(0.75, alphaEnd * 0.42);
 
             ctx.save();
             ctx.beginPath();
             ctx.moveTo(ax, ay);
-            ctx.quadraticCurveTo(mx + ed.ctrlX, my + ed.ctrlY, bx, by);
+            ctx.lineTo(bx, by);
 
-            let edgeStroke = `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
+            let rgbBase = '255, 255, 255';
             let edgeShadow = 'rgba(255, 255, 255, 0.55)';
 
             if (anniversaryLerp > 0.2) {
-                edgeStroke = `rgba(212, 175, 55, ${alpha.toFixed(3)})`;
+                rgbBase = '212, 175, 55';
                 edgeShadow = 'rgba(212, 175, 55, 0.65)';
             } else if (ed.sectorIndex === 3) {
                 // Brillo cian estelar para «El Baúl» y sus cajones
-                edgeStroke = `rgba(186, 230, 253, ${alpha.toFixed(3)})`;
+                rgbBase = '186, 230, 253';
                 edgeShadow = 'rgba(56, 189, 248, 0.55)';
             } else if (ed.sectorIndex === 2 || ed.clusterType === 'camp') {
                 const isEasterEdge = (ed.nodeA && ed.nodeA.seasonType === 'easter') || (ed.nodeB && ed.nodeB.seasonType === 'easter');
                 if (isEasterEdge) {
-                    // Resplandor primaveral / Pascua (jade estelar fresco / aguamarina)
-                    edgeStroke = `rgba(167, 243, 208, ${alpha.toFixed(3)})`;
+                    rgbBase = '167, 243, 208';
                     edgeShadow = 'rgba(110, 231, 183, 0.65)';
                 } else {
-                    // Resplandor estival de verano (dorado estelar / blanco puro)
-                    edgeStroke = `rgba(255, 246, 230, ${alpha.toFixed(3)})`;
+                    rgbBase = '255, 246, 230';
                     edgeShadow = 'rgba(255, 215, 140, 0.60)';
                 }
             } else if (ed.sectorIndex === 0) {
                 edgeShadow = 'rgba(217, 56, 58, 0.45)';
             }
 
-            ctx.strokeStyle = edgeStroke;
-            ctx.lineWidth = (isFocusedSector ? 1.45 : 0.85) + ed.glow * 1.1;
+            const lineGrad = ctx.createLinearGradient(ax, ay, bx, by);
+            lineGrad.addColorStop(0, `rgba(${rgbBase}, ${alphaEnd.toFixed(3)})`);
+            lineGrad.addColorStop(0.5, `rgba(${rgbBase}, ${alphaMid.toFixed(3)})`);
+            lineGrad.addColorStop(1, `rgba(${rgbBase}, ${alphaEnd.toFixed(3)})`);
+
+            ctx.strokeStyle = lineGrad;
+            ctx.lineWidth = (isFocusedSector ? 1.4 : 0.85) + ed.glow * 1.05;
             if (ed.glow > 0.08 || isFocusedSector) {
                 ctx.shadowColor = edgeShadow;
-                ctx.shadowBlur = 8 + ed.glow * 10;
+                ctx.shadowBlur = 7 + ed.glow * 9;
             }
             ctx.stroke();
             ctx.restore();
@@ -8006,7 +7984,7 @@
         }
 
         // ---------------------------------------------------------------------
-        // F. DIBUJO DE ESTRELLAS (COLORES EN UNIDADES, ROJO ACRUX EN «EL BAÚL», BLANCO EN CAMPAMENTOS Y CAJONES)
+        // F. DIBUJO DE ESTRELLAS (HALO + DESTELLO ÓPTICO 4-POINT STARBURST)
         // ---------------------------------------------------------------------
         for (let i = 0; i < worldNodes.length; i++) {
             const nd = worldNodes[i];
@@ -8055,6 +8033,74 @@
             ctx.beginPath();
             ctx.arc(sx, sy, glowR, 0, Math.PI * 2);
             ctx.fill();
+
+            // Agujas de difracción óptica de 4 puntas (4-Point Starbursts) en estrellas principales
+            if ((nd.isMainCross || nd.isClusterHub || nd.isBaulMain) && nd.id !== 'acrux') {
+                const spikeLength = r * (4.2 + nd.hover * 1.4);
+                const spikeAlpha = clamp((isHovered || isSelectedInSector ? 0.86 : 0.62) + nd.hover * 0.24, 0.35, 0.96);
+                const spikeCoreRGB = anniversaryLerp > 0.35
+                    ? '255, 243, 176'
+                    : (nd.isRedStar ? '255, 163, 158' : '255, 255, 255');
+
+                ctx.save();
+                ctx.lineWidth = Math.max(1.1, r * 0.17);
+                ctx.lineCap = 'round';
+
+                // Aguja horizontal con gradiente lineal afilado
+                const gHoriz = ctx.createLinearGradient(sx - spikeLength, sy, sx + spikeLength, sy);
+                gHoriz.addColorStop(0, `rgba(${spikeCoreRGB}, 0)`);
+                gHoriz.addColorStop(0.38, `rgba(${spikeCoreRGB}, ${(spikeAlpha * 0.32).toFixed(3)})`);
+                gHoriz.addColorStop(0.5, `rgba(255, 255, 255, ${spikeAlpha.toFixed(3)})`);
+                gHoriz.addColorStop(0.62, `rgba(${spikeCoreRGB}, ${(spikeAlpha * 0.32).toFixed(3)})`);
+                gHoriz.addColorStop(1, `rgba(${spikeCoreRGB}, 0)`);
+                ctx.strokeStyle = gHoriz;
+                ctx.beginPath();
+                ctx.moveTo(sx - spikeLength, sy);
+                ctx.lineTo(sx + spikeLength, sy);
+                ctx.stroke();
+
+                // Aguja vertical con gradiente lineal afilado
+                const gVert = ctx.createLinearGradient(sx, sy - spikeLength, sx, sy + spikeLength);
+                gVert.addColorStop(0, `rgba(${spikeCoreRGB}, 0)`);
+                gVert.addColorStop(0.38, `rgba(${spikeCoreRGB}, ${(spikeAlpha * 0.32).toFixed(3)})`);
+                gVert.addColorStop(0.5, `rgba(255, 255, 255, ${spikeAlpha.toFixed(3)})`);
+                gVert.addColorStop(0.62, `rgba(${spikeCoreRGB}, ${(spikeAlpha * 0.32).toFixed(3)})`);
+                gVert.addColorStop(1, `rgba(${spikeCoreRGB}, 0)`);
+                ctx.strokeStyle = gVert;
+                ctx.beginPath();
+                ctx.moveTo(sx, sy - spikeLength);
+                ctx.lineTo(sx, sy + spikeLength);
+                ctx.stroke();
+
+                // Agujas diagonales suaves en hover o selección activa
+                if (nd.hover > 0.05 || isSelectedInSector) {
+                    const diagL = spikeLength * 0.56 * (isSelectedInSector ? Math.max(0.65, nd.hover) : nd.hover);
+                    const diagAlpha = spikeAlpha * 0.55;
+                    ctx.lineWidth = Math.max(0.9, r * 0.12);
+
+                    const gDiag1 = ctx.createLinearGradient(sx - diagL, sy - diagL, sx + diagL, sy + diagL);
+                    gDiag1.addColorStop(0, `rgba(${spikeCoreRGB}, 0)`);
+                    gDiag1.addColorStop(0.5, `rgba(255, 255, 255, ${diagAlpha.toFixed(3)})`);
+                    gDiag1.addColorStop(1, `rgba(${spikeCoreRGB}, 0)`);
+                    ctx.strokeStyle = gDiag1;
+                    ctx.beginPath();
+                    ctx.moveTo(sx - diagL, sy - diagL);
+                    ctx.lineTo(sx + diagL, sy + diagL);
+                    ctx.stroke();
+
+                    const gDiag2 = ctx.createLinearGradient(sx - diagL, sy + diagL, sx + diagL, sy - diagL);
+                    gDiag2.addColorStop(0, `rgba(${spikeCoreRGB}, 0)`);
+                    gDiag2.addColorStop(0.5, `rgba(255, 255, 255, ${diagAlpha.toFixed(3)})`);
+                    gDiag2.addColorStop(1, `rgba(${spikeCoreRGB}, 0)`);
+                    ctx.strokeStyle = gDiag2;
+                    ctx.beginPath();
+                    ctx.moveTo(sx - diagL, sy + diagL);
+                    ctx.lineTo(sx + diagL, sy - diagL);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            }
 
             // Resplandor monumental y destellos celestiales para α Acrux (Estrella Guía del Grupo)
             if (nd.id === 'acrux') {
