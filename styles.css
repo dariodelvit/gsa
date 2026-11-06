@@ -3561,25 +3561,25 @@ body.anniversary-50-mode .hud-scroll-fill {
    ========================================================================== */
 #unitSuperZoomOverlay.unit-orbit-world-view {
     overflow: hidden;
-    background: #1B4F72;
+    background: #0284C7;
     user-select: none;
 }
 
-/* Fondos atmosféricos diurnos realistas por cada Mundo / Planeta de Unidad */
+/* Fondos atmosféricos diurnos luminosos, vivos y vibrantes por cada Mundo de Unidad */
 #unitSuperZoomOverlay[data-unit-world="castores"] {
-    background: radial-gradient(circle at 50% 38%, #6FA8DC 0%, #2E6B9E 55%, #153B5C 100%);
+    background: radial-gradient(circle at 50% 28%, #BAE6FD 0%, #38BDF8 42%, #0284C7 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="manada"] {
-    background: radial-gradient(circle at 50% 38%, #6AA39E 0%, #2C5E63 55%, #132E35 100%);
+    background: radial-gradient(circle at 50% 28%, #A7F3D0 0%, #34D399 42%, #059669 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="tropa"] {
-    background: radial-gradient(circle at 50% 38%, #62A89B 0%, #26615B 55%, #11302E 100%);
+    background: radial-gradient(circle at 50% 28%, #A5F3FC 0%, #22D3EE 42%, #0284C7 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="escultas"] {
-    background: radial-gradient(circle at 50% 38%, #73A5C6 0%, #2E5B82 55%, #16304A 100%);
+    background: radial-gradient(circle at 50% 28%, #FED7AA 0%, #60A5FA 45%, #1D4ED8 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="clan"] {
-    background: radial-gradient(circle at 50% 38%, #7FB3D5 0%, #29628A 55%, #12324A 100%);
+    background: radial-gradient(circle at 50% 28%, #E0F2FE 0%, #38BDF8 40%, #0369A1 100%);
 }
 
 .unit-orbit-webgl-wrap {
@@ -3599,8 +3599,8 @@ body.anniversary-50-mode .hud-scroll-fill {
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(180deg, rgba(6, 16, 28, 0.42) 0%, rgba(6, 16, 28, 0.0) 22%, rgba(6, 16, 28, 0.05) 70%, rgba(6, 16, 28, 0.62) 100%),
-        radial-gradient(circle at 50% 50%, transparent 52%, rgba(6, 16, 28, 0.28) 100%);
+        linear-gradient(180deg, rgba(8, 20, 36, 0.28) 0%, rgba(8, 20, 36, 0.0) 18%, rgba(8, 20, 36, 0.0) 78%, rgba(8, 20, 36, 0.38) 100%),
+        radial-gradient(circle at 50% 50%, transparent 64%, rgba(8, 20, 36, 0.18) 100%);
     pointer-events: none;
 }
 
