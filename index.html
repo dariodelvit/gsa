@@ -3,86 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Grupo Scout ACRUX 518 · Valladolid (ASDE Exploradores de Castilla y León). Descubre nuestro cielo de constelaciones, las 5 unidades, campamentos, historia y objetos perdidos.">
-    <title>Grupo Scout ACRUX 518 · Valladolid | Desde 1977</title>
+    <meta name="description" content="Grupo Scout ACRUX 518 · Valladolid (ASDE Exploradores de Castilla y León). Mapa estelar interactivo: Cruz del Sur (Historia, Bases y Contacto), Unidades, Campamentos y El Baúl.">
+    <title>ACRUX 518 · Mapa Estelar Interactivo | Grupo Scout Valladolid</title>
     <link rel="icon" type="image/svg+xml" href="images/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=5.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=6.0">
 </head>
 <body class="cosmos-body">
 
 <!-- ======================================================================
-     1. MAPA DE CONSTELACIONES (CIELO NOCTURNO INTERACTIVO)
+     1. CANVAS ESTELAR 100VW x 100VH (MOTOR DE CONSTELACIONES Y SUPER-ZOOM)
      ====================================================================== -->
-<canvas id="cosmosCanvas" aria-label="Mapa de constelaciones interactivo del Grupo Scout ACRUX 518"></canvas>
+<canvas id="cosmosCanvas" aria-label="Mapa estelar interactivo del Grupo Scout ACRUX 518"></canvas>
 
+<!-- ======================================================================
+     2. GRANO CINEMATOGRÁFICO, VIÑETA Y DESTELLO DE SUPER-ZOOM
+     ====================================================================== -->
 <div class="film-grain-overlay" aria-hidden="true"></div>
 <div class="vignette-abyss-overlay" aria-hidden="true"></div>
 <div class="star-dive-flash" id="starDiveFlash" aria-hidden="true"></div>
 
-<!-- Cursor suave para el mapa estelar -->
+<!-- ======================================================================
+     3. CURSOR MAGNÉTICO PERSONALIZADO
+     ====================================================================== -->
 <div class="cosmos-cursor-dot" id="cosmosCursorDot" aria-hidden="true"></div>
 <div class="cosmos-cursor-ring" id="cosmosCursorRing" aria-hidden="true">
     <span class="cosmos-cursor-label" id="cosmosCursorLabel"></span>
 </div>
 
 <!-- ======================================================================
-     2. BARRA DE NAVEGACIÓN SUPERIOR (DISEÑO WEB LIMPIO Y NATURAL)
+     4. CABECERA HUD PROFESIONAL Y SCOUT
      ====================================================================== -->
 <header class="cosmos-hud-top">
     <div class="hud-brand-group cosmos-interactive">
-        <button type="button" class="hud-brand-trigger" id="btnHomeConstellation" title="Ir al inicio · Cruz del Sur (Acrux 518)">
+        <button type="button" class="hud-brand-trigger" id="btnHomeConstellation" title="Volver a la Cruz del Sur (Acrux α)">
             <div class="hud-logo-orb">
                 <img src="images/logo.svg" alt="Flor de Lis ACRUX 518">
             </div>
             <div class="hud-brand-meta">
-                <span class="hud-brand-name">Grupo Scout <em>Acrux 518</em></span>
-                <span class="hud-brand-coords" id="hudCoordsReadout">Valladolid · Desde 1977</span>
+                <span class="hud-brand-name">ACRUX <em>518</em></span>
+                <span class="hud-brand-coords" id="hudCoordsReadout">VALLADOLID · DESDE 1977</span>
             </div>
         </button>
     </div>
 
-    <!-- Navegación principal por constelaciones -->
-    <nav class="hud-constellation-nav cosmos-interactive" aria-label="Secciones principales">
+    <!-- Navegación por Sectores del Mapa Estelar (4 Sectores Optimizados) -->
+    <nav class="hud-constellation-nav cosmos-interactive" aria-label="Sectores del Mapa Estelar">
         <button type="button" class="hud-nav-node active" data-sector="0">
-            <span class="node-roman">✦</span>
-            <span class="node-label">El Grupo · Acrux</span>
+            <span class="node-roman">I</span>
+            <span class="node-label">Cruz del Sur</span>
         </button>
         <button type="button" class="hud-nav-node" data-sector="1">
-            <span class="node-roman">⚜️</span>
-            <span class="node-label">Las 5 Unidades</span>
+            <span class="node-roman">II</span>
+            <span class="node-label">Unidades</span>
         </button>
         <button type="button" class="hud-nav-node" data-sector="2">
-            <span class="node-roman">🏕️</span>
+            <span class="node-roman">III</span>
             <span class="node-label">Campamentos</span>
         </button>
         <button type="button" class="hud-nav-node" data-sector="3">
-            <span class="node-roman">📦</span>
+            <span class="node-roman">IV</span>
             <span class="node-label">El Baúl</span>
         </button>
     </nav>
 
     <div class="hud-actions-right cosmos-interactive">
-        <button type="button" class="hud-btn-overview" id="btnToggleOverview" title="Ver el cielo completo (Tecla M)">
-            <svg class="hud-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            <span id="overviewBtnText">Vista General</span>
-        </button>
-        <button type="button" class="hud-btn-cta" id="btnQuickContactTop">
-            <span>Ven un sábado</span>
+        <button type="button" class="hud-btn-overview" id="btnToggleOverview" title="Ver el Mapa Estelar Global completo (Tecla M)">
+            <svg class="hud-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span id="overviewBtnText">Mapa Global</span>
         </button>
     </div>
 </header>
 
 <!-- ======================================================================
-     3. TARJETA EDITORIAL DE LA CONSTELACIÓN ACTUAL
+     5. ESCENARIO EDITORIAL DE CRISTAL (TARJETA MAESTRA DEL SECTOR ACTUAL)
      ====================================================================== -->
 <main class="cosmos-stage-viewport" id="cosmosStageViewport" aria-live="polite">
     <article class="constellation-stage-panel" id="constellationStagePanel">
         <div class="stage-meta-line">
-            <span class="stage-index-tag" id="stageIndexTag">Constelación de la Cruz del Sur</span>
-            <span class="stage-altitude-tag" id="stageSubtitleTag">Valladolid · Desde 1977</span>
+            <span class="stage-index-tag" id="stageIndexTag">SECTOR I / IV · CRUX AUSTRALIS</span>
+            <span class="stage-altitude-tag" id="stageSubtitleTag">VALLADOLID · DESDE 1977</span>
         </div>
 
         <h1 class="stage-giant-heading" id="stageHeading">
@@ -90,16 +92,16 @@
         </h1>
 
         <p class="stage-description" id="stageDescription">
-            La Cruz del Sur preside nuestra insignia desde 1977. Haz clic en cualquier estrella del cielo o usa los botones inferiores para abrir su página.
+            Haz scroll para recorrer el firmamento o haz clic directamente en cualquier estrella para entrar en ella mediante Super-Zoom.
         </p>
 
-        <!-- Botones de cada estrella de la constelación actual -->
-        <div class="stage-star-nodes cosmos-interactive" id="stageStarNodes" role="tablist" aria-label="Estrellas de la constelación"></div>
+        <!-- Botones limpios de cada estrella del sector actual -->
+        <div class="stage-star-nodes cosmos-interactive" id="stageStarNodes" role="tablist" aria-label="Estrellas del sector"></div>
 
         <!-- Acción Principal Directa -->
         <div class="stage-action-row cosmos-interactive" id="stageActionRow">
             <button type="button" class="btn-cosmos-primary" id="btnStagePrimaryAction">
-                <span id="btnStagePrimaryText">Conocer el Grupo, Base y Contacto</span>
+                <span id="btnStagePrimaryText">Entrar con Super-Zoom</span>
                 <svg class="btn-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
         </div>
@@ -107,142 +109,137 @@
 </main>
 
 <!-- ======================================================================
-     4. PÁGINA WEB DE UNIDAD (DISEÑO EDITORIAL REAL, CÁLIDO Y SIN 3D)
+     6. VISTA ESTELAR DE UNIDAD (ESTÉTICA NOCTURNA DE ESTRELLA · SIN 3D)
      ====================================================================== -->
-<section class="star-tab-view unit-editorial-page-view" id="unitSuperZoomOverlay" data-unit-world="castores" aria-hidden="true">
-    <!-- Barra de navegación fija de la página -->
+<section class="star-tab-view star-tab-unit-view" id="unitSuperZoomOverlay" data-unit-world="castores" aria-hidden="true">
     <header class="star-tab-topbar">
         <button type="button" class="star-tab-back-btn" id="btnCloseUnitZoom">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-            <span>Volver al Mapa de Constelaciones</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Volver a la Constelación de Unidades <kbd>ESC</kbd>
         </button>
 
-        <div class="star-tab-switcher" id="uzSwitchPills" role="tablist" aria-label="Cambiar de Unidad"></div>
+        <div class="star-tab-switcher" id="uzSwitchPills" role="tablist" aria-label="Pestañas de Unidades"></div>
 
         <div class="star-tab-coords">
-            <span id="uzStarCoords">Las 5 Unidades</span>
+            <span class="star-tab-status-dot unit-status-dot"></span>
+            <span id="uzStarCoords">ESTRELLA 01 / 05 · UNIDADES</span>
         </div>
     </header>
 
-    <!-- Cabecera nocturna conectada con la estrella + Fotografía oficial -->
-    <div class="web-page-hero unit-web-hero">
-        <div class="web-page-hero-inner">
-            <div class="unit-web-hero-text">
-                <div class="uz-hero-top-meta">
-                    <span class="sz-constellation-badge" id="uzConstellationName">✦ Colonia Ohiensis</span>
+    <div class="star-tab-container">
+        <!-- HERO DE LA UNIDAD: AMBIENTACIÓN, LEY Y FOTOGRAFÍA OFICIAL -->
+        <div class="star-tab-hero unit-colored-hero">
+            <div class="unit-hero-info-col">
+                <div class="star-tab-meta-row">
+                    <span class="sz-constellation-badge" id="uzConstellationName">✦ ESTRELLA I · COLONIA OHIENSIS</span>
                     <span class="sz-age-pill" id="uzAgePill">6 a 8 años</span>
                     <span class="sz-motto-banner" id="uzMotto">Lema: «Compartir»</span>
-                    <a href="#" target="_blank" rel="noopener" class="unit-social-btn" id="uzSocialBtn" style="display: none;" title="Ver Instagram de la unidad">
+                    <a href="#" target="_blank" rel="noopener" class="unit-social-btn" id="uzSocialBtn" style="display: none;" title="Ver perfil oficial de Instagram">
                         <svg class="social-ig-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                         <span id="uzSocialLabel">@unidad</span>
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
                     </a>
                 </div>
 
-                <p class="unit-web-kicker" id="uzWorldBiomeTag">Rama Educativa · Grupo Scout Acrux 518</p>
-                <h2 class="unit-web-title" id="uzTitle">Castores · Colonia Ohiensis</h2>
-                <p class="unit-web-lead" id="uzLead"></p>
-
-                <blockquote class="unit-web-quote" id="uzQuoteBanner"></blockquote>
+                <p class="unit-kicker-line" id="uzWorldBiomeTag">PRIMERA ETAPA EDUCATIVA · DE 6 A 8 AÑOS</p>
+                <h2 class="sz-unit-title" id="uzTitle">Castores · Colonia Ohiensis</h2>
+                <p class="sz-unit-lead" id="uzLead"></p>
+                <blockquote class="unit-law-quote" id="uzQuoteBanner"></blockquote>
             </div>
 
-            <div class="unit-web-hero-photo">
-                <div class="unit-photo-card" id="uzHeroVisual"></div>
+            <div class="unit-hero-visual-col" id="uzHeroVisual"></div>
+        </div>
+
+        <!-- 01 · METODOLOGÍA Y ETAPAS DE PROGRESIÓN -->
+        <div class="unit-progression-section">
+            <div class="sz-section-header">
+                <div>
+                    <span class="sz-section-index">✦ 01 · METODOLOGÍA Y PROGRESIÓN</span>
+                    <h3 id="uzLoreHeading">Marco Simbólico y Etapas del Camino</h3>
+                    <p>Cómo vivimos la aventura cada sábado y acampada a través de las etapas de progresión de la rama</p>
+                </div>
             </div>
+            <div class="sz-pillars-list unit-pillars-grid" id="uzPillarsList"></div>
         </div>
-    </div>
 
-    <!-- Cuerpo de la página web (Fondo cálido, limpio y de lectura natural) -->
-    <div class="web-page-content">
-        <div class="web-page-container">
-
-            <!-- SECCIÓN 1: METODOLOGÍA Y ETAPAS DE PROGRESIÓN -->
-            <section class="web-content-section">
-                <div class="web-section-header">
-                    <span class="web-section-kicker">Metodología y Marco Simbólico</span>
-                    <h3 class="web-section-title" id="uzLoreHeading">Cómo vivimos la aventura y etapas del camino</h3>
-                    <p class="web-section-desc">A través del juego, la convivencia en naturaleza y el marco simbólico propio de la edad, cada joven avanza por sus etapas de progresión personal.</p>
+        <!-- 02 · LOS KRAALETES DE LA UNIDAD -->
+        <div class="unit-kraal-section" id="uzUnitKraalSection">
+            <div class="sz-section-header">
+                <div>
+                    <span class="sz-section-index">✦ 02 · LOS KRAALETES DE LA UNIDAD</span>
+                    <h3 id="uzKraalTitle">El Kraal y Personajes del Bosque</h3>
+                    <p id="uzKraalSub">Cromos coleccionables de los scouters y figuras del marco simbólico de esta rama</p>
                 </div>
-                <div class="web-pillars-grid" id="uzPillarsList"></div>
-            </section>
-
-            <!-- SECCIÓN 2: EL KRAAL Y PERSONAJES DE LA UNIDAD -->
-            <section class="web-content-section" id="uzUnitKraalSection">
-                <div class="web-section-header">
-                    <span class="web-section-kicker">Equipo de Scouters y Marco Simbólico</span>
-                    <h3 class="web-section-title" id="uzKraalTitle">El Kraal y Personajes de la Unidad</h3>
-                    <p class="web-section-desc" id="uzKraalSub">Los monitores (scouters) y personajes que acompañan a la unidad cada sábado y en cada campamento.</p>
-                </div>
-                <div class="kraaletes-cromos-grid" id="uzKraaletesGrid"></div>
-            </section>
-
-            <!-- SECCIÓN 3: SALIDAS, ACAMPADAS Y ÁLBUMES DE GOOGLE DRIVE -->
-            <section class="web-content-section" id="uzUnitCampsSection">
-                <div class="web-section-header">
-                    <span class="web-section-kicker" id="uzCampsIndex">Recuerdos y Fotografías de la Rama</span>
-                    <h3 class="web-section-title" id="uzCampsHeading">Salidas, Acampadas y Álbumes en Google Drive</h3>
-                    <p class="web-section-desc" id="uzCampsSub">Carpetas fotográficas de las salidas de fin de semana y acampadas de la unidad para las familias del grupo.</p>
-                </div>
-                <div class="unit-camps-grid" id="uzUnitCampsGrid"></div>
-            </section>
-
-            <!-- PIE DE PÁGINA DE LA UNIDAD (NAVEGACIÓN ENTRE RAMAS) -->
-            <footer class="web-page-footer-nav">
-                <button type="button" class="web-footer-btn is-secondary" id="uzPrevUnitBtn">
-                    ← Unidad anterior
-                </button>
-                <button type="button" class="web-footer-btn is-ghost" id="uzFooterBackToSkyBtn">
-                    ✦ Volver al cielo de constelaciones
-                </button>
-                <button type="button" class="web-footer-btn is-primary" id="uzNextUnitBtn">
-                    Siguiente unidad →
-                </button>
-            </footer>
-
+            </div>
+            <div class="kraaletes-cromos-grid" id="uzKraaletesGrid"></div>
         </div>
+
+        <!-- 03 · AVENTURAS, SALIDAS Y CAMPAMENTOS (GOOGLE DRIVE) -->
+        <div class="unit-camps-section" id="uzUnitCampsSection">
+            <div class="sz-section-header">
+                <div>
+                    <span class="sz-section-index" id="uzCampsIndex">✦ 03 · AVENTURAS, SALIDAS Y CAMPAMENTOS</span>
+                    <h3 id="uzCampsHeading">Álbumes Oficiales en Google Drive</h3>
+                    <p id="uzCampsSub">Subcarpetas de campamentos de rama y salidas de fin de semana con desbloqueo oficial</p>
+                </div>
+            </div>
+            <div class="unit-camps-grid" id="uzUnitCampsGrid"></div>
+        </div>
+
+        <!-- NAVEGACIÓN INFERIOR ENTRE ESTRELLAS DE UNIDAD -->
+        <footer class="unit-star-footer-nav">
+            <button type="button" class="star-tab-back-btn" id="uzPrevUnitBtn">
+                ← Unidad Anterior
+            </button>
+            <button type="button" class="star-tab-back-btn" id="uzFooterBackToSkyBtn">
+                ✦ Volver a la Constelación
+            </button>
+            <button type="button" class="btn-cosmos-primary" id="uzNextUnitBtn">
+                <span>Siguiente Unidad →</span>
+            </button>
+        </footer>
     </div>
 </section>
 
 <!-- ======================================================================
-     5. PÁGINA WEB DE CAMPAMENTOS (DISEÑO EDITORIAL LIMPIO)
+     7. TAB DE CAMPAMENTO COMPLETA
      ====================================================================== -->
 <section class="star-tab-view star-tab-camp-view" id="campSuperZoomOverlay" aria-hidden="true">
     <header class="star-tab-topbar">
         <button type="button" class="star-tab-back-btn" id="btnCloseCampZoom">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-            <span>Volver al Mapa de Constelaciones</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Volver al Cosmos <kbd>ESC</kbd>
         </button>
-        <div class="star-tab-switcher camp-switcher-dock" id="czCampSwitcher" role="tablist" aria-label="Cambiar de Campamento"></div>
+        <div class="star-tab-switcher camp-switcher-dock" id="czCampSwitcher" role="tablist" aria-label="Pestañas de Campamentos"></div>
         <div class="star-tab-coords">
             <span class="star-tab-status-dot"></span>
-            <span id="czSeasonPill">Campamentos de Grupo</span>
+            <span id="czSeasonPill">ESTRELLA DE CAMPAMENTO</span>
         </div>
     </header>
 
-    <!-- Cabecera del Campamento -->
-    <div class="web-page-hero camp-web-hero">
-        <div class="web-page-hero-inner">
+    <div class="star-tab-container">
+        <div class="star-tab-hero camp-drive-hero">
             <div class="camp-hero-info">
                 <div class="star-tab-meta-row">
-                    <span class="sz-constellation-badge camp-badge" id="czKicker">✦ Campamento de Grupo</span>
+                    <span class="sz-constellation-badge camp-badge" id="czKicker">✦ ESTRELLA DE CAMPAMENTO</span>
                     <span class="sz-age-pill" id="czLocationPill">📍 Lugar del Campamento</span>
-                    <span class="sz-motto-banner" id="czDriveFolderBadge">📁 Álbum en Google Drive</span>
+                    <span class="sz-motto-banner" id="czDriveFolderBadge">📁 Google Drive · Álbum Oficial</span>
                 </div>
-                <h2 class="unit-web-title" id="czTitle">Campamento</h2>
-                <p class="unit-web-lead" id="czDesc"></p>
+                <h2 class="sz-unit-title camp-main-title" id="czTitle">Campamento</h2>
+                <p class="sz-unit-lead camp-main-desc" id="czDesc"></p>
                 <div class="camp-highlights-pills">
-                    <span class="camp-hpill">🏕️ Convivencia en la naturaleza</span>
-                    <span class="camp-hpill">👥 Las 5 ramas del grupo</span>
-                    <span class="camp-hpill">📸 Álbum fotográfico para familias</span>
+                    <span class="camp-hpill">🏕️ Acampada en Tiendas / Albergue</span>
+                    <span class="camp-hpill">👥 5 Ramas Scout en Naturaleza</span>
+                    <span class="camp-hpill">🔒 Álbum Oficial Google Drive</span>
                 </div>
             </div>
 
             <div class="camp-drive-cta-box">
                 <div class="camp-vault-header">
-                    <span class="camp-drive-kicker">☁️ ÁLBUM COMPLETO EN GOOGLE DRIVE</span>
-                    <strong id="czDriveFolderTitle">Fotografías del Campamento</strong>
+                    <span class="camp-drive-kicker">☁️ BÓVEDA DE RECUERDOS · GOOGLE DRIVE</span>
+                    <strong id="czDriveFolderTitle">Álbum Completo del Campamento</strong>
                 </div>
-                <p class="camp-vault-desc">Introduce la contraseña facilitada a las familias para abrir la carpeta de Google Drive y ver o descargar todas las fotos del campamento.</p>
+                <p class="camp-vault-desc">Muestra previa de 3 fotos. Las familias pueden introducir la contraseña del campamento para desbloquear y descargar todas las fotografías en alta calidad.</p>
                 <div class="camp-unlock-form" id="czUnlockForm">
                     <div class="camp-unlock-input-wrap">
                         <div class="camp-input-with-icon">
@@ -250,7 +247,7 @@
                             <input type="password" id="czDrivePassInput" class="dossier-form-input camp-pass-input" placeholder="Contraseña del campamento...">
                         </div>
                         <button type="button" class="btn-cosmos-primary camp-drive-btn" id="czUnlockDriveBtn">
-                            <span>Abrir Álbum en Drive</span>
+                            <span>📂 Desbloquear Google Drive</span>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
                         </button>
                     </div>
@@ -258,129 +255,120 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Cuerpo blanco/cálido con las fotografías de muestra -->
-    <div class="web-page-content">
-        <div class="web-page-container">
-            <section class="web-content-section">
-                <div class="web-section-header">
-                    <span class="web-section-kicker">Muestra Fotográfica</span>
-                    <h3 class="web-section-title">Momentos destacados de la acampada</h3>
-                    <p class="web-section-desc" id="czPhotosSub">Fotografías extraídas del álbum oficial del campamento (haz clic en cualquier imagen para verla en grande).</p>
+        <div class="camp-three-photos-section">
+            <div class="sz-section-header">
+                <div>
+                    <span class="sz-section-index">📸 BITÁCORA GRÁFICA · 3 FOTOGRAFÍAS DESTACADAS</span>
+                    <h3>Momentos de la Expedición</h3>
+                    <p id="czPhotosSub">Vista previa extraída de la carpeta de Google Drive del campamento (haz clic en cualquier foto para ampliarla)</p>
                 </div>
-                <div class="camp-three-photos-grid" id="czThreePhotosGrid"></div>
-            </section>
+            </div>
+            <div class="camp-three-photos-grid" id="czThreePhotosGrid"></div>
         </div>
     </div>
 </section>
 
 <!-- ======================================================================
-     6. PÁGINA WEB DE «EL BAÚL» (OBJETOS PERDIDOS)
+     8. TAB DE LA ESTRELLA «EL BAÚL» (OBJETOS PERDIDOS)
      ====================================================================== -->
 <section class="star-tab-view star-tab-lost-view" id="lostSuperZoomOverlay" aria-hidden="true">
     <header class="star-tab-topbar">
         <button type="button" class="star-tab-back-btn" id="btnCloseLostZoom">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-            <span>Volver al Mapa de Constelaciones</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Salir al Cosmos <kbd>ESC</kbd>
         </button>
-        <div class="star-tab-switcher lost-cajon-switcher-dock" id="lzCajonSwitcher" role="tablist" aria-label="Cajones de Objetos Perdidos"></div>
+        <div class="star-tab-switcher lost-cajon-switcher-dock" id="lzCajonSwitcher" role="tablist" aria-label="Mini-Estrellas Cajones de Drive"></div>
         <div class="star-tab-coords">
             <span class="star-tab-status-dot lost-dot"></span>
-            <span id="lzFolderCoords">El Baúl · Objetos Perdidos</span>
+            <span id="lzFolderCoords">✦ SECTOR IV · EL BAÚL DE MATERIAL PERDIDO</span>
         </div>
     </header>
 
-    <!-- Cabecera de El Baúl -->
-    <div class="web-page-hero lost-web-hero">
-        <div class="web-page-hero-inner">
+    <div class="star-tab-container">
+        <div class="star-tab-hero lost-superstar-hero">
             <div class="lost-hero-info">
                 <div class="star-tab-meta-row">
-                    <span class="sz-constellation-badge lost-badge">📦 Servicio para Familias</span>
+                    <span class="sz-constellation-badge lost-badge">📦 SISTEMA DE MATERIAL PERDIDO</span>
                     <span class="sz-age-pill" id="lzActiveFolderPill">📁 Carpeta Drive: Cajón 01</span>
                 </div>
-                <h2 class="unit-web-title">El Baúl de Objetos Perdidos</h2>
-                <p class="unit-web-lead">En los campamentos y salidas siempre aparece ropa o material sin marcar. Aquí publicamos las fotos sincronizadas desde Google Drive para que podáis identificarlo y recogerlo el sábado en la base.</p>
+                <h2 class="sz-unit-title lost-main-title">El Baúl · <span class="ice-italic">Objetos Perdidos</span></h2>
+                <p class="sz-unit-lead lost-main-desc">En los campamentos y salidas siempre aparece material sin identificar. Cada <strong>Mini-Estrella (Cajón)</strong> corresponde a una carpeta viva de <strong>Google Drive</strong> para que las familias puedan reclamarlas.</p>
                 <div class="lost-key-cards-grid">
-                    <div class="lost-key-card"><span class="lost-key-icon">📍</span><div><strong>Dónde recogerlo</strong><span>Base Acrux · Crtra. de Rueda, 53</span></div></div>
-                    <div class="lost-key-card"><span class="lost-key-icon">🕓</span><div><strong>Horario de entrega</strong><span>Sábados de 16:30 a 19:00 h</span></div></div>
-                    <div class="lost-key-card"><span class="lost-key-icon">💬</span><div><strong>Reserva en 1 clic</strong><span>Avisa por WhatsApp desde cada prenda</span></div></div>
+                    <div class="lost-key-card"><span class="lost-key-icon">📍</span><div><strong>Punto de Recogida</strong><span>Base Acrux · Crtra. de Rueda, 53</span></div></div>
+                    <div class="lost-key-card"><span class="lost-key-icon">🕓</span><div><strong>Horario de Entrega</strong><span>Sábados 16:30 a 19:00 h</span></div></div>
+                    <div class="lost-key-card"><span class="lost-key-icon">💬</span><div><strong>Reclamación Rápida</strong><span>Avisa en 1 clic por WhatsApp</span></div></div>
                 </div>
             </div>
 
             <div class="lost-cajones-constellation-box">
                 <div class="cajones-map-header">
-                    <span>Carpetas de Acampadas (Cajones)</span>
+                    <span>✦ CAJONES DE MATERIAL (CARPETAS DRIVE)</span>
                     <a href="https://drive.google.com" target="_blank" rel="noopener" class="cajon-drive-ext-link" id="lzOpenDriveFolderBtn">
-                        Abrir en Google Drive ↗
+                        📂 Abrir Carpeta en Google Drive ↗
                     </a>
                 </div>
                 <div class="cajones-ministar-map" id="lzMiniStarsMap"></div>
             </div>
         </div>
-    </div>
 
-    <!-- Cuerpo blanco/cálido con buscador, filtros y prendas -->
-    <div class="web-page-content">
-        <div class="web-page-container">
-            <section class="web-content-section">
-                <div class="lost-gallery-header">
-                    <div>
-                        <span class="web-section-kicker" id="lzCurrentCajonIndex">Carpeta seleccionada</span>
-                        <h3 class="web-section-title" id="lzCurrentCajonTitle">Cajón 01 · Campamento de Verano</h3>
-                        <p class="web-section-desc" id="lzCurrentCajonSub">Fotografías sincronizadas de la carpeta de objetos perdidos</p>
-                    </div>
-                    <div class="lost-gallery-controls">
-                        <div class="lost-search-input-wrap">
-                            <span class="lost-search-icon">🔎</span>
-                            <input type="text" id="lzPhotoSearch" class="dossier-form-input lost-search-input" placeholder="Buscar sudadera, cantimplora, botas...">
-                            <button type="button" class="lost-search-clear-btn" id="lzClearSearchBtn" title="Limpiar búsqueda" style="display:none;">✕</button>
-                        </div>
+        <div class="lost-cajon-gallery-section">
+            <div class="sz-section-header lost-gallery-header">
+                <div>
+                    <span class="sz-section-index" id="lzCurrentCajonIndex">MINI-ESTRELLA ACTIVA · CARPETA GOOGLE DRIVE</span>
+                    <h3 id="lzCurrentCajonTitle">Cajón 01 · Campamento de Verano</h3>
+                    <p id="lzCurrentCajonSub">Fotografías sincronizadas de la carpeta de objetos perdidos</p>
+                </div>
+                <div class="lost-gallery-controls">
+                    <div class="lost-search-input-wrap">
+                        <span class="lost-search-icon">🔎</span>
+                        <input type="text" id="lzPhotoSearch" class="dossier-form-input lost-search-input" placeholder="Buscar sudadera, cantimplora, botas...">
+                        <button type="button" class="lost-search-clear-btn" id="lzClearSearchBtn" title="Limpiar búsqueda" style="display:none;">✕</button>
                     </div>
                 </div>
+            </div>
 
-                <div class="lost-filter-chips-row" id="lzCategoryFilters">
-                    <button type="button" class="lost-filter-chip active" data-cat="all">Todas las prendas</button>
-                    <button type="button" class="lost-filter-chip" data-cat="ropa">👕 Ropa y Sudaderas</button>
-                    <button type="button" class="lost-filter-chip" data-cat="cantimplora">💧 Cantimploras y Menaje</button>
-                    <button type="button" class="lost-filter-chip" data-cat="calzado">👟 Calzado y Botas</button>
-                    <button type="button" class="lost-filter-chip" data-cat="saco">⛺ Sacos y Aislantes</button>
-                </div>
+            <div class="lost-filter-chips-row" id="lzCategoryFilters">
+                <button type="button" class="lost-filter-chip active" data-cat="all">✦ Todas las prendas</button>
+                <button type="button" class="lost-filter-chip" data-cat="ropa">👕 Ropa y Sudaderas</button>
+                <button type="button" class="lost-filter-chip" data-cat="cantimplora">💧 Cantimploras y Menaje</button>
+                <button type="button" class="lost-filter-chip" data-cat="calzado">👟 Calzado y Botas</button>
+                <button type="button" class="lost-filter-chip" data-cat="saco">⛺ Sacos y Aislantes</button>
+            </div>
 
-                <div id="lzClaimBanner" class="lost-claim-banner" style="display:none;"></div>
-                <div class="lost-photos-grid" id="lzPhotosGrid"></div>
-            </section>
+            <div id="lzClaimBanner" class="lost-claim-banner" style="display:none;"></div>
+            <div class="lost-photos-grid" id="lzPhotosGrid"></div>
         </div>
     </div>
 </section>
 
 <!-- ======================================================================
-     7. BARRA INFERIOR DEL MAPA DE CONSTELACIONES
+     9. HUD INFERIOR MINIMALISTA (4 SECTORES)
      ====================================================================== -->
 <footer class="cosmos-hud-bottom">
     <div class="hud-bottom-nav-container cosmos-interactive">
-        <button type="button" class="hud-nav-arrow-btn" id="btnPrevSector" aria-label="Constelación anterior">
+        <button type="button" class="hud-nav-arrow-btn" id="btnPrevSector" aria-label="Sector Anterior">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             <span class="arrow-text">Anterior</span>
         </button>
 
         <div class="hud-scroll-rail-wrap">
             <div class="hud-scroll-labels">
-                <span id="hudScrollHint">Haz clic en cualquier estrella para abrir su página</span>
-                <span id="hudProgressPercent">1 de 4 · El Grupo (Cruz del Sur)</span>
+                <span id="hudScrollHint">HAZ SCROLL O CLIC EN UNA ESTRELLA PARA ENTRAR EN ELLA</span>
+                <span id="hudProgressPercent">01 / 04 · Cruz del Sur</span>
             </div>
-            <div class="hud-scroll-track" id="hudScrollTrack" role="slider" aria-label="Progreso del mapa de constelaciones" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+            <div class="hud-scroll-track" id="hudScrollTrack" role="slider" aria-label="Progreso del mapa estelar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
                 <div class="hud-scroll-fill" id="hudScrollFill"></div>
                 <div class="hud-scroll-ticks" id="hudScrollTicks">
-                    <button type="button" class="rail-tick active" data-sector="0" title="El Grupo · Cruz del Sur (Acrux)"></button>
-                    <button type="button" class="rail-tick" data-sector="1" title="Las 5 Unidades"></button>
-                    <button type="button" class="rail-tick" data-sector="2" title="Campamentos"></button>
-                    <button type="button" class="rail-tick" data-sector="3" title="El Baúl · Objetos Perdidos"></button>
+                    <button type="button" class="rail-tick active" data-sector="0" title="I · Cruz del Sur (Acrux)"></button>
+                    <button type="button" class="rail-tick" data-sector="1" title="II · Unidades"></button>
+                    <button type="button" class="rail-tick" data-sector="2" title="III · Campamentos"></button>
+                    <button type="button" class="rail-tick" data-sector="3" title="IV · El Baúl"></button>
                 </div>
             </div>
         </div>
 
-        <button type="button" class="hud-nav-arrow-btn" id="btnNextSector" aria-label="Siguiente constelación">
+        <button type="button" class="hud-nav-arrow-btn" id="btnNextSector" aria-label="Sector Siguiente">
             <span class="arrow-text">Siguiente</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
@@ -388,39 +376,35 @@
 </footer>
 
 <!-- ======================================================================
-     8. PÁGINA WEB DE «EL GRUPO · ACRUX 518» (HISTORIA, BASE, HORARIOS Y CONTACTO)
+     10. MODAL PROFUNDO: IDENTIDAD, HISTORIA, BASES, COORDINACIÓN Y CONTACTO
      ====================================================================== -->
 <div class="cosmos-drawer-backdrop" id="cosmosDrawerBackdrop" aria-hidden="true">
     <div class="cosmos-drawer-modal" role="dialog" aria-modal="true" aria-labelledby="drawerModalTitle">
-        <header class="star-tab-topbar drawer-page-topbar">
-            <button type="button" class="star-tab-back-btn" id="btnCloseDrawer" aria-label="Volver al mapa">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                <span>Volver al Mapa de Constelaciones</span>
+        <div class="drawer-modal-header">
+            <div>
+                <span class="drawer-kicker" id="drawerModalKicker">EXPEDIENTE ESTELAR · ACRUX 518</span>
+                <h2 class="drawer-title" id="drawerModalTitle">Detalle</h2>
+            </div>
+            <button type="button" class="drawer-close-btn" id="btnCloseDrawer" aria-label="Cerrar ventana">
+                ✕ Cerrar <kbd>ESC</kbd>
             </button>
-            <div class="drawer-topbar-center">
-                <span class="drawer-kicker" id="drawerModalKicker">Grupo Scout Acrux 518 · Valladolid</span>
-                <h2 class="drawer-title" id="drawerModalTitle">El Grupo, Base y Contacto</h2>
-            </div>
-            <div class="star-tab-coords">
-                <span>Desde 1977</span>
-            </div>
-        </header>
+        </div>
         <div class="drawer-modal-body" id="drawerModalBody"></div>
     </div>
 </div>
 
 <!-- ======================================================================
-     9. MODAL DE RECUERDO DEL 50º ANIVERSARIO (1976 - 2026)
+     11. MODAL DE CRISTAL: RECUERDO DEL 50º ANIVERSARIO (1976 - 2026)
      ====================================================================== -->
 <div class="anniversary-modal-backdrop" id="anniversaryModal" aria-hidden="true">
     <div class="anniversary-modal-card" role="dialog" aria-modal="true" aria-labelledby="anYearTitle">
         <header class="anniversary-modal-header">
             <div>
-                <span class="anniversary-year-tag" id="anYearTag">50º Aniversario · Acrux 518</span>
+                <span class="anniversary-year-tag" id="anYearTag">50º ANIVERSARIO · ACRUX 518</span>
                 <span class="anniversary-year-display" id="anYearNumber">1977</span>
             </div>
             <button type="button" class="anniversary-close-btn" id="btnCloseAnniversaryModal" aria-label="Cerrar ventana">
-                ✕ Cerrar
+                ✕ Cerrar <kbd>ESC</kbd>
             </button>
         </header>
         <div class="anniversary-modal-body">
@@ -429,8 +413,8 @@
             <p class="anniversary-memory-desc" id="anYearDesc"></p>
             <footer class="anniversary-modal-footer">
                 <span class="anniversary-drive-badge" id="anDriveBadge">📁 Google Drive: 05_50_ANIVERSARIO</span>
-                <a href="https://drive.google.com" target="_blank" rel="noopener" class="btn-cosmos-primary" id="anDriveBtn" style="padding: 0.5rem 1.05rem; font-size: 0.82rem;">
-                    <span>Ver carpeta en Google Drive ↗</span>
+                <a href="https://drive.google.com" target="_blank" rel="noopener" class="btn-cosmos-primary" id="anDriveBtn" style="padding: 0.45rem 0.95rem; font-size: 0.78rem;">
+                    <span>Ver en Google Drive ↗</span>
                 </a>
             </footer>
         </div>
@@ -438,12 +422,12 @@
 </div>
 
 <!-- ======================================================================
-     10. VISOR DE FOTOGRAFÍAS EN PANTALLA COMPLETA (LIGHTBOX)
+     12. VISOR DE FOTOGRAFÍAS EN PANTALLA COMPLETA (LIGHTBOX)
      ====================================================================== -->
 <div class="cosmos-lightbox-backdrop" id="cosmosLightbox" aria-hidden="true">
     <div class="cosmos-lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="cosmosLightboxTitle">
         <button type="button" class="cosmos-lightbox-close" id="btnCloseLightbox" aria-label="Cerrar visor de fotografía">
-            ✕ Cerrar foto
+            ✕ Cerrar <kbd>ESC</kbd>
         </button>
         <div class="cosmos-lightbox-frame">
             <img src="" alt="Fotografía ampliada" id="cosmosLightboxImg">
@@ -455,6 +439,6 @@
     </div>
 </div>
 
-<script src="script.js?v=5.0"></script>
+<script src="script.js?v=6.0"></script>
 </body>
 </html>

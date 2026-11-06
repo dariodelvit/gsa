@@ -580,19 +580,19 @@
         {
             index: 0,
             roman: 'I',
-            code: 'Constelación de la Cruz del Sur',
-            subtitle: 'Valladolid · Desde 1977',
-            coords: 'Valladolid · Desde 1977',
+            code: 'SECTOR I / IV · CRUX AUSTRALIS (LA CRUZ DEL SUR)',
+            subtitle: 'ESTRELLA GUÍA · VALLADOLID (DESDE 1977)',
+            coords: 'VALLADOLID · DESDE 1977',
             headingHTML: 'Cruz del Sur <span class="ice-italic">Acrux 518</span>',
-            desc: 'La Cruz del Sur preside nuestra insignia desde 1977. En su base brilla Acrux, la estrella que da nombre a nuestro grupo en Valladolid. Entra en Acrux para conocer nuestra historia, la base de Carretera de Rueda 53, el equipo de Coordinación y cómo venir a probar un sábado.',
+            desc: 'La Cruz del Sur preside nuestra insignia desde 1977. En su pie brilla Acrux, el faro guía de nuestro grupo en Valladolid. Entra en Acrux para descubrir nuestra historia, la Base de Carretera de Rueda 53, Coordinación y cómo venir a probar un sábado.',
             worldX: 0,
             worldY: 0,
             baseZoom: 1.06,
-            primaryBtnText: 'Conocer el Grupo, Base y Contacto',
+            primaryBtnText: '✦ Entrar en Acrux · Historia, Base y Contacto',
             stars: [
                 {
                     id: 'acrux',
-                    symbol: '✦ Acrux · El Grupo',
+                    symbol: '✦ α Acrux (Faro Guía)',
                     dx: 12,
                     dy: 172,
                     r: 12.0,
@@ -601,9 +601,9 @@
                     isMainCross: true,
                     isMainAcrux: true,
                     isClickable: true,
-                    badge: 'Estrella Principal · El Grupo',
-                    title: 'Acrux 518 · Historia, Base y Contacto',
-                    body: 'Situada en el pie de la Cruz del Sur, Acrux es la estrella guía de los exploradores. Desde 1977 da nombre al Grupo Scout Nº 518 en Valladolid.',
+                    badge: 'Estrella Principal · Base de la Cruz',
+                    title: 'α Crucis (Acrux) · El Faro que Nos Da Nombre',
+                    body: 'Situada en el pie meridional de la Cruz del Sur, Acrux es la estrella guía de los navegantes y exploradores. Desde 1977 da nombre y rumbo al Grupo Scout Nº 518 en Valladolid.',
                     pillars: ['Fundado en Valladolid en 1977', 'ASDE Exploradores de Castilla y León', 'Educación en Valores']
                 },
                 {
@@ -659,43 +659,43 @@
         {
             index: 1,
             roman: 'II',
-            code: 'Constelación de las Unidades',
-            subtitle: 'Cinco Ramas Educativas · De 6 a 21 años',
-            coords: 'Ramas de 6 a 21 años',
+            code: 'SECTOR II / IV · LÍNEA DE LAS UNIDADES',
+            subtitle: 'CINCO RAMAS EDUCATIVAS · DE 6 A 21 AÑOS',
+            coords: 'DE 6 A 21 AÑOS · 5 UNIDADES',
             headingHTML: 'El Camino de <span class="ice-italic">las Unidades</span>',
-            desc: 'Cinco estrellas trazan nuestro recorrido educativo desde los 6 hasta los 21 años: Castores (Colonia Ohiensis), Lobatos (Manada Khanhiwara), Tropa (Lohengrin), Escultas (Trea) y Clan Rover (Ama Dablam). Haz clic en cada estrella para abrir la página de la unidad.',
+            desc: 'Cinco estrellas trazan nuestro camino educativo desde los 6 hasta los 21 años: Colonia Ohiensis, Manada Khanhiwara, Tropa Lohengrin, Unidad Esculta Trea y Clan Rover Ama Dablam. Entra en cada estrella para conocer su marco simbólico, sus Kraaletes y sus salidas.',
             worldX: UNITS_ORIGIN_X,
             worldY: UNITS_ORIGIN_Y,
             baseZoom: 1.0,
-            primaryBtnText: 'Ver página de la Unidad'
+            primaryBtnText: '✦ Entrar en la Estrella de esta Unidad'
         },
         {
             index: 2,
             roman: 'III',
-            code: 'Constelación de Campamentos',
-            subtitle: 'Acampadas de Verano y Semana Santa',
-            coords: 'Álbumes Fotográficos',
-            headingHTML: 'Nuestros <span class="ice-italic">Campamentos</span>',
-            desc: 'Cada estrella guarda los recuerdos de nuestras acampadas de verano y Semana Santa en plena naturaleza. Haz clic en cualquier campamento para ver sus fotos destacadas y abrir el álbum completo en Google Drive.',
+            code: 'SECTOR III / IV · CONSTELACIÓN DE CAMPAMENTOS',
+            subtitle: 'EXPEDICIONES DE VERANO Y SEMANA SANTA · GOOGLE DRIVE',
+            coords: 'ÁLBUMES FOTOGRÁFICOS · DRIVE',
+            headingHTML: 'Constelación de <span class="ice-italic">Campamentos</span>',
+            desc: 'Cada estrella guarda la memoria viva de nuestras acampadas de verano y Semana Santa en plena naturaleza. Explora ambas constelaciones para revivir las expediciones y desbloquear los álbumes fotográficos del grupo.',
             worldX: CAMPS_ORIGIN_X,
             worldY: CAMPS_ORIGIN_Y,
             baseZoom: 1.02,
-            primaryBtnText: 'Ver Campamento y Fotos',
+            primaryBtnText: '✦ Abrir Expediente y Álbum del Campamento',
             stars: [],
             edges: []
         },
         {
             index: 3,
             roman: 'IV',
-            code: 'Constelación de El Baúl',
-            subtitle: 'Objetos Perdidos en Salidas y Acampadas',
-            coords: 'Recogida en Carretera de Rueda, 53',
+            code: 'SECTOR IV / IV · CONSTELACIÓN «EL BAÚL» (OBJETOS PERDIDOS)',
+            subtitle: 'ARCHIVO DE MATERIAL PERDIDO · CARPETAS GOOGLE DRIVE',
+            coords: 'SEDE RUEDA 53 · SÁBADOS',
             headingHTML: 'El Baúl · <span class="ice-italic">Objetos Perdidos</span>',
-            desc: 'Aquí reunimos las prendas y el material sin identificar tras cada acampada y salida. Entra en «El Baúl» para revisar las carpetas de fotos sincronizadas con Google Drive y avisar por WhatsApp para recogerlo el sábado.',
+            desc: 'El archivo estelar donde reunimos las prendas y el material extraviado tras cada acampada y salida. Explora los cajones sincronizados con Google Drive para localizar tu equipo y reclamarlo antes del próximo sábado en la Base.',
             worldX: 420,
             worldY: 1580,
             baseZoom: 1.04,
-            primaryBtnText: 'Abrir «El Baúl» de Objetos Perdidos',
+            primaryBtnText: '✦ Abrir «El Baúl» de Objetos Perdidos',
             stars: [
                 {
                     id: 'estrella-el-baul',
@@ -1576,18 +1576,18 @@
             const progressEl = document.getElementById('hudProgressPercent');
             if (progressEl) {
                 const sectorNames = [
-                    '1 de 4 · El Grupo (Cruz del Sur)',
-                    '2 de 4 · Las 5 Unidades',
-                    '3 de 4 · Campamentos',
-                    '4 de 4 · El Baúl'
+                    '01 / 04 · Cruz del Sur',
+                    '02 / 04 · Unidades',
+                    '03 / 04 · Campamentos',
+                    '04 / 04 · El Baúl'
                 ];
-                progressEl.textContent = sectorNames[sIdx] || `${sIdx + 1} de 4`;
+                progressEl.textContent = sectorNames[sIdx] || `0${sIdx + 1} / 04`;
             }
 
             if (elStarNodesWrap) {
                 let items = [];
                 if (sIdx === 0) {
-                    items = [{ label: '✦ Acrux · Historia, Base y Contacto', idx: 0 }];
+                    items = [{ label: '✦ α Acrux (Estrella Principal · Faro Guía)', idx: 0 }];
                 } else if (sIdx === 1) {
                     items = UNITS_DATA.map((u, idx) => ({ label: u.shortName, idx }));
                 } else if (sIdx === 2) {
@@ -1731,7 +1731,7 @@
         if (loreHeading) loreHeading.textContent = pageMeta.loreHeading;
 
         const elStarCoords = document.getElementById('uzStarCoords');
-        if (elStarCoords) elStarCoords.textContent = `Unidad ${unitIdx + 1} de 5 · ${unit.shortName}`;
+        if (elStarCoords) elStarCoords.textContent = `ESTRELLA 0${unitIdx + 1} / 05 · ${unit.colorLabel || 'LÍNEA DE LAS UNIDADES'}`;
         document.getElementById('uzAgePill').textContent = unit.age;
         document.getElementById('uzConstellationName').textContent = `✦ ${unit.constellationTitle}`;
         document.getElementById('uzTitle').textContent = unit.fullName;
@@ -1775,19 +1775,19 @@
             }
         }
 
-        // 1 · METODOLOGÍA Y ETAPAS DE PROGRESIÓN
+        // 1 · METODOLOGÍA Y ETAPAS DE PROGRESIÓN (ESTÉTICA DE CRISTAL ESTELAR)
         const pillarsWrap = document.getElementById('uzPillarsList');
         if (pillarsWrap) {
             pillarsWrap.innerHTML = unit.pillars.map((p, idx) => `
-                <article class="web-pillar-card">
-                    <span class="web-pillar-num">Etapa 0${idx + 1}</span>
-                    <h4>${p.title}</h4>
-                    <p>${p.desc}</p>
-                </article>
+                <div class="sz-pillar-item">
+                    <span class="pillar-num-badge">ETAPA 0${idx + 1}</span>
+                    <strong>✦ ${p.title}</strong>
+                    <span>${p.desc}</span>
+                </div>
             `).join('');
         }
 
-        // 2 · LOS KRAALETES DE LA UNIDAD
+        // 2 · LOS KRAALETES DE LA UNIDAD (CROMOS 3/4 CON BRILLO HOLOGRÁFICO)
         const kraalWrap = document.getElementById('uzKraaletesGrid');
         if (kraalWrap) {
             kraalWrap.innerHTML = unit.kraaletes.map((k, kIdx) => {
@@ -1809,10 +1809,37 @@
                                 <strong class="cromo-label-name">${k.name}</strong>
                                 <span class="cromo-label-role">${k.role}</span>
                             </div>
+                            <div class="cromo-sheen" aria-hidden="true"></div>
                         </div>
                     </article>
                 `;
             }).join('');
+
+            kraalWrap.querySelectorAll('.kraalete-cromo-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotX = ((y - centerY) / centerY) * -10;
+                    const rotY = ((x - centerX) / centerX) * 10;
+                    const percentX = (x / rect.width) * 100;
+                    const percentY = (y / rect.height) * 100;
+                    const sheen = card.querySelector('.cromo-sheen');
+
+                    card.style.transform = `perspective(800px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+                    if (sheen) {
+                        sheen.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.08) 45%, transparent 70%)`;
+                        sheen.style.opacity = '1';
+                    }
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                    const sheen = card.querySelector('.cromo-sheen');
+                    if (sheen) sheen.style.opacity = '0';
+                });
+            });
         }
 
         // 3 · AVENTURAS, SALIDAS Y CAMPAMENTOS DE LA UNIDAD (DRIVE)
@@ -1985,7 +2012,8 @@
         populateUnitSuperZoomDOM(unitIdx);
 
         if (wasAlreadyOpen && elUnitZoomOverlay) {
-            elUnitZoomOverlay.scrollTo({ top: 0, behavior: 'smooth' });
+            const container = elUnitZoomOverlay.querySelector('.star-tab-container') || elUnitZoomOverlay;
+            container.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
@@ -2001,7 +2029,8 @@
             if (elUnitZoomOverlay) {
                 elUnitZoomOverlay.classList.add('is-open');
                 elUnitZoomOverlay.setAttribute('aria-hidden', 'false');
-                elUnitZoomOverlay.scrollTop = 0;
+                const container = elUnitZoomOverlay.querySelector('.star-tab-container') || elUnitZoomOverlay;
+                container.scrollTop = 0;
             }
         }, diveTime);
     }
@@ -2832,42 +2861,26 @@
                 window.open(waUrl, '_blank', 'noopener');
             });
         } else {
-            drawerKicker.textContent = 'Grupo Scout Acrux 518 · Valladolid (Desde 1977)';
-            drawerTitle.innerHTML = 'El Grupo, Base y Contacto';
+            drawerKicker.textContent = 'SECTOR I · CRUX AUSTRALIS · α ACRUX (ESTRELLA GUÍA)';
+            drawerTitle.innerHTML = 'Acrux 518 · <span class="ice-italic">Historia, Bases y Contacto</span>';
             drawerBody.innerHTML = `
-                <div class="web-page-hero acrux-web-hero">
-                    <div class="web-page-hero-inner">
-                        <div class="unit-web-hero-text">
-                            <div class="uz-hero-top-meta">
-                                <span class="sz-constellation-badge">⚜️ Fundado en Valladolid en 1977</span>
-                                <span class="sz-age-pill">De 6 a 21 años</span>
-                                <span class="sz-motto-banner">ASDE Exploradores de Castilla y León</span>
-                            </div>
-                            <p class="unit-web-kicker">Constelación de la Cruz del Sur · Estrella Guía</p>
-                            <h2 class="unit-web-title">Grupo Scout Acrux 518</h2>
-                            <p class="unit-web-lead">Llevamos casi medio siglo acompañando el crecimiento de niños, niñas y jóvenes en Valladolid a través del escultismo: aprender haciendo, vida en naturaleza, pequeños grupos y educación en valores.</p>
-                            <!-- Barra de Navegación Rápida Interna -->
-                            <nav class="drawer-anchor-nav" aria-label="Secciones de Acrux">
-                                <a href="#acrux-historia" class="drawer-anchor-pill">Nuestra Historia</a>
-                                <a href="#acrux-ramas" class="drawer-anchor-pill">Las 5 Unidades</a>
-                                <a href="#acrux-bases" class="drawer-anchor-pill">Dónde Estamos y Horario</a>
-                                <a href="#acrux-coordinacion" class="drawer-anchor-pill">Coordinación</a>
-                                <a href="#acrux-prueba" class="drawer-anchor-pill">Ven a probar un sábado</a>
-                                <a href="#acrux-redes" class="drawer-anchor-pill">Redes Sociales</a>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
+                <!-- Barra de Navegación Rápida Interna -->
+                <nav class="drawer-anchor-nav" aria-label="Secciones de Acrux">
+                    <a href="#acrux-historia" class="drawer-anchor-pill">✦ 01 · HISTORIA Y VALORES</a>
+                    <a href="#acrux-ramas" class="drawer-anchor-pill">🌲 02 · 5 RAMAS SCOUT</a>
+                    <a href="#acrux-bases" class="drawer-anchor-pill">📍 03 · BASES Y HORARIOS</a>
+                    <a href="#acrux-coordinacion" class="drawer-anchor-pill">👥 04 · COORDINACIÓN</a>
+                    <a href="#acrux-prueba" class="drawer-anchor-pill">🎒 05 · VEN A PROBAR</a>
+                    <a href="#acrux-redes" class="drawer-anchor-pill">📱 06 · REDES OFICIALES</a>
+                </nav>
 
-                <div class="web-page-content">
-                    <div class="web-page-container">
                 <div class="identity-modal-content">
                     <!-- 1. BLOQUE IDENTIDAD E HISTORIA -->
                     <div id="acrux-historia" class="bases-modal-section">
                         <div class="identity-hero-badge">
-                            <span class="bases-pill-badge">⚜️ Nuestra Identidad</span>
-                            <h3>¿Quiénes somos y por qué nos llamamos Acrux?</h3>
-                            <p>El significado de nuestra estrella guía y nuestra labor educativa en Valladolid:</p>
+                            <span class="bases-pill-badge">⚜️ FUNDADO EN VALLADOLID · DESDE 1977</span>
+                            <h3>Grupo Scout ACRUX Nº 518</h3>
+                            <p>El faro que nos da nombre y casi medio siglo de escultismo activo en Valladolid:</p>
                         </div>
 
                         <div class="identity-story-grid">
@@ -3102,13 +3115,11 @@
                         </div>
                     </div>
 
-                    <div style="margin-top: 2rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                        <button type="button" class="btn-cosmos-primary" id="btnIdentityToUnits" style="padding: 0.75rem 1.4rem;">
+                    <div style="margin-top: 1.4rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-cosmos-primary" id="btnIdentityToUnits" style="padding: 0.55rem 1.15rem;">
                             <span>Explorar las 5 Unidades</span>
                             <span class="btn-arrow">→</span>
                         </button>
-                    </div>
-                </div>
                     </div>
                 </div>
             `;
@@ -3501,12 +3512,12 @@
         }
         if (elProgressPercent) {
             const sectorNames = [
-                '1 de 4 · El Grupo (Cruz del Sur)',
-                '2 de 4 · Las 5 Unidades',
-                '3 de 4 · Campamentos',
-                '4 de 4 · El Baúl'
+                '01 / 04 · Cruz del Sur',
+                '02 / 04 · Unidades',
+                '03 / 04 · Campamentos',
+                '04 / 04 · El Baúl'
             ];
-            elProgressPercent.textContent = sectorNames[activeSectorIdx] || `${activeSectorIdx + 1} de ${SECTORS.length}`;
+            elProgressPercent.textContent = sectorNames[activeSectorIdx] || `0${activeSectorIdx + 1} / 0${SECTORS.length}`;
         }
 
         freePanX += (targetFreePanX - freePanX) * 0.085;

@@ -3597,615 +3597,96 @@ body.anniversary-50-mode .hud-scroll-fill {
     border-radius: 8px;
 }
 
+
 /* ==========================================================================
-   SISTEMA EDITORIAL WEB REAL, CÁLIDO Y NATURAL (CERO 3D · CERO CIBERNÉTICO)
-   Puente perfecto entre el Mapa de Constelaciones y Páginas Web Normales
+   VISTA ESTELAR DE UNIDAD (ESTÉTICA NOCTURNA DE ESTRELLA · SIN 3D)
+   Misma paleta oscura y luminiscencia estelar (--unit-accent / --unit-glow)
    ========================================================================== */
-
-/* 1. Humanizar el Mapa de Constelaciones (Adiós estética cibernética/monospace) */
-.hud-brand-coords,
-.node-roman,
-.hud-btn-overview,
-.stage-index-tag,
-.stage-altitude-tag,
-.hud-scroll-labels,
-.hud-nav-arrow-btn,
-.cosmos-cursor-label {
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    letter-spacing: 0.02em !important;
-    text-transform: none !important;
-}
-
-.hud-btn-cta {
-    background: #B02324;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #FFFFFF;
-    padding: 0.52rem 1.1rem;
-    border-radius: 999px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.22s ease;
-    box-shadow: 0 6px 18px rgba(176, 35, 36, 0.35);
-}
-
-.hud-btn-cta:hover {
-    background: #C92A2B;
-    transform: translateY(-1px);
-    box-shadow: 0 8px 22px rgba(176, 35, 36, 0.5);
-}
-
-.stage-index-tag {
-    font-size: 0.78rem !important;
-    font-weight: 600 !important;
-    color: #FCA5A5 !important;
-    background: rgba(176, 35, 36, 0.22) !important;
-    border: 1px solid rgba(248, 113, 113, 0.35) !important;
-    padding: 0.28rem 0.75rem !important;
-    border-radius: 999px !important;
-}
-
-.stage-altitude-tag {
-    font-size: 0.78rem !important;
-    font-weight: 500 !important;
-    color: rgba(255, 255, 255, 0.75) !important;
-}
-
-/* 2. Vistas de Estrella como Páginas Web Reales y Luminosas */
-.star-tab-view {
-    background: #F8F7F4 !important;
-    color: #1E293B !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    user-select: auto !important;
-}
-
-/* Modal de El Grupo (Acrux) convertido en Página Web Completa igual que las demás */
-.cosmos-drawer-backdrop {
-    padding: 0 !important;
-    background: #F8F7F4 !important;
-}
-
-.cosmos-drawer-modal {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-    border-radius: 0 !important;
-    border: none !important;
-    background: #F8F7F4 !important;
-    color: #1E293B !important;
-    display: flex !important;
-    flex-direction: column !important;
-    box-shadow: none !important;
-}
-
-.drawer-modal-body {
-    padding: 0 !important;
-    flex: 1 !important;
-    overflow-y: auto !important;
-    color: #1E293B !important;
-}
-
-/* 3. Barra de Navegación Superior Blanca y Limpia en todas las páginas interiores */
-.star-tab-topbar {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 50 !important;
-    background: rgba(255, 255, 255, 0.94) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border-bottom: 1px solid #E2E8F0 !important;
-    padding: 0.85rem 2.5rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 1rem !important;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
-}
-
-.star-tab-back-btn {
-    background: #F1F5F9 !important;
-    border: 1px solid #CBD5E1 !important;
-    color: #0F172A !important;
-    padding: 0.55rem 1.15rem !important;
-    border-radius: 999px !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-size: 0.84rem !important;
-    font-weight: 600 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    cursor: pointer !important;
-    transition: all 0.2s ease !important;
-    box-shadow: none !important;
-}
-
-.star-tab-back-btn:hover {
-    background: #0F172A !important;
-    color: #FFFFFF !important;
-    border-color: #0F172A !important;
-    transform: translateX(-2px) !important;
-}
-
-/* Pestañas de cambio de Unidad / Campamento / Cajón en la barra superior */
-.star-tab-topbar .star-node-chip {
-    background: #F1F5F9 !important;
-    border: 1px solid #E2E8F0 !important;
-    color: #475569 !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-size: 0.84rem !important;
-    font-weight: 600 !important;
-    padding: 0.48rem 1rem !important;
-    border-radius: 999px !important;
-    box-shadow: none !important;
-}
-
-.star-tab-topbar .star-node-chip:hover {
-    background: #E2E8F0 !important;
-    color: #0F172A !important;
-    transform: none !important;
-}
-
-.star-tab-topbar .star-node-chip.active {
-    background: #B02324 !important;
-    border-color: #B02324 !important;
-    color: #FFFFFF !important;
-    box-shadow: 0 4px 12px rgba(176, 35, 36, 0.25) !important;
-}
-
-.star-tab-coords {
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-size: 0.82rem !important;
-    font-weight: 600 !important;
-    color: #64748B !important;
-    letter-spacing: 0 !important;
-    text-transform: none !important;
-}
-
-.drawer-topbar-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.drawer-topbar-center .drawer-kicker {
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-size: 0.72rem !important;
-    font-weight: 600 !important;
-    color: #B02324 !important;
-    letter-spacing: 0.04em !important;
-    text-transform: uppercase !important;
-}
-
-.drawer-topbar-center .drawer-title {
-    font-family: 'Outfit', sans-serif !important;
-    font-size: 1.15rem !important;
-    font-weight: 700 !important;
-    color: #0F172A !important;
-    margin: 0 !important;
-}
-
-/* 4. Cabecera Hero Nocturna de cada Página (El puente visual con las Constelaciones) */
-.web-page-hero {
-    position: relative;
+.star-tab-unit-view {
     background:
-        radial-gradient(circle at 82% 22%, rgba(176, 35, 36, 0.24) 0%, transparent 48%),
-        radial-gradient(circle at 18% 80%, rgba(56, 189, 248, 0.14) 0%, transparent 50%),
-        linear-gradient(135deg, #0B1324 0%, #16233B 100%);
-    color: #FFFFFF;
-    padding: 3.8rem 2.5rem 4.2rem;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-    overflow: hidden;
+        radial-gradient(circle at 50% 0%, var(--unit-glow, rgba(56, 189, 248, 0.22)) 0%, rgba(8, 11, 18, 0.95) 48%, rgba(4, 5, 8, 0.99) 100%);
 }
 
-#unitSuperZoomOverlay[data-unit-world="castores"] .unit-web-hero {
-    background: radial-gradient(circle at 80% 25%, rgba(56, 189, 248, 0.25) 0%, transparent 52%), linear-gradient(135deg, #0C192C 0%, #162E47 100%);
-}
-#unitSuperZoomOverlay[data-unit-world="manada"] .unit-web-hero {
-    background: radial-gradient(circle at 80% 25%, rgba(245, 158, 11, 0.24) 0%, transparent 52%), linear-gradient(135deg, #171810 0%, #2B2616 100%);
-}
-#unitSuperZoomOverlay[data-unit-world="tropa"] .unit-web-hero {
-    background: radial-gradient(circle at 80% 25%, rgba(16, 185, 129, 0.24) 0%, transparent 52%), linear-gradient(135deg, #0B1F1D 0%, #143532 100%);
-}
-#unitSuperZoomOverlay[data-unit-world="escultas"] .unit-web-hero {
-    background: radial-gradient(circle at 80% 25%, rgba(217, 119, 6, 0.25) 0%, transparent 52%), linear-gradient(135deg, #1D1512 0%, #33221B 100%);
-}
-#unitSuperZoomOverlay[data-unit-world="clan"] .unit-web-hero {
-    background: radial-gradient(circle at 80% 25%, rgba(225, 29, 72, 0.26) 0%, transparent 52%), linear-gradient(135deg, #1D0E17 0%, #341625 100%);
+.star-tab-status-dot.unit-status-dot {
+    background: var(--unit-accent, #38BDF8);
+    box-shadow: 0 0 10px var(--unit-accent, #38BDF8);
 }
 
-.web-page-hero-inner {
-    max-width: 1220px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 3rem;
-    align-items: center;
-}
-
-.acrux-web-hero .web-page-hero-inner {
-    grid-template-columns: 1fr;
-    max-width: 960px;
-}
-
-.uz-hero-top-meta,
-.star-tab-meta-row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-bottom: 1.1rem;
-}
-
-.sz-constellation-badge,
-.sz-age-pill,
-.sz-motto-banner {
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-size: 0.78rem !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.01em !important;
-    text-transform: none !important;
-    padding: 0.35rem 0.85rem !important;
-    border-radius: 999px !important;
-}
-
-.unit-web-kicker {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.72);
+.unit-kicker-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.70rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--unit-accent, #38BDF8);
     margin: 0 0 0.45rem 0;
 }
 
-.unit-web-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: clamp(2.2rem, 4vw, 3.35rem);
-    font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    color: #FFFFFF;
-    margin: 0 0 1.1rem 0;
-}
-
-.unit-web-lead {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1.06rem;
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.88);
-    margin: 0 0 1.4rem 0;
-}
-
-.unit-web-quote {
-    margin: 0;
-    padding: 1rem 1.35rem;
-    background: rgba(255, 255, 255, 0.08);
-    border-left: 4px solid var(--unit-accent, #F59E0B);
-    border-radius: 0 14px 14px 0;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-style: italic;
-    font-size: 0.96rem;
-    line-height: 1.6;
-    color: #FFFFFF;
-}
-
-.unit-photo-card {
-    background: #FFFFFF;
-    padding: 0.65rem;
-    border-radius: 22px;
-    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
+.unit-hero-visual-col {
     cursor: pointer;
-    transition: transform 0.25s ease;
-}
-
-.unit-photo-card:hover {
-    transform: translateY(-4px);
-}
-
-.unit-photo-card img,
-.unit-photo-card svg {
-    width: 100%;
-    max-height: 390px;
-    object-fit: cover;
-    border-radius: 16px;
-    display: block;
 }
 
 .unit-photo-caption {
     display: block;
-    text-align: center;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #475569;
-    padding: 0.55rem 0.4rem 0.2rem;
-}
-
-/* 5. Cuerpo de la Página Web (Fondo claro, limpio, tarjetas blancas editoriales) */
-.web-page-content {
-    background: #F8F7F4;
-    color: #1E293B;
-    padding: 3.5rem 2.5rem 5rem;
-}
-
-.web-page-container {
-    max-width: 1220px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 4rem;
-}
-
-.web-content-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.75rem;
-}
-
-.web-section-header {
-    max-width: 760px;
-}
-
-.web-section-kicker {
-    display: inline-block;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
+    padding: 0.55rem 0.85rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
     letter-spacing: 0.06em;
-    color: #B02324;
-    background: rgba(176, 35, 36, 0.08);
-    padding: 0.3rem 0.75rem;
-    border-radius: 999px;
-    margin-bottom: 0.65rem;
+    color: rgba(255, 255, 255, 0.72);
+    background: rgba(4, 6, 12, 0.88);
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+    text-align: center;
 }
 
-.web-section-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: clamp(1.65rem, 2.6vw, 2.25rem);
-    font-weight: 700;
-    color: #0F172A;
-    margin: 0 0 0.5rem 0;
-    letter-spacing: -0.02em;
-}
-
-.web-section-desc {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1rem;
-    line-height: 1.65;
-    color: #475569;
-    margin: 0;
-}
-
-/* Tarjetas de Etapas y Metodología */
-.web-pillars-grid {
+/* Cuadrícula de Etapas y Metodología de la Unidad en Cristal Oscuro Estelar */
+.unit-pillars-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.35rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
 }
 
-.web-pillar-card {
-    background: #FFFFFF;
-    border: 1px solid #E2E8F0;
-    border-radius: 18px;
-    padding: 1.65rem;
-    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.web-pillar-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 32px -4px rgba(15, 23, 42, 0.09);
-}
-
-.web-pillar-num {
-    display: inline-block;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #B02324;
-    background: #FEF2F2;
-    border: 1px solid #FECACA;
-    padding: 0.22rem 0.65rem;
-    border-radius: 999px;
-    margin-bottom: 0.85rem;
-}
-
-.web-pillar-card h4 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.18rem;
-    font-weight: 700;
-    color: #0F172A;
-    margin: 0 0 0.5rem 0;
-}
-
-.web-pillar-card p {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.94rem;
-    line-height: 1.62;
-    color: #475569;
-    margin: 0;
-}
-
-/* Tarjetas de Kraaletes en estilo Web Limpio */
-.kraalete-cromo-card {
-    background: #FFFFFF !important;
-    border: 1px solid #E2E8F0 !important;
-    border-radius: 18px !important;
-    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06) !important;
-    overflow: hidden !important;
-}
-
-.cromo-fallback-content {
-    background: linear-gradient(145deg, #1E293B 0%, #0F172A 100%) !important;
-}
-
-/* Tarjetas de Salidas y Álbumes de Drive (Unidades y Campamentos) en Fondo Blanco */
-.unit-salida-card,
-.unit-camps-empty,
-.camp-photo-card,
-.lost-photo-card,
-.identity-story-card,
-.base-location-card,
-.coordinator-action-card,
-.step-card,
-.quick-signup-box,
-.group-social-card {
-    background: #FFFFFF !important;
-    border: 1px solid #E2E8F0 !important;
-    color: #1E293B !important;
-    border-radius: 20px !important;
-    box-shadow: 0 10px 28px -6px rgba(15, 23, 42, 0.06) !important;
-}
-
-.salida-title,
-.camp-photo-caption strong,
-.lost-photo-body h4,
-.identity-story-card h4,
-.base-location-card h4,
-.coord-name,
-.step-card strong,
-.quick-signup-box h4,
-.group-social-info strong,
-.bases-section-title-row h3,
-.identity-hero-badge h3 {
-    color: #0F172A !important;
-    font-family: 'Outfit', sans-serif !important;
-}
-
-.salida-desc,
-.camp-photo-caption span,
-.lost-photo-body p,
-.identity-story-card p,
-.identity-story-card li,
-.base-desc,
-.base-schedule,
-.coord-role,
-.coord-phone-text,
-.step-card p,
-.quick-signup-box p,
-.group-social-desc,
-.bases-section-title-row p,
-.identity-hero-badge p,
-.unit-camps-empty p,
-.unit-camps-empty h4 {
-    color: #475569 !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-}
-
-.salida-badge,
-.salida-location-tag,
-.salida-date-tag,
-.bases-pill-badge,
-.base-type-badge {
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.01em !important;
-    text-transform: none !important;
-    background: #F1F5F9 !important;
-    color: #334155 !important;
-    border: 1px solid #E2E8F0 !important;
-}
-
-.salida-unlock-box {
-    background: #F8FAFC !important;
-    border-top: 1px solid #E2E8F0 !important;
-}
-
-.web-page-content .dossier-form-input {
-    background: #FFFFFF !important;
-    border: 1px solid #CBD5E1 !important;
-    color: #0F172A !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-}
-
-.web-page-content .dossier-form-input:focus {
-    border-color: #B02324 !important;
-    box-shadow: 0 0 0 3px rgba(176, 35, 36, 0.12) !important;
-}
-
-.web-page-content .btn-cosmos-primary {
-    background: #B02324 !important;
-    color: #FFFFFF !important;
-    border-color: #B02324 !important;
-    box-shadow: 0 6px 18px rgba(176, 35, 36, 0.25) !important;
-}
-
-.web-page-content .btn-cosmos-primary:hover {
-    background: #991B1B !important;
-    border-color: #991B1B !important;
-}
-
-/* Buscador y chips de El Baúl en estilo Web Claro */
-.lost-gallery-header {
+.unit-pillars-grid .sz-pillar-item {
+    background: rgba(10, 14, 22, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-left: 3px solid var(--unit-accent, #38BDF8);
+    border-radius: 16px;
+    padding: 1.35rem 1.4rem;
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.lost-filter-chip {
-    background: #FFFFFF !important;
-    border: 1px solid #CBD5E1 !important;
-    color: #334155 !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-weight: 600 !important;
+.unit-pillars-grid .sz-pillar-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--unit-accent, #38BDF8);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 22px var(--unit-glow, rgba(56, 189, 248, 0.2));
 }
 
-.lost-filter-chip.active {
-    background: #0F172A !important;
-    border-color: #0F172A !important;
-    color: #FFFFFF !important;
+.pillar-num-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: var(--unit-accent, #38BDF8);
 }
 
-.lost-photo-footer {
-    border-top: 1px solid #F1F5F9 !important;
+.unit-pillars-grid .sz-pillar-item strong {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #FFFFFF;
 }
 
-.star-pillar-tag {
-    background: #F1F5F9 !important;
-    color: #475569 !important;
-    border: 1px solid #E2E8F0 !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
+.unit-pillars-grid .sz-pillar-item span {
+    font-size: 0.86rem;
+    line-height: 1.58;
+    color: var(--ice-grey);
 }
 
-/* Navegación interna de El Grupo · Acrux */
-.drawer-anchor-nav {
-    margin-top: 1.5rem !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 0.55rem !important;
-}
-
-.drawer-anchor-pill {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border: 1px solid rgba(255, 255, 255, 0.24) !important;
-    color: #FFFFFF !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-size: 0.84rem !important;
-    font-weight: 600 !important;
-    letter-spacing: 0 !important;
-    text-transform: none !important;
-    padding: 0.48rem 1rem !important;
-    border-radius: 999px !important;
-}
-
-.drawer-anchor-pill:hover {
-    background: #FFFFFF !important;
-    color: #0F172A !important;
-}
-
-/* Pie de página de navegación entre Unidades */
-.web-page-footer-nav {
-    margin-top: 1rem;
-    padding-top: 2rem;
-    border-top: 1px solid #E2E8F0;
+/* Pie de navegación inferior entre Unidades */
+.unit-star-footer-nav {
+    margin-top: 2.8rem;
+    padding-top: 1.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -4213,63 +3694,8 @@ body.anniversary-50-mode .hud-scroll-fill {
     gap: 1rem;
 }
 
-.web-footer-btn {
-    padding: 0.72rem 1.35rem;
-    border-radius: 999px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.web-footer-btn.is-secondary {
-    background: #FFFFFF;
-    border: 1px solid #CBD5E1;
-    color: #0F172A;
-}
-
-.web-footer-btn.is-secondary:hover {
-    background: #F1F5F9;
-}
-
-.web-footer-btn.is-ghost {
-    background: transparent;
-    border: 1px solid transparent;
-    color: #475569;
-}
-
-.web-footer-btn.is-ghost:hover {
-    color: #0F172A;
-    background: #E2E8F0;
-}
-
-.web-footer-btn.is-primary {
-    background: #0F172A;
-    border: 1px solid #0F172A;
-    color: #FFFFFF;
-}
-
-.web-footer-btn.is-primary:hover {
-    background: #B02324;
-    border-color: #B02324;
-}
-
 @media (max-width: 960px) {
-    .web-page-hero-inner {
+    .unit-colored-hero {
         grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    .star-tab-topbar {
-        padding: 0.75rem 1.25rem !important;
-    }
-    .web-page-hero,
-    .web-page-content {
-        padding-left: 1.25rem;
-        padding-right: 1.25rem;
     }
 }
-
-
-
-
