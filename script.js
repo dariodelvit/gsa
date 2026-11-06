@@ -584,7 +584,7 @@
             subtitle: 'ESTRELLA GUÍA · VALLADOLID (DESDE 1977)',
             coords: 'VALLADOLID · DESDE 1977',
             headingHTML: 'Cruz del Sur <span class="ice-italic">Acrux 518</span>',
-            desc: 'La Cruz del Sur preside nuestra insignia desde 1977. En su pie brilla Acrux, el faro guía de nuestro grupo en Valladolid. Entra en Acrux para descubrir nuestra historia, la Base de Carretera de Rueda 53, Coordinación y cómo venir a probar un sábado.',
+            desc: 'El faro que guía a nuestro grupo en Valladolid desde 1977. Entra en Acrux para descubrir nuestra historia, la Base de Rueda 53 y cómo venir un sábado.',
             worldX: 0,
             worldY: 0,
             baseZoom: 1.06,
@@ -663,7 +663,7 @@
             subtitle: 'CINCO RAMAS EDUCATIVAS · DE 6 A 21 AÑOS',
             coords: 'DE 6 A 21 AÑOS · 5 UNIDADES',
             headingHTML: 'El Camino de <span class="ice-italic">las Unidades</span>',
-            desc: 'Cinco estrellas trazan nuestro camino educativo desde los 6 hasta los 21 años: Colonia Ohiensis, Manada Khanhiwara, Tropa Lohengrin, Unidad Esculta Trea y Clan Rover Ama Dablam. Entra en cada estrella para conocer su marco simbólico, sus Kraaletes y sus salidas.',
+            desc: 'Cinco estrellas trazan nuestro camino educativo de 6 a 21 años: Castores, Manada, Tropa, Escultas y Clan. Haz clic en cualquier estrella para entrar.',
             worldX: UNITS_ORIGIN_X,
             worldY: UNITS_ORIGIN_Y,
             baseZoom: 1.0,
@@ -676,7 +676,7 @@
             subtitle: 'EXPEDICIONES DE VERANO Y SEMANA SANTA · GOOGLE DRIVE',
             coords: 'ÁLBUMES FOTOGRÁFICOS · DRIVE',
             headingHTML: 'Constelación de <span class="ice-italic">Campamentos</span>',
-            desc: 'Cada estrella guarda la memoria viva de nuestras acampadas de verano y Semana Santa en plena naturaleza. Explora ambas constelaciones para revivir las expediciones y desbloquear los álbumes fotográficos del grupo.',
+            desc: 'Nuestras acampadas de verano y Semana Santa en plena naturaleza. Haz clic en cualquier estrella para ver las fotos y abrir su álbum en Drive.',
             worldX: CAMPS_ORIGIN_X,
             worldY: CAMPS_ORIGIN_Y,
             baseZoom: 1.02,
@@ -691,7 +691,7 @@
             subtitle: 'ARCHIVO DE MATERIAL PERDIDO · CARPETAS GOOGLE DRIVE',
             coords: 'SEDE RUEDA 53 · SÁBADOS',
             headingHTML: 'El Baúl · <span class="ice-italic">Objetos Perdidos</span>',
-            desc: 'El archivo estelar donde reunimos las prendas y el material extraviado tras cada acampada y salida. Explora los cajones sincronizados con Google Drive para localizar tu equipo y reclamarlo antes del próximo sábado en la Base.',
+            desc: 'Prendas y material encontrado tras cada acampada. Entra en los cajones para localizar tu equipo y reclamarlo antes del sábado.',
             worldX: 420,
             worldY: 1580,
             baseZoom: 1.04,
@@ -2864,41 +2864,51 @@
             drawerKicker.textContent = 'SECTOR I · CRUX AUSTRALIS · α ACRUX (ESTRELLA GUÍA)';
             drawerTitle.innerHTML = 'Acrux 518 · <span class="ice-italic">Historia, Bases y Contacto</span>';
             drawerBody.innerHTML = `
-                <!-- Barra de Navegación Rápida Interna -->
-                <nav class="drawer-anchor-nav" aria-label="Secciones de Acrux">
-                    <a href="#acrux-historia" class="drawer-anchor-pill">✦ 01 · HISTORIA Y VALORES</a>
-                    <a href="#acrux-ramas" class="drawer-anchor-pill">🌲 02 · 5 RAMAS SCOUT</a>
-                    <a href="#acrux-bases" class="drawer-anchor-pill">📍 03 · BASES Y HORARIOS</a>
-                    <a href="#acrux-coordinacion" class="drawer-anchor-pill">👥 04 · COORDINACIÓN</a>
-                    <a href="#acrux-prueba" class="drawer-anchor-pill">🎒 05 · VEN A PROBAR</a>
-                    <a href="#acrux-redes" class="drawer-anchor-pill">📱 06 · REDES OFICIALES</a>
-                </nav>
-
                 <div class="identity-modal-content">
-                    <!-- 1. BLOQUE IDENTIDAD E HISTORIA -->
-                    <div id="acrux-historia" class="bases-modal-section">
-                        <div class="identity-hero-badge">
-                            <span class="bases-pill-badge">⚜️ FUNDADO EN VALLADOLID · DESDE 1977</span>
-                            <h3>Grupo Scout ACRUX Nº 518</h3>
-                            <p>El faro que nos da nombre y casi medio siglo de escultismo activo en Valladolid:</p>
+                    <!-- CABECERA FLOTANTE DE LA ESTRELLA ACRUX (SECCIÓN 1 A PANTALLA COMPLETA) -->
+                    <div class="acrux-floating-showcase" id="acrux-historia">
+                        <div class="acrux-floating-title-col">
+                            <div class="star-tab-meta-row">
+                                <span class="bases-pill-badge" style="margin:0;">✦ ESTRELLA α ACRUX · CRUZ DEL SUR</span>
+                                <span class="sz-age-pill">⚜️ Valladolid · Desde 1977</span>
+                                <span class="sz-age-pill">ASDE Castilla y León</span>
+                            </div>
+                            <h2 class="acrux-giant-title">Grupo Scout <span class="ice-italic">Acrux 518</span></h2>
+                            <p class="acrux-floating-lead">En la base de la Cruz del Sur brilla <strong>Acrux (Alfa Crucis)</strong>, la estrella más luminosa de la constelación que durante siglos ha guiado a navegantes y exploradores. Desde 1977 da nombre y rumbo a nuestro grupo scout en Valladolid.</p>
                         </div>
 
+                        <div class="acrux-floating-base-dock">
+                            <span class="acrux-dock-kicker">📍 SEDE OFICIAL · REUNIONES DE SÁBADO</span>
+                            <h3>Carretera de Rueda, 53 · Valladolid</h3>
+                            <p>🕓 <strong>Sábados de 16:30 a 19:00 h</strong> · Cinco ramas educativas de 6 a 21 años. ¡El primer sábado de prueba es gratuito!</p>
+                            <div class="acrux-dock-actions">
+                                <a href="#acrux-prueba" class="btn-cosmos-primary js-acrux-scroll" style="padding:0.55rem 1.15rem; font-size:0.82rem; text-decoration:none;">
+                                    <span>⚜️ Ven a Probar un Sábado</span>
+                                    <span class="btn-arrow">↓</span>
+                                </a>
+                                <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="star-tab-back-btn" style="text-decoration:none;">
+                                    <span>🗺️ Ver en Google Maps ↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1. CUADRÍCULA PANORÁMICA DE IDENTIDAD E HISTORIA -->
+                    <div class="bases-modal-section">
                         <div class="identity-story-grid">
                             <article class="identity-story-card">
                                 <div class="story-card-icon">✦</div>
                                 <div class="story-card-body">
                                     <h4>¿Por qué Acrux? · El Faro de los Exploradores</h4>
-                                    <p>En el firmamento brilla la constelación de la Cruz del Sur (Crux). En su base se encuentra <strong>Acrux (Alfa Crucis)</strong>, la estrella más luminosa de toda la constelación. Desde hace siglos, navegantes y exploradores han utilizado Acrux como la brújula celestial definitiva para orientarse hacia el sur verdadero cuando caía la noche.</p>
-                                    <p>Por eso, en 1977, nuestro grupo adoptó el nombre de <strong>ACRUX</strong>: el símbolo de una guía firme, de luz en la noche y de rumbo compartido.</p>
+                                    <p>En el pie meridional de la Cruz del Sur brilla <strong>Acrux (Alfa Crucis)</strong>. Desde 1977 nuestro grupo lleva su nombre como símbolo de guía firme, luz en la noche y rumbo compartido en cada acampada y proyecto.</p>
                                 </div>
                             </article>
 
                             <article class="identity-story-card">
                                 <div class="story-card-icon">⛺</div>
                                 <div class="story-card-body">
-                                    <h4>Casi 50 Años de Escultismo en Valladolid (1977 – 2026)</h4>
-                                    <p>Fundado en Valladolid en 1977, el Grupo Scout Acrux 518 lleva casi medio siglo acompañando el crecimiento de generaciones de niños, niñas y jóvenes a través del escultismo.</p>
-                                    <p>Basados en el método scout ideado por Baden-Powell —aprender haciendo, vida en pequeños grupos, contacto vivo con la naturaleza y servicio a la comunidad—, educamos en valores para formar personas libres, críticas y solidarias.</p>
+                                    <h4>Casi 50 Años en Valladolid (1977 – 2026)</h4>
+                                    <p>Basados en el método scout de Baden-Powell —aprender haciendo, vida en pequeños grupos, contacto vivo con la naturaleza y servicio—, educamos en valores para formar personas libres, críticas y solidarias.</p>
                                 </div>
                             </article>
 
@@ -2906,13 +2916,12 @@
                                 <div class="story-card-icon">🌲</div>
                                 <div class="story-card-body">
                                     <h4>Cinco Ramas Educativas de 6 a 21 Años</h4>
-                                    <p>Acompañamos a cada joven según su momento de desarrollo a lo largo de 5 etapas formativas continuas:</p>
-                                    <ul style="margin: 0.35rem 0 0 1.2rem; padding: 0; color: var(--ice-grey); font-size: 0.84rem; line-height: 1.6;">
-                                        <li><strong>Castores · Colonia Ohiensis</strong> (6 a 8 años) · Lema: <em>Compartir</em></li>
-                                        <li><strong>Manada · Khanhiwara</strong> (8 a 11 años) · Lema: <em>Haremos lo mejor</em></li>
-                                        <li><strong>Tropa · Lohengrin</strong> (11 a 14 años) · Lema: <em>Siempre Listos</em></li>
-                                        <li><strong>Unidad Esculta · Trea</strong> (14 a 17 años) · Lema: <em>Unidad</em></li>
-                                        <li><strong>Clan Rover · Ama Dablam</strong> (17 a 21 años) · Lema: <em>Servir</em></li>
+                                    <ul style="margin: 0.25rem 0 0 1.15rem; padding: 0; color: var(--ice-grey); font-size: 0.84rem; line-height: 1.65;">
+                                        <li><strong>Castores · Colonia Ohiensis</strong> (6–8 años) · <em>Compartir</em></li>
+                                        <li><strong>Manada · Khanhiwara</strong> (8–11 años) · <em>Haremos lo mejor</em></li>
+                                        <li><strong>Tropa · Lohengrin</strong> (11–14 años) · <em>Siempre Listos</em></li>
+                                        <li><strong>Unidad Esculta · Trea</strong> (14–17 años) · <em>Unidad</em></li>
+                                        <li><strong>Clan Rover · Ama Dablam</strong> (17–21 años) · <em>Servir</em></li>
                                     </ul>
                                 </div>
                             </article>
@@ -2921,18 +2930,18 @@
                                 <div class="story-card-icon">📍</div>
                                 <div class="story-card-body">
                                     <h4>Comunidad y Pertenencia Oficial</h4>
-                                    <p>Pertenecemos a <strong>ASDE Exploradores de Castilla y León</strong> y a la <strong>Federación de Scouts de España (ASDE)</strong>. Nuestras reuniones ordinarias tienen lugar todos los sábados de 16:30 a 19:00 h en nuestra base de <strong>Carretera de Rueda, 53 (Valladolid)</strong>.</p>
+                                    <p>Formamos parte de <strong>ASDE Exploradores de Castilla y León</strong> y de la <strong>Federación de Scouts de España (ASDE)</strong>, con reuniones todos los sábados lectivos en nuestra base de Carretera de Rueda, 53.</p>
                                 </div>
                             </article>
                         </div>
                     </div>
 
                     <!-- 2. BLOQUE BASES DEL GRUPO (SEDE OFICIAL RUEDA 53) -->
-                    <div id="acrux-bases" class="bases-modal-section" style="margin-top: 1.8rem;">
+                    <div id="acrux-bases" class="bases-modal-section" style="margin-top: 2.6rem;">
                         <div class="bases-section-title-row">
-                            <span class="bases-pill-badge">📍 03 · BASES DEL GRUPO</span>
-                            <h3>Sede Oficial de Acrux 518</h3>
-                            <p>Punto de encuentro semanal para las 5 ramas scout, actividades ordinarias y reuniones:</p>
+                            <span class="bases-pill-badge">📍 02 · BASE OFICIAL Y HORARIOS</span>
+                            <h3>Sede del Grupo Scout Acrux 518</h3>
+                            <p>Punto de encuentro semanal para las 5 ramas scout, actividades de sábado, asambleas de familias e intendencia:</p>
                         </div>
 
                         <div class="bases-locations-grid">
@@ -2942,23 +2951,26 @@
                                     <h4>Carretera de Rueda, 53 (CP 47008, Valladolid)</h4>
                                     <p class="base-schedule">🕓 <strong>Sábados de 16:30 a 19:00 h</strong> (calendario escolar lectivo)</p>
                                 </div>
-                                <p class="base-desc">Sede oficial del Grupo Scout ACRUX 518 en Valladolid. Aquí arrancan y terminan nuestras actividades de sábado, juegos de ciudad, asambleas de familias y almacén de intendencia.</p>
+                                <p class="base-desc">Sede oficial del Grupo Scout ACRUX 518 en Valladolid. Aquí arrancan y terminan nuestras actividades de sábado, juegos de rama, reuniones de familias y preparación de acampadas.</p>
                                 <div class="base-actions">
-                                    <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="btn-cosmos-primary" style="padding:0.5rem 1.05rem; font-size:0.8rem;">
-                                        <span>🗺️ Abrir en Google Maps</span>
+                                    <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="btn-cosmos-primary" style="padding:0.55rem 1.15rem; font-size:0.82rem; text-decoration:none;">
+                                        <span>🗺️ Abrir Ubicación en Google Maps</span>
                                         <span class="btn-arrow">↗</span>
                                     </a>
+                                    <button type="button" class="star-tab-back-btn" id="btnIdentityToUnits">
+                                        <span>✦ Explorar las 5 Unidades →</span>
+                                    </button>
                                 </div>
                             </article>
                         </div>
                     </div>
 
                     <!-- 3. BLOQUE DE COORDINACIÓN CON FOTO Y ACCIÓN EN 1 CLIC -->
-                    <div id="acrux-coordinacion" class="bases-modal-section" style="margin-top: 1.8rem;">
+                    <div id="acrux-coordinacion" class="bases-modal-section" style="margin-top: 2.6rem;">
                         <div class="bases-section-title-row">
-                            <span class="bases-pill-badge">👥 04 · EQUIPO DE COORDINACIÓN</span>
+                            <span class="bases-pill-badge">👥 03 · EQUIPO DE COORDINACIÓN</span>
                             <h3>Canal Directo con Coordinación</h3>
-                            <p>Atención directa para familias y nuevos jóvenes. Contacta en 1 clic:</p>
+                            <p>Atención directa para familias y nuevos jóvenes. Escríbenos por WhatsApp o llámanos en 1 clic:</p>
                         </div>
 
                         <div class="coordinators-action-grid">
@@ -2993,61 +3005,63 @@
                     </div>
 
                     <!-- 4. PASO A PASO: ¿QUIERES VENIR A PROBAR? + FORMULARIO RÁPIDO -->
-                    <div id="acrux-prueba" class="bases-modal-section" style="margin-top: 1.8rem;">
+                    <div id="acrux-prueba" class="bases-modal-section" style="margin-top: 2.6rem;">
                         <div class="bases-section-title-row">
-                            <span class="bases-pill-badge">⚜️ 05 · SÁBADO DE PRUEBA</span>
+                            <span class="bases-pill-badge">⚜️ 04 · SÁBADO DE PRUEBA</span>
                             <h3>¿Quieres apuntarte o venir a probar un sábado?</h3>
                             <p>El primer sábado es totalmente gratuito y sin compromiso. ¡Ven a conocernos!</p>
                         </div>
 
-                        <div class="bases-steps-grid">
-                            <div class="step-card">
-                                <div class="step-num">01</div>
-                                <strong>Elige la Unidad</strong>
-                                <p>Según la edad del joven (de 6 a 21 años: Castores, Manada, Tropa, Escultas o Clan).</p>
+                        <div class="acrux-prueba-split-grid">
+                            <div class="bases-steps-grid" style="margin-bottom:0;">
+                                <div class="step-card">
+                                    <div class="step-num">01</div>
+                                    <strong>Elige la Unidad</strong>
+                                    <p>Según la edad del joven (de 6 a 21 años: Castores, Manada, Tropa, Escultas o Clan).</p>
+                                </div>
+                                <div class="step-card">
+                                    <div class="step-num">02</div>
+                                    <strong>Ven a la Base</strong>
+                                    <p>Te esperamos un sábado a las 16:30 h en Carretera de Rueda, 53 con ropa cómoda.</p>
+                                </div>
+                                <div class="step-card">
+                                    <div class="step-num">03</div>
+                                    <strong>¡Vive la Aventura!</strong>
+                                    <p>Jugará y compartirá la tarde con sus compañeros de rama y los scouters.</p>
+                                </div>
                             </div>
-                            <div class="step-card">
-                                <div class="step-num">02</div>
-                                <strong>Ven a la Base</strong>
-                                <p>Te esperamos un sábado a las 16:30 h en Carretera de Rueda, 53 con ropa cómoda.</p>
-                            </div>
-                            <div class="step-card">
-                                <div class="step-num">03</div>
-                                <strong>¡Vive la Aventura!</strong>
-                                <p>Jugará y compartirá la tarde con sus compañeros de rama y los scouters.</p>
-                            </div>
-                        </div>
 
-                        <div class="quick-signup-box">
-                            <h4>Avisar a Coordinación para este sábado</h4>
-                            <p>Rellena este breve formulario y te abriremos el mensaje de WhatsApp ya redactado para coordinar tu llegada:</p>
-                            <form id="acruxContactForm">
-                                <div class="signup-inputs-grid">
-                                    <input type="text" id="acruxName" class="dossier-form-input" required placeholder="Nombre de madre, padre o joven" style="margin:0;">
-                                    <input type="tel" id="acruxPhone" class="dossier-form-input" required placeholder="Teléfono de contacto" style="margin:0;">
-                                    <select id="acruxUnit" class="dossier-form-input" style="margin:0;">
-                                        <option value="Castores (6 a 8 años)">1 · Castores · Colonia Ohiensis (6 a 8 años)</option>
-                                        <option value="Manada (8 a 11 años)">2 · Manada · Khanhiwara (8 a 11 años)</option>
-                                        <option value="Tropa (11 a 14 años)">3 · Tropa · Lohengrin (11 a 14 años)</option>
-                                        <option value="Escultas (14 a 17 años)">4 · Unidad Esculta · Trea (14 a 17 años)</option>
-                                        <option value="Clan Rover (17 a 21 años)">5 · Clan Rover · Ama Dablam (17 a 21 años)</option>
-                                    </select>
-                                </div>
-                                <div class="signup-action-row" style="margin-top:0.85rem;">
-                                    <button type="submit" class="btn-cosmos-primary" style="padding:0.55rem 1.15rem;">
-                                        <span>💬 Enviar Solicitud por WhatsApp a Coordinación</span>
-                                        <span class="btn-arrow">↗</span>
-                                    </button>
-                                </div>
-                                <div id="acruxSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
-                            </form>
+                            <div class="quick-signup-box" style="margin-top:0;">
+                                <h4>Avisar a Coordinación para este sábado</h4>
+                                <p>Rellena este breve formulario y te abriremos el mensaje de WhatsApp ya redactado para coordinar tu llegada:</p>
+                                <form id="acruxContactForm">
+                                    <div class="signup-inputs-grid">
+                                        <input type="text" id="acruxName" class="dossier-form-input" required placeholder="Nombre de madre, padre o joven" style="margin:0;">
+                                        <input type="tel" id="acruxPhone" class="dossier-form-input" required placeholder="Teléfono de contacto" style="margin:0;">
+                                        <select id="acruxUnit" class="dossier-form-input" style="margin:0;">
+                                            <option value="Castores (6 a 8 años)">1 · Castores · Colonia Ohiensis (6 a 8 años)</option>
+                                            <option value="Manada (8 a 11 años)">2 · Manada · Khanhiwara (8 a 11 años)</option>
+                                            <option value="Tropa (11 a 14 años)">3 · Tropa · Lohengrin (11 a 14 años)</option>
+                                            <option value="Escultas (14 a 17 años)">4 · Unidad Esculta · Trea (14 a 17 años)</option>
+                                            <option value="Clan Rover (17 a 21 años)">5 · Clan Rover · Ama Dablam (17 a 21 años)</option>
+                                        </select>
+                                    </div>
+                                    <div class="signup-action-row" style="margin-top:0.85rem;">
+                                        <button type="submit" class="btn-cosmos-primary" style="padding:0.55rem 1.15rem;">
+                                            <span>💬 Enviar Solicitud por WhatsApp a Coordinación</span>
+                                            <span class="btn-arrow">↗</span>
+                                        </button>
+                                    </div>
+                                    <div id="acruxSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
+                                </form>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 5. BLOQUE TODAS LAS REDES SOCIALES DEL GRUPO -->
-                    <div id="acrux-redes" class="bases-modal-section" style="margin-top: 1.8rem;">
+                    <div id="acrux-redes" class="bases-modal-section" style="margin-top: 2.6rem;">
                         <div class="bases-section-title-row">
-                            <span class="bases-pill-badge">📱 06 · REDES SOCIALES DEL GRUPO</span>
+                            <span class="bases-pill-badge">📱 05 · REDES SOCIALES DEL GRUPO</span>
                             <h3>Canales Oficiales de Acrux 518</h3>
                             <p>Sigue las salidas, acampadas, fotos semanales y avisos en nuestras redes oficiales:</p>
                         </div>
@@ -3114,13 +3128,6 @@
                             </a>
                         </div>
                     </div>
-
-                    <div style="margin-top: 1.4rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                        <button type="button" class="btn-cosmos-primary" id="btnIdentityToUnits" style="padding: 0.55rem 1.15rem;">
-                            <span>Explorar las 5 Unidades</span>
-                            <span class="btn-arrow">→</span>
-                        </button>
-                    </div>
                 </div>
             `;
 
@@ -3129,14 +3136,20 @@
                 goToSector(1, 0);
             });
 
-            // Smooth scroll para los anclajes del menú de Acrux
-            drawerBody.querySelectorAll('.drawer-anchor-pill').forEach(a => {
+            // Smooth scroll para las pestañas superiores de Acrux (#acruxTopAnchorNav) y botones internos
+            const allAcruxLinks = document.querySelectorAll('#acruxTopAnchorNav a, .js-acrux-scroll');
+            allAcruxLinks.forEach(a => {
                 a.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetId = a.getAttribute('href')?.replace('#', '');
+                    const href = a.getAttribute('href') || '';
+                    const targetId = href.replace('#', '');
                     const targetEl = document.getElementById(targetId);
                     if (targetEl) {
                         targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    if (a.closest('#acruxTopAnchorNav')) {
+                        document.querySelectorAll('#acruxTopAnchorNav .star-node-chip').forEach(c => c.classList.remove('active'));
+                        a.classList.add('active');
                     }
                 });
             });
