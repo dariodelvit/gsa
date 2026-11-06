@@ -1644,7 +1644,6 @@
                         if (sIdx === 1) openUnitSuperZoom(idx);
                         if (sIdx === 2) openCampSuperZoom(idx);
                         if (sIdx === 3) openLostSuperZoom(idx === 0 ? 0 : idx - 1);
-                        if (sIdx === 4) openDrawerModal('bases');
                     });
                 });
             }
@@ -7275,8 +7274,6 @@
                 }
             } else if (activeSectorIdx === 3) {
                 openLostSuperZoom(selectedSubIdx === 0 ? 0 : selectedSubIdx - 1);
-            } else if (activeSectorIdx === 4) {
-                openDrawerModal('bases');
             }
         });
     }
@@ -7383,7 +7380,6 @@
                         }
                     } else {
                         goToSector(hitNode.sectorIndex, hitNode.starIdx);
-                        if (hitNode.sectorIndex === 4) openDrawerModal('bases');
                     }
                 }
             }
@@ -7397,7 +7393,6 @@
     });
 
     document.getElementById('btnHomeConstellation')?.addEventListener('click', () => goToSector(0, 0));
-    document.getElementById('btnSectorVReturn')?.addEventListener('click', () => goToSector(0, 0));
 
     document.getElementById('btnPrevSector')?.addEventListener('click', () => {
         if (activeSectorIdx > 0) {
@@ -7616,33 +7611,33 @@
         const sectorNebulaPalettes = [
             // Sector I (Cruz del Sur): carmesí imperial y azul profundo
             {
-                outer: 'rgba(30, 64, 175, 0.045)',
-                mid: 'rgba(176, 35, 36, 0.068)',
-                inner: 'rgba(220, 38, 38, 0.042)',
+                outer: 'rgba(30, 64, 175, 0.04)',
+                mid: 'rgba(176, 35, 36, 0.065)',
+                inner: 'rgba(176, 35, 36, 0.05)',
                 offsetX: -55,
                 offsetY: 45
             },
             // Sector II (Unidades): turquesa / esmeralda estelar
             {
-                outer: 'rgba(16, 185, 129, 0.038)',
-                mid: 'rgba(56, 189, 248, 0.058)',
-                inner: 'rgba(125, 211, 252, 0.042)',
+                outer: 'rgba(16, 185, 129, 0.04)',
+                mid: 'rgba(56, 189, 248, 0.055)',
+                inner: 'rgba(56, 189, 248, 0.045)',
                 offsetX: 60,
                 offsetY: -35
             },
             // Sector III (Campamentos): ámbar / dorado cálido
             {
-                outer: 'rgba(217, 119, 6, 0.038)',
-                mid: 'rgba(245, 158, 11, 0.054)',
-                inner: 'rgba(253, 224, 71, 0.036)',
+                outer: 'rgba(217, 119, 6, 0.04)',
+                mid: 'rgba(245, 158, 11, 0.05)',
+                inner: 'rgba(245, 158, 11, 0.042)',
                 offsetX: -45,
                 offsetY: -40
             },
             // Sector IV (El Baúl): índigo / zafiro
             {
-                outer: 'rgba(59, 130, 246, 0.040)',
-                mid: 'rgba(99, 102, 241, 0.058)',
-                inner: 'rgba(165, 180, 252, 0.040)',
+                outer: 'rgba(59, 130, 246, 0.04)',
+                mid: 'rgba(99, 102, 241, 0.055)',
+                inner: 'rgba(99, 102, 241, 0.045)',
                 offsetX: 45,
                 offsetY: 35
             }
