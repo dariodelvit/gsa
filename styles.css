@@ -3598,485 +3598,678 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 /* ==========================================================================
-   EXPERIENCIA 3D ORBITAL ALREDEDOR DEL LAGO POR UNIDAD (ESTILO EMOTION-AGENCY.COM)
+   SISTEMA EDITORIAL WEB REAL, CÁLIDO Y NATURAL (CERO 3D · CERO CIBERNÉTICO)
+   Puente perfecto entre el Mapa de Constelaciones y Páginas Web Normales
    ========================================================================== */
-#unitSuperZoomOverlay.unit-orbit-world-view {
-    overflow: hidden;
-    background: #07111A;
-    user-select: none;
+
+/* 1. Humanizar el Mapa de Constelaciones (Adiós estética cibernética/monospace) */
+.hud-brand-coords,
+.node-roman,
+.hud-btn-overview,
+.stage-index-tag,
+.stage-altitude-tag,
+.hud-scroll-labels,
+.hud-nav-arrow-btn,
+.cosmos-cursor-label {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    letter-spacing: 0.02em !important;
+    text-transform: none !important;
 }
 
-#unitSuperZoomOverlay[data-unit-world="castores"] {
-    background: radial-gradient(circle at 50% 28%, #1C3B4F 0%, #0D2130 52%, #050C12 100%);
-}
-#unitSuperZoomOverlay[data-unit-world="manada"] {
-    background: radial-gradient(circle at 50% 28%, #163329 0%, #0B1D17 52%, #040B08 100%);
-}
-#unitSuperZoomOverlay[data-unit-world="tropa"] {
-    background: radial-gradient(circle at 50% 28%, #15383B 0%, #0A1F22 52%, #040C0E 100%);
-}
-#unitSuperZoomOverlay[data-unit-world="escultas"] {
-    background: radial-gradient(circle at 50% 28%, #2E2428 0%, #171215 52%, #070608 100%);
-}
-#unitSuperZoomOverlay[data-unit-world="clan"] {
-    background: radial-gradient(circle at 50% 25%, #3B4C5E 0%, #1A2A3A 52%, #09111A 100%) !important;
+.hud-btn-cta {
+    background: #B02324;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+    padding: 0.52rem 1.1rem;
+    border-radius: 999px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    box-shadow: 0 6px 18px rgba(176, 35, 36, 0.35);
 }
 
-.unit-orbit-webgl-wrap {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
+.hud-btn-cta:hover {
+    background: #C92A2B;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(176, 35, 36, 0.5);
 }
 
-.unit-orbit-canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
+.stage-index-tag {
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    color: #FCA5A5 !important;
+    background: rgba(176, 35, 36, 0.22) !important;
+    border: 1px solid rgba(248, 113, 113, 0.35) !important;
+    padding: 0.28rem 0.75rem !important;
+    border-radius: 999px !important;
 }
 
-.unit-orbit-vignette {
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(180deg, rgba(6, 16, 28, 0.42) 0%, rgba(6, 16, 28, 0.0) 22%, rgba(6, 16, 28, 0.05) 70%, rgba(6, 16, 28, 0.62) 100%),
-        radial-gradient(circle at 50% 50%, transparent 52%, rgba(6, 16, 28, 0.28) 100%);
-    pointer-events: none;
+.stage-altitude-tag {
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+    color: rgba(255, 255, 255, 0.75) !important;
 }
 
-.unit-orbit-topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 30;
-    background: rgba(5, 8, 15, 0.42);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+/* 2. Vistas de Estrella como Páginas Web Reales y Luminosas */
+.star-tab-view {
+    background: #F8F7F4 !important;
+    color: #1E293B !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    user-select: auto !important;
 }
 
-.unit-orbit-scroll-track {
-    position: relative;
-    z-index: 10;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+/* Modal de El Grupo (Acrux) convertido en Página Web Completa igual que las demás */
+.cosmos-drawer-backdrop {
+    padding: 0 !important;
+    background: #F8F7F4 !important;
 }
 
-.unit-orbit-sticky-stage {
-    position: relative;
-    width: 100%;
-    height: 100%;
+.cosmos-drawer-modal {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    background: #F8F7F4 !important;
+    color: #1E293B !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: none !important;
 }
 
-/* Pantallas superpuestas que emergen mientras rodeas el lago */
-.uz-orbit-screen {
-    position: absolute;
-    inset: 4.6rem 0 5.6rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem 3.2rem;
-    opacity: 0;
-    pointer-events: none;
-    will-change: transform, opacity;
-    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+.drawer-modal-body {
+    padding: 0 !important;
+    flex: 1 !important;
+    overflow-y: auto !important;
+    color: #1E293B !important;
 }
 
-.uz-orbit-screen.is-active {
-    opacity: 1;
-    pointer-events: auto;
+/* 3. Barra de Navegación Superior Blanca y Limpia en todas las páginas interiores */
+.star-tab-topbar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    padding: 0.85rem 2.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
 }
 
-.uz-orbit-screen-inner {
-    width: 100%;
-    max-width: 1360px;
-    height: 100%;
+.star-tab-back-btn {
+    background: #F1F5F9 !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #0F172A !important;
+    padding: 0.55rem 1.15rem !important;
+    border-radius: 999px !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: none !important;
+}
+
+.star-tab-back-btn:hover {
+    background: #0F172A !important;
+    color: #FFFFFF !important;
+    border-color: #0F172A !important;
+    transform: translateX(-2px) !important;
+}
+
+/* Pestañas de cambio de Unidad / Campamento / Cajón en la barra superior */
+.star-tab-topbar .star-node-chip {
+    background: #F1F5F9 !important;
+    border: 1px solid #E2E8F0 !important;
+    color: #475569 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    padding: 0.48rem 1rem !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+}
+
+.star-tab-topbar .star-node-chip:hover {
+    background: #E2E8F0 !important;
+    color: #0F172A !important;
+    transform: none !important;
+}
+
+.star-tab-topbar .star-node-chip.active {
+    background: #B02324 !important;
+    border-color: #B02324 !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(176, 35, 36, 0.25) !important;
+}
+
+.star-tab-coords {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    color: #64748B !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+}
+
+.drawer-topbar-center {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
+    text-align: center;
 }
 
-/* PARADA 01: Portada Editorial dejando el Lago 3D libre en el centro */
-.uz-screen-hero {
-    justify-content: space-between;
-    padding: 0.75rem 0 0.5rem 0;
-    pointer-events: none;
+.drawer-topbar-center .drawer-kicker {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    color: #B02324 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
 }
 
-.uz-hero-top-meta {
+.drawer-topbar-center .drawer-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    color: #0F172A !important;
+    margin: 0 !important;
+}
+
+/* 4. Cabecera Hero Nocturna de cada Página (El puente visual con las Constelaciones) */
+.web-page-hero {
+    position: relative;
+    background:
+        radial-gradient(circle at 82% 22%, rgba(176, 35, 36, 0.24) 0%, transparent 48%),
+        radial-gradient(circle at 18% 80%, rgba(56, 189, 248, 0.14) 0%, transparent 50%),
+        linear-gradient(135deg, #0B1324 0%, #16233B 100%);
+    color: #FFFFFF;
+    padding: 3.8rem 2.5rem 4.2rem;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+}
+
+#unitSuperZoomOverlay[data-unit-world="castores"] .unit-web-hero {
+    background: radial-gradient(circle at 80% 25%, rgba(56, 189, 248, 0.25) 0%, transparent 52%), linear-gradient(135deg, #0C192C 0%, #162E47 100%);
+}
+#unitSuperZoomOverlay[data-unit-world="manada"] .unit-web-hero {
+    background: radial-gradient(circle at 80% 25%, rgba(245, 158, 11, 0.24) 0%, transparent 52%), linear-gradient(135deg, #171810 0%, #2B2616 100%);
+}
+#unitSuperZoomOverlay[data-unit-world="tropa"] .unit-web-hero {
+    background: radial-gradient(circle at 80% 25%, rgba(16, 185, 129, 0.24) 0%, transparent 52%), linear-gradient(135deg, #0B1F1D 0%, #143532 100%);
+}
+#unitSuperZoomOverlay[data-unit-world="escultas"] .unit-web-hero {
+    background: radial-gradient(circle at 80% 25%, rgba(217, 119, 6, 0.25) 0%, transparent 52%), linear-gradient(135deg, #1D1512 0%, #33221B 100%);
+}
+#unitSuperZoomOverlay[data-unit-world="clan"] .unit-web-hero {
+    background: radial-gradient(circle at 80% 25%, rgba(225, 29, 72, 0.26) 0%, transparent 52%), linear-gradient(135deg, #1D0E17 0%, #341625 100%);
+}
+
+.web-page-hero-inner {
+    max-width: 1220px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.acrux-web-hero .web-page-hero-inner {
+    grid-template-columns: 1fr;
+    max-width: 960px;
+}
+
+.uz-hero-top-meta,
+.star-tab-meta-row {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.65rem;
-    pointer-events: auto;
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
 }
 
-.uz-hero-bottom-editorial {
-    margin-top: auto;
-    max-width: 920px;
-    pointer-events: auto;
+.sz-constellation-badge,
+.sz-age-pill,
+.sz-motto-banner {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+    text-transform: none !important;
+    padding: 0.35rem 0.85rem !important;
+    border-radius: 999px !important;
 }
 
-.uz-editorial-kicker {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.76rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--unit-accent, #38BDF8);
-    margin: 0 0 0.65rem 0;
-    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
-}
-
-.uz-editorial-display-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: clamp(2.6rem, 5.6vw, 5.2rem);
-    font-weight: 700;
-    line-height: 0.98;
-    letter-spacing: -0.03em;
-    color: #FFFFFF;
-    margin: 0;
-    text-shadow: 0 12px 38px rgba(0, 0, 0, 0.75);
-}
-
-/* Píldora estilo Emotion Agency */
-.uz-emotion-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.70rem;
+.unit-web-kicker {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.85rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.10);
-    border: 1px solid rgba(255, 255, 255, 0.24);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 0.38rem 0.9rem;
-    border-radius: 999px;
-    margin-bottom: 0.75rem;
+    color: rgba(255, 255, 255, 0.72);
+    margin: 0 0 0.45rem 0;
 }
 
-.uz-emotion-pill svg {
-    flex-shrink: 0;
-    color: var(--unit-accent, #38BDF8);
-}
-
-.uz-editorial-subtitle {
+.unit-web-title {
     font-family: 'Outfit', sans-serif;
-    font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+    font-size: clamp(2.2rem, 4vw, 3.35rem);
     font-weight: 700;
     line-height: 1.08;
     letter-spacing: -0.02em;
     color: #FFFFFF;
-    margin: 0 0 0.6rem 0;
-    text-shadow: 0 6px 24px rgba(0, 0, 0, 0.65);
+    margin: 0 0 1.1rem 0;
 }
 
-.uz-editorial-subdesc {
-    font-size: 0.92rem;
-    color: rgba(255, 255, 255, 0.76);
+.unit-web-lead {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.06rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0 0 1.4rem 0;
+}
+
+.unit-web-quote {
     margin: 0;
-    max-width: 640px;
-}
-
-/* PARADA 02: Ambientación, Ley y Fotografía Oficial en tarjeta de cristal */
-.uz-screen-lore {
-    display: grid;
-    grid-template-columns: 1.08fr 0.92fr;
-    gap: 2.4rem;
-    align-items: center;
-}
-
-.uz-lore-editorial-col {
-    background: rgba(6, 10, 18, 0.62);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-radius: 24px;
-    padding: 2.1rem 2.3rem;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
-}
-
-.uz-editorial-lead {
-    font-size: 1.02rem;
-    line-height: 1.68;
-    color: rgba(255, 255, 255, 0.90);
-    margin: 0 0 1.25rem 0;
-}
-
-.uz-editorial-quote {
-    margin: 0;
-    padding: 1rem 1.25rem;
-    border-left: 3px solid var(--unit-accent, #38BDF8);
-    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem 1.35rem;
+    background: rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--unit-accent, #F59E0B);
     border-radius: 0 14px 14px 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-style: italic;
-    font-size: 0.92rem;
+    font-size: 0.96rem;
+    line-height: 1.6;
     color: #FFFFFF;
 }
 
-.uz-glass-photo-card {
-    background: rgba(8, 12, 22, 0.58);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 24px;
+.unit-photo-card {
+    background: #FFFFFF;
     padding: 0.65rem;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
-    overflow: hidden;
-    max-height: 58vh;
+    border-radius: 22px;
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    transition: transform 0.25s ease;
 }
 
-.uz-glass-photo-card img,
-.uz-glass-photo-card svg {
+.unit-photo-card:hover {
+    transform: translateY(-4px);
+}
+
+.unit-photo-card img,
+.unit-photo-card svg {
     width: 100%;
-    height: 100%;
-    max-height: 54vh;
+    max-height: 390px;
     object-fit: cover;
-    border-radius: 18px;
+    border-radius: 16px;
     display: block;
 }
 
-/* PARADA 03: Metodología y Progresión (3 Tarjetas Flotantes sobre la Orilla del Lago) */
-.uz-screen-pillars {
-    justify-content: center;
+.unit-photo-caption {
+    display: block;
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475569;
+    padding: 0.55rem 0.4rem 0.2rem;
+}
+
+/* 5. Cuerpo de la Página Web (Fondo claro, limpio, tarjetas blancas editoriales) */
+.web-page-content {
+    background: #F8F7F4;
+    color: #1E293B;
+    padding: 3.5rem 2.5rem 5rem;
+}
+
+.web-page-container {
+    max-width: 1220px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.web-content-section {
+    display: flex;
+    flex-direction: column;
     gap: 1.75rem;
 }
 
-.uz-editorial-pillars {
+.web-section-header {
+    max-width: 760px;
+}
+
+.web-section-kicker {
+    display: inline-block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #B02324;
+    background: rgba(176, 35, 36, 0.08);
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 0.65rem;
+}
+
+.web-section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.65rem, 2.6vw, 2.25rem);
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
+}
+
+.web-section-desc {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: #475569;
+    margin: 0;
+}
+
+/* Tarjetas de Etapas y Metodología */
+.web-pillars-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.35rem;
 }
 
-.uz-editorial-pillars .sz-pillar-item {
-    background: rgba(7, 11, 20, 0.66);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-radius: 20px;
-    padding: 1.65rem 1.6rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-    transition: transform 0.28s ease, border-color 0.28s ease;
+.web-pillar-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 18px;
+    padding: 1.65rem;
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.uz-editorial-pillars .sz-pillar-item:hover {
-    transform: translateY(-5px);
-    border-color: var(--unit-accent, #38BDF8);
+.web-pillar-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px -4px rgba(15, 23, 42, 0.09);
 }
 
-.pillar-num-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--unit-accent, #38BDF8);
-    letter-spacing: 0.1em;
+.web-pillar-num {
+    display: inline-block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #B02324;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    padding: 0.22rem 0.65rem;
+    border-radius: 999px;
+    margin-bottom: 0.85rem;
 }
 
-/* PARADAS 04 Y 05: Kraaletes y Salidas Drive con scroll interno suave */
-.uz-screen-kraal,
-.uz-screen-camps {
-    justify-content: flex-start;
-    gap: 1.1rem;
+.web-pillar-card h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.18rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0 0 0.5rem 0;
 }
 
-.uz-screen-header-compact {
+.web-pillar-card p {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.94rem;
+    line-height: 1.62;
+    color: #475569;
+    margin: 0;
+}
+
+/* Tarjetas de Kraaletes en estilo Web Limpio */
+.kraalete-cromo-card {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06) !important;
+    overflow: hidden !important;
+}
+
+.cromo-fallback-content {
+    background: linear-gradient(145deg, #1E293B 0%, #0F172A 100%) !important;
+}
+
+/* Tarjetas de Salidas y Álbumes de Drive (Unidades y Campamentos) en Fondo Blanco */
+.unit-salida-card,
+.unit-camps-empty,
+.camp-photo-card,
+.lost-photo-card,
+.identity-story-card,
+.base-location-card,
+.coordinator-action-card,
+.step-card,
+.quick-signup-box,
+.group-social-card {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    color: #1E293B !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 28px -6px rgba(15, 23, 42, 0.06) !important;
+}
+
+.salida-title,
+.camp-photo-caption strong,
+.lost-photo-body h4,
+.identity-story-card h4,
+.base-location-card h4,
+.coord-name,
+.step-card strong,
+.quick-signup-box h4,
+.group-social-info strong,
+.bases-section-title-row h3,
+.identity-hero-badge h3 {
+    color: #0F172A !important;
+    font-family: 'Outfit', sans-serif !important;
+}
+
+.salida-desc,
+.camp-photo-caption span,
+.lost-photo-body p,
+.identity-story-card p,
+.identity-story-card li,
+.base-desc,
+.base-schedule,
+.coord-role,
+.coord-phone-text,
+.step-card p,
+.quick-signup-box p,
+.group-social-desc,
+.bases-section-title-row p,
+.identity-hero-badge p,
+.unit-camps-empty p,
+.unit-camps-empty h4 {
+    color: #475569 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.salida-badge,
+.salida-location-tag,
+.salida-date-tag,
+.bases-pill-badge,
+.base-type-badge {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+    text-transform: none !important;
+    background: #F1F5F9 !important;
+    color: #334155 !important;
+    border: 1px solid #E2E8F0 !important;
+}
+
+.salida-unlock-box {
+    background: #F8FAFC !important;
+    border-top: 1px solid #E2E8F0 !important;
+}
+
+.web-page-content .dossier-form-input {
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #0F172A !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.web-page-content .dossier-form-input:focus {
+    border-color: #B02324 !important;
+    box-shadow: 0 0 0 3px rgba(176, 35, 36, 0.12) !important;
+}
+
+.web-page-content .btn-cosmos-primary {
+    background: #B02324 !important;
+    color: #FFFFFF !important;
+    border-color: #B02324 !important;
+    box-shadow: 0 6px 18px rgba(176, 35, 36, 0.25) !important;
+}
+
+.web-page-content .btn-cosmos-primary:hover {
+    background: #991B1B !important;
+    border-color: #991B1B !important;
+}
+
+/* Buscador y chips de El Baúl en estilo Web Claro */
+.lost-gallery-header {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 1rem;
-    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 1.5rem;
 }
 
-.uz-orbit-scrollable-grid {
-    max-height: calc(100vh - 18.5rem);
-    overflow-y: auto;
-    padding-right: 0.5rem;
-    padding-bottom: 1rem;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+.lost-filter-chip {
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #334155 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-weight: 600 !important;
 }
 
-/* HUD Inferior de Órbita (5 Paradas + ProgressRing estilo Emotion Agency) */
-.uz-orbit-hud-bottom {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 30;
-    padding: 0.85rem 3.2rem 1.25rem;
+.lost-filter-chip.active {
+    background: #0F172A !important;
+    border-color: #0F172A !important;
+    color: #FFFFFF !important;
+}
+
+.lost-photo-footer {
+    border-top: 1px solid #F1F5F9 !important;
+}
+
+.star-pillar-tag {
+    background: #F1F5F9 !important;
+    color: #475569 !important;
+    border: 1px solid #E2E8F0 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+/* Navegación interna de El Grupo · Acrux */
+.drawer-anchor-nav {
+    margin-top: 1.5rem !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.55rem !important;
+}
+
+.drawer-anchor-pill {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.24) !important;
+    color: #FFFFFF !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    padding: 0.48rem 1rem !important;
+    border-radius: 999px !important;
+}
+
+.drawer-anchor-pill:hover {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+}
+
+/* Pie de página de navegación entre Unidades */
+.web-page-footer-nav {
+    margin-top: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid #E2E8F0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
-    background: linear-gradient(180deg, transparent 0%, rgba(3, 6, 12, 0.86) 100%);
-    pointer-events: none;
-}
-
-.uz-orbit-steps-nav {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
     flex-wrap: wrap;
-    pointer-events: auto;
+    gap: 1rem;
 }
 
-.uz-orbit-step-btn {
-    background: rgba(10, 15, 26, 0.62);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: rgba(255, 255, 255, 0.68);
-    padding: 0.52rem 0.95rem;
+.web-footer-btn {
+    padding: 0.72rem 1.35rem;
     border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.80rem;
-    font-weight: 500;
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.2s ease;
 }
 
-.uz-orbit-step-btn .step-idx {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    opacity: 0.7;
+.web-footer-btn.is-secondary {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    color: #0F172A;
 }
 
-.uz-orbit-step-btn:hover {
-    color: #FFFFFF;
-    border-color: rgba(255, 255, 255, 0.38);
-    transform: translateY(-2px);
+.web-footer-btn.is-secondary:hover {
+    background: #F1F5F9;
 }
 
-.uz-orbit-step-btn.active {
-    background: rgba(255, 255, 255, 0.14);
-    border-color: var(--unit-accent, #38BDF8);
-    color: #FFFFFF;
-    box-shadow: 0 0 22px var(--unit-glow, rgba(56, 189, 248, 0.28));
+.web-footer-btn.is-ghost {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #475569;
 }
 
-.uz-orbit-step-btn.active .step-idx {
-    color: var(--unit-accent, #38BDF8);
-    opacity: 1;
+.web-footer-btn.is-ghost:hover {
+    color: #0F172A;
+    background: #E2E8F0;
 }
 
-/* ProgressRing Circular (Inspirado en ProgressRing de Emotion Agency) */
-.uz-orbit-progress-ring-btn {
-    pointer-events: auto;
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: rgba(10, 15, 26, 0.68);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    padding: 0.38rem 1rem 0.38rem 0.45rem;
-    border-radius: 999px;
-    color: #FFFFFF;
-    cursor: pointer;
-    transition: all 0.25s ease;
-}
-
-.uz-orbit-progress-ring-btn:hover {
-    border-color: var(--unit-accent, #38BDF8);
-    transform: scale(1.04);
-}
-
-.uz-progress-ring-svg {
-    width: 44px;
-    height: 44px;
-    transform: rotate(-90deg);
-}
-
-.uz-progress-ring-track {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.16);
-    stroke-width: 5;
-}
-
-.uz-progress-ring-bar {
-    fill: none;
-    stroke: var(--unit-accent, #38BDF8);
-    stroke-width: 5.5;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.15s linear;
-}
-
-.uz-progress-ring-center {
-    position: absolute;
-    left: 0.45rem;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: 'JetBrains Mono', monospace;
-    line-height: 1;
-}
-
-.uz-progress-ring-center small {
-    font-size: 0.62rem;
+.web-footer-btn.is-primary {
+    background: #0F172A;
+    border: 1px solid #0F172A;
     color: #FFFFFF;
 }
 
-.uz-progress-ring-center span {
-    font-size: 0.65rem;
-    color: var(--unit-accent, #38BDF8);
+.web-footer-btn.is-primary:hover {
+    background: #B02324;
+    border-color: #B02324;
 }
 
-.uz-progress-ring-caption {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.88);
-}
-
-@media (max-width: 1024px) {
-    .uz-orbit-screen {
-        padding: 1.1rem 1.4rem;
-    }
-    .uz-screen-lore,
-    .uz-editorial-pillars {
+@media (max-width: 960px) {
+    .web-page-hero-inner {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 2rem;
     }
-    .uz-orbit-hud-bottom {
-        padding: 0.7rem 1.2rem 1rem;
+    .star-tab-topbar {
+        padding: 0.75rem 1.25rem !important;
+    }
+    .web-page-hero,
+    .web-page-content {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
     }
 }
 
-@media (max-width: 768px) {
-    .uz-orbit-screen {
-        inset: 4.2rem 0 5.0rem 0;
-        padding: 0.85rem 1rem;
-    }
-    .uz-editorial-display-title {
-        font-size: 2.15rem;
-    }
-    .uz-lore-editorial-col {
-        padding: 1.25rem;
-    }
-    .uz-orbit-step-btn .step-name {
-        display: none;
-    }
-    .uz-progress-ring-caption {
-        display: none;
-    }
-    .uz-orbit-progress-ring-btn {
-        padding: 0.35rem;
-    }
-}
 
 
 
