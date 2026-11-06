@@ -687,8 +687,11 @@ body.cosmos-body {
     padding: 0.82rem 1.35rem;
 }
 
-.btn-cosmos-primary .btn-arrow {
+.btn-cosmos-primary .btn-arrow,
+.btn-cosmos-primary .btn-arrow-icon,
+.btn-cosmos-primary svg {
     display: inline-flex;
+    flex-shrink: 0;
     transition: transform 0.25s ease;
 }
 
@@ -698,7 +701,9 @@ body.cosmos-body {
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55), 0 0 34px rgba(255, 255, 255, 0.38);
 }
 
-.btn-cosmos-primary:hover .btn-arrow {
+.btn-cosmos-primary:hover .btn-arrow,
+.btn-cosmos-primary:hover .btn-arrow-icon,
+.btn-cosmos-primary:hover svg {
     transform: translateX(4px);
 }
 
@@ -838,7 +843,9 @@ body.cosmos-body {
     transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.star-tab-back-btn .back-arrow {
+.star-tab-back-btn .back-arrow,
+.star-tab-back-btn svg {
+    flex-shrink: 0;
     transition: transform 0.2s ease;
 }
 
@@ -850,11 +857,15 @@ body.cosmos-body {
     box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25);
 }
 
-.star-tab-back-btn:hover .back-arrow {
+.star-tab-back-btn:hover .back-arrow,
+.star-tab-back-btn:hover svg {
     transform: translateX(-3px);
 }
 
-.star-tab-back-btn kbd {
+.star-tab-back-btn kbd,
+.drawer-close-btn kbd,
+.anniversary-close-btn kbd,
+.cosmos-lightbox-close kbd {
     background: rgba(255, 255, 255, 0.12);
     padding: 0.12rem 0.38rem;
     border-radius: 4px;
@@ -863,7 +874,9 @@ body.cosmos-body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.star-tab-back-btn:hover kbd {
+.star-tab-back-btn:hover kbd,
+.drawer-close-btn:hover kbd,
+.cosmos-lightbox-close:hover kbd {
     background: rgba(0, 0, 0, 0.12);
     border-color: rgba(0, 0, 0, 0.2);
 }
@@ -3745,6 +3758,11 @@ body.anniversary-50-mode .hud-scroll-fill {
     padding: 0.38rem 0.9rem;
     border-radius: 999px;
     margin-bottom: 0.75rem;
+}
+
+.uz-emotion-pill svg {
+    flex-shrink: 0;
+    color: var(--unit-accent, #38BDF8);
 }
 
 .uz-editorial-subtitle {
