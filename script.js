@@ -2087,22 +2087,22 @@
             kicker: '(01 / 05) · MUNDO CASTORES · EL ESTANQUE DEL GRAN ROBLE Y RÍO GRAN HERMANO',
             loreHeading: 'La Vida en el Estanque · Colonia Ohiensis',
             stepNames: ['El Estanque', 'Presa y Ley', 'Etapas Castor', 'Kraaletes', 'Salidas Drive'],
-            skyTop: 0x0284C7,
-            skyHorizon: 0xBAE6FD,
-            fogColor: 0xBAE6FD,
-            fogDensity: 0.0022,
-            waterColor: 0x00E5FF,
-            waterEmissive: 0x0284C7,
-            sunColor: 0xFFFBEB,
+            skyTop: 0x0A1929,
+            skyHorizon: 0x2B4C65,
+            fogColor: 0x1B3244,
+            fogDensity: 0.0028,
+            waterColor: 0x1F5E6B,
+            waterEmissive: 0x092230,
+            sunColor: 0xFFE4B5,
             sunPos: [45, 75, -35],
-            hemiSky: 0xE0F2FE,
-            hemiGround: 0x4D7C0F,
-            shoreLightColor: 0xFDE047,
-            terrainLow: [0.32, 0.76, 0.30],
-            terrainMid: [0.22, 0.65, 0.24],
-            terrainHigh: [0.45, 0.72, 0.38],
+            hemiSky: 0x8AB4CE,
+            hemiGround: 0x1E2F1D,
+            shoreLightColor: 0xF59E0B,
+            terrainLow: [0.16, 0.34, 0.18],
+            terrainMid: [0.12, 0.26, 0.14],
+            terrainHigh: [0.24, 0.38, 0.22],
             heightScale: 11.5,
-            particleColor: 0xFEF08A,
+            particleColor: 0xFDE68A,
             cameraStops: [
                 { radius: 42, height: 11.5, lookY: 1.8 },
                 { radius: 37, height: 8.5, lookY: 1.5 },
@@ -2115,22 +2115,22 @@
             kicker: '(01 / 05) · MUNDO MANADA · LA ROCA DEL CONSEJO EN LA SELVA DE SEEONEE',
             loreHeading: 'La Roca del Consejo en el Claro de Seeonee · Manada Khanhiwara',
             stepNames: ['Roca del Consejo', 'Selva y Ley', 'Senda Mowgli', 'Viejos Lobos', 'Cazas Drive'],
-            skyTop: 0x0369A1,
-            skyHorizon: 0xCCFBF1,
-            fogColor: 0xCCFBF1,
-            fogDensity: 0.0022,
-            waterColor: 0x06B6D4,
-            waterEmissive: 0x0284C7,
-            sunColor: 0xFEF3C7,
+            skyTop: 0x07111E,
+            skyHorizon: 0x1C3144,
+            fogColor: 0x11202E,
+            fogDensity: 0.0032,
+            waterColor: 0x194D59,
+            waterEmissive: 0x081E29,
+            sunColor: 0xFDE68A,
             sunPos: [-38, 72, -30],
-            hemiSky: 0xCCFBF1,
-            hemiGround: 0x365314,
+            hemiSky: 0x7FA1B8,
+            hemiGround: 0x182616,
             shoreLightColor: 0xF59E0B,
-            terrainLow: [0.26, 0.72, 0.28],
-            terrainMid: [0.18, 0.62, 0.22],
-            terrainHigh: [0.44, 0.68, 0.36],
+            terrainLow: [0.14, 0.30, 0.16],
+            terrainMid: [0.10, 0.23, 0.13],
+            terrainHigh: [0.22, 0.33, 0.20],
             heightScale: 15.5,
-            particleColor: 0xFDE047,
+            particleColor: 0xFDE68A,
             cameraStops: [
                 { radius: 33, height: 12.2, lookY: 7.4 },
                 { radius: 29, height: 10.4, lookY: 7.8 },
@@ -2143,20 +2143,20 @@
             kicker: '(01 / 05) · MUNDO TROPA · EL LAGO DE LOHENGRIN (EL CABALLERO DEL CISNE) Y VALLE DE PATRULLAS',
             loreHeading: 'La Leyenda del Caballero del Cisne y Vida en Patrulla · Tropa Lohengrin',
             stepNames: ['Barca del Cisne', 'Honor y Grial', 'Patrullas', 'Kraal Tropa', 'Aymaras Drive'],
-            skyTop: 0x0E7490,
-            skyHorizon: 0xBAE6FD,
-            fogColor: 0xBAE6FD,
-            fogDensity: 0.0020,
-            waterColor: 0x14B8A6,
-            waterEmissive: 0x0F766E,
-            sunColor: 0xFFFBEB,
+            skyTop: 0x081C24,
+            skyHorizon: 0x244752,
+            fogColor: 0x152E36,
+            fogDensity: 0.0026,
+            waterColor: 0x175956,
+            waterEmissive: 0x072629,
+            sunColor: 0xFFE8C2,
             sunPos: [40, 75, 35],
-            hemiSky: 0xE0F2FE,
-            hemiGround: 0x23532C,
-            shoreLightColor: 0x38BDF8,
-            terrainLow: [0.28, 0.74, 0.34],
-            terrainMid: [0.22, 0.64, 0.28],
-            terrainHigh: [0.48, 0.72, 0.44],
+            hemiSky: 0x88B3BA,
+            hemiGround: 0x162B1E,
+            shoreLightColor: 0x34D399,
+            terrainLow: [0.15, 0.33, 0.19],
+            terrainMid: [0.11, 0.25, 0.15],
+            terrainHigh: [0.25, 0.36, 0.25],
             heightScale: 16.0,
             particleColor: 0x99F6E4,
             cameraStops: [
@@ -2171,20 +2171,20 @@
             kicker: '(01 / 05) · MUNDO ESCULTAS · MONTAÑA DE LOS NINJAS Y EL DESCENSO DEL SENA (TREA)',
             loreHeading: 'Ninjas en el Descenso del Sena y Empresas Escultas · Unidad Esculta Trea',
             stepNames: ['Descenso Ninja', 'Torii y Senda', 'Empresas', 'Kraal Esculta', 'Travesías Drive'],
-            skyTop: 0x1D4ED8,
-            skyHorizon: 0xBAE6FD,
-            fogColor: 0xBAE6FD,
-            fogDensity: 0.0018,
-            waterColor: 0x38BDF8,
-            waterEmissive: 0x0284C7,
-            sunColor: 0xFFFBEB,
+            skyTop: 0x121624,
+            skyHorizon: 0x3D3540,
+            fogColor: 0x242028,
+            fogDensity: 0.0025,
+            waterColor: 0x234E61,
+            waterEmissive: 0x0B212E,
+            sunColor: 0xFFDAB9,
             sunPos: [-45, 75, 30],
-            hemiSky: 0xDBEAFE,
-            hemiGround: 0x334155,
-            shoreLightColor: 0xF43F5E,
-            terrainLow: [0.34, 0.72, 0.30],
-            terrainMid: [0.55, 0.58, 0.58],
-            terrainHigh: [0.82, 0.86, 0.90],
+            hemiSky: 0x9DA6B8,
+            hemiGround: 0x242220,
+            shoreLightColor: 0xF97316,
+            terrainLow: [0.18, 0.31, 0.18],
+            terrainMid: [0.32, 0.33, 0.35],
+            terrainHigh: [0.52, 0.55, 0.58],
             heightScale: 24.0,
             particleColor: 0xFECDD3,
             cameraStops: [
@@ -2199,22 +2199,22 @@
             kicker: '(01 / 05) · MUNDO CLAN · LA LAGUNA AZUL POR ENCIMA DE LAS NUBES (ORIGEN DEL RÍO)',
             loreHeading: 'La Laguna Azul sobre el Mar de Nubes · Clan Rover Ama Dablam',
             stepNames: ['Laguna Azul', 'Horquilla y Ley', 'Camino Rover', 'Kraal de Clan', 'Rutas Drive'],
-            skyTop: 0x0369A1,
-            skyHorizon: 0xF0F9FF,
-            fogColor: 0xF0F9FF,
-            fogDensity: 0.0015,
-            waterColor: 0x00F0FF,
-            waterEmissive: 0x0284C7,
-            sunColor: 0xFFFFFF,
+            skyTop: 0x06101E,
+            skyHorizon: 0x243B55,
+            fogColor: 0x162638,
+            fogDensity: 0.0022,
+            waterColor: 0x1E607A,
+            waterEmissive: 0x082233,
+            sunColor: 0xE2F1FF,
             sunPos: [20, 80, -45],
-            hemiSky: 0xF0F9FF,
-            hemiGround: 0x475569,
+            hemiSky: 0x9CC0DC,
+            hemiGround: 0x26303D,
             shoreLightColor: 0x38BDF8,
-            terrainLow: [0.48, 0.62, 0.72],
-            terrainMid: [0.72, 0.78, 0.85],
-            terrainHigh: [0.94, 0.96, 0.99],
+            terrainLow: [0.26, 0.33, 0.40],
+            terrainMid: [0.45, 0.51, 0.58],
+            terrainHigh: [0.76, 0.81, 0.86],
             heightScale: 27.5,
-            particleColor: 0xE0F2FE,
+            particleColor: 0xD6EAF8,
             cameraStops: [
                 { radius: 43, height: 12.8, lookY: 3.2 },
                 { radius: 38, height: 9.2, lookY: 2.6 },
@@ -2649,8 +2649,8 @@
     function createPineOrBiomeTree(THREE, unitId, scale = 1, seed = 1) {
         const tree = new THREE.Group();
         const barkMat = new THREE.MeshStandardMaterial({
-            color: unitId === 'clan' ? 0x4E342E : 0x5D4037,
-            roughness: 0.86,
+            color: 0x3A2820,
+            roughness: 0.92,
             metalness: 0.02,
             flatShading: false
         });
@@ -2675,7 +2675,7 @@
         tree.add(trunk);
 
         if (isBroadleafStyle) {
-            // Árbol frondoso estilo Pixar: ramas limpias y volúmenes de copa suaves de alta resolución con degradado de altura
+            // Árbol frondoso orgánico: ramas limpias y volúmenes de copa suaves en tonos bosque nórdico
             for (let b = 0; b < 3; b++) {
                 const bAng = (b / 3) * Math.PI * 2 + seed * 0.5;
                 const branch = new THREE.Mesh(
@@ -2688,9 +2688,7 @@
                 tree.add(branch);
             }
 
-            const palette = unitId === 'castores'
-                ? [0x16A34A, 0x22C55E, 0x4ADE80]
-                : [0x15803D, 0x16A34A, 0x22C55E];
+            const palette = [0x1B3B24, 0x254D2E, 0x35633B];
 
             const crownPuffs = [
                 [0, trunkH * 1.12, 0, 1.65, 2],
@@ -2709,7 +2707,7 @@
                 );
                 const puffMat = new THREE.MeshStandardMaterial({
                     color: palette[toneIdx],
-                    roughness: 0.78,
+                    roughness: 0.86,
                     metalness: 0.02,
                     flatShading: false
                 });
@@ -2719,14 +2717,10 @@
                 tree.add(puff);
             });
         } else {
-            // Pinos y abetos estilizados tipo Firewatch diurno: 6 pisos suaves y luminosos con degradado vertical de color
+            // Pinos y abetos estilizados con verdes pino y bosque nórdico naturales
             const tierPalette = unitId === 'clan'
-                ? [0x1E3A5F, 0x2563EB, 0x60A5FA]
-                : (unitId === 'escultas'
-                    ? [0x15803D, 0x16A34A, 0x22C55E]
-                    : (unitId === 'manada'
-                        ? [0x15803D, 0x16A34A, 0x4ADE80]
-                        : [0x15803D, 0x16A34A, 0x22C55E]));
+                ? [0x1A2E3B, 0x243E4D, 0x385766]
+                : [0x1B3B24, 0x254D2E, 0x35633B];
 
             const tiers = 6;
             for (let l = 0; l < tiers; l++) {
@@ -2752,7 +2746,7 @@
                 const tone = l < 2 ? tierPalette[0] : (l < 4 ? tierPalette[1] : tierPalette[2]);
                 const coneMat = new THREE.MeshStandardMaterial({
                     color: tone,
-                    roughness: 0.78,
+                    roughness: 0.86,
                     metalness: 0.02,
                     flatShading: false
                 });
@@ -2763,9 +2757,9 @@
 
             if (unitId === 'clan' || unitId === 'escultas') {
                 const snowMat = new THREE.MeshStandardMaterial({
-                    color: 0xF1F5F9,
-                    roughness: 0.45,
-                    metalness: 0.08
+                    color: 0xD8E4EC,
+                    roughness: 0.65,
+                    metalness: 0.04
                 });
                 const snowCapGeo = deformGeometrySmooth(
                     new THREE.ConeGeometry(0.90 * scale, 1.25 * scale, 28, 4),
@@ -2783,7 +2777,7 @@
 
     function createBotanicalBush(THREE, scale = 1.0, seed = 0) {
         const bush = new THREE.Group();
-        const bushColors = [0x14532D, 0x15803D, 0x16A34A];
+        const bushColors = [0x16301D, 0x1E3F26, 0x2A5231];
         const lobes = [
             [0, 0.38, 0, 0.85, 1],
             [-0.55, 0.28, 0.25, 0.65, 0],
@@ -2798,7 +2792,7 @@
             );
             const lobeMat = new THREE.MeshStandardMaterial({
                 color: bushColors[cIdx],
-                roughness: 0.80,
+                roughness: 0.88,
                 metalness: 0.02,
                 flatShading: false
             });
@@ -2812,7 +2806,7 @@
 
     function createShoreReedsCluster(THREE, unitId, seed = 0) {
         const cluster = new THREE.Group();
-        const reedColor = unitId === 'clan' ? 0x64748B : (unitId === 'manada' ? 0x15803D : 0x16A34A);
+        const reedColor = unitId === 'clan' ? 0x385766 : (unitId === 'manada' ? 0x1E3F26 : 0x254D2E);
         const stemMat = new THREE.MeshStandardMaterial({ color: reedColor, roughness: 0.7 });
         const headMat = new THREE.MeshStandardMaterial({ color: 0x5C3A21, roughness: 0.9 });
 
@@ -4069,26 +4063,26 @@
                     vec3 dir = normalize(vWorldPos);
                     float h = clamp(dir.y, 0.0, 1.0);
 
-                    // Cielo diurno luminoso con degradado celeste limpio
+                    // Cielo atmosférico con degradado orgánico
                     vec3 col = mix(uSkyHorizon, uSkyTop, pow(h, 0.48));
 
-                    // Nubes cúmulo diurnas suaves en el cielo alto
+                    // Nubes atmosféricas suaves integradas con la paleta del cosmos
                     if (dir.y > 0.04) {
                         vec2 cloudUv = dir.xz / (dir.y + 0.28) * 1.65 + vec2(uTime * 0.012, -uTime * 0.008);
                         float cNoise = fbmCloud(cloudUv);
                         float cloudMask = smoothstep(0.52, 0.78, cNoise) * smoothstep(0.04, 0.24, dir.y) * smoothstep(0.92, 0.45, dir.y);
-                        vec3 cloudCol = mix(vec3(0.92, 0.96, 1.0), vec3(1.0, 0.99, 0.96), smoothstep(0.55, 0.82, cNoise));
-                        col = mix(col, cloudCol, cloudMask * 0.55);
+                        vec3 cloudCol = mix(uSkyHorizon * 1.15, uSkyHorizon * 1.32 + uSunColor * 0.12, smoothstep(0.55, 0.82, cNoise));
+                        col = mix(col, cloudCol, cloudMask * 0.28);
                     }
 
-                    // Bruma cálida diurna en el horizonte
+                    // Bruma cálida suave en el horizonte
                     float horizonGlow = exp(-abs(dir.y) * 6.5);
-                    col = mix(col, uSkyHorizon * 1.06 + uSunColor * 0.14, horizonGlow * 0.45);
+                    col = mix(col, uSkyHorizon * 1.04 + uSunColor * 0.10, horizonGlow * 0.35);
 
-                    // Sol radiante diurno y halo atmosférico Mie
+                    // Halo solar atmosférico contenido
                     float sunAmt = max(dot(dir, uSunDir), 0.0);
-                    col += uSunColor * pow(sunAmt, 8.0) * 0.38;
-                    col += vec3(1.0, 0.99, 0.92) * smoothstep(0.993, 0.9992, sunAmt) * 0.95;
+                    col += uSunColor * pow(sunAmt, 8.0) * 0.24;
+                    col += uSunColor * smoothstep(0.993, 0.9992, sunAmt) * 0.55;
 
                     gl_FragColor = vec4(col, 1.0);
                 }
@@ -4179,31 +4173,31 @@
                     float nDotV = clamp(dot(viewDir, normal), 0.0, 1.0);
                     float fresnel = 0.02 + 0.98 * pow(1.0 - nDotV, 4.5);
 
-                    // Gradiente de profundidad natural (turquesa esmeralda cristalino en orilla -> zafiro profundo)
+                    // Gradiente de profundidad natural
                     float depthFactor = smoothstep(23.5, 4.0, vDist);
-                    vec3 baseWater = mix(uWaterShallow * 1.08, uWaterDeep, depthFactor * 0.70);
+                    vec3 baseWater = mix(uWaterShallow, uWaterDeep, depthFactor * 0.72);
 
-                    // Red de cáusticas bailando bajo el agua visible en zonas no excesivamente profundas
+                    // Red de cáusticas contenidas bajo el agua
                     float caust = caustics(p, uTime);
                     float caustMask = (1.0 - depthFactor * 0.65) * (0.35 + 0.65 * nDotV);
-                    baseWater += caust * caustMask * vec3(0.85, 0.98, 1.0) * 0.38;
+                    baseWater += caust * caustMask * vec3(0.70, 0.86, 0.92) * 0.16;
 
-                    // Corriente central viva que une entrada norte y salida sur
+                    // Corriente central que une entrada norte y salida sur
                     float centerChannel = 1.0 - smoothstep(3.0, 13.5, abs(p.x));
                     float currentStreaks = smoothstep(0.62, 0.92, sin(p.x * 1.9 + sin(p.y * 0.7 - uTime * 4.4) * 1.5)) * centerChannel;
-                    baseWater = mix(baseWater, vec3(0.82, 0.98, 1.0), currentStreaks * 0.28);
+                    baseWater = mix(baseWater, vec3(0.68, 0.84, 0.90), currentStreaks * 0.18);
 
-                    // Reflejo limpio del cielo según ángulo rasante (fresnel)
-                    vec3 waterWithSky = mix(baseWater, uSkyHorizon * 1.05, clamp(fresnel * 0.85, 0.0, 0.92));
+                    // Reflejo contenido del cielo según ángulo rasante (fresnel)
+                    vec3 waterWithSky = mix(baseWater, uSkyHorizon, clamp(fresnel * 0.55, 0.0, 0.68));
 
-                    // Destellos solares puntuales tipo diamante en crestas de micro-olas (sin velo blanco de plástico)
+                    // Destellos solares puntuales tipo diamante en crestas de micro-olas
                     vec3 halfVec = normalize(uSunDir + viewDir);
                     float nDotH = max(dot(normal, halfVec), 0.0);
-                    float diamondGlint = pow(nDotH, 220.0) * 3.4;
-                    float crestSparkle = pow(nDotH, 54.0) * 0.26;
+                    float diamondGlint = pow(nDotH, 220.0) * 1.8;
+                    float crestSparkle = pow(nDotH, 54.0) * 0.16;
                     vec3 col = waterWithSky + uSunColor * (diamondGlint + crestSparkle);
 
-                    // Espuma viva orgánica en la desembocadura y en la orilla
+                    // Espuma orgánica contenida en la desembocadura y en la orilla
                     float inletDist = length(p - vec2(0.0, -20.5));
                     float outletDist = length(p - vec2(0.0, 20.5));
                     float mouthRipple = sin(inletDist * 2.8 - uTime * 5.5) * 0.5 + 0.5;
@@ -4211,7 +4205,8 @@
 
                     float shoreWave = sin(vDist * 2.8 - uTime * 3.2) * 0.5 + 0.5;
                     float shoreFoam = smoothstep(21.0, 23.6, vDist) * (0.36 + 0.64 * shoreWave);
-                    col = mix(col, vec3(0.97, 0.99, 1.0), clamp(shoreFoam * 0.58 + mouthFoam * 0.72, 0.0, 0.90));
+                    vec3 foamWhite = vec3(0.82, 0.90, 0.94);
+                    col = mix(col, foamWhite, clamp(shoreFoam * 0.42 + mouthFoam * 0.52, 0.0, 0.68));
 
                     // Transparencia cristalina en orillas
                     float edgeAlpha = smoothstep(26.8, 22.2, vDist) * 0.88 + 0.08;
@@ -4244,28 +4239,27 @@
         }
         if (THREE.ACESFilmicToneMapping !== undefined) {
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1.15;
+            renderer.toneMappingExposure = 0.88;
         }
 
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0xBAE6FD, 0.0020);
+        scene.fog = new THREE.FogExp2(0x0D1B24, 0.0032);
 
         const camera3D = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.5, 380);
         camera3D.position.set(0, 11.5, 42);
 
-        const hemiLight = new THREE.HemisphereLight(0xF0F9FF, 0x365314, 1.32);
+        const hemiLight = new THREE.HemisphereLight(0x9BB8CD, 0x1A2418, 0.65);
         scene.add(hemiLight);
 
-        const sunLight = new THREE.DirectionalLight(0xFFFBEB, 1.65);
+        const sunLight = new THREE.DirectionalLight(0xFFE0B2, 1.05);
         sunLight.position.set(45, 75, -35);
         scene.add(sunLight);
 
-        // Luz de relleno diurna celeste para sombras suaves y naturales
-        const fillLight = new THREE.DirectionalLight(0xBAE6FD, 0.65);
+        const fillLight = new THREE.DirectionalLight(0x6488A4, 0.38);
         fillLight.position.set(-45, 42, 45);
         scene.add(fillLight);
 
-        const shoreLight = new THREE.PointLight(0xFDE047, 1.6, 78);
+        const shoreLight = new THREE.PointLight(0xF59E0B, 1.1, 65);
         shoreLight.position.set(0, 8.0, -22);
         scene.add(shoreLight);
 
@@ -4358,16 +4352,16 @@
                 sPos.setY(i, baseRy - channelCarve + sideWall + cragNoise - 0.32);
 
                 const isRock = corridorIdx === 3 || dRiver > 18.0;
-                sCols[i * 3] = isRock ? 0.68 : 0.28;
-                sCols[i * 3 + 1] = isRock ? 0.72 : 0.72;
-                sCols[i * 3 + 2] = isRock ? 0.74 : 0.30;
+                sCols[i * 3] = isRock ? 0.36 : 0.14;
+                sCols[i * 3 + 1] = isRock ? 0.40 : 0.31;
+                sCols[i * 3 + 2] = isRock ? 0.44 : 0.16;
             }
             slopeGeo.setAttribute('color', new THREE.BufferAttribute(sCols, 3));
             slopeGeo.computeVertexNormals();
 
             const slopeMat = new THREE.MeshStandardMaterial({
                 vertexColors: true,
-                roughness: 0.76,
+                roughness: 0.86,
                 metalness: 0.02,
                 flatShading: false
             });
@@ -4401,11 +4395,11 @@
             uTime: { value: 0 },
             uFlowSpeed: { value: flowSpeedVal },
             uCascadeBoost: { value: cascadeFoamBoost },
-            uWaterShallowA: { value: new THREE.Color(biomeFrom.waterColor || 0x00E5FF) },
-            uWaterShallowB: { value: new THREE.Color(biomeTo.waterColor || 0x06B6D4) },
-            uWaterDeep: { value: new THREE.Color(0x0284C7) },
-            uSkyHorizon: { value: new THREE.Color(0xBAE6FD) },
-            uSunColor: { value: new THREE.Color(0xFFFBEB) },
+            uWaterShallowA: { value: new THREE.Color(biomeFrom.waterColor || 0x1F5E6B) },
+            uWaterShallowB: { value: new THREE.Color(biomeTo.waterColor || 0x194D59) },
+            uWaterDeep: { value: new THREE.Color(0x082233) },
+            uSkyHorizon: { value: new THREE.Color(0x2B4C65) },
+            uSunColor: { value: new THREE.Color(0xFFE4B5) },
             uSunDir: { value: new THREE.Vector3(45, 75, -35).normalize() },
             uZStart: { value: zStart },
             uZEnd: { value: zEnd }
@@ -4477,37 +4471,36 @@
                     float nDotV = clamp(dot(viewDir, norm), 0.0, 1.0);
                     float fresnel = 0.02 + 0.98 * pow(1.0 - nDotV, 4.5);
 
-                    // Turquesa esmeralda cristalino en orilla, zafiro profundo al centro
-                    vec3 shallowCol = mix(uWaterShallowA, uWaterShallowB, s) * 1.08;
+                    vec3 shallowCol = mix(uWaterShallowA, uWaterShallowB, s);
                     vec3 baseCol = mix(uWaterDeep, shallowCol, 0.46 + 0.54 * (1.0 - edgeDist));
 
-                    // Cáusticas veloces subacuáticas
+                    // Cáusticas subacuáticas contenidas
                     float caust = riverCaustics(vec2(vUv.x * 8.0, vGlobalPos.z * 0.25), uTime, uFlowSpeed);
-                    baseCol += caust * (1.0 - edgeDist * 0.45) * (0.35 + 0.65 * nDotV) * vec3(0.85, 0.98, 1.0) * 0.32;
+                    baseCol += caust * (1.0 - edgeDist * 0.45) * (0.35 + 0.65 * nDotV) * vec3(0.70, 0.86, 0.92) * 0.16;
 
-                    // Reflejo rasante de cielo
-                    vec3 waterWithSky = mix(baseCol, uSkyHorizon * 1.05, clamp(fresnel * 0.80, 0.0, 0.90));
+                    // Reflejo contenido de cielo
+                    vec3 waterWithSky = mix(baseCol, uSkyHorizon, clamp(fresnel * 0.55, 0.0, 0.68));
 
                     // Destello solar tipo diamante en crestas de rápidos
                     vec3 halfVec = normalize(uSunDir + viewDir);
                     float nDotH = max(dot(norm, halfVec), 0.0);
-                    float sunGlint = pow(nDotH, 190.0) * 2.8 + pow(nDotH, 50.0) * 0.24;
+                    float sunGlint = pow(nDotH, 190.0) * 1.6 + pow(nDotH, 50.0) * 0.15;
 
-                    // Espuma viva en crestas y riberas
+                    // Espuma orgánica contenida en crestas y riberas
                     float fastStreaks = smoothstep(0.58, 0.90, sin(vUv.x * 26.0 + sin(fZ1 * 0.5) * 2.2)) * (0.42 + 0.58 * wave1);
                     float chevronCrests = smoothstep(0.70 - uCascadeBoost * 0.36, 0.95, ripples);
                     float bankFoam = smoothstep(0.62, 0.92, edgeDist) * (0.45 + 0.55 * ripples);
 
                     float totalFoam = clamp(
-                        bankFoam * 0.65 +
-                        fastStreaks * (0.38 + uCascadeBoost * 0.45) +
-                        chevronCrests * (0.35 + uCascadeBoost * 0.68),
-                        0.0, 0.94
+                        bankFoam * 0.48 +
+                        fastStreaks * (0.28 + uCascadeBoost * 0.32) +
+                        chevronCrests * (0.25 + uCascadeBoost * 0.45),
+                        0.0, 0.72
                     );
 
-                    vec3 foamWhite = vec3(0.97, 0.99, 1.0);
+                    vec3 foamWhite = vec3(0.82, 0.90, 0.94);
                     vec3 col = mix(waterWithSky + uSunColor * sunGlint, foamWhite, totalFoam);
-                    float alpha = smoothstep(1.0, 0.76, edgeDist) * 0.94;
+                    float alpha = smoothstep(1.0, 0.76, edgeDist) * 0.92;
                     gl_FragColor = vec4(col, alpha);
                 }
             `
@@ -4987,18 +4980,18 @@
                         float strata = smoothstep(-0.6, 0.7, strataWave);
                         float crevices = smoothstep(0.22, 0.55, fbm(vWorldPos.xz * 0.48 + vWorldPos.y * 0.6));
 
-                        // Granito cálido y luminoso de la Roca del Consejo a pleno sol
-                        vec3 darkSlate = vec3(0.48, 0.52, 0.56);
-                        vec3 midGranite = vec3(0.72, 0.75, 0.78);
-                        vec3 sunlitGranite = vec3(0.92, 0.94, 0.96);
+                        // Granito orgánico de la Roca del Consejo
+                        vec3 darkSlate = vec3(0.31, 0.34, 0.36);
+                        vec3 midGranite = vec3(0.46, 0.49, 0.51);
+                        vec3 sunlitGranite = vec3(0.60, 0.61, 0.62);
                         vec3 rockCol = mix(darkSlate, midGranite, strata * 0.65 + 0.35);
                         rockCol = mix(rockCol, sunlitGranite, smoothstep(4.2, 9.2, vWorldPos.y) * 0.65 + nMicro * 0.25);
                         rockCol *= (0.86 + 0.14 * crevices);
 
-                        // Selva diurna viva y vibrante de Seeonee
-                        vec3 deepJungleFloor = vec3(0.20, 0.52, 0.22);
-                        vec3 lushMoss = vec3(0.28, 0.72, 0.30);
-                        vec3 lichenTint = vec3(0.44, 0.82, 0.38);
+                        // Selva orgánica de Seeonee
+                        vec3 deepJungleFloor = vec3(0.13, 0.34, 0.14);
+                        vec3 lushMoss = vec3(0.18, 0.47, 0.20);
+                        vec3 lichenTint = vec3(0.28, 0.53, 0.25);
                         vec3 forestCol = mix(deepJungleFloor, lushMoss, nMacro * 0.7 + nMicro * 0.3);
                         forestCol = mix(forestCol, lichenTint, smoothstep(0.55, 0.82, nMicro) * 0.45);
 
@@ -5010,14 +5003,14 @@
                         vec3 albedo = mix(forestCol, rockCol, isRock);
 
                         float diff = max(dot(n, uSunDir), 0.0);
-                        vec3 sunLight = vec3(1.0, 0.98, 0.92) * (diff * 0.95);
+                        vec3 sunLight = vec3(1.0, 0.96, 0.88) * (diff * 0.68);
                         vec3 fillDir = normalize(vec3(0.38, 0.65, 0.65));
                         float fillDiff = max(dot(n, fillDir), 0.0);
-                        vec3 fillLight = vec3(0.72, 0.90, 0.99) * (fillDiff * 0.42);
-                        vec3 ambientLight = mix(vec3(0.42, 0.60, 0.45), vec3(0.75, 0.88, 0.98), n.y * 0.5 + 0.5);
+                        vec3 fillLight = vec3(0.54, 0.68, 0.75) * (fillDiff * 0.28);
+                        vec3 ambientLight = mix(vec3(0.31, 0.45, 0.34), vec3(0.56, 0.66, 0.73), n.y * 0.5 + 0.5);
 
                         float rim = pow(clamp(n.y, 0.0, 1.0), 3.0) * isRock * smoothstep(3.0, 8.8, vWorldPos.y);
-                        vec3 rimLight = vec3(1.0, 0.98, 0.88) * rim * 0.25;
+                        vec3 rimLight = vec3(1.0, 0.95, 0.85) * rim * 0.18;
 
                         vec3 litColor = albedo * (ambientLight + sunLight + fillLight) + rimLight;
 
@@ -5091,18 +5084,18 @@
                         float nMacro = fbm(vWorldPos.xz * 0.10);
                         float nMicro = fbm(vWorldPos.xz * 0.35 + vec2(2.7, -1.9));
 
-                        vec3 wetRiverbed = vec3(0.42, 0.48, 0.38);
-                        vec3 dampSand = vec3(0.78, 0.72, 0.54);
+                        vec3 wetRiverbed = vec3(0.27, 0.31, 0.25);
+                        vec3 dampSand = vec3(0.50, 0.46, 0.35);
                         vec3 shoreCol = mix(wetRiverbed, dampSand, smoothstep(-0.3, 0.48, vWorldPos.y));
 
-                        vec3 deepForestMoss = vec3(0.24, 0.58, 0.26);
-                        vec3 sunlitMeadow = vec3(0.32, 0.76, 0.32);
-                        vec3 cloverHighlight = vec3(0.46, 0.86, 0.40);
+                        vec3 deepForestMoss = vec3(0.15, 0.38, 0.17);
+                        vec3 sunlitMeadow = vec3(0.21, 0.49, 0.21);
+                        vec3 cloverHighlight = vec3(0.30, 0.56, 0.26);
                         vec3 meadowCol = mix(deepForestMoss, sunlitMeadow, nMacro * 0.72 + nMicro * 0.28);
                         meadowCol = mix(meadowCol, cloverHighlight, smoothstep(0.52, 0.84, nMicro) * 0.42);
 
                         float strata = smoothstep(-0.5, 0.6, sin(vWorldPos.y * 4.5 + nMacro * 3.8));
-                        vec3 valleyRock = mix(vec3(0.52, 0.56, 0.55), vec3(0.76, 0.80, 0.78), strata * 0.6 + 0.4);
+                        vec3 valleyRock = mix(vec3(0.34, 0.36, 0.36), vec3(0.49, 0.52, 0.51), strata * 0.6 + 0.4);
                         float isRockSlope = smoothstep(0.22, 0.46, slope) * smoothstep(0.8, 3.5, vWorldPos.y);
 
                         float shoreToMeadow = smoothstep(20.6, 24.4, r) * smoothstep(0.12, 0.78, vWorldPos.y);
@@ -5110,18 +5103,18 @@
                         albedo = mix(albedo, valleyRock, isRockSlope * 0.85);
 
                         float diff = max(dot(n, uSunDir), 0.0);
-                        vec3 sunLight = vec3(1.0, 0.98, 0.92) * (diff * 0.95);
+                        vec3 sunLight = vec3(1.0, 0.96, 0.88) * (diff * 0.68);
                         vec3 fillDir = normalize(vec3(-0.45, 0.42, 0.45));
                         float fillDiff = max(dot(n, fillDir), 0.0);
-                        vec3 fillLight = vec3(0.72, 0.90, 0.99) * (fillDiff * 0.42);
-                        vec3 ambientLight = mix(vec3(0.44, 0.62, 0.46), vec3(0.76, 0.90, 0.98), n.y * 0.5 + 0.5);
+                        vec3 fillLight = vec3(0.54, 0.68, 0.75) * (fillDiff * 0.28);
+                        vec3 ambientLight = mix(vec3(0.33, 0.46, 0.34), vec3(0.57, 0.67, 0.73), n.y * 0.5 + 0.5);
 
                         vec3 viewDir = normalize(cameraPosition - vGlobalPos);
                         vec3 halfVec = normalize(uSunDir + viewDir);
                         float wetMask = (1.0 - clamp(shoreToMeadow, 0.0, 1.0)) * smoothstep(-0.2, 0.42, vWorldPos.y);
-                        float wetSpec = pow(max(dot(n, halfVec), 0.0), 32.0) * wetMask * 0.32;
+                        float wetSpec = pow(max(dot(n, halfVec), 0.0), 32.0) * wetMask * 0.22;
 
-                        vec3 litColor = albedo * (ambientLight + sunLight + fillLight) + vec3(1.0, 0.98, 0.90) * wetSpec;
+                        vec3 litColor = albedo * (ambientLight + sunLight + fillLight) + vec3(1.0, 0.96, 0.88) * wetSpec;
 
                         float dist = length(cameraPosition - vGlobalPos);
                         float fogFactor = 1.0 - exp(- (uFogDensity * dist) * (uFogDensity * dist));
@@ -5193,13 +5186,13 @@
                         float nMacro = fbm(vWorldPos.xz * 0.11);
                         float nMicro = fbm(vWorldPos.xz * 0.36 + vec2(1.8, -2.4));
 
-                        vec3 jadeShore = vec3(0.48, 0.62, 0.48);
-                        vec3 deepEmeraldMeadow = vec3(0.22, 0.58, 0.30);
-                        vec3 sunlitAlpineGrass = vec3(0.32, 0.76, 0.38);
+                        vec3 jadeShore = vec3(0.31, 0.40, 0.31);
+                        vec3 deepEmeraldMeadow = vec3(0.14, 0.38, 0.20);
+                        vec3 sunlitAlpineGrass = vec3(0.21, 0.49, 0.25);
                         vec3 meadowCol = mix(deepEmeraldMeadow, sunlitAlpineGrass, nMacro * 0.72 + nMicro * 0.28);
 
                         float strata = smoothstep(-0.5, 0.6, sin(vWorldPos.y * 4.2 + nMacro * 3.6));
-                        vec3 alpineSlate = mix(vec3(0.50, 0.58, 0.56), vec3(0.74, 0.82, 0.80), strata * 0.6 + 0.4);
+                        vec3 alpineSlate = mix(vec3(0.32, 0.38, 0.36), vec3(0.48, 0.53, 0.52), strata * 0.6 + 0.4);
                         float isRockSlope = smoothstep(0.20, 0.44, slope) * smoothstep(0.8, 4.0, vWorldPos.y);
 
                         float shoreToMeadow = smoothstep(20.5, 24.2, r) * smoothstep(0.10, 0.75, vWorldPos.y);
@@ -5207,11 +5200,11 @@
                         albedo = mix(albedo, alpineSlate, isRockSlope * 0.85);
 
                         float diff = max(dot(n, uSunDir), 0.0);
-                        vec3 sunLight = vec3(1.0, 0.98, 0.92) * (diff * 0.95);
+                        vec3 sunLight = vec3(1.0, 0.96, 0.88) * (diff * 0.68);
                         vec3 fillDir = normalize(vec3(-0.45, 0.42, 0.45));
                         float fillDiff = max(dot(n, fillDir), 0.0);
-                        vec3 fillLight = vec3(0.72, 0.90, 0.99) * (fillDiff * 0.42);
-                        vec3 ambientLight = mix(vec3(0.42, 0.62, 0.48), vec3(0.75, 0.90, 0.98), n.y * 0.5 + 0.5);
+                        vec3 fillLight = vec3(0.54, 0.68, 0.75) * (fillDiff * 0.28);
+                        vec3 ambientLight = mix(vec3(0.31, 0.46, 0.36), vec3(0.56, 0.67, 0.73), n.y * 0.5 + 0.5);
 
                         vec3 litColor = albedo * (ambientLight + sunLight + fillLight);
 
@@ -5230,8 +5223,8 @@
                 map: detailTex,
                 bumpMap: detailTex,
                 bumpScale: 0.18,
-                roughness: 0.82,
-                metalness: 0.04,
+                roughness: 0.86,
+                metalness: 0.02,
                 flatShading: false
             });
         }
@@ -5247,7 +5240,7 @@
             const rippleMat = new THREE.MeshBasicMaterial({
                 color: 0xFFFFFF,
                 transparent: true,
-                opacity: 0.28,
+                opacity: 0.18,
                 side: THREE.DoubleSide,
                 depthWrite: false
             });
@@ -5277,10 +5270,10 @@
             const bypassUniforms = {
                 uTime: { value: 0 },
                 uFlowSpeed: { value: 5.8 },
-                uWaterShallow: { value: new THREE.Color(0x06B6D4) },
-                uWaterDeep: { value: new THREE.Color(0x0284C7) },
-                uSkyHorizon: { value: new THREE.Color(0xCCFBF1) },
-                uSunColor: { value: new THREE.Color(0xFFFBEB) },
+                uWaterShallow: { value: new THREE.Color(0x194D59) },
+                uWaterDeep: { value: new THREE.Color(0x081E29) },
+                uSkyHorizon: { value: new THREE.Color(0x1C3144) },
+                uSunColor: { value: new THREE.Color(0xFDE68A) },
                 uSunDir: { value: new THREE.Vector3(-0.38, 0.72, -0.30).normalize() }
             };
             unitLakeState.waterUniformsList.push(bypassUniforms);
@@ -5337,23 +5330,23 @@
                         float nDotV = clamp(dot(viewDir, norm), 0.0, 1.0);
                         float fresnel = 0.02 + 0.98 * pow(1.0 - nDotV, 4.5);
 
-                        vec3 baseCol = mix(uWaterDeep, uWaterShallow * 1.08, 0.45 + 0.55 * (1.0 - edgeDist));
+                        vec3 baseCol = mix(uWaterDeep, uWaterShallow, 0.45 + 0.55 * (1.0 - edgeDist));
                         float caust = bypassCaustics(vec2(vUv.x * 8.0, vGlobalPos.z * 0.28), uTime, uFlowSpeed);
-                        baseCol += caust * (1.0 - edgeDist * 0.45) * (0.35 + 0.65 * nDotV) * vec3(0.85, 0.98, 1.0) * 0.32;
+                        baseCol += caust * (1.0 - edgeDist * 0.45) * (0.35 + 0.65 * nDotV) * vec3(0.70, 0.86, 0.92) * 0.16;
 
-                        vec3 waterWithSky = mix(baseCol, uSkyHorizon * 1.05, clamp(fresnel * 0.80, 0.0, 0.90));
+                        vec3 waterWithSky = mix(baseCol, uSkyHorizon, clamp(fresnel * 0.55, 0.0, 0.68));
 
                         vec3 halfVec = normalize(uSunDir + viewDir);
                         float nDotH = max(dot(norm, halfVec), 0.0);
-                        float sunGlint = pow(nDotH, 190.0) * 2.8 + pow(nDotH, 50.0) * 0.24;
+                        float sunGlint = pow(nDotH, 190.0) * 1.6 + pow(nDotH, 50.0) * 0.15;
 
                         float streaks = smoothstep(0.60, 0.90, sin(vUv.x * 22.0 + sin(fZ * 0.5) * 1.8));
                         float bankFoam = smoothstep(0.62, 0.92, edgeDist) * (0.45 + 0.55 * ripples);
-                        float totalFoam = clamp(bankFoam * 0.65 + streaks * 0.42 + pow(ripples, 4.0) * 0.35, 0.0, 0.94);
+                        float totalFoam = clamp(bankFoam * 0.48 + streaks * 0.30 + pow(ripples, 4.0) * 0.24, 0.0, 0.68);
 
-                        vec3 foamWhite = vec3(0.97, 0.99, 1.0);
+                        vec3 foamWhite = vec3(0.82, 0.90, 0.94);
                         vec3 col = mix(waterWithSky + uSunColor * sunGlint, foamWhite, totalFoam);
-                        float alpha = smoothstep(1.0, 0.76, edgeDist) * 0.94;
+                        float alpha = smoothstep(1.0, 0.76, edgeDist) * 0.92;
                         gl_FragColor = vec4(col, alpha);
                     }
                 `

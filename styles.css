@@ -3561,25 +3561,24 @@ body.anniversary-50-mode .hud-scroll-fill {
    ========================================================================== */
 #unitSuperZoomOverlay.unit-orbit-world-view {
     overflow: hidden;
-    background: #0284C7;
+    background: #07111A;
     user-select: none;
 }
 
-/* Fondos atmosféricos diurnos luminosos, vivos y vibrantes por cada Mundo de Unidad */
 #unitSuperZoomOverlay[data-unit-world="castores"] {
-    background: radial-gradient(circle at 50% 28%, #BAE6FD 0%, #38BDF8 42%, #0284C7 100%);
+    background: radial-gradient(circle at 50% 28%, #1C3B4F 0%, #0D2130 52%, #050C12 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="manada"] {
-    background: radial-gradient(circle at 50% 28%, #A7F3D0 0%, #34D399 42%, #059669 100%);
+    background: radial-gradient(circle at 50% 28%, #163329 0%, #0B1D17 52%, #040B08 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="tropa"] {
-    background: radial-gradient(circle at 50% 28%, #A5F3FC 0%, #22D3EE 42%, #0284C7 100%);
+    background: radial-gradient(circle at 50% 28%, #15383B 0%, #0A1F22 52%, #040C0E 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="escultas"] {
-    background: radial-gradient(circle at 50% 28%, #FED7AA 0%, #60A5FA 45%, #1D4ED8 100%);
+    background: radial-gradient(circle at 50% 28%, #2E2428 0%, #171215 52%, #070608 100%);
 }
 #unitSuperZoomOverlay[data-unit-world="clan"] {
-    background: radial-gradient(circle at 50% 28%, #E0F2FE 0%, #38BDF8 40%, #0369A1 100%);
+    background: radial-gradient(circle at 50% 28%, #1A2E47 0%, #0C1826 52%, #04080E 100%);
 }
 
 .unit-orbit-webgl-wrap {
@@ -3599,8 +3598,8 @@ body.anniversary-50-mode .hud-scroll-fill {
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(180deg, rgba(8, 20, 36, 0.28) 0%, rgba(8, 20, 36, 0.0) 18%, rgba(8, 20, 36, 0.0) 78%, rgba(8, 20, 36, 0.38) 100%),
-        radial-gradient(circle at 50% 50%, transparent 64%, rgba(8, 20, 36, 0.18) 100%);
+        linear-gradient(180deg, rgba(6, 16, 28, 0.42) 0%, rgba(6, 16, 28, 0.0) 22%, rgba(6, 16, 28, 0.05) 70%, rgba(6, 16, 28, 0.62) 100%),
+        radial-gradient(circle at 50% 50%, transparent 52%, rgba(6, 16, 28, 0.28) 100%);
     pointer-events: none;
 }
 
