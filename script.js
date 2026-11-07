@@ -1,15 +1,10 @@
 /* ==========================================================================
    MOTOR DEL MAPA ESTELAR GLOBAL INTERACTIVO · GRUPO SCOUT ACRUX 518
    - Estética minimalista monocromática: Blanco puro (#FFFFFF) y Rojo sutil (#D9383A)
-   - Sector I: Constelación real y exacta de la Cruz del Sur (Crux)
+   - Sector I: Estrella Guía Acrux 518 (Historia, Sede, Coordinación e Inscripciones)
    - Sector II: Constelación en Línea Recta Ascendente de las 5 Unidades
-                (Cada estrella es una Unidad; clic = Super-Zoom hacia la estrella
-                que abre su Nueva Tab completa con información y sus Kraaletes)
-   - Sector III: Constelación Conectada de Campamentos
-                 (Cada estrella es un Campamento; clic = Super-Zoom hacia la estrella
-                 que abre su Nueva Tab con recuerdos, hitos y galería fotográfica)
+   - Sector III: Campamentos de Verano y Campamentos de Semana Santa
    - Sector IV: «El Baúl» de Objetos Perdidos (Cajones = carpetas de Google Drive)
-   - Sector V: Bases y Contacto (Bases operativas en Valladolid y contacto directo)
    - Modo 50 Aniversario (1976–2026): cometa dorado + espiral áurea de 50 estrellas
    ========================================================================== */
 (function initAcruxGlobalStarMapEngine() {
@@ -18,6 +13,28 @@
     const ctx = canvas.getContext('2d');
 
     const DRIVE_API_URL = "https://script.google.com/macros/s/AKfycbwqriYYi3qdBRlNFXwYTpcCTeNn6WJUF5P8Mkwyy1YEPMCM57SVZoYin1GHbvi2A18H/exec";
+
+    // Iconos vectoriales SVG minimalistas (estilo Lucide/Feather) y logos oficiales
+    const SVG_ICONS = {
+        compass: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`,
+        layers: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
+        shield: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+        mapPin: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+        clock: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+        users: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+        phone: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+        folder: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`,
+        camera: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
+        calendar: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+        zoomIn: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>`,
+        box: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+        check: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+        arrowUpRight: `<svg class="social-arrow-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>`,
+        instagram: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
+        facebook: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`,
+        mail: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
+        whatsapp: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`
+    };
 
     const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
     const lerp = (a, b, t) => a + (b - a) * t;
@@ -102,7 +119,7 @@
                     <ellipse cx="422" cy="257" rx="12" ry="5" fill="#78350F"/>
                     <path d="M 382 248 Q 372 232 364 242 M 436 246 Q 446 230 454 240" stroke="#E0F2FE" stroke-width="2.5" fill="none"/>
                     <rect x="20" y="286" width="520" height="14" rx="7" fill="#78350F" stroke="#D97706" stroke-width="2"/>
-                    <text x="24" y="34" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ EL ESTANQUE DEL GRAN ROBLE · «SPLASH, SPLASH, SPLASH»</text>
+                    <text x="24" y="34" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">EL ESTANQUE DEL GRAN ROBLE · «SPLASH, SPLASH, SPLASH»</text>
                 </svg>
             `,
             salidas: [],
@@ -114,12 +131,12 @@
             kraalTitle: 'Kraal de la Colonia Ohiensis',
             kraalSub: 'Scouters de Castores (Kraaletes de Colonia)',
             kraaletes: [
-                { star: '★ Kibu', name: 'Kibu', role: 'Scouter de Colonia' },
-                { star: '★ Malak', name: 'Malak', role: 'Scouter de Colonia' },
-                { star: '★ Kapi', name: 'Kapi', role: 'Scouter de Colonia' },
-                { star: '★ Tic-Tac', name: 'Tic-Tac', role: 'Scouter de Colonia' },
-                { star: '★ Burbuja', name: 'Burbuja', role: 'Scouter de Colonia' },
-                { star: '★ Rusty', name: 'Rusty', role: 'Scouter de Colonia' }
+                { star: 'Kibu', name: 'Kibu', role: 'Scouter de Colonia' },
+                { star: 'Malak', name: 'Malak', role: 'Scouter de Colonia' },
+                { star: 'Kapi', name: 'Kapi', role: 'Scouter de Colonia' },
+                { star: 'Tic-Tac', name: 'Tic-Tac', role: 'Scouter de Colonia' },
+                { star: 'Burbuja', name: 'Burbuja', role: 'Scouter de Colonia' },
+                { star: 'Rusty', name: 'Rusty', role: 'Scouter de Colonia' }
             ]
         },
         {
@@ -161,7 +178,7 @@
                     <polygon points="25,320 65,175 105,320" fill="#064E3B"/>
                     <polygon points="455,320 498,165 542,320" fill="#064E3B"/>
                     <path d="M 0 285 Q 280 255 560 295 L 560 320 L 0 320 Z" fill="#022C22"/>
-                    <text x="24" y="34" fill="#FEF08A" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ LA ROCA DEL CONSEJO · SELVA DE SEEONEE</text>
+                    <text x="24" y="34" fill="#FEF08A" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">LA ROCA DEL CONSEJO · SELVA DE SEEONEE</text>
                 </svg>
             `,
             salidas: [],
@@ -173,15 +190,15 @@
             kraalTitle: 'Kraal de la Manada Khanhiwara',
             kraalSub: 'Los Viejos Lobos (Kraaletes de Manada)',
             kraaletes: [
-                { star: '★ Baloo', name: 'Baloo', role: 'Viejo Lobo de Manada' },
-                { star: '★ Raksa', name: 'Raksa', role: 'Viejo Lobo de Manada' },
-                { star: '★ Akela', name: 'Akela', role: 'Viejo Lobo de Manada' },
-                { star: '★ Kotic', name: 'Kotic', role: 'Viejo Lobo de Manada' },
-                { star: '★ Rikki', name: 'Rikki', role: 'Viejo Lobo de Manada' },
-                { star: '★ Bagheera', name: 'Bagheera', role: 'Viejo Lobo de Manada' },
-                { star: '★ Fao', name: 'Fao', role: 'Viejo Lobo de Manada' },
-                { star: '★ Kaa', name: 'Kaa', role: 'Viejo Lobo de Manada' },
-                { star: '★ Hermano Gris', name: 'Hermano Gris', role: 'Viejo Lobo de Manada' }
+                { star: 'Baloo', name: 'Baloo', role: 'Viejo Lobo de Manada' },
+                { star: 'Raksa', name: 'Raksa', role: 'Viejo Lobo de Manada' },
+                { star: 'Akela', name: 'Akela', role: 'Viejo Lobo de Manada' },
+                { star: 'Kotic', name: 'Kotic', role: 'Viejo Lobo de Manada' },
+                { star: 'Rikki', name: 'Rikki', role: 'Viejo Lobo de Manada' },
+                { star: 'Bagheera', name: 'Bagheera', role: 'Viejo Lobo de Manada' },
+                { star: 'Fao', name: 'Fao', role: 'Viejo Lobo de Manada' },
+                { star: 'Kaa', name: 'Kaa', role: 'Viejo Lobo de Manada' },
+                { star: 'Hermano Gris', name: 'Hermano Gris', role: 'Viejo Lobo de Manada' }
             ]
         },
         {
@@ -223,7 +240,7 @@
                     <line x1="460" y1="275" x2="415" y2="150" stroke="#FDE68A" stroke-width="4"/>
                     <line x1="420" y1="275" x2="420" y2="145" stroke="#F59E0B" stroke-width="4"/>
                     <rect y="272" width="560" height="48" fill="#022C22"/>
-                    <text x="24" y="34" fill="#A7F3D0" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ TROPA LOHENGRIN · EL CABALLERO DEL CISNE Y LAS PATRULLAS</text>
+                    <text x="24" y="34" fill="#A7F3D0" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">TROPA LOHENGRIN · EL CABALLERO DEL CISNE Y LAS PATRULLAS</text>
                 </svg>
             `,
             salidas: [],
@@ -235,15 +252,15 @@
             kraalTitle: 'Kraal de la Tropa Lohengrin',
             kraalSub: 'Scouters de Tropa (Kraaletes de Lohengrin)',
             kraaletes: [
-                { star: '★ Nadia', name: 'Nadia', role: 'Scouter de Tropa' },
-                { star: '★ Ángel', name: 'Ángel', role: 'Scouter de Tropa' },
-                { star: '★ Hugo', name: 'Hugo', role: 'Scouter de Tropa' },
-                { star: '★ Jesús', name: 'Jesús', role: 'Scouter de Tropa' },
-                { star: '★ Silvia', name: 'Silvia', role: 'Scouter de Tropa' },
-                { star: '★ Edgar', name: 'Edgar', role: 'Scouter de Tropa' },
-                { star: '★ Pablo', name: 'Pablo', role: 'Scouter de Tropa' },
-                { star: '★ Ane', name: 'Ane', role: 'Scouter de Tropa' },
-                { star: '★ Darío', name: 'Darío', role: 'Scouter de Tropa' }
+                { star: 'Nadia', name: 'Nadia', role: 'Scouter de Tropa' },
+                { star: 'Ángel', name: 'Ángel', role: 'Scouter de Tropa' },
+                { star: 'Hugo', name: 'Hugo', role: 'Scouter de Tropa' },
+                { star: 'Jesús', name: 'Jesús', role: 'Scouter de Tropa' },
+                { star: 'Silvia', name: 'Silvia', role: 'Scouter de Tropa' },
+                { star: 'Edgar', name: 'Edgar', role: 'Scouter de Tropa' },
+                { star: 'Pablo', name: 'Pablo', role: 'Scouter de Tropa' },
+                { star: 'Ane', name: 'Ane', role: 'Scouter de Tropa' },
+                { star: 'Darío', name: 'Darío', role: 'Scouter de Tropa' }
             ]
         },
         {
@@ -280,7 +297,7 @@
                     <polygon points="0,320 190,65 360,320" fill="#2E1B0F"/>
                     <polygon points="210,320 405,48 560,320" fill="#5C3A21"/>
                     <path d="M 190 65 L 255 180 L 295 240 L 245 320" stroke="#38BDF8" stroke-width="5" fill="none"/>
-                    <text x="24" y="34" fill="#EDE0D4" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ ESCULTAS TREA · EL TORII DE LOS NINJAS Y EL DESCENSO DEL SENA</text>
+                    <text x="24" y="34" fill="#EDE0D4" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">ESCULTAS TREA · EL TORII DE LOS NINJAS Y EL DESCENSO DEL SENA</text>
                 </svg>
             `,
             salidas: [],
@@ -292,11 +309,11 @@
             kraalTitle: 'Kraal de la Unidad Esculta Trea',
             kraalSub: 'Scouters de Escultas (Kraaletes de Trea)',
             kraaletes: [
-                { star: '★ Silvia', name: 'Silvia', role: 'Scouter de Unidad' },
-                { star: '★ David', name: 'David', role: 'Scouter de Unidad' },
-                { star: '★ JJ', name: 'JJ', role: 'Scouter de Unidad' },
-                { star: '★ Lucia', name: 'Lucia', role: 'Scouter de Unidad' },
-                { star: '★ Leonor', name: 'Leonor', role: 'Scouter de Unidad' }
+                { star: 'Silvia', name: 'Silvia', role: 'Scouter de Unidad' },
+                { star: 'David', name: 'David', role: 'Scouter de Unidad' },
+                { star: 'JJ', name: 'JJ', role: 'Scouter de Unidad' },
+                { star: 'Lucia', name: 'Lucia', role: 'Scouter de Unidad' },
+                { star: 'Leonor', name: 'Leonor', role: 'Scouter de Unidad' }
             ]
         },
         {
@@ -333,7 +350,7 @@
                     <polygon points="60,320 280,42 500,320" fill="#1E293B" stroke="#38BDF8" stroke-width="2"/>
                     <polygon points="280,42 225,112 280,96 335,112" fill="#F8FAFC"/>
                     <circle cx="280" cy="22" r="4" fill="#FFFFFF"/>
-                    <text x="24" y="34" fill="#E0F2FE" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">✦ LA LAGUNA AZUL SOBRE LAS NUBES · CLAN AMA DABLAM</text>
+                    <text x="24" y="34" fill="#E0F2FE" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">LA LAGUNA AZUL SOBRE LAS NUBES · CLAN AMA DABLAM</text>
                 </svg>
             `,
             salidas: [],
@@ -345,10 +362,10 @@
             kraalTitle: 'Kraal del Clan Ama Dablam',
             kraalSub: 'Acompañantes Rovers (Kraaletes de Clan)',
             kraaletes: [
-                { star: '★ Laura', name: 'Laura', role: 'Acompañante de Clan' },
-                { star: '★ María', name: 'María', role: 'Acompañante de Clan' },
-                { star: '★ Marta', name: 'Marta', role: 'Acompañante de Clan' },
-                { star: '★ Victoria', name: 'Victoria', role: 'Acompañante de Clan' }
+                { star: 'Laura', name: 'Laura', role: 'Acompañante de Clan' },
+                { star: 'María', name: 'María', role: 'Acompañante de Clan' },
+                { star: 'Marta', name: 'Marta', role: 'Acompañante de Clan' },
+                { star: 'Victoria', name: 'Victoria', role: 'Acompañante de Clan' }
             ]
         }
     ];
@@ -387,7 +404,7 @@
         },
         1977: {
             title: 'Fundación Oficial del Grupo Scout ACRUX 518',
-            desc: 'Constitución oficial del grupo e inscripción en ASDE Exploradores de Castilla y León. Nace nuestra insignia estelar inspirada en la Cruz del Sur y la pañoleta carmesí (#B02324) con borde blanco nieve.',
+            desc: 'Constitución oficial del grupo e inscripción en ASDE Exploradores de Castilla y León. Nace nuestra insignia estelar Acrux y la pañoleta carmesí (#B02324) con borde blanco nieve.',
             photoUrl: 'images/DSC_059812.jpg'
         },
         1980: {
@@ -467,7 +484,7 @@
         const highlight = ANNIVERSARY_HIGHLIGHTS[year];
         const isUnlocked = Boolean(highlight && highlight.photoUrl);
 
-        // Geometría de espiral áurea armónica y compacta alrededor de la Cruz del Sur (Sector I)
+        // Geometría de espiral áurea armónica y compacta alrededor del Sector I (Acrux 518)
         const spiralProgress = i / (ANNIVERSARY_TOTAL_STARS - 1);
         const theta = -1.25 + spiralProgress * (3.15 * Math.PI);
         const radius = 155 * Math.pow(420 / 155, spiralProgress);
@@ -580,19 +597,19 @@
         {
             index: 0,
             roman: 'I',
-            code: 'SECTOR I / IV · CRUX AUSTRALIS (LA CRUZ DEL SUR)',
+            code: 'SECTOR I / IV · ESTRELLA GUÍA ACRUX 518',
             subtitle: 'ESTRELLA GUÍA · VALLADOLID (DESDE 1977)',
             coords: 'VALLADOLID · DESDE 1977',
-            headingHTML: 'Cruz del Sur <span class="ice-italic">Acrux 518</span>',
-            desc: 'El faro que guía a nuestro grupo en Valladolid desde 1977. Entra en Acrux para descubrir nuestra historia, la Base de Rueda 53 y cómo venir un sábado.',
+            headingHTML: 'Grupo Scout <span class="ice-italic">Acrux 518</span>',
+            desc: 'Desde 1977 educando en valores, escultismo y contacto con la naturaleza en Valladolid. Pulsa en nuestra estrella guía Acrux para conocer el grupo, nuestra sede, el equipo de coordinación y cómo unirte.',
             worldX: 0,
             worldY: 0,
             baseZoom: 1.06,
-            primaryBtnText: '✦ Entrar en Acrux · Historia, Base y Contacto',
+            primaryBtnText: 'Entrar en Acrux 518',
             stars: [
                 {
                     id: 'acrux',
-                    symbol: '✦ α Acrux (Faro Guía)',
+                    symbol: 'α Acrux (Estrella Guía)',
                     dx: 12,
                     dy: 172,
                     r: 12.0,
@@ -601,9 +618,9 @@
                     isMainCross: true,
                     isMainAcrux: true,
                     isClickable: true,
-                    badge: 'Estrella Principal · Base de la Cruz',
-                    title: 'α Crucis (Acrux) · El Faro que Nos Da Nombre',
-                    body: 'Situada en el pie meridional de la Cruz del Sur, Acrux es la estrella guía de los navegantes y exploradores. Desde 1977 da nombre y rumbo al Grupo Scout Nº 518 en Valladolid.',
+                    badge: 'Estrella Principal · Acrux 518',
+                    title: 'α Acrux · La Estrella que Nos Da Nombre',
+                    body: 'Acrux es la estrella guía de los navegantes y exploradores. Desde 1977 da nombre y rumbo al Grupo Scout Nº 518 en Valladolid.',
                     pillars: ['Fundado en Valladolid en 1977', 'ASDE Exploradores de Castilla y León', 'Educación en Valores']
                 },
                 {
@@ -667,7 +684,7 @@
             worldX: UNITS_ORIGIN_X,
             worldY: UNITS_ORIGIN_Y,
             baseZoom: 1.0,
-            primaryBtnText: '✦ Entrar en la Estrella de esta Unidad'
+            primaryBtnText: 'Entrar en la Unidad'
         },
         {
             index: 2,
@@ -676,11 +693,11 @@
             subtitle: 'EXPEDICIONES DE VERANO Y SEMANA SANTA · GOOGLE DRIVE',
             coords: 'ÁLBUMES FOTOGRÁFICOS · DRIVE',
             headingHTML: 'Constelación de <span class="ice-italic">Campamentos</span>',
-            desc: 'Nuestras acampadas de verano y Semana Santa en plena naturaleza. Haz clic en cualquier estrella para ver las fotos y abrir su álbum en Drive.',
+            desc: 'Recorrido por los campamentos de Verano y de Semana Santa del Grupo Scout Acrux 518. Selecciona cualquier campamento para ver sus fotografías destacadas y acceder al álbum completo en Google Drive.',
             worldX: CAMPS_ORIGIN_X,
             worldY: CAMPS_ORIGIN_Y,
             baseZoom: 1.02,
-            primaryBtnText: '✦ Abrir Expediente y Álbum del Campamento',
+            primaryBtnText: 'Abrir Álbum del Campamento',
             stars: [],
             edges: []
         },
@@ -695,11 +712,11 @@
             worldX: 420,
             worldY: 1580,
             baseZoom: 1.04,
-            primaryBtnText: '✦ Abrir «El Baúl» de Objetos Perdidos',
+            primaryBtnText: 'Abrir «El Baúl» de Objetos Perdidos',
             stars: [
                 {
                     id: 'estrella-el-baul',
-                    symbol: '✦ El Baúl',
+                    symbol: 'El Baúl',
                     dx: 0,
                     dy: 0,
                     r: 7.6,
@@ -709,10 +726,10 @@
                     isClusterHub: true,
                     cajonIndex: 0,
                     starIdx: 0,
-                    badge: '✦ Objetos Perdidos',
+                    badge: 'Objetos Perdidos',
                     title: 'El Baúl · Objetos Perdidos',
                     body: 'Haz clic en «El Baúl» para explorar las carpetas de ropa y material encontrado en los campamentos.',
-                    pillars: ['📁 Sincronizado con Google Drive', 'Recogida los sábados en la base', 'Reserva rápida por WhatsApp']
+                    pillars: ['Sincronizado con Google Drive', 'Recogida los sábados en la base', 'Reserva rápida por WhatsApp']
                 }
             ],
             edges: []
@@ -768,7 +785,7 @@
         return created;
     }
 
-    // 1. Registrar Sector I (Cruz del Sur) y Sector IV (Objetos Perdidos)
+    // 1. Registrar Sector I (Acrux 518) y Sector IV (Objetos Perdidos)
     [0, 3].forEach(sIdx => {
         const sec = SECTORS[sIdx];
         sec.runtimeNodes = registerStarCluster(sec.stars, sec.edges, sec.worldX, sec.worldY, {
@@ -777,20 +794,20 @@
         });
     });
 
-    // Estrellas secundarias del campo de la Cruz del Sur
-    const cruxFieldExtras = [
-        { dx: -215, dy: -165, r: 3.2, symbol: 'μ² Crucis' },
-        { dx: -198, dy: -46, r: 3.2, symbol: 'λ Crucis' },
-        { dx: -182, dy: 38, r: 3.3, symbol: 'κ Crucis (Joyero)' },
-        { dx: -125, dy: 76, r: 3.3, symbol: 'ι Crucis' },
-        { dx: 64, dy: 225, r: 3.3, symbol: 'ζ Crucis' },
-        { dx: 138, dy: 268, r: 3.4, symbol: 'η Crucis' },
-        { dx: 165, dy: 182, r: 3.0, symbol: 'θ¹ Crucis' },
-        { dx: 156, dy: 168, r: 3.0, symbol: 'θ² Crucis' }
+    // Estrellas secundarias del campo estelar de Acrux 518
+    const acruxFieldExtras = [
+        { dx: -215, dy: -165, r: 3.2, symbol: '' },
+        { dx: -198, dy: -46, r: 3.2, symbol: '' },
+        { dx: -182, dy: 38, r: 3.3, symbol: '' },
+        { dx: -125, dy: 76, r: 3.3, symbol: '' },
+        { dx: 64, dy: 225, r: 3.3, symbol: '' },
+        { dx: 138, dy: 268, r: 3.4, symbol: '' },
+        { dx: 165, dy: 182, r: 3.0, symbol: '' },
+        { dx: 156, dy: 168, r: 3.0, symbol: '' }
     ];
-    registerStarCluster(cruxFieldExtras, [], SECTORS[0].worldX, SECTORS[0].worldY, {
+    registerStarCluster(acruxFieldExtras, [], SECTORS[0].worldX, SECTORS[0].worldY, {
         sectorIndex: 0,
-        clusterType: 'crux-field'
+        clusterType: 'acrux-field'
     });
 
     // Estrellas secundarias del campo de «El Baúl» para darle aspecto astronómico natural
@@ -947,13 +964,8 @@
         hasBothCampsConstellations = (N_s > 0 && N_e > 0);
 
         // Ajuste dinámico del encuadre astronómico del Sector III
-        if (hasBothCampsConstellations) {
-            SECTORS[2].baseZoom = 0.94;
-            SECTORS[2].desc = 'Cada estrella guarda la memoria viva de nuestras acampadas: arriba brilla la Constelación Estival (verano) y abajo la Constelación Equinoccial (Semana Santa y primavera). Adéntrate en cada expedición para revivirla y abrir su álbum en Google Drive.';
-        } else {
-            SECTORS[2].baseZoom = 1.02;
-            SECTORS[2].desc = 'Cada estrella guarda la memoria viva de nuestras acampadas del Grupo Scout ACRUX 518. Adéntrate en cada expedición para revivirla y abrir su álbum oficial en Google Drive.';
-        }
+        SECTORS[2].baseZoom = hasBothCampsConstellations ? 0.94 : 1.02;
+        SECTORS[2].desc = 'Recorrido por los campamentos de Verano y de Semana Santa del Grupo Scout Acrux 518. Selecciona cualquier campamento para ver sus fotografías destacadas y acceder al álbum completo en Google Drive.';
 
         // Helper para generar etiquetas compactas de 2 líneas y evitar colisiones de texto
         function getCampDisplayLabels(rawName, greekLetter) {
@@ -970,19 +982,19 @@
             if (!clean) clean = (rawName || '').replace(/[-_]/g, ' ').trim();
             if (clean.length > 18) clean = clean.substring(0, 16) + '…';
 
-            const line1 = `✦ ${greekLetter} ${year}`.trim();
+            const line1 = `${greekLetter} ${year}`.trim();
             const line2 = clean;
-            const starSymbol = year ? `✦ ${greekLetter} ${year} · ${clean}` : `✦ ${greekLetter} ${clean}`;
+            const starSymbol = year ? `${greekLetter} ${year} · ${clean}` : `${greekLetter} ${clean}`;
 
             return { line1, line2, starSymbol };
         }
 
-        // 4. Construcción geométrica de la Constelación de Verano (Hemisferio Superior)
+        // 4. Construcción geométrica de Campamentos de Verano (Hemisferio Superior)
         const baseY_s = hasBothCampsConstellations ? -135 : 0;
         const spanX_s = Math.min(1450, Math.max(480, (N_s - 1) * 230));
 
         const summerCamps = rawSummer.map((c, idx) => {
-            const letter = GREEK_ALPHABET[idx] || `★${idx + 1}`;
+            const letter = GREEK_ALPHABET[idx] || `${idx + 1}`;
             const isLast = (idx === N_s - 1);
             const lbl = getCampDisplayLabels(c.name, letter);
             let dx = 0;
@@ -1014,7 +1026,7 @@
                 labelLine2: lbl.line2,
                 name: c.name || `Campamento de Verano ${idx + 1}`,
                 season: c.season || 'Campamento de Verano',
-                location: c.location || '📍 Ubicación estival',
+                location: c.location || 'Ubicación estival',
                 driveFolderName: c.driveFolderName || c.name || 'Carpeta Drive',
                 driveUrl: c.driveUrl || '',
                 dx,
@@ -1028,12 +1040,12 @@
             };
         });
 
-        // 5. Construcción geométrica de la Constelación de Semana Santa (Hemisferio Inferior)
+        // 5. Construcción geométrica de Campamentos de Semana Santa (Hemisferio Inferior)
         const baseY_e = hasBothCampsConstellations ? +135 : 0;
         const spanX_e = Math.min(1400, Math.max(460, (N_e - 1) * 230));
 
         const easterCamps = rawEaster.map((c, idx) => {
-            const letter = GREEK_ALPHABET[idx] || `✦${idx + 1}`;
+            const letter = GREEK_ALPHABET[idx] || `${idx + 1}`;
             const isLast = (idx === N_e - 1);
             const lbl = getCampDisplayLabels(c.name, letter);
             let dx = 0;
@@ -1059,13 +1071,13 @@
             return {
                 id: c.id || `camp-easter-${idx}`,
                 seasonType: 'easter',
-                seasonBadge: 'Semana Santa y Primavera',
+                seasonBadge: 'Campamento de Semana Santa',
                 starSymbol: lbl.starSymbol,
                 labelLine1: lbl.line1,
                 labelLine2: lbl.line2,
                 name: c.name || `Campamento de Semana Santa ${idx + 1}`,
                 season: c.season || 'Campamento de Semana Santa',
-                location: c.location || '📍 Ubicación de acampada',
+                location: c.location || 'Ubicación de acampada',
                 driveFolderName: c.driveFolderName || c.name || 'Carpeta Drive',
                 driveUrl: c.driveUrl || '',
                 dx,
@@ -1163,7 +1175,7 @@
 
         const baulMainStar = {
             id: 'estrella-el-baul',
-            symbol: '✦ El Baúl',
+            symbol: 'El Baúl',
             dx: 0,
             dy: 0,
             r: 8.2,
@@ -1176,10 +1188,10 @@
             cajonIndex: 0,
             starIdx: 0,
             labelPos: 'bottom',
-            badge: '✦ Estrella Principal · Objetos Perdidos',
-            title: '✦ El Baúl · Estrella de Objetos Perdidos (Google Drive)',
+            badge: 'Estrella Principal · Objetos Perdidos',
+            title: 'El Baúl · Estrella de Objetos Perdidos (Google Drive)',
             body: 'Haz clic en «El Baúl» para adentrarte en su interior y explorar los cajones sincronizados con Google Drive.',
-            pillars: ['📁 Google Drive / Objetos Perdidos', 'Sincronizado en tiempo real', 'Clic para entrar a «El Baúl»']
+            pillars: ['Google Drive / Objetos Perdidos', 'Sincronizado en tiempo real', 'Clic para entrar a «El Baúl»']
         };
 
         // Estado vacío limpio si no hay cajones en Drive
@@ -1209,7 +1221,7 @@
             const parts = rawName.split('|').map(s => s.trim());
             const folderTitle = parts[0];
             const subtitle = parts.length > 1 ? parts[1] : (cajon.subtitle || 'Objetos perdidos sincronizados desde Google Drive');
-            const starSymbol = parts[0].startsWith('✦') ? parts[0] : `✦ ${parts[0]}`;
+            const starSymbol = parts[0];
 
             return {
                 id: cajon.id || `cajon-${idx}`,
@@ -1236,7 +1248,6 @@
         const edges = [];
 
         if (N === 1) {
-            // Par binario elegante con El Baúl abajo y Cajón 01 en ascenso luminoso
             const cj = LOST_CAJONES_DATA[0];
             miniStars.push({
                 id: `cajon-star-${cj.id}`,
@@ -1251,18 +1262,17 @@
                 hoverRingColor: 'rgba(56, 189, 248, 0.95)',
                 cajonIndex: 0,
                 starIdx: 1,
-                badge: `✦ Mini-Estrella · ${cj.folderName}`,
+                badge: `Mini-Estrella · ${cj.folderName}`,
                 title: `${cj.starSymbol} · ${cj.folderName}`,
                 body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
                 pillars: [
-                    `📁 ${cj.folderName}`,
+                    cj.folderName,
                     `${cj.items.length} objetos registrados`,
                     'Clic para abrir cajón'
                 ]
             });
             edges.push([0, 1]);
         } else if (N === 2) {
-            // Triángulo áureo celeste (Delta asterism)
             const pos = [
                 { dx: -130, dy: -70, lp: 'top' },
                 { dx: 130, dy: -70, lp: 'top' }
@@ -1282,15 +1292,14 @@
                     hoverRingColor: 'rgba(56, 189, 248, 0.90)',
                     cajonIndex: i,
                     starIdx: i + 1,
-                    badge: `✦ Mini-Estrella · Cajón 0${i + 1}`,
+                    badge: `Mini-Estrella · Cajón 0${i + 1}`,
                     title: `${cj.starSymbol} · ${cj.folderName}`,
                     body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
-                    pillars: [`📁 ${cj.folderName}`, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
+                    pillars: [cj.folderName, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
                 });
             }
             edges.push([0, 1], [0, 2], [1, 2]);
         } else if (N === 3) {
-            // Diamante / Rombo celeste envolvente
             const pos = [
                 { dx: -145, dy: -25, lp: 'left' },
                 { dx: 0, dy: -110, lp: 'top' },
@@ -1311,15 +1320,14 @@
                     hoverRingColor: 'rgba(56, 189, 248, 0.90)',
                     cajonIndex: i,
                     starIdx: i + 1,
-                    badge: `✦ Mini-Estrella · Cajón 0${i + 1}`,
+                    badge: `Mini-Estrella · Cajón 0${i + 1}`,
                     title: `${cj.starSymbol} · ${cj.folderName}`,
                     body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
-                    pillars: [`📁 ${cj.folderName}`, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
+                    pillars: [cj.folderName, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
                 });
             }
             edges.push([0, 1], [1, 2], [2, 3], [3, 0], [0, 2]);
         } else if (N === 4) {
-            // El Cofre de las Estrellas (cuadrilátero celeste con estrella joya El Baúl en el centro)
             const pos = [
                 { dx: -140, dy: -85, lp: 'top' },
                 { dx: 140, dy: -85, lp: 'top' },
@@ -1341,15 +1349,14 @@
                     hoverRingColor: 'rgba(56, 189, 248, 0.90)',
                     cajonIndex: i,
                     starIdx: i + 1,
-                    badge: `✦ Mini-Estrella · Cajón 0${i + 1}`,
+                    badge: `Mini-Estrella · Cajón 0${i + 1}`,
                     title: `${cj.starSymbol} · ${cj.folderName}`,
                     body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
-                    pillars: [`📁 ${cj.folderName}`, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
+                    pillars: [cj.folderName, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
                 });
             }
             edges.push([1, 2], [2, 3], [3, 4], [4, 1], [0, 1], [0, 2], [0, 3], [0, 4]);
         } else {
-            // Bóveda / Corona celeste para N >= 5
             for (let i = 0; i < N; i++) {
                 const cj = LOST_CAJONES_DATA[i];
                 const angle = -Math.PI * 0.90 + (i / (N - 1)) * (Math.PI * 1.80);
@@ -1379,17 +1386,15 @@
                     hoverRingColor: 'rgba(56, 189, 248, 0.85)',
                     cajonIndex: i,
                     starIdx: i + 1,
-                    badge: `✦ Mini-Estrella · Cajón 0${i + 1}`,
+                    badge: `Mini-Estrella · Cajón 0${i + 1}`,
                     title: `${cj.starSymbol} · ${cj.folderName}`,
                     body: `${cj.subtitle}. Contiene ${cj.items.length} fotos de objetos en Google Drive. Clic para explorar este cajón.`,
-                    pillars: [`📁 ${cj.folderName}`, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
+                    pillars: [cj.folderName, `${cj.items.length} objetos registrados`, 'Clic para abrir cajón']
                 });
             }
-            // Cinta perimetral de la bóveda
             for (let i = 0; i < N - 1; i++) {
                 edges.push([i + 1, i + 2]);
             }
-            // Tirantes estructurales hacia El Baúl (nodo 0)
             edges.push([0, 1]);
             edges.push([0, N]);
             edges.push([0, Math.ceil(N / 2)]);
@@ -1576,7 +1581,7 @@
             const progressEl = document.getElementById('hudProgressPercent');
             if (progressEl) {
                 const sectorNames = [
-                    '01 / 04 · Cruz del Sur',
+                    '01 / 04 · Acrux 518',
                     '02 / 04 · Unidades',
                     '03 / 04 · Campamentos',
                     '04 / 04 · El Baúl'
@@ -1587,7 +1592,7 @@
             if (elStarNodesWrap) {
                 let items = [];
                 if (sIdx === 0) {
-                    items = [{ label: '✦ α Acrux (Estrella Principal · Faro Guía)', idx: 0 }];
+                    items = [{ label: 'α Acrux · Estrella Guía', idx: 0 }];
                 } else if (sIdx === 1) {
                     items = UNITS_DATA.map((u, idx) => ({ label: u.shortName, idx }));
                 } else if (sIdx === 2) {
@@ -1607,7 +1612,7 @@
 
                     elStarNodesWrap.innerHTML = `
                         <div class="camps-constellation-group">
-                            <span class="camps-group-title">Constelación Estival · Verano</span>
+                            <span class="camps-group-title">Campamentos de Verano</span>
                             <div class="camps-group-chips">
                                 ${summerItems.map(it => `
                                     <button type="button" class="star-node-chip ${it.isRed ? 'is-red-chip' : ''} ${it.idx === subIdx ? 'active' : ''}" data-sub-idx="${it.idx}">
@@ -1617,7 +1622,7 @@
                             </div>
                         </div>
                         <div class="camps-constellation-group" style="margin-top: 0.6rem;">
-                            <span class="camps-group-title">Constelación Equinoccial · Semana Santa y Primavera</span>
+                            <span class="camps-group-title">Campamentos de Semana Santa</span>
                             <div class="camps-group-chips">
                                 ${easterItems.map(it => `
                                     <button type="button" class="star-node-chip ${it.isRed ? 'is-red-chip' : ''} ${it.idx === subIdx ? 'active' : ''}" data-sub-idx="${it.idx}">
@@ -1733,7 +1738,7 @@
         const elStarCoords = document.getElementById('uzStarCoords');
         if (elStarCoords) elStarCoords.textContent = `ESTRELLA 0${unitIdx + 1} / 05 · ${unit.colorLabel || 'LÍNEA DE LAS UNIDADES'}`;
         document.getElementById('uzAgePill').textContent = unit.age;
-        document.getElementById('uzConstellationName').textContent = `✦ ${unit.constellationTitle}`;
+        document.getElementById('uzConstellationName').textContent = unit.constellationTitle;
         document.getElementById('uzTitle').textContent = unit.fullName;
         document.getElementById('uzMotto').textContent = unit.motto;
         document.getElementById('uzLead').textContent = unit.lead;
@@ -1750,7 +1755,7 @@
             if (unit.bannerImg) {
                 heroVisual.innerHTML = `
                     <img src="${unit.bannerImg}" alt="Fotografía de ${unit.fullName}" class="unit-banner-img" loading="eager">
-                    <span class="unit-photo-caption">📸 ${unit.fullName} · Haz clic para ampliar</span>
+                    <span class="unit-photo-caption">${SVG_ICONS.camera} ${unit.fullName} · Haz clic para ampliar</span>
                 `;
                 heroVisual.onclick = () => openLightbox(unit.bannerImg, unit.fullName, `${unit.age} · ${unit.motto}`);
             } else if (unit.heroSvg) {
@@ -1781,7 +1786,7 @@
             pillarsWrap.innerHTML = unit.pillars.map((p, idx) => `
                 <div class="sz-pillar-item">
                     <span class="pillar-num-badge">ETAPA 0${idx + 1}</span>
-                    <strong>✦ ${p.title}</strong>
+                    <strong>${p.title}</strong>
                     <span>${p.desc}</span>
                 </div>
             `).join('');
@@ -1799,7 +1804,7 @@
                                 <img src="${k.cromoUrl}" alt="${k.name}" class="kraalete-cromo-img" referrerpolicy="no-referrer" loading="lazy">
                             ` : `
                                 <div class="cromo-fallback-content">
-                                    <div class="cromo-scout-badge">⚜️</div>
+                                    <div class="cromo-scout-badge">${SVG_ICONS.compass}</div>
                                     <span class="cromo-unit-tag">${unit.shortName}</span>
                                     <strong class="cromo-fallback-name">${k.name}</strong>
                                     <span class="cromo-fallback-role">${k.role}</span>
@@ -1861,9 +1866,9 @@
                         <article class="unit-salida-card" data-salida-id="${s.id}">
                             <div class="salida-card-header">
                                 <div class="salida-tags-row">
-                                    <span class="salida-badge">🌲 Salida / Acampada</span>
+                                    <span class="salida-badge">${SVG_ICONS.compass} Salida / Acampada</span>
                                     ${s.location ? `<span class="salida-location-tag">${s.location}</span>` : ''}
-                                    ${s.date ? `<span class="salida-date-tag">🗓️ ${s.date}</span>` : ''}
+                                    ${s.date ? `<span class="salida-date-tag">${SVG_ICONS.calendar} ${s.date}</span>` : ''}
                                 </div>
                                 <h4 class="salida-title">${s.name}</h4>
                                 <p class="salida-desc">${s.desc || 'Álbum oficial sincronizado directamente desde Google Drive.'}</p>
@@ -1871,7 +1876,7 @@
                             ${photosHtml}
                             <div class="salida-unlock-box">
                                 <div class="salida-input-row">
-                                    <input type="password" class="dossier-form-input salida-pass-input" placeholder="🔑 Contraseña para abrir el álbum en Drive...">
+                                    <input type="password" class="dossier-form-input salida-pass-input" placeholder="Contraseña para abrir el álbum en Drive...">
                                     <button type="button" class="btn-cosmos-primary salida-unlock-btn" data-salida-id="${s.id}">
                                         <span>Abrir Álbum en Drive</span>
                                         <span class="btn-arrow">↗</span>
@@ -1946,7 +1951,7 @@
             } else {
                 campsGrid.innerHTML = `
                     <div class="unit-camps-empty">
-                        <div class="empty-icon-wrap">🌲</div>
+                        <div class="empty-icon-wrap">${SVG_ICONS.folder}</div>
                         <h4>Aún no hay álbumes de salidas publicados en el Google Drive de esta unidad</h4>
                         <p>Las carpetas creadas en <code>01_UNIDADES / ${unit.fullName.split('·')[0].trim()}</code> con fotos aparecerán aquí automáticamente.</p>
                     </div>
@@ -2164,22 +2169,22 @@
         // 2. Poblar la Nueva Tab del Campamento: Lugar, Descripción, 3 Fotos de Muestra y Formulario Drive
         const kicker = document.getElementById('czKicker');
         if (kicker) {
-            const seasonName = camp.seasonType === 'easter' ? 'SEMANA SANTA Y PRIMAVERA' : 'CAMPAMENTO DE VERANO';
+            const seasonName = camp.seasonType === 'easter' ? 'CAMPAMENTO DE SEMANA SANTA' : 'CAMPAMENTO DE VERANO';
             kicker.textContent = camp.isRedStar
-                ? `✦ ÚLTIMO ${seasonName} · ESTRELLA ROJA`
-                : `✦ ${seasonName}`;
+                ? `ÚLTIMO ${seasonName}`
+                : seasonName;
         }
 
         const seasonPill = document.getElementById('czSeasonPill');
         if (seasonPill) {
             seasonPill.textContent = camp.seasonType === 'easter'
-                ? 'CONSTELACIÓN EQUINOCCIAL (SEMANA SANTA)'
-                : 'CONSTELACIÓN ESTIVAL (VERANO)';
+                ? 'CAMPAMENTOS DE SEMANA SANTA'
+                : 'CAMPAMENTOS DE VERANO';
         }
         const locPill = document.getElementById('czLocationPill');
-        if (locPill) locPill.textContent = camp.location || '📍 Ubicación en naturaleza';
+        if (locPill) locPill.textContent = camp.location || 'Ubicación en naturaleza';
         const folderBadge = document.getElementById('czDriveFolderBadge');
-        if (folderBadge) folderBadge.textContent = `📁 Drive: ${camp.driveFolderName || camp.name}`;
+        if (folderBadge) folderBadge.textContent = `Drive: ${camp.driveFolderName || camp.name}`;
         document.getElementById('czTitle').textContent = camp.name;
         document.getElementById('czDesc').textContent = camp.desc;
 
@@ -2192,7 +2197,7 @@
             if (photos.length === 0) {
                 threePhotosGrid.innerHTML = `
                     <div class="camp-photos-empty-card">
-                        <div class="camp-photos-empty-icon">📁</div>
+                        <div class="camp-photos-empty-icon">${SVG_ICONS.folder}</div>
                         <h4>Carpeta sincronizada desde Drive</h4>
                         <p>Aún sin fotos de muestra en esta carpeta de Google Drive.</p>
                     </div>
@@ -2204,7 +2209,7 @@
                         <div class="camp-photo-img-wrap">
                             <span class="camp-photo-badge">MUESTRA 0${i + 1} / 03 · DRIVE</span>
                             <img src="${ph.src}" alt="${ph.title || 'Foto de campamento'}" loading="lazy" referrerpolicy="no-referrer">
-                            <span class="camp-photo-enlarge-hint">🔍 Ampliar</span>
+                            <span class="camp-photo-enlarge-hint">${SVG_ICONS.zoomIn} Ampliar</span>
                         </div>
                         <div class="camp-photo-caption">
                             <strong>${ph.title || camp.name}</strong>
@@ -2226,14 +2231,11 @@
 
         const campSw = document.getElementById('czCampSwitcher');
         if (campSw) {
-            campSw.innerHTML = CAMPS_DATA.map((c, i) => {
-                const seasonIcon = c.seasonType === 'easter' ? '🌸' : (c.isRedStar ? '🔴' : '☀️');
-                return `
-                    <button type="button" class="star-node-chip ${c.isRedStar ? 'is-red-chip' : ''} ${i === campIdx ? 'active' : ''}" data-jump-camp="${i}" title="${c.name}">
-                        <span>${seasonIcon} ${c.starSymbol}</span>
-                    </button>
-                `;
-            }).join('');
+            campSw.innerHTML = CAMPS_DATA.map((c, i) => `
+                <button type="button" class="star-node-chip ${c.isRedStar ? 'is-red-chip' : ''} ${i === campIdx ? 'active' : ''}" data-jump-camp="${i}" title="${c.name}">
+                    <span>${c.starSymbol}</span>
+                </button>
+            `).join('');
             campSw.querySelectorAll('[data-jump-camp]').forEach(btn => {
                 btn.addEventListener('click', () => {
                     openCampSuperZoom(parseInt(btn.getAttribute('data-jump-camp'), 10));
@@ -2282,7 +2284,7 @@
 
         // Estado vacío limpio si no hay cajones en Drive
         if (!LOST_CAJONES_DATA || LOST_CAJONES_DATA.length === 0) {
-            if (folderPill) folderPill.textContent = '📁 Google Drive / 04_OBJETOS_PERDIDOS';
+            if (folderPill) folderPill.textContent = 'Google Drive / 04_OBJETOS_PERDIDOS';
             if (cajonTitle) cajonTitle.textContent = 'El Baúl está vacío';
             if (cajonSub) cajonSub.textContent = 'Actualmente no hay ningún cajón ni objeto perdido registrado.';
             if (openDriveBtn) openDriveBtn.style.display = 'none';
@@ -2297,7 +2299,7 @@
         const cajon = LOST_CAJONES_DATA[activeLostCajonIdx];
         if (!cajon) return;
 
-        if (folderPill) folderPill.textContent = `📁 ${cajon.drivePath}`;
+        if (folderPill) folderPill.textContent = cajon.drivePath;
         if (cajonTitle) cajonTitle.textContent = cajon.folderName;
         if (cajonSub) cajonSub.textContent = `${cajon.subtitle} · (${cajon.items.length} prendas en esta carpeta de Google Drive)`;
         if (openDriveBtn) {
@@ -2309,7 +2311,7 @@
         if (sw) {
             sw.innerHTML = LOST_CAJONES_DATA.map((cj, i) => `
                 <button type="button" class="star-node-chip ${i === activeLostCajonIdx ? 'active' : ''}" data-cajon-switch="${i}">
-                    <span>📦 ${cj.starSymbol}</span>
+                    <span>${cj.starSymbol}</span>
                 </button>
             `).join('');
             sw.querySelectorAll('[data-cajon-switch]').forEach(btn => {
@@ -2323,10 +2325,10 @@
         if (miniMap) {
             miniMap.innerHTML = LOST_CAJONES_DATA.map((cj, i) => `
                 <button type="button" class="cajon-ministar-node ${i === activeLostCajonIdx ? 'active' : ''}" data-cajon-node="${i}">
-                    <span class="cajon-star-orb">★</span>
+                    <span class="cajon-star-orb">${SVG_ICONS.box}</span>
                     <div class="cajon-ministar-meta">
                         <strong>${cj.starSymbol}</strong>
-                        <span>📁 ${cj.folderName} (${cj.items.length} prendas)</span>
+                        <span>${cj.folderName} (${cj.items.length} prendas)</span>
                     </div>
                 </button>
             `).join('');
@@ -2374,7 +2376,7 @@
                 <article class="lost-photo-card" data-item-name="${it.name}">
                     <div class="lost-photo-art" title="Clic para ampliar foto">
                         ${it.svg ? it.svg : `<img src="${imgSrc}" alt="${it.name}" loading="lazy" referrerpolicy="no-referrer">`}
-                        <span class="lost-drive-file-chip">📄 ${it.file}</span>
+                        <span class="lost-drive-file-chip">${it.file}</span>
                     </div>
                     <div class="lost-photo-body">
                         <div>
@@ -2382,8 +2384,8 @@
                             <p>${it.desc}</p>
                         </div>
                         <div class="lost-photo-footer">
-                            <span class="star-pillar-tag">📍 Sede Rueda 53</span>
-                            <button type="button" class="lost-claim-btn" data-claim-item="${it.name}">🙋‍♂️ ¡Es mío! Reclamar</button>
+                            <span class="star-pillar-tag">Sede Rueda 53</span>
+                            <button type="button" class="lost-claim-btn" data-claim-item="${it.name}">Es mío · Reclamar</button>
                         </div>
                     </div>
                 </article>
@@ -2411,7 +2413,7 @@
                     const waUrl = `https://wa.me/34616289119?text=${encodeURIComponent(waText)}`;
                     if (banner) {
                         banner.style.display = 'block';
-                        banner.innerHTML = `<strong>✅ Solicitud registrada para «${itemName}» (${cajon.folderName}):</strong> Hemos abierto WhatsApp para avisar a Coordinación. Pásate cualquier sábado de <strong>16:30 a 19:00 h</strong> por nuestra Base de <strong>Carretera de Rueda, 53</strong> para recogerlo.`;
+                        banner.innerHTML = `<strong>Solicitud registrada para «${itemName}» (${cajon.folderName}):</strong> Hemos abierto WhatsApp para avisar a Coordinación. Pásate cualquier sábado de <strong>16:30 a 19:00 h</strong> por nuestra Base de <strong>Carretera de Rueda, 53</strong> para recogerlo.`;
                     }
                     window.open(waUrl, '_blank', 'noopener');
                 });
@@ -2596,14 +2598,14 @@
     syncSectorUI(0, 0, true);
 
     // =========================================================================
-    // 9. MODAL DE IDENTIDAD (CRUZ DEL SUR) Y PANEL DE BASES Y CONTACTO
+    // 9. MODAL DE IDENTIDAD (ACRUX 518) · HISTORIA, SEDE, COORDINACIÓN Y REDES
     // =========================================================================
     const drawerBackdrop = document.getElementById('cosmosDrawerBackdrop');
     const drawerKicker = document.getElementById('drawerModalKicker');
     const drawerTitle = document.getElementById('drawerModalTitle');
     const drawerBody = document.getElementById('drawerModalBody');
 
-    function openDrawerModal(mode) {
+    function openDrawerModal() {
         if (!drawerBackdrop) return;
 
         const defaultCoords = [
@@ -2643,30 +2645,93 @@
             })
             : defaultCoords;
 
-        if (mode === 'bases') {
-            drawerKicker.textContent = 'SECTOR V · COORDENADAS OPERATIVAS E INSCRIPCIÓN';
-            drawerTitle.innerHTML = 'Nuestras <span class="ice-italic">Bases y Contacto</span>';
+        drawerKicker.textContent = 'SECTOR I · ESTRELLA GUÍA ACRUX 518';
+        drawerTitle.innerHTML = 'Grupo Scout <span class="ice-italic">Acrux 518</span>';
+        drawerBody.innerHTML = `
+            <div class="identity-modal-content">
+                <!-- CABECERA EDITORIAL DE ACRUX 518 -->
+                <div class="acrux-floating-showcase" id="acrux-historia">
+                    <div class="acrux-floating-title-col">
+                        <div class="star-tab-meta-row">
+                            <span class="bases-pill-badge" style="margin:0;">ESTRELLA GUÍA ACRUX 518</span>
+                            <span class="sz-age-pill">Valladolid · Desde 1977</span>
+                            <span class="sz-age-pill">ASDE Castilla y León</span>
+                        </div>
+                        <h2 class="acrux-giant-title">Grupo Scout <span class="ice-italic">Acrux 518</span></h2>
+                        <p class="acrux-floating-lead">Desde 1977 educando en valores, escultismo y contacto directo con la naturaleza en Valladolid. Formamos parte de ASDE Exploradores de Castilla y León con cinco ramas educativas de 6 a 21 años.</p>
+                    </div>
 
-            drawerBody.innerHTML = `
-                <!-- 1. BLOQUE BASES DEL GRUPO (SEDE OFICIAL RUEDA 53) -->
+                    <div class="acrux-floating-base-dock">
+                        <span class="acrux-dock-kicker">ACCESO RÁPIDO</span>
+                        <h3>Cinco Ramas Educativas · De 6 a 21 años</h3>
+                        <p>Castores, Manada, Tropa, Escultas y Clan. Reuniones de sábado, acampadas trimestrales y campamentos en la naturaleza.</p>
+                        <div class="acrux-dock-actions">
+                            <a href="#acrux-prueba" class="btn-cosmos-primary js-acrux-scroll" style="padding:0.55rem 1.15rem; font-size:0.82rem; text-decoration:none;">
+                                <span>Inscripciones y Contacto</span>
+                                <span class="btn-arrow">↓</span>
+                            </a>
+                            <button type="button" class="star-tab-back-btn" id="btnIdentityToUnitsTop">
+                                <span>Explorar las 5 Unidades →</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. IDENTIDAD E HISTORIA -->
                 <div class="bases-modal-section">
+                    <div class="identity-story-grid">
+                        <article class="identity-story-card">
+                            <div class="story-card-icon">${SVG_ICONS.compass}</div>
+                            <div class="story-card-body">
+                                <h4>Casi 50 Años en Valladolid (1977 – 2026)</h4>
+                                <p>Basados en el método scout de Baden-Powell —aprender haciendo, vida en pequeños grupos, contacto vivo con la naturaleza y servicio—, educamos en valores para formar personas libres, críticas y solidarias.</p>
+                            </div>
+                        </article>
+
+                        <article class="identity-story-card" id="acrux-ramas">
+                            <div class="story-card-icon">${SVG_ICONS.layers}</div>
+                            <div class="story-card-body">
+                                <h4>Cinco Ramas Educativas de 6 a 21 Años</h4>
+                                <ul style="margin: 0.25rem 0 0 1.15rem; padding: 0; color: var(--ice-grey); font-size: 0.84rem; line-height: 1.65;">
+                                    <li><strong>Castores · Colonia Ohiensis</strong> (6–8 años) · <em>Compartir</em></li>
+                                    <li><strong>Manada · Khanhiwara</strong> (8–11 años) · <em>Haremos lo mejor</em></li>
+                                    <li><strong>Tropa · Lohengrin</strong> (11–14 años) · <em>Siempre Listos</em></li>
+                                    <li><strong>Unidad Esculta · Trea</strong> (14–17 años) · <em>Unidad</em></li>
+                                    <li><strong>Clan Rover · Ama Dablam</strong> (17–21 años) · <em>Servir</em></li>
+                                </ul>
+                            </div>
+                        </article>
+
+                        <article class="identity-story-card">
+                            <div class="story-card-icon">${SVG_ICONS.shield}</div>
+                            <div class="story-card-body">
+                                <h4>Comunidad y Pertenencia Oficial</h4>
+                                <p>Formamos parte de <strong>ASDE Exploradores de Castilla y León</strong> y de la <strong>Federación de Scouts de España (ASDE)</strong>, desarrollando proyectos educativos, salidas de rama y campamentos durante toda la ronda solar.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- 2. SEDE OFICIAL Y HORARIOS (BLOQUE ÚNICO Y LIMPIO) -->
+                <div id="acrux-bases" class="bases-modal-section" style="margin-top: 2.4rem;">
                     <div class="bases-section-title-row">
-                        <span class="bases-pill-badge">📍 01 · BASES DEL GRUPO</span>
-                        <h3>Sede Oficial de Acrux 518</h3>
-                        <p>Punto de encuentro semanal para las 5 ramas scout, actividades ordinarias y reuniones:</p>
+                        <span class="bases-pill-badge">02 · SEDE Y HORARIOS</span>
+                        <h3>Sede del Grupo Scout Acrux 518</h3>
+                        <p>Punto de encuentro semanal para las 5 ramas scout, actividades de sábado, asambleas de familias e intendencia:</p>
                     </div>
 
                     <div class="bases-locations-grid">
                         <article class="base-location-card" style="border-color: rgba(217, 56, 58, 0.45);">
                             <div>
-                                <span class="base-type-badge">BASE PRINCIPAL · REUNIONES DE SÁBADO</span>
-                                <h4>Carretera de Rueda, 53 (CP 47008, Valladolid)</h4>
-                                <p class="base-schedule">🕓 <strong>Sábados de 16:30 a 19:00 h</strong> (calendario escolar lectivo)</p>
+                                <span class="base-type-badge">SEDE OFICIAL · VALLADOLID</span>
+                                <h4>Carretera de Rueda, 53 · Sábados de 16:30 a 19:00 h</h4>
+                                <p class="base-schedule">${SVG_ICONS.clock} <strong>Sábados de 16:30 a 19:00 h</strong> (calendario escolar lectivo · CP 47008, Valladolid)</p>
                             </div>
-                            <p class="base-desc">Sede oficial del Grupo Scout ACRUX 518 en Valladolid. Aquí arrancan y terminan nuestras actividades de sábado, juegos de ciudad, asambleas de familias y almacén de intendencia.</p>
+                            <p class="base-desc">Aquí comienzan y terminan nuestras actividades de sábado, juegos de rama, reuniones de familias y preparación de acampadas.</p>
                             <div class="base-actions">
-                                <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="btn-cosmos-primary" style="padding:0.5rem 1.05rem; font-size:0.8rem;">
-                                    <span>🗺️ Abrir en Google Maps</span>
+                                <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="btn-cosmos-primary" style="padding:0.55rem 1.15rem; font-size:0.82rem; text-decoration:none;">
+                                    ${SVG_ICONS.mapPin}
+                                    <span>Abrir en Google Maps</span>
                                     <span class="btn-arrow">↗</span>
                                 </a>
                             </div>
@@ -2674,12 +2739,12 @@
                     </div>
                 </div>
 
-                <!-- 2. BLOQUE DE COORDINACIÓN CON FOTO Y ACCIÓN EN 1 CLIC -->
-                <div class="bases-modal-section" style="margin-top: 1.6rem;">
+                <!-- 3. EQUIPO DE COORDINACIÓN -->
+                <div id="acrux-coordinacion" class="bases-modal-section" style="margin-top: 2.4rem;">
                     <div class="bases-section-title-row">
-                        <span class="bases-pill-badge">👥 02 · EQUIPO DE COORDINACIÓN</span>
+                        <span class="bases-pill-badge">03 · EQUIPO DE COORDINACIÓN</span>
                         <h3>Canal Directo con Coordinación</h3>
-                        <p>Atención directa para familias y nuevos jóvenes. Contacta en 1 clic:</p>
+                        <p>Atención directa para familias y jóvenes. Escríbenos por WhatsApp o llámanos en un clic:</p>
                     </div>
 
                     <div class="coordinators-action-grid">
@@ -2690,22 +2755,24 @@
                                         ${c.photoUrl ? `
                                             <img src="${c.photoUrl}" alt="${c.name}" class="coord-avatar-img" referrerpolicy="no-referrer">
                                         ` : `
-                                            <div class="coord-avatar-fallback">⚜️</div>
+                                            <div class="coord-avatar-fallback">${SVG_ICONS.users}</div>
                                         `}
                                     </div>
                                     <div class="coord-info-col">
                                         <strong class="coord-name">${c.name}</strong>
                                         <span class="coord-role">${c.role}</span>
-                                        <span class="coord-phone-text">📞 ${c.displayPhone}</span>
+                                        <span class="coord-phone-text">${SVG_ICONS.phone} ${c.displayPhone}</span>
                                     </div>
                                 </div>
                                 <div class="coord-btn-row">
                                     <a href="https://wa.me/34${c.phone}?text=${encodeURIComponent('Hola ' + c.name + ', me pongo en contacto desde la web del Grupo Scout Acrux 518 para pedir información.')}" 
                                        target="_blank" rel="noopener" class="btn-coord-action btn-coord-wa">
-                                        <span>💬 WhatsApp</span>
+                                        ${SVG_ICONS.whatsapp}
+                                        <span>WhatsApp</span>
                                     </a>
                                     <a href="tel:+34${c.phone}" class="btn-coord-action btn-coord-call">
-                                        <span>📞 Llamar</span>
+                                        ${SVG_ICONS.phone}
+                                        <span>Llamar</span>
                                     </a>
                                 </div>
                             </article>
@@ -2713,470 +2780,144 @@
                     </div>
                 </div>
 
-                <!-- 3. PASO A PASO: ¿QUIERES VENIR A PROBAR? + FORMULARIO RÁPIDO -->
-                <div class="bases-modal-section" style="margin-top: 1.6rem;">
-                    <div class="bases-section-title-row">
-                        <span class="bases-pill-badge">⚜️ 03 · SÁBADO DE PRUEBA</span>
-                        <h3>¿Quieres apuntarte o venir a probar un sábado?</h3>
-                        <p>El primer sábado es totalmente gratuito y sin compromiso. ¡Ven a conocernos!</p>
-                    </div>
-
-                    <!-- 3 Pasos Visuales -->
-                    <div class="bases-steps-grid">
-                        <div class="step-card">
-                            <div class="step-num">01</div>
-                            <strong>Elige la Unidad</strong>
-                            <p>Según la edad del joven (de 6 a 21 años: Castores, Manada, Tropa, Escultas o Clan).</p>
-                        </div>
-                        <div class="step-card">
-                            <div class="step-num">02</div>
-                            <strong>Ven a la Base</strong>
-                            <p>Te esperamos un sábado a las 16:30 h en Carretera de Rueda, 53 con ropa cómoda.</p>
-                        </div>
-                        <div class="step-card">
-                            <div class="step-num">03</div>
-                            <strong>¡Vive la Aventura!</strong>
-                            <p>Jugará y compartirá la tarde con sus compañeros de rama y los scouters.</p>
-                        </div>
-                    </div>
-
-                    <!-- Formulario Rápido -->
-                    <div class="quick-signup-box">
-                        <h4>Avisar a Coordinación para este sábado</h4>
-                        <p>Rellena este breve formulario y te abriremos el mensaje de WhatsApp ya redactado para coordinar tu llegada:</p>
-                        <form id="basesContactForm">
-                            <div class="signup-inputs-grid">
-                                <input type="text" id="bcName" class="dossier-form-input" required placeholder="Nombre de madre, padre o joven" style="margin:0;">
-                                <input type="tel" id="bcPhone" class="dossier-form-input" required placeholder="Teléfono de contacto" style="margin:0;">
-                                <select id="bcUnit" class="dossier-form-input" style="margin:0;">
-                                    <option value="Castores (6 a 8 años)">1 · Castores · Colonia Ohiensis (6 a 8 años)</option>
-                                    <option value="Manada (8 a 11 años)">2 · Manada · Khanhiwara (8 a 11 años)</option>
-                                    <option value="Tropa (11 a 14 años)">3 · Tropa · Lohengrin (11 a 14 años)</option>
-                                    <option value="Unidad Esculta (14 a 17 años)">4 · Unidad Esculta · Trea (14 a 17 años)</option>
-                                    <option value="Clan Rover (17 a 21 años)">5 · Clan Rover · Ama Dablam (17 a 21 años)</option>
-                                </select>
+                <!-- 4. INSCRIPCIONES Y CONTACTO (TARJETA LIMPIA A DOS COLUMNAS) -->
+                <div id="acrux-prueba" class="bases-modal-section" style="margin-top: 2.4rem;">
+                    <div class="inscripcion-split-card">
+                        <div class="inscripcion-info-col">
+                            <span class="bases-pill-badge">04 · INSCRIPCIONES Y SÁBADO DE PRUEBA</span>
+                            <h3>Inscripciones y Contacto</h3>
+                            <p>Si tienes entre 6 y 21 años —o buscas grupo para tus hijos— puedes escribirnos para consultar disponibilidad de plazas por rama o acercarte un sábado a conocernos en nuestra sede de Carretera de Rueda, 53 (16:30 a 19:00 h).</p>
+                            <div class="inscripcion-tags-row">
+                                <span class="inscripcion-meta-tag">${SVG_ICONS.clock} Sábados de 16:30 a 19:00 h</span>
+                                <span class="inscripcion-meta-tag">${SVG_ICONS.users} De 6 a 21 años · 5 ramas</span>
                             </div>
-                            <div class="signup-action-row" style="margin-top:0.85rem;">
-                                <button type="submit" class="btn-cosmos-primary" style="padding:0.55rem 1.15rem;">
-                                    <span>💬 Enviar Solicitud por WhatsApp a Coordinación</span>
-                                    <span class="btn-arrow">↗</span>
+                        </div>
+
+                        <div class="inscripcion-form-col">
+                            <form id="acruxContactForm">
+                                <div class="inscripcion-fields-stack">
+                                    <input type="text" id="acruxName" class="dossier-form-input" required placeholder="Nombre">
+                                    <input type="tel" id="acruxPhone" class="dossier-form-input" required placeholder="Teléfono">
+                                    <select id="acruxUnit" class="dossier-form-input">
+                                        <option value="Castores (6 a 8 años)">Castores · Colonia Ohiensis (6 a 8 años)</option>
+                                        <option value="Manada (8 a 11 años)">Manada · Khanhiwara (8 a 11 años)</option>
+                                        <option value="Tropa (11 a 14 años)">Tropa · Lohengrin (11 a 14 años)</option>
+                                        <option value="Escultas (14 a 17 años)">Unidad Esculta · Trea (14 a 17 años)</option>
+                                        <option value="Clan Rover (17 a 21 años)">Clan Rover · Ama Dablam (17 a 21 años)</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-cosmos-primary inscripcion-submit-btn">
+                                    ${SVG_ICONS.whatsapp}
+                                    <span>Contactar con Coordinación</span>
                                 </button>
-                            </div>
-                            <div id="bcSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
-                        </form>
+                                <div id="acruxSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 4. BLOQUE TODAS LAS REDES SOCIALES DEL GRUPO -->
-                <div class="bases-modal-section" style="margin-top: 1.6rem;">
+                <!-- 5. REDES SOCIALES DEL GRUPO (BOTONES COMPACTOS HORIZONTALES CON LOGOS VECTORIALES) -->
+                <div id="acrux-redes" class="bases-modal-section" style="margin-top: 2.4rem;">
                     <div class="bases-section-title-row">
-                        <span class="bases-pill-badge">📱 04 · REDES SOCIALES DEL GRUPO</span>
+                        <span class="bases-pill-badge">05 · REDES SOCIALES</span>
                         <h3>Canales Oficiales de Acrux 518</h3>
-                        <p>Sigue las salidas, acampadas, fotos semanales y avisos en nuestras redes oficiales:</p>
                     </div>
 
                     <div class="group-socials-grid">
                         <a href="https://www.instagram.com/gruposcoutacrux518/" target="_blank" rel="noopener" class="group-social-card is-instagram">
-                            <div class="group-social-header">
-                                <div class="group-social-icon">📸</div>
-                                <div class="group-social-info">
-                                    <strong>Instagram General</strong>
-                                    <span>@gruposcoutacrux518</span>
-                                </div>
+                            <div class="group-social-icon">${SVG_ICONS.instagram}</div>
+                            <div class="group-social-info">
+                                <strong>Instagram General</strong>
+                                <span>@gruposcoutacrux518</span>
                             </div>
-                            <p class="group-social-desc">Cuenta oficial del grupo: fotos de actividades, avisos de rondas solares y campamentos.</p>
-                            <span class="group-social-link-btn">Ver Perfil Oficial ↗</span>
+                            <span class="group-social-arrow">${SVG_ICONS.arrowUpRight}</span>
                         </a>
 
                         <a href="https://www.instagram.com/escultas_trea/" target="_blank" rel="noopener" class="group-social-card is-instagram">
-                            <div class="group-social-header">
-                                <div class="group-social-icon">📸</div>
-                                <div class="group-social-info">
-                                    <strong>Unidad Esculta Trea</strong>
-                                    <span>@escultas_trea</span>
-                                </div>
+                            <div class="group-social-icon">${SVG_ICONS.instagram}</div>
+                            <div class="group-social-info">
+                                <strong>Escultas Trea</strong>
+                                <span>@escultas_trea</span>
                             </div>
-                            <p class="group-social-desc">Red oficial de la rama esculta (14 a 17 años): raids, vivacs y Empresas Escultas.</p>
-                            <span class="group-social-link-btn">Ver Perfil de Trea ↗</span>
+                            <span class="group-social-arrow">${SVG_ICONS.arrowUpRight}</span>
                         </a>
 
                         <a href="https://www.instagram.com/clan_amadablam/" target="_blank" rel="noopener" class="group-social-card is-instagram">
-                            <div class="group-social-header">
-                                <div class="group-social-icon">📸</div>
-                                <div class="group-social-info">
-                                    <strong>Clan Rover Ama Dablam</strong>
-                                    <span>@clan_amadablam</span>
-                                </div>
+                            <div class="group-social-icon">${SVG_ICONS.instagram}</div>
+                            <div class="group-social-info">
+                                <strong>Clan Ama Dablam</strong>
+                                <span>@clan_amadablam</span>
                             </div>
-                            <p class="group-social-desc">Red oficial de los Rovers (17 a 21 años): proyectos de servicio, montaña y rutas.</p>
-                            <span class="group-social-link-btn">Ver Perfil del Clan ↗</span>
+                            <span class="group-social-arrow">${SVG_ICONS.arrowUpRight}</span>
                         </a>
 
                         <a href="https://www.facebook.com/GrupoScoutAcrux518" target="_blank" rel="noopener" class="group-social-card is-facebook">
-                            <div class="group-social-header">
-                                <div class="group-social-icon">📘</div>
-                                <div class="group-social-info">
-                                    <strong>Página de Facebook</strong>
-                                    <span>Grupo Scout Acrux 518</span>
-                                </div>
+                            <div class="group-social-icon">${SVG_ICONS.facebook}</div>
+                            <div class="group-social-info">
+                                <strong>Facebook</strong>
+                                <span>Grupo Scout Acrux 518</span>
                             </div>
-                            <p class="group-social-desc">Página en Facebook para familias y antiguos miembros del grupo scout en Valladolid.</p>
-                            <span class="group-social-link-btn">Abrir Facebook ↗</span>
+                            <span class="group-social-arrow">${SVG_ICONS.arrowUpRight}</span>
                         </a>
 
                         <a href="mailto:gruposcoutacrux518@gmail.com" class="group-social-card is-email">
-                            <div class="group-social-header">
-                                <div class="group-social-icon">✉️</div>
-                                <div class="group-social-info">
-                                    <strong>Correo Oficial</strong>
-                                    <span>gruposcoutacrux518@gmail.com</span>
-                                </div>
+                            <div class="group-social-icon">${SVG_ICONS.mail}</div>
+                            <div class="group-social-info">
+                                <strong>Correo</strong>
+                                <span>gruposcoutacrux518@gmail.com</span>
                             </div>
-                            <p class="group-social-desc">Atención formal para trámites de inscripción, documentación y consultas institucionales.</p>
-                            <span class="group-social-link-btn">Escribir Correo ↗</span>
+                            <span class="group-social-arrow">${SVG_ICONS.arrowUpRight}</span>
                         </a>
                     </div>
                 </div>
-            `;
+            </div>
+        `;
 
-            document.getElementById('basesContactForm')?.addEventListener('submit', (e) => {
+        document.getElementById('btnIdentityToUnitsTop')?.addEventListener('click', () => {
+            closeDrawerModal();
+            goToSector(1, 0);
+        });
+
+        // Smooth scroll para las pestañas superiores de Acrux (#acruxTopAnchorNav) y botones internos
+        const allAcruxLinks = document.querySelectorAll('#acruxTopAnchorNav a, .js-acrux-scroll');
+        allAcruxLinks.forEach(a => {
+            a.addEventListener('click', (e) => {
                 e.preventDefault();
-                const name = document.getElementById('bcName')?.value || '';
-                const phone = document.getElementById('bcPhone')?.value || '';
-                const unit = document.getElementById('bcUnit')?.value || '';
-                const targetCoord = coordsList[0] || defaultCoords[0];
-                const cleanTargetPhone = (targetCoord.phone || '616289119').replace(/\s+/g, '');
-
-                const waText = `Hola ${targetCoord.name}, me pongo en contacto desde la web del Grupo Scout Acrux 518.\n\nSoy ${name} (Tel: ${phone}). Nos gustaría venir a probar un sábado a la base de Carretera de Rueda 53 con la rama: ${unit}. ¿Podríais confirmarnos el horario de este sábado? ¡Gracias!`;
-                const waUrl = `https://wa.me/34${cleanTargetPhone}?text=${encodeURIComponent(waText)}`;
-
-                const msg = document.getElementById('bcSuccessMsg');
-                if (msg) {
-                    msg.style.display = 'block';
-                    msg.innerHTML = `
-                        <strong>⚜️ ¡Solicitud preparada, ${name}!</strong><br>
-                        Abriendo WhatsApp para avisar a <strong>${targetCoord.name}</strong> (${targetCoord.displayPhone}). Si la ventana no se abre automáticamente, <a href="${waUrl}" target="_blank" rel="noopener" style="color:#FFF; text-decoration:underline; font-weight:600;">pulsa aquí para enviar el mensaje</a>. ¡Te esperamos este sábado a las 16:30 h en Carretera de Rueda, 53!
-                    `;
+                const href = a.getAttribute('href') || '';
+                const targetId = href.replace('#', '');
+                const targetEl = document.getElementById(targetId);
+                if (targetEl) {
+                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-                window.open(waUrl, '_blank', 'noopener');
-            });
-        } else {
-            drawerKicker.textContent = 'SECTOR I · CRUX AUSTRALIS · α ACRUX (ESTRELLA GUÍA)';
-            drawerTitle.innerHTML = 'Acrux 518 · <span class="ice-italic">Historia, Bases y Contacto</span>';
-            drawerBody.innerHTML = `
-                <div class="identity-modal-content">
-                    <!-- CABECERA FLOTANTE DE LA ESTRELLA ACRUX (SECCIÓN 1 A PANTALLA COMPLETA) -->
-                    <div class="acrux-floating-showcase" id="acrux-historia">
-                        <div class="acrux-floating-title-col">
-                            <div class="star-tab-meta-row">
-                                <span class="bases-pill-badge" style="margin:0;">✦ ESTRELLA α ACRUX · CRUZ DEL SUR</span>
-                                <span class="sz-age-pill">⚜️ Valladolid · Desde 1977</span>
-                                <span class="sz-age-pill">ASDE Castilla y León</span>
-                            </div>
-                            <h2 class="acrux-giant-title">Grupo Scout <span class="ice-italic">Acrux 518</span></h2>
-                            <p class="acrux-floating-lead">En la base de la Cruz del Sur brilla <strong>Acrux (Alfa Crucis)</strong>, la estrella más luminosa de la constelación que durante siglos ha guiado a navegantes y exploradores. Desde 1977 da nombre y rumbo a nuestro grupo scout en Valladolid.</p>
-                        </div>
-
-                        <div class="acrux-floating-base-dock">
-                            <span class="acrux-dock-kicker">📍 SEDE OFICIAL · REUNIONES DE SÁBADO</span>
-                            <h3>Carretera de Rueda, 53 · Valladolid</h3>
-                            <p>🕓 <strong>Sábados de 16:30 a 19:00 h</strong> · Cinco ramas educativas de 6 a 21 años. ¡El primer sábado de prueba es gratuito!</p>
-                            <div class="acrux-dock-actions">
-                                <a href="#acrux-prueba" class="btn-cosmos-primary js-acrux-scroll" style="padding:0.55rem 1.15rem; font-size:0.82rem; text-decoration:none;">
-                                    <span>⚜️ Ven a Probar un Sábado</span>
-                                    <span class="btn-arrow">↓</span>
-                                </a>
-                                <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="star-tab-back-btn" style="text-decoration:none;">
-                                    <span>🗺️ Ver en Google Maps ↗</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 1. CUADRÍCULA PANORÁMICA DE IDENTIDAD E HISTORIA -->
-                    <div class="bases-modal-section">
-                        <div class="identity-story-grid">
-                            <article class="identity-story-card">
-                                <div class="story-card-icon">✦</div>
-                                <div class="story-card-body">
-                                    <h4>¿Por qué Acrux? · El Faro de los Exploradores</h4>
-                                    <p>En el pie meridional de la Cruz del Sur brilla <strong>Acrux (Alfa Crucis)</strong>. Desde 1977 nuestro grupo lleva su nombre como símbolo de guía firme, luz en la noche y rumbo compartido en cada acampada y proyecto.</p>
-                                </div>
-                            </article>
-
-                            <article class="identity-story-card">
-                                <div class="story-card-icon">⛺</div>
-                                <div class="story-card-body">
-                                    <h4>Casi 50 Años en Valladolid (1977 – 2026)</h4>
-                                    <p>Basados en el método scout de Baden-Powell —aprender haciendo, vida en pequeños grupos, contacto vivo con la naturaleza y servicio—, educamos en valores para formar personas libres, críticas y solidarias.</p>
-                                </div>
-                            </article>
-
-                            <article class="identity-story-card" id="acrux-ramas">
-                                <div class="story-card-icon">🌲</div>
-                                <div class="story-card-body">
-                                    <h4>Cinco Ramas Educativas de 6 a 21 Años</h4>
-                                    <ul style="margin: 0.25rem 0 0 1.15rem; padding: 0; color: var(--ice-grey); font-size: 0.84rem; line-height: 1.65;">
-                                        <li><strong>Castores · Colonia Ohiensis</strong> (6–8 años) · <em>Compartir</em></li>
-                                        <li><strong>Manada · Khanhiwara</strong> (8–11 años) · <em>Haremos lo mejor</em></li>
-                                        <li><strong>Tropa · Lohengrin</strong> (11–14 años) · <em>Siempre Listos</em></li>
-                                        <li><strong>Unidad Esculta · Trea</strong> (14–17 años) · <em>Unidad</em></li>
-                                        <li><strong>Clan Rover · Ama Dablam</strong> (17–21 años) · <em>Servir</em></li>
-                                    </ul>
-                                </div>
-                            </article>
-
-                            <article class="identity-story-card">
-                                <div class="story-card-icon">📍</div>
-                                <div class="story-card-body">
-                                    <h4>Comunidad y Pertenencia Oficial</h4>
-                                    <p>Formamos parte de <strong>ASDE Exploradores de Castilla y León</strong> y de la <strong>Federación de Scouts de España (ASDE)</strong>, con reuniones todos los sábados lectivos en nuestra base de Carretera de Rueda, 53.</p>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-
-                    <!-- 2. BLOQUE BASES DEL GRUPO (SEDE OFICIAL RUEDA 53) -->
-                    <div id="acrux-bases" class="bases-modal-section" style="margin-top: 2.6rem;">
-                        <div class="bases-section-title-row">
-                            <span class="bases-pill-badge">📍 02 · BASE OFICIAL Y HORARIOS</span>
-                            <h3>Sede del Grupo Scout Acrux 518</h3>
-                            <p>Punto de encuentro semanal para las 5 ramas scout, actividades de sábado, asambleas de familias e intendencia:</p>
-                        </div>
-
-                        <div class="bases-locations-grid">
-                            <article class="base-location-card" style="border-color: rgba(217, 56, 58, 0.45);">
-                                <div>
-                                    <span class="base-type-badge">BASE PRINCIPAL · REUNIONES DE SÁBADO</span>
-                                    <h4>Carretera de Rueda, 53 (CP 47008, Valladolid)</h4>
-                                    <p class="base-schedule">🕓 <strong>Sábados de 16:30 a 19:00 h</strong> (calendario escolar lectivo)</p>
-                                </div>
-                                <p class="base-desc">Sede oficial del Grupo Scout ACRUX 518 en Valladolid. Aquí arrancan y terminan nuestras actividades de sábado, juegos de rama, reuniones de familias y preparación de acampadas.</p>
-                                <div class="base-actions">
-                                    <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="btn-cosmos-primary" style="padding:0.55rem 1.15rem; font-size:0.82rem; text-decoration:none;">
-                                        <span>🗺️ Abrir Ubicación en Google Maps</span>
-                                        <span class="btn-arrow">↗</span>
-                                    </a>
-                                    <button type="button" class="star-tab-back-btn" id="btnIdentityToUnits">
-                                        <span>✦ Explorar las 5 Unidades →</span>
-                                    </button>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-
-                    <!-- 3. BLOQUE DE COORDINACIÓN CON FOTO Y ACCIÓN EN 1 CLIC -->
-                    <div id="acrux-coordinacion" class="bases-modal-section" style="margin-top: 2.6rem;">
-                        <div class="bases-section-title-row">
-                            <span class="bases-pill-badge">👥 03 · EQUIPO DE COORDINACIÓN</span>
-                            <h3>Canal Directo con Coordinación</h3>
-                            <p>Atención directa para familias y nuevos jóvenes. Escríbenos por WhatsApp o llámanos en 1 clic:</p>
-                        </div>
-
-                        <div class="coordinators-action-grid">
-                            ${coordsList.map(c => `
-                                <article class="coordinator-action-card">
-                                    <div style="display:flex; align-items:center; gap:0.95rem;">
-                                        <div class="coord-avatar-frame">
-                                            ${c.photoUrl ? `
-                                                <img src="${c.photoUrl}" alt="${c.name}" class="coord-avatar-img" referrerpolicy="no-referrer">
-                                            ` : `
-                                                <div class="coord-avatar-fallback">⚜️</div>
-                                            `}
-                                        </div>
-                                        <div class="coord-info-col">
-                                            <strong class="coord-name">${c.name}</strong>
-                                            <span class="coord-role">${c.role}</span>
-                                            <span class="coord-phone-text">📞 ${c.displayPhone}</span>
-                                        </div>
-                                    </div>
-                                    <div class="coord-btn-row">
-                                        <a href="https://wa.me/34${c.phone}?text=${encodeURIComponent('Hola ' + c.name + ', me pongo en contacto desde la web del Grupo Scout Acrux 518 para pedir información.')}" 
-                                           target="_blank" rel="noopener" class="btn-coord-action btn-coord-wa">
-                                            <span>💬 WhatsApp</span>
-                                        </a>
-                                        <a href="tel:+34${c.phone}" class="btn-coord-action btn-coord-call">
-                                            <span>📞 Llamar</span>
-                                        </a>
-                                    </div>
-                                </article>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <!-- 4. PASO A PASO: ¿QUIERES VENIR A PROBAR? + FORMULARIO RÁPIDO -->
-                    <div id="acrux-prueba" class="bases-modal-section" style="margin-top: 2.6rem;">
-                        <div class="bases-section-title-row">
-                            <span class="bases-pill-badge">⚜️ 04 · SÁBADO DE PRUEBA</span>
-                            <h3>¿Quieres apuntarte o venir a probar un sábado?</h3>
-                            <p>El primer sábado es totalmente gratuito y sin compromiso. ¡Ven a conocernos!</p>
-                        </div>
-
-                        <div class="acrux-prueba-split-grid">
-                            <div class="bases-steps-grid" style="margin-bottom:0;">
-                                <div class="step-card">
-                                    <div class="step-num">01</div>
-                                    <strong>Elige la Unidad</strong>
-                                    <p>Según la edad del joven (de 6 a 21 años: Castores, Manada, Tropa, Escultas o Clan).</p>
-                                </div>
-                                <div class="step-card">
-                                    <div class="step-num">02</div>
-                                    <strong>Ven a la Base</strong>
-                                    <p>Te esperamos un sábado a las 16:30 h en Carretera de Rueda, 53 con ropa cómoda.</p>
-                                </div>
-                                <div class="step-card">
-                                    <div class="step-num">03</div>
-                                    <strong>¡Vive la Aventura!</strong>
-                                    <p>Jugará y compartirá la tarde con sus compañeros de rama y los scouters.</p>
-                                </div>
-                            </div>
-
-                            <div class="quick-signup-box" style="margin-top:0;">
-                                <h4>Avisar a Coordinación para este sábado</h4>
-                                <p>Rellena este breve formulario y te abriremos el mensaje de WhatsApp ya redactado para coordinar tu llegada:</p>
-                                <form id="acruxContactForm">
-                                    <div class="signup-inputs-grid">
-                                        <input type="text" id="acruxName" class="dossier-form-input" required placeholder="Nombre de madre, padre o joven" style="margin:0;">
-                                        <input type="tel" id="acruxPhone" class="dossier-form-input" required placeholder="Teléfono de contacto" style="margin:0;">
-                                        <select id="acruxUnit" class="dossier-form-input" style="margin:0;">
-                                            <option value="Castores (6 a 8 años)">1 · Castores · Colonia Ohiensis (6 a 8 años)</option>
-                                            <option value="Manada (8 a 11 años)">2 · Manada · Khanhiwara (8 a 11 años)</option>
-                                            <option value="Tropa (11 a 14 años)">3 · Tropa · Lohengrin (11 a 14 años)</option>
-                                            <option value="Escultas (14 a 17 años)">4 · Unidad Esculta · Trea (14 a 17 años)</option>
-                                            <option value="Clan Rover (17 a 21 años)">5 · Clan Rover · Ama Dablam (17 a 21 años)</option>
-                                        </select>
-                                    </div>
-                                    <div class="signup-action-row" style="margin-top:0.85rem;">
-                                        <button type="submit" class="btn-cosmos-primary" style="padding:0.55rem 1.15rem;">
-                                            <span>💬 Enviar Solicitud por WhatsApp a Coordinación</span>
-                                            <span class="btn-arrow">↗</span>
-                                        </button>
-                                    </div>
-                                    <div id="acruxSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 5. BLOQUE TODAS LAS REDES SOCIALES DEL GRUPO -->
-                    <div id="acrux-redes" class="bases-modal-section" style="margin-top: 2.6rem;">
-                        <div class="bases-section-title-row">
-                            <span class="bases-pill-badge">📱 05 · REDES SOCIALES DEL GRUPO</span>
-                            <h3>Canales Oficiales de Acrux 518</h3>
-                            <p>Sigue las salidas, acampadas, fotos semanales y avisos en nuestras redes oficiales:</p>
-                        </div>
-
-                        <div class="group-socials-grid">
-                            <a href="https://www.instagram.com/gruposcoutacrux518/" target="_blank" rel="noopener" class="group-social-card is-instagram">
-                                <div class="group-social-header">
-                                    <div class="group-social-icon">📸</div>
-                                    <div class="group-social-info">
-                                        <strong>Instagram General</strong>
-                                        <span>@gruposcoutacrux518</span>
-                                    </div>
-                                </div>
-                                <p class="group-social-desc">Cuenta oficial del grupo: fotos de actividades, avisos de rondas solares y campamentos.</p>
-                                <span class="group-social-link-btn">Ver Perfil Oficial ↗</span>
-                            </a>
-
-                            <a href="https://www.instagram.com/escultas_trea/" target="_blank" rel="noopener" class="group-social-card is-instagram">
-                                <div class="group-social-header">
-                                    <div class="group-social-icon">📸</div>
-                                    <div class="group-social-info">
-                                        <strong>Unidad Esculta Trea</strong>
-                                        <span>@escultas_trea</span>
-                                    </div>
-                                </div>
-                                <p class="group-social-desc">Red oficial de la rama esculta (14 a 17 años): raids, vivacs y Empresas Escultas.</p>
-                                <span class="group-social-link-btn">Ver Perfil de Trea ↗</span>
-                            </a>
-
-                            <a href="https://www.instagram.com/clan_amadablam/" target="_blank" rel="noopener" class="group-social-card is-instagram">
-                                <div class="group-social-header">
-                                    <div class="group-social-icon">📸</div>
-                                    <div class="group-social-info">
-                                        <strong>Clan Rover Ama Dablam</strong>
-                                        <span>@clan_amadablam</span>
-                                    </div>
-                                </div>
-                                <p class="group-social-desc">Red oficial de los Rovers (17 a 21 años): proyectos de servicio, montaña y rutas.</p>
-                                <span class="group-social-link-btn">Ver Perfil del Clan ↗</span>
-                            </a>
-
-                            <a href="https://www.facebook.com/GrupoScoutAcrux518" target="_blank" rel="noopener" class="group-social-card is-facebook">
-                                <div class="group-social-header">
-                                    <div class="group-social-icon">📘</div>
-                                    <div class="group-social-info">
-                                        <strong>Página de Facebook</strong>
-                                        <span>Grupo Scout Acrux 518</span>
-                                    </div>
-                                </div>
-                                <p class="group-social-desc">Página en Facebook para familias y antiguos miembros del grupo scout en Valladolid.</p>
-                                <span class="group-social-link-btn">Abrir Facebook ↗</span>
-                            </a>
-
-                            <a href="mailto:gruposcoutacrux518@gmail.com" class="group-social-card is-email">
-                                <div class="group-social-header">
-                                    <div class="group-social-icon">✉️</div>
-                                    <div class="group-social-info">
-                                        <strong>Correo Oficial</strong>
-                                        <span>gruposcoutacrux518@gmail.com</span>
-                                    </div>
-                                </div>
-                                <p class="group-social-desc">Atención formal para trámites de inscripción, documentación y consultas institucionales.</p>
-                                <span class="group-social-link-btn">Escribir Correo ↗</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('btnIdentityToUnits')?.addEventListener('click', () => {
-                closeDrawerModal();
-                goToSector(1, 0);
-            });
-
-            // Smooth scroll para las pestañas superiores de Acrux (#acruxTopAnchorNav) y botones internos
-            const allAcruxLinks = document.querySelectorAll('#acruxTopAnchorNav a, .js-acrux-scroll');
-            allAcruxLinks.forEach(a => {
-                a.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const href = a.getAttribute('href') || '';
-                    const targetId = href.replace('#', '');
-                    const targetEl = document.getElementById(targetId);
-                    if (targetEl) {
-                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                    if (a.closest('#acruxTopAnchorNav')) {
-                        document.querySelectorAll('#acruxTopAnchorNav .star-node-chip').forEach(c => c.classList.remove('active'));
-                        a.classList.add('active');
-                    }
-                });
-            });
-
-            // Formulario de aviso de Acrux
-            document.getElementById('acruxContactForm')?.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const name = document.getElementById('acruxName')?.value || '';
-                const phone = document.getElementById('acruxPhone')?.value || '';
-                const unit = document.getElementById('acruxUnit')?.value || '';
-                const targetCoord = coordsList[0] || defaultCoords[0];
-                const cleanTargetPhone = (targetCoord.phone || '616289119').replace(/\s+/g, '');
-
-                const waText = `Hola ${targetCoord.name}, me pongo en contacto desde la web del Grupo Scout Acrux 518.\n\nSoy ${name} (Tel: ${phone}). Nos gustaría venir a probar un sábado a la base de Carretera de Rueda 53 con la rama: ${unit}. ¿Podríais confirmarnos el horario de este sábado? ¡Gracias!`;
-                const waUrl = `https://wa.me/34${cleanTargetPhone}?text=${encodeURIComponent(waText)}`;
-
-                const msg = document.getElementById('acruxSuccessMsg');
-                if (msg) {
-                    msg.style.display = 'block';
-                    msg.innerHTML = `
-                        <strong>⚜️ ¡Solicitud preparada, ${name}!</strong><br>
-                        Abriendo WhatsApp para avisar a <strong>${targetCoord.name}</strong> (${targetCoord.displayPhone}). Si la ventana no se abre automáticamente, <a href="${waUrl}" target="_blank" rel="noopener" style="color:#FFF; text-decoration:underline; font-weight:600;">pulsa aquí para enviar el mensaje</a>. ¡Te esperamos este sábado a las 16:30 h en Carretera de Rueda, 53!
-                    `;
+                if (a.closest('#acruxTopAnchorNav')) {
+                    document.querySelectorAll('#acruxTopAnchorNav .star-node-chip').forEach(c => c.classList.remove('active'));
+                    a.classList.add('active');
                 }
-                window.open(waUrl, '_blank', 'noopener');
             });
-        }
+        });
+
+        // Formulario de contacto de Acrux
+        document.getElementById('acruxContactForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('acruxName')?.value || '';
+            const phone = document.getElementById('acruxPhone')?.value || '';
+            const unit = document.getElementById('acruxUnit')?.value || '';
+            const targetCoord = coordsList[0] || defaultCoords[0];
+            const cleanTargetPhone = (targetCoord.phone || '616289119').replace(/\s+/g, '');
+
+            const waText = `Hola ${targetCoord.name}, me pongo en contacto desde la web del Grupo Scout Acrux 518.\n\nSoy ${name} (Tel: ${phone}). Me gustaría consultar información / disponibilidad en la rama: ${unit}. ¡Gracias!`;
+            const waUrl = `https://wa.me/34${cleanTargetPhone}?text=${encodeURIComponent(waText)}`;
+
+            const msg = document.getElementById('acruxSuccessMsg');
+            if (msg) {
+                msg.style.display = 'block';
+                msg.innerHTML = `
+                    <strong>Solicitud preparada, ${name}.</strong><br>
+                    Abriendo WhatsApp para contactar con <strong>${targetCoord.name}</strong> (${targetCoord.displayPhone}). Si no se abre automáticamente, <a href="${waUrl}" target="_blank" rel="noopener" style="color:#FFF; text-decoration:underline; font-weight:600;">pulsa aquí para enviar el mensaje</a>.
+                `;
+            }
+            window.open(waUrl, '_blank', 'noopener');
+        });
 
         drawerBackdrop.classList.add('is-open');
         drawerBackdrop.setAttribute('aria-hidden', 'false');
@@ -3229,13 +2970,13 @@
 
         if (elAnYearTag) {
             elAnYearTag.textContent = starData.isUnlocked
-                ? `✦ 50º ANIVERSARIO · RECUERDO HISTÓRICO (${starData.year})`
-                : `✦ 50º ANIVERSARIO · ARCHIVO EN DIGITALIZACIÓN (${starData.year})`;
+                ? `50º ANIVERSARIO · RECUERDO HISTÓRICO (${starData.year})`
+                : `50º ANIVERSARIO · ARCHIVO EN DIGITALIZACIÓN (${starData.year})`;
         }
         if (elAnYearNumber) elAnYearNumber.textContent = starData.year;
         if (elAnYearTitle) elAnYearTitle.textContent = starData.title;
         if (elAnYearDesc) elAnYearDesc.textContent = starData.desc;
-        if (elAnDriveBadge) elAnDriveBadge.textContent = `📁 Google Drive: ${starData.driveFolder}`;
+        if (elAnDriveBadge) elAnDriveBadge.textContent = `Google Drive: ${starData.driveFolder}`;
         if (elAnDriveBtn) elAnDriveBtn.href = starData.driveUrl || DRIVE_ANNIVERSARY_URL;
 
         // RENDIMIENTO: Lazy Loading estricto (la imagen se descarga e inyecta única y exclusivamente en este instante)
@@ -3247,7 +2988,7 @@
             } else {
                 elAnPhotoFrame.innerHTML = `
                     <div class="anniversary-photo-locked">
-                        <span class="locked-icon">📜</span>
+                        <span class="locked-icon">${SVG_ICONS.folder}</span>
                         <strong style="font-family:'Outfit',sans-serif; font-size:1.15rem; color:#F3E5AB; margin-bottom:0.4rem;">
                             Archivo Histórico del Año ${starData.year}
                         </strong>
@@ -3391,7 +3132,7 @@
                     if (hitNode.sectorIndex === 3) {
                         openLostSuperZoom(typeof hitNode.cajonIndex === 'number' ? hitNode.cajonIndex : 0);
                     } else if (hitNode.sectorIndex === 0) {
-                        // En la Cruz del Sur, solo Acrux es interactiva y abre la historia
+                        // En el Sector I, solo Acrux es interactiva y abre la historia
                         if (hitNode.id === 'acrux') {
                             openAcruxSuperZoom();
                         }
@@ -3525,7 +3266,7 @@
         }
         if (elProgressPercent) {
             const sectorNames = [
-                '01 / 04 · Cruz del Sur',
+                '01 / 04 · Acrux 518',
                 '02 / 04 · Unidades',
                 '03 / 04 · Campamentos',
                 '04 / 04 · El Baúl'
@@ -3626,7 +3367,7 @@
         // B. NEBULOSAS ATMOSFÉRICAS MULTICAPA Y RETÍCULAS DE CARTA ASTRONÓMICA POR SECTOR
         // ---------------------------------------------------------------------
         const sectorNebulaPalettes = [
-            // Sector I (Cruz del Sur): carmesí imperial y azul profundo
+            // Sector I (Acrux 518): carmesí imperial y azul profundo
             {
                 outer: 'rgba(30, 64, 175, 0.04)',
                 mid: 'rgba(176, 35, 36, 0.065)',
@@ -3859,7 +3600,7 @@
                 nd.hover += (f - nd.hover) * 0.18;
 
                 if (dM < 52 && dM < closestDist) {
-                    // En el Sector I (Cruz del Sur), solo Acrux es interactiva y cliqueable
+                    // En el Sector I (Acrux 518), solo Acrux es interactiva y cliqueable
                     if (nd.sectorIndex === 0 && nd.id !== 'acrux') {
                         // Las demás estrellas de la constelación son puramente astronómicas decorativas
                     } else {
@@ -3971,26 +3712,26 @@
         }
 
         // ---------------------------------------------------------------------
-        // E2. TÍTULOS EN EL CIELO PARA LAS DOS CONSTELACIONES DEL SECTOR III
+        // E2. TÍTULOS EN EL CIELO PARA LOS DOS GRUPOS DE CAMPAMENTOS DEL SECTOR III
         // ---------------------------------------------------------------------
         if (activeSectorIdx === 2 && !superZoomState && hasBothCampsConstellations) {
             ctx.save();
             ctx.font = '600 11px "JetBrains Mono", monospace';
             ctx.textAlign = 'center';
 
-            // Título de la Constelación Estival (arriba)
+            // Título de Campamentos de Verano (arriba)
             const scSummerTitle = worldToScreen(CAMPS_ORIGIN_X, CAMPS_ORIGIN_Y - 200);
             ctx.fillStyle = 'rgba(255, 235, 180, 0.52)';
             ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
             ctx.shadowBlur = 6;
-            ctx.fillText('CONSTELACIÓN ESTIVAL · CAMPAMENTOS DE VERANO', scSummerTitle.x, scSummerTitle.y);
+            ctx.fillText('CAMPAMENTOS DE VERANO', scSummerTitle.x, scSummerTitle.y);
 
-            // Título de la Constelación de Semana Santa (abajo)
+            // Título de Campamentos de Semana Santa (abajo)
             const scEasterTitle = worldToScreen(CAMPS_ORIGIN_X, CAMPS_ORIGIN_Y + 215);
             ctx.fillStyle = 'rgba(167, 243, 208, 0.52)';
             ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
             ctx.shadowBlur = 6;
-            ctx.fillText('CONSTELACIÓN EQUINOCCIAL · SEMANA SANTA Y PRIMAVERA', scEasterTitle.x, scEasterTitle.y);
+            ctx.fillText('CAMPAMENTOS DE SEMANA SANTA', scEasterTitle.x, scEasterTitle.y);
 
             ctx.restore();
         }
@@ -4564,13 +4305,13 @@
         if (goldenComet.isHovered && goldenComet.state === 'flying') {
             if (cursorRing) cursorRing.classList.add('is-star-hover');
             if (cursorLabel) cursorLabel.textContent = anniversaryMode
-                ? '✦ ¡ATRÁPALO! (REVERTIR)'
-                : '✦ ¡ATRÁPALO! (50º ANIVERSARIO)';
+                ? '¡ATRÁPALO! (REVERTIR)'
+                : '¡ATRÁPALO! (50º ANIVERSARIO)';
         } else if (hoveredAnniversaryStar) {
             if (cursorRing) cursorRing.classList.add('is-star-hover');
             if (cursorLabel) {
                 cursorLabel.textContent = hoveredAnniversaryStar.isUnlocked
-                    ? `★ ${hoveredAnniversaryStar.year} · ${hoveredAnniversaryStar.title}`
+                    ? `${hoveredAnniversaryStar.year} · ${hoveredAnniversaryStar.title}`
                     : `Año ${hoveredAnniversaryStar.year} · Recuerdo histórico por desbloquear`;
             }
         }
@@ -4591,7 +4332,7 @@
             const kraalList = Array.isArray(uData) ? uData : uData.kraaletes;
             if (Array.isArray(kraalList) && kraalList.length > 0) {
                 unit.kraaletes = kraalList.map((k, i) => ({
-                    star: k.star || `★ ${i + 1} · ${unit.shortName}`,
+                    star: k.star || `${i + 1} · ${unit.shortName}`,
                     name: k.name || 'Scouter',
                     role: k.role || 'Kraalete',
                     cromoUrl: k.cromoUrl || k.fotoUrl || k.photoUrl || null
@@ -4624,15 +4365,6 @@
     function syncCoordinacionFromDrive(coordData) {
         if (!Array.isArray(coordData) || coordData.length === 0) return;
         coordinadoresDrive = coordData;
-        const starCoord = SECTORS[4]?.stars?.find(s => s.id === 'canal-coordinacion');
-        if (starCoord) {
-            const names = coordData.map(c => c.name).join(', ');
-            starCoord.title = `Contacto Directo: ${names}`;
-            starCoord.pillars = coordData.slice(0, 3).map(c => `📞 ${c.name}: ${c.telefono || c.phone || ''} (${c.cargo || c.role || 'Coordinación'})`);
-            if (activeSectorIdx === 4) {
-                syncSectorUI(4, selectedSubIdx, true);
-            }
-        }
     }
 
     function syncCajonesFromDrive(cajonesData) {

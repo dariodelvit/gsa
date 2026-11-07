@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Grupo Scout ACRUX 518 · Valladolid (ASDE Exploradores de Castilla y León). Mapa estelar interactivo: Cruz del Sur (Historia, Bases y Contacto), Unidades, Campamentos y El Baúl.">
-    <title>ACRUX 518 · Mapa Estelar Interactivo | Grupo Scout Valladolid</title>
+    <meta name="description" content="Grupo Scout ACRUX 518 · Valladolid (ASDE Exploradores de Castilla y León). Mapa estelar interactivo: Acrux 518, Unidades, Campamentos y El Baúl.">
+    <title>Grupo Scout ACRUX 518 · Valladolid</title>
     <link rel="icon" type="image/svg+xml" href="images/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=7.0">
+    <link rel="stylesheet" href="styles.css?v=8.0">
 </head>
 <body class="cosmos-body">
 
@@ -38,7 +38,7 @@
      ====================================================================== -->
 <header class="cosmos-hud-top">
     <div class="hud-brand-group cosmos-interactive">
-        <button type="button" class="hud-brand-trigger" id="btnHomeConstellation" title="Volver a la Cruz del Sur (Acrux α)">
+        <button type="button" class="hud-brand-trigger" id="btnHomeConstellation" title="Volver a Acrux 518">
             <div class="hud-logo-orb">
                 <img src="images/logo.svg" alt="Flor de Lis ACRUX 518">
             </div>
@@ -53,7 +53,7 @@
     <nav class="hud-constellation-nav cosmos-interactive" aria-label="Sectores del Mapa Estelar">
         <button type="button" class="hud-nav-node active" data-sector="0">
             <span class="node-roman">I</span>
-            <span class="node-label">Cruz del Sur</span>
+            <span class="node-label">Acrux 518</span>
         </button>
         <button type="button" class="hud-nav-node" data-sector="1">
             <span class="node-roman">II</span>
@@ -71,7 +71,7 @@
 
     <div class="hud-actions-right cosmos-interactive">
         <button type="button" class="hud-btn-overview" id="btnToggleOverview" title="Ver el Mapa Estelar Global completo (Tecla M)">
-            <svg class="hud-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <svg class="hud-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <span id="overviewBtnText">Mapa Global</span>
         </button>
     </div>
@@ -83,25 +83,24 @@
 <main class="cosmos-stage-viewport" id="cosmosStageViewport" aria-live="polite">
     <article class="constellation-stage-panel is-floating-minimal" id="constellationStagePanel">
         <div class="stage-meta-line">
-            <span class="stage-index-tag" id="stageIndexTag">SECTOR I / IV · CRUX AUSTRALIS</span>
+            <span class="stage-index-tag" id="stageIndexTag">I · ESTRELLA GUÍA ACRUX</span>
             <span class="stage-altitude-tag" id="stageSubtitleTag">VALLADOLID · DESDE 1977</span>
         </div>
 
         <h1 class="stage-giant-heading" id="stageHeading">
-            Cruz del Sur <span class="ice-italic">Acrux 518</span>
+            Grupo Scout <span class="ice-italic">Acrux 518</span>
         </h1>
 
         <p class="stage-description" id="stageDescription">
-            La estrella que guía a nuestro grupo en Valladolid desde 1977.
+            Desde 1977 educando en valores, escultismo y contacto con la naturaleza en Valladolid. Pulsa en nuestra estrella guía Acrux para conocer el grupo, nuestra sede, el equipo de coordinación y cómo unirte.
         </p>
 
-        <!-- Nodos ocultos o minimalistas para mantener compatibilidad sin recargar -->
         <div class="stage-star-nodes cosmos-interactive" id="stageStarNodes" role="tablist" aria-label="Estrellas del sector" style="display:none;"></div>
 
         <div class="stage-action-row cosmos-interactive" id="stageActionRow">
             <button type="button" class="btn-cosmos-primary" id="btnStagePrimaryAction">
-                <span id="btnStagePrimaryText">✦ Entrar en Acrux</span>
-                <svg class="btn-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span id="btnStagePrimaryText">Entrar en Acrux 518</span>
+                <svg class="btn-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
         </div>
     </article>
@@ -113,7 +112,7 @@
 <section class="star-tab-view star-tab-unit-view" id="unitSuperZoomOverlay" data-unit-world="castores" aria-hidden="true">
     <header class="star-tab-topbar">
         <button type="button" class="star-tab-back-btn" id="btnCloseUnitZoom">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             Volver al Cosmos <kbd>ESC</kbd>
         </button>
 
@@ -125,13 +124,13 @@
         <div class="unit-floating-showcase">
             <div class="unit-floating-title-block">
                 <div class="star-tab-meta-row">
-                    <span class="sz-constellation-badge" id="uzConstellationName">✦ ESTRELLA I · COLONIA OHIENSIS</span>
+                    <span class="sz-constellation-badge" id="uzConstellationName">ESTRELLA I · COLONIA OHIENSIS</span>
                     <span class="sz-age-pill" id="uzAgePill">6 a 8 años</span>
                     <span class="sz-motto-banner" id="uzMotto">Lema: «Compartir»</span>
                     <a href="#" target="_blank" rel="noopener" class="unit-social-btn" id="uzSocialBtn" style="display: none;" title="Ver perfil oficial de Instagram">
-                        <svg class="social-ig-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        <svg class="social-ig-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                         <span id="uzSocialLabel">@unidad</span>
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                        <svg class="social-arrow-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
                     </a>
                 </div>
                 <span class="unit-kicker-line" id="uzWorldBiomeTag" style="display:none;"></span>
@@ -153,7 +152,7 @@
         <div class="unit-progression-section">
             <div class="sz-section-header">
                 <div>
-                    <span class="sz-section-index">✦ 01 · METODOLOGÍA Y PROGRESIÓN</span>
+                    <span class="sz-section-index">01 · METODOLOGÍA Y PROGRESIÓN</span>
                     <h3 id="uzLoreHeading">Marco Simbólico y Etapas del Camino</h3>
                 </div>
             </div>
@@ -164,7 +163,7 @@
         <div class="unit-kraal-section" id="uzUnitKraalSection">
             <div class="sz-section-header">
                 <div>
-                    <span class="sz-section-index">✦ 02 · LOS KRAALETES DE LA UNIDAD</span>
+                    <span class="sz-section-index">02 · LOS KRAALETES DE LA UNIDAD</span>
                     <h3 id="uzKraalTitle">El Kraal y Personajes del Bosque</h3>
                     <p id="uzKraalSub">Cromos coleccionables de los scouters y figuras del marco simbólico de esta rama</p>
                 </div>
@@ -176,7 +175,7 @@
         <div class="unit-camps-section" id="uzUnitCampsSection">
             <div class="sz-section-header">
                 <div>
-                    <span class="sz-section-index" id="uzCampsIndex">✦ 03 · AVENTURAS, SALIDAS Y CAMPAMENTOS</span>
+                    <span class="sz-section-index" id="uzCampsIndex">03 · AVENTURAS, SALIDAS Y CAMPAMENTOS</span>
                     <h3 id="uzCampsHeading">Álbumes Oficiales en Google Drive</h3>
                     <p id="uzCampsSub">Subcarpetas de campamentos de rama y salidas de fin de semana con desbloqueo oficial</p>
                 </div>
@@ -187,13 +186,13 @@
         <!-- NAVEGACIÓN INFERIOR ENTRE ESTRELLAS DE UNIDAD -->
         <footer class="unit-star-footer-nav">
             <button type="button" class="star-tab-back-btn" id="uzPrevUnitBtn">
-                ← Unidad Anterior
+                Unidad Anterior
             </button>
             <button type="button" class="star-tab-back-btn" id="uzFooterBackToSkyBtn">
-                ✦ Volver a la Constelación
+                Volver a la Constelación
             </button>
             <button type="button" class="btn-cosmos-primary" id="uzNextUnitBtn">
-                <span>Siguiente Unidad →</span>
+                <span>Siguiente Unidad</span>
             </button>
         </footer>
     </div>
@@ -205,7 +204,7 @@
 <section class="star-tab-view star-tab-camp-view" id="campSuperZoomOverlay" aria-hidden="true">
     <header class="star-tab-topbar">
         <button type="button" class="star-tab-back-btn" id="btnCloseCampZoom">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             Volver al Cosmos <kbd>ESC</kbd>
         </button>
         <div class="star-tab-switcher camp-switcher-dock" id="czCampSwitcher" role="tablist" aria-label="Pestañas de Campamentos"></div>
@@ -216,8 +215,8 @@
         <div class="camp-floating-header">
             <div class="camp-floating-title-col">
                 <div class="star-tab-meta-row">
-                    <span class="sz-constellation-badge camp-badge" id="czKicker">✦ ESTRELLA DE CAMPAMENTO</span>
-                    <span class="sz-age-pill" id="czLocationPill">📍 Lugar del Campamento</span>
+                    <span class="sz-constellation-badge camp-badge" id="czKicker">CAMPAMENTO DE VERANO</span>
+                    <span class="sz-age-pill" id="czLocationPill">Lugar del Campamento</span>
                     <span id="czDriveFolderBadge" style="display:none;"></span>
                     <span id="czSeasonPill" style="display:none;"></span>
                 </div>
@@ -228,18 +227,24 @@
             <!-- CÁPSULA FLOTANTE DE DESBLOQUEO DE GOOGLE DRIVE -->
             <div class="camp-floating-drive-dock">
                 <div class="camp-vault-header">
-                    <span class="camp-drive-kicker">☁️ ÁLBUM COMPLETO EN GOOGLE DRIVE</span>
+                    <span class="camp-drive-kicker">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" style="vertical-align:-2px; margin-right:4px;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        ÁLBUM COMPLETO EN GOOGLE DRIVE
+                    </span>
                     <strong id="czDriveFolderTitle">Desbloquear todas las fotografías</strong>
                 </div>
                 <div class="camp-unlock-form" id="czUnlockForm">
                     <div class="camp-unlock-input-wrap">
                         <div class="camp-input-with-icon">
-                            <span class="camp-input-icon">🔑</span>
+                            <span class="camp-input-icon">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            </span>
                             <input type="password" id="czDrivePassInput" class="dossier-form-input camp-pass-input" placeholder="Contraseña del campamento...">
                         </div>
                         <button type="button" class="btn-cosmos-primary camp-drive-btn" id="czUnlockDriveBtn">
-                            <span>📂 Abrir Drive</span>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            <span>Abrir Drive</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
                         </button>
                     </div>
                     <small id="czUnlockFeedback" class="camp-unlock-feedback"></small>
@@ -250,7 +255,7 @@
         <div class="camp-three-photos-section">
             <div class="sz-section-header">
                 <div>
-                    <span class="sz-section-index">📸 BITÁCORA GRÁFICA · 3 FOTOGRAFÍAS DESTACADAS</span>
+                    <span class="sz-section-index">BITÁCORA GRÁFICA · 3 FOTOGRAFÍAS DESTACADAS</span>
                     <h3>Momentos de la Expedición</h3>
                     <p id="czPhotosSub">Vista previa extraída de la carpeta de Google Drive del campamento (haz clic en cualquier foto para ampliarla)</p>
                 </div>
@@ -266,18 +271,18 @@
 <section class="star-tab-view star-tab-lost-view" id="lostSuperZoomOverlay" aria-hidden="true">
     <header class="star-tab-topbar">
         <button type="button" class="star-tab-back-btn" id="btnCloseLostZoom">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             Volver al Cosmos <kbd>ESC</kbd>
         </button>
-        <div class="star-tab-switcher lost-cajon-switcher-dock" id="lzCajonSwitcher" role="tablist" aria-label="Mini-Estrellas Cajones de Drive"></div>
+        <div class="star-tab-switcher lost-cajon-switcher-dock" id="lzCajonSwitcher" role="tablist" aria-label="Cajones de Drive"></div>
     </header>
 
     <div class="star-tab-container is-fullbleed">
         <div class="lost-floating-header">
             <div class="lost-floating-title-col">
                 <div class="star-tab-meta-row">
-                    <span class="sz-constellation-badge lost-badge">📦 SISTEMA DE MATERIAL PERDIDO</span>
-                    <span class="sz-age-pill" id="lzActiveFolderPill">📁 Carpeta Drive: Cajón 01</span>
+                    <span class="sz-constellation-badge lost-badge">SISTEMA DE MATERIAL PERDIDO</span>
+                    <span class="sz-age-pill" id="lzActiveFolderPill">Carpeta Drive: Cajón 01</span>
                     <span id="lzFolderCoords" style="display:none;"></span>
                 </div>
                 <h2 class="sz-unit-title lost-main-title">El Baúl · <span class="ice-italic">Objetos Perdidos</span></h2>
@@ -286,9 +291,10 @@
 
             <div class="lost-cajones-constellation-box">
                 <div class="cajones-map-header">
-                    <span>✦ CAJONES DE MATERIAL (CARPETAS DRIVE)</span>
+                    <span>CAJONES DE MATERIAL (CARPETAS DRIVE)</span>
                     <a href="https://drive.google.com" target="_blank" rel="noopener" class="cajon-drive-ext-link" id="lzOpenDriveFolderBtn">
-                        📂 Abrir en Drive ↗
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" style="vertical-align:-2px; margin-right:4px;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        Abrir en Drive
                     </a>
                 </div>
                 <div class="cajones-ministar-map" id="lzMiniStarsMap"></div>
@@ -298,25 +304,29 @@
         <div class="lost-cajon-gallery-section">
             <div class="sz-section-header lost-gallery-header">
                 <div>
-                    <span class="sz-section-index" id="lzCurrentCajonIndex">MINI-ESTRELLA ACTIVA · CARPETA GOOGLE DRIVE</span>
+                    <span class="sz-section-index" id="lzCurrentCajonIndex">CARPETA ACTIVA · GOOGLE DRIVE</span>
                     <h3 id="lzCurrentCajonTitle">Cajón 01 · Campamento de Verano</h3>
                     <p id="lzCurrentCajonSub">Fotografías sincronizadas de la carpeta de objetos perdidos</p>
                 </div>
                 <div class="lost-gallery-controls">
                     <div class="lost-search-input-wrap">
-                        <span class="lost-search-icon">🔎</span>
+                        <span class="lost-search-icon">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </span>
                         <input type="text" id="lzPhotoSearch" class="dossier-form-input lost-search-input" placeholder="Buscar sudadera, cantimplora, botas...">
-                        <button type="button" class="lost-search-clear-btn" id="lzClearSearchBtn" title="Limpiar búsqueda" style="display:none;">✕</button>
+                        <button type="button" class="lost-search-clear-btn" id="lzClearSearchBtn" title="Limpiar búsqueda" style="display:none;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
                     </div>
                 </div>
             </div>
 
             <div class="lost-filter-chips-row" id="lzCategoryFilters">
-                <button type="button" class="lost-filter-chip active" data-cat="all">✦ Todas las prendas</button>
-                <button type="button" class="lost-filter-chip" data-cat="ropa">👕 Ropa y Sudaderas</button>
-                <button type="button" class="lost-filter-chip" data-cat="cantimplora">💧 Cantimploras y Menaje</button>
-                <button type="button" class="lost-filter-chip" data-cat="calzado">👟 Calzado y Botas</button>
-                <button type="button" class="lost-filter-chip" data-cat="saco">⛺ Sacos y Aislantes</button>
+                <button type="button" class="lost-filter-chip active" data-cat="all">Todas las prendas</button>
+                <button type="button" class="lost-filter-chip" data-cat="ropa">Ropa y Sudaderas</button>
+                <button type="button" class="lost-filter-chip" data-cat="cantimplora">Cantimploras y Menaje</button>
+                <button type="button" class="lost-filter-chip" data-cat="calzado">Calzado y Botas</button>
+                <button type="button" class="lost-filter-chip" data-cat="saco">Sacos y Aislantes</button>
             </div>
 
             <div id="lzClaimBanner" class="lost-claim-banner" style="display:none;"></div>
@@ -331,19 +341,19 @@
 <footer class="cosmos-hud-bottom">
     <div class="hud-bottom-nav-container cosmos-interactive">
         <button type="button" class="hud-nav-arrow-btn" id="btnPrevSector" aria-label="Sector Anterior">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             <span class="arrow-text">Anterior</span>
         </button>
 
         <div class="hud-scroll-rail-wrap">
             <div class="hud-scroll-labels">
                 <span id="hudScrollHint">HAZ SCROLL O CLIC EN UNA ESTRELLA PARA ENTRAR EN ELLA</span>
-                <span id="hudProgressPercent">01 / 04 · Cruz del Sur</span>
+                <span id="hudProgressPercent">01 / 04 · Acrux 518</span>
             </div>
             <div class="hud-scroll-track" id="hudScrollTrack" role="slider" aria-label="Progreso del mapa estelar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
                 <div class="hud-scroll-fill" id="hudScrollFill"></div>
                 <div class="hud-scroll-ticks" id="hudScrollTicks">
-                    <button type="button" class="rail-tick active" data-sector="0" title="I · Cruz del Sur (Acrux)"></button>
+                    <button type="button" class="rail-tick active" data-sector="0" title="I · Acrux 518"></button>
                     <button type="button" class="rail-tick" data-sector="1" title="II · Unidades"></button>
                     <button type="button" class="rail-tick" data-sector="2" title="III · Campamentos"></button>
                     <button type="button" class="rail-tick" data-sector="3" title="IV · El Baúl"></button>
@@ -353,7 +363,7 @@
 
         <button type="button" class="hud-nav-arrow-btn" id="btnNextSector" aria-label="Sector Siguiente">
             <span class="arrow-text">Siguiente</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
     </div>
 </footer>
@@ -365,15 +375,15 @@
     <div class="cosmos-drawer-modal is-fullscreen-star-modal" role="dialog" aria-modal="true" aria-labelledby="drawerModalTitle">
         <header class="star-tab-topbar">
             <button type="button" class="star-tab-back-btn" id="btnCloseDrawer" aria-label="Volver al Cosmos">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
                 Volver al Cosmos <kbd>ESC</kbd>
             </button>
             <div class="star-tab-switcher" id="acruxTopAnchorNav">
-                <a href="#acrux-historia" class="star-node-chip active">✦ Historia y Ramas</a>
-                <a href="#acrux-bases" class="star-node-chip">📍 Base Rueda 53</a>
-                <a href="#acrux-coordinacion" class="star-node-chip">👥 Coordinación</a>
-                <a href="#acrux-prueba" class="star-node-chip">⚜️ Ven un Sábado</a>
-                <a href="#acrux-redes" class="star-node-chip">📱 Redes</a>
+                <a href="#acrux-historia" class="star-node-chip active">Historia y Ramas</a>
+                <a href="#acrux-bases" class="star-node-chip">Sede y Horarios</a>
+                <a href="#acrux-coordinacion" class="star-node-chip">Coordinación</a>
+                <a href="#acrux-prueba" class="star-node-chip">Inscripciones</a>
+                <a href="#acrux-redes" class="star-node-chip">Redes</a>
             </div>
             <span id="drawerModalKicker" style="display:none;"></span>
             <span id="drawerModalTitle" style="display:none;"></span>
@@ -393,7 +403,7 @@
                 <span class="anniversary-year-display" id="anYearNumber">1977</span>
             </div>
             <button type="button" class="anniversary-close-btn" id="btnCloseAnniversaryModal" aria-label="Cerrar ventana">
-                ✕ Cerrar <kbd>ESC</kbd>
+                Cerrar <kbd>ESC</kbd>
             </button>
         </header>
         <div class="anniversary-modal-body">
@@ -401,9 +411,10 @@
             <h3 class="anniversary-memory-title" id="anYearTitle">Fundación Oficial del Grupo Scout ACRUX 518</h3>
             <p class="anniversary-memory-desc" id="anYearDesc"></p>
             <footer class="anniversary-modal-footer">
-                <span class="anniversary-drive-badge" id="anDriveBadge">📁 Google Drive: 05_50_ANIVERSARIO</span>
+                <span class="anniversary-drive-badge" id="anDriveBadge">Google Drive: 05_50_ANIVERSARIO</span>
                 <a href="https://drive.google.com" target="_blank" rel="noopener" class="btn-cosmos-primary" id="anDriveBtn" style="padding: 0.45rem 0.95rem; font-size: 0.78rem;">
-                    <span>Ver en Google Drive ↗</span>
+                    <span>Ver en Google Drive</span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
                 </a>
             </footer>
         </div>
@@ -416,7 +427,7 @@
 <div class="cosmos-lightbox-backdrop" id="cosmosLightbox" aria-hidden="true">
     <div class="cosmos-lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="cosmosLightboxTitle">
         <button type="button" class="cosmos-lightbox-close" id="btnCloseLightbox" aria-label="Cerrar visor de fotografía">
-            ✕ Cerrar <kbd>ESC</kbd>
+            Cerrar <kbd>ESC</kbd>
         </button>
         <div class="cosmos-lightbox-frame">
             <img src="" alt="Fotografía ampliada" id="cosmosLightboxImg">
@@ -428,6 +439,6 @@
     </div>
 </div>
 
-<script src="script.js?v=7.0"></script>
+<script src="script.js?v=8.0"></script>
 </body>
 </html>
