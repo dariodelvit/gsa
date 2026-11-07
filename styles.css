@@ -97,14 +97,14 @@ body.cosmos-body {
     opacity: 1;
 }
 
-/* Cursor Magnético (Blanco puro con halo rojo sutil en hover) */
+/* Cursor Magnético (Blanco puro con halo rojo sutil en hover · Siempre por encima de todos los modales) */
 .cosmos-cursor-dot,
 .cosmos-cursor-ring {
     position: fixed;
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 99999;
     transform: translate3d(-100px, -100px, 0);
 }
 
@@ -200,8 +200,9 @@ body.cosmos-body {
 }
 
 .cosmos-body.is-superzoom-open .cosmos-hud-top,
-.cosmos-body.is-superzoom-open .cosmos-hud-bottom {
-    opacity: 0;
+.cosmos-body.is-superzoom-open .cosmos-hud-bottom,
+.cosmos-body.is-superzoom-open .cosmos-nav-hint-pill {
+    opacity: 0 !important;
     pointer-events: none !important;
 }
 
@@ -989,10 +990,21 @@ body.cosmos-body {
     background: #060911;
 }
 
-.unit-hero-visual-col svg {
+.unit-hero-visual-col svg.unit-hero-illustration-svg {
     width: 100%;
     height: auto;
     display: block;
+}
+
+.unit-hero-visual-col svg:not(.unit-hero-illustration-svg),
+.unit-panorama-photo svg:not(.unit-hero-illustration-svg),
+.uz-glass-photo-card svg:not(.unit-hero-illustration-svg) {
+    width: 16px !important;
+    height: 16px !important;
+    min-height: 0 !important;
+    max-height: 16px !important;
+    flex-shrink: 0;
+    display: inline-block;
 }
 
 .unit-hero-visual-col img.unit-banner-img {
@@ -1234,8 +1246,8 @@ body.cosmos-body {
 
 .kraaletes-cromos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.35rem;
+    grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+    gap: 1.6rem;
     perspective: 1000px;
 }
 
@@ -1338,7 +1350,7 @@ body.cosmos-body {
 
 .cromo-label-name {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.08rem;
     font-weight: 600;
     color: #FFFFFF;
     white-space: nowrap;
@@ -1348,7 +1360,7 @@ body.cosmos-body {
 
 .cromo-label-role {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     color: var(--unit-accent);
     white-space: nowrap;
     overflow: hidden;
@@ -2347,7 +2359,7 @@ body.cosmos-body {
 .cosmos-lightbox-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 120;
+    z-index: 10500;
     background: rgba(3, 4, 7, 0.92);
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
@@ -3772,10 +3784,12 @@ body.anniversary-50-mode .hud-scroll-fill {
     min-height: 410px;
 }
 
-.unit-panorama-photo {
+.unit-panorama-photo,
+.uz-glass-photo-card {
     grid-column: 5 / 13;
     grid-row: 1;
     z-index: 1;
+    position: relative;
     border-radius: 24px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.22);
@@ -3784,38 +3798,58 @@ body.anniversary-50-mode .hud-scroll-fill {
     cursor: pointer;
 }
 
-.unit-panorama-photo img.unit-banner-img {
+.unit-panorama-photo img.unit-banner-img,
+.uz-glass-photo-card img.unit-banner-img {
     width: 100%;
-    height: 450px;
-    max-height: 500px;
+    height: 460px;
+    max-height: 520px;
     object-fit: cover;
     object-position: center 28%;
     display: block;
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.unit-panorama-photo:hover img.unit-banner-img {
+.unit-panorama-photo:hover img.unit-banner-img,
+.uz-glass-photo-card:hover img.unit-banner-img {
     transform: scale(1.03);
 }
 
-.unit-panorama-photo svg {
+.unit-panorama-photo svg.unit-hero-illustration-svg,
+.uz-glass-photo-card svg.unit-hero-illustration-svg {
     width: 100%;
     height: auto;
     min-height: 360px;
-    max-height: 450px;
+    max-height: 460px;
     display: block;
 }
 
 .unit-photo-caption {
-    display: block;
-    padding: 0.6rem 1rem;
+    position: absolute;
+    bottom: 0.95rem;
+    right: 0.95rem;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.42rem 0.88rem;
+    border-radius: 999px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.78);
-    background: rgba(4, 6, 12, 0.9);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    text-align: right;
+    font-size: 0.66rem;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.92);
+    background: rgba(4, 6, 12, 0.76);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    pointer-events: none;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.unit-panorama-photo:hover .unit-photo-caption,
+.uz-glass-photo-card:hover .unit-photo-caption {
+    background: rgba(8, 12, 22, 0.92);
+    border-color: var(--unit-accent, #38BDF8);
+    transform: translateY(-2px);
 }
 
 /* Tarjeta de Introducción Flotante sobre la Escena */
@@ -4179,3 +4213,159 @@ body.anniversary-50-mode .hud-scroll-fill {
         align-items: stretch;
     }
 }
+
+/* ==========================================================================
+   8. PÍLDORA SUTIL DE AYUDA A LA NAVEGACIÓN PARA PADRES EN EL MAPA PRINCIPAL
+   ========================================================================== */
+.cosmos-nav-hint-pill {
+    position: fixed;
+    bottom: 4.55rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 21;
+    background: rgba(10, 18, 32, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    border-radius: 999px;
+    padding: 0.38rem 0.98rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: rgba(241, 245, 249, 0.92);
+    white-space: nowrap;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.48), 0 0 18px rgba(56, 189, 248, 0.1);
+    opacity: 0.85;
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease;
+    pointer-events: auto;
+}
+
+.cosmos-nav-hint-pill .nav-hint-icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: #38BDF8;
+    animation: navHintCompassFloat 3.2s ease-in-out infinite;
+}
+
+@keyframes navHintCompassFloat {
+    0%, 100% { transform: rotate(-8deg) scale(1); }
+    50% { transform: rotate(12deg) scale(1.08); }
+}
+
+.cosmos-nav-hint-pill.is-dimmed {
+    opacity: 0.35;
+}
+
+.cosmos-nav-hint-pill.is-near-bottom,
+.cosmos-nav-hint-pill:hover {
+    opacity: 0.85 !important;
+    border-color: rgba(56, 189, 248, 0.52);
+}
+
+@media (max-width: 768px) {
+    .cosmos-nav-hint-pill {
+        bottom: 4.1rem;
+        font-size: 0.66rem;
+        padding: 0.32rem 0.78rem;
+        max-width: 92vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+/* ==========================================================================
+   9. VISOR AMPLIADO DE CROMO DE KRAALETE (3D HOLOGRÁFICO EN CENTRO DE PANTALLA)
+   ========================================================================== */
+.cromo-zoom-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10600;
+    background: rgba(3, 5, 10, 0.86);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none !important;
+    transition: opacity 0.26s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.26s;
+}
+
+.cromo-zoom-modal-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto !important;
+}
+
+.cromo-zoom-modal-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.15rem;
+    perspective: 1200px;
+}
+
+.cromo-zoom-close-btn {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    align-self: flex-end;
+}
+
+.cromo-zoom-card {
+    --unit-accent: #38BDF8;
+    --unit-glow: rgba(56, 189, 248, 0.28);
+    width: min(390px, 86vw);
+    aspect-ratio: 3 / 4;
+    border-radius: 22px;
+    background: #080A12;
+    border: 2px solid var(--unit-accent, #38BDF8);
+    box-shadow: 0 32px 85px rgba(0, 0, 0, 0.92), 0 0 48px var(--unit-glow, rgba(56, 189, 248, 0.28));
+    transform-style: preserve-3d;
+    transition: transform 0.16s ease-out, box-shadow 0.25s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.cromo-zoom-card .cromo-scout-badge svg {
+    width: 48px;
+    height: 48px;
+    color: var(--unit-accent, #38BDF8);
+}
+
+.cromo-zoom-card .cromo-unit-tag {
+    font-size: 0.76rem;
+    margin-bottom: 0.55rem;
+}
+
+.cromo-zoom-card .cromo-fallback-name {
+    font-size: 1.65rem;
+    margin-bottom: 0.35rem;
+}
+
+.cromo-zoom-card .cromo-fallback-role {
+    font-size: 0.92rem;
+}
+
+.cromo-zoom-card .cromo-bottom-label {
+    padding: 1.15rem 1.35rem;
+}
+
+.cromo-zoom-card .cromo-label-name {
+    font-size: 1.35rem;
+}
+
+.cromo-zoom-card .cromo-label-role {
+    font-size: 0.9rem;
+}
+

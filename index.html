@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=8.0">
+    <link rel="stylesheet" href="styles.css?v=9.0">
 </head>
 <body class="cosmos-body">
 
@@ -140,7 +140,7 @@
 
             <!-- ESCENA PANORÁMICA CON LA FOTOGRAFÍA Y TARJETA DE INTRODUCCIÓN FLOTANDO -->
             <div class="unit-panorama-stage">
-                <div class="unit-hero-visual-col unit-panorama-photo" id="uzHeroVisual"></div>
+                <div class="unit-hero-visual-col unit-panorama-photo uz-glass-photo-card" id="uzHeroVisual"></div>
                 <div class="unit-floating-intro-card">
                     <p class="sz-unit-lead" id="uzLead"></p>
                     <blockquote class="unit-law-quote" id="uzQuoteBanner"></blockquote>
@@ -336,8 +336,13 @@
 </section>
 
 <!-- ======================================================================
-     9. HUD INFERIOR MINIMALISTA (4 SECTORES)
+     9. PÍLDORA SUTIL DE AYUDA A LA NAVEGACIÓN Y HUD INFERIOR MINIMALISTA (4 SECTORES)
      ====================================================================== -->
+<div class="cosmos-nav-hint-pill cosmos-interactive" id="cosmosNavHintPill" aria-live="off">
+    <svg class="nav-hint-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+    <span>Arrastra el cielo, haz scroll o pulsa en cualquier estrella para explorar</span>
+</div>
+
 <footer class="cosmos-hud-bottom">
     <div class="hud-bottom-nav-container cosmos-interactive">
         <button type="button" class="hud-nav-arrow-btn" id="btnPrevSector" aria-label="Sector Anterior">
@@ -439,6 +444,20 @@
     </div>
 </div>
 
-<script src="script.js?v=8.0"></script>
+<!-- ======================================================================
+     13. VISOR AMPLIADO DE CROMO DE KRAALETE (3D HOLOGRÁFICO EN CENTRO DE PANTALLA)
+     ====================================================================== -->
+<div class="cromo-zoom-modal-backdrop" id="cromoZoomModal" aria-hidden="true">
+    <div class="cromo-zoom-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="cromoZoomName">
+        <button type="button" class="cosmos-lightbox-close cromo-zoom-close-btn" id="btnCloseCromoZoom" aria-label="Cerrar cromo ampliado">
+            Cerrar <kbd>ESC</kbd>
+        </button>
+        <div class="cromo-zoom-card" id="cromoZoomCard">
+            <div class="cromo-inner" id="cromoZoomInner"></div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js?v=9.0"></script>
 </body>
 </html>

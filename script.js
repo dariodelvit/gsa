@@ -72,7 +72,7 @@
             lead: 'Nuestra Colonia Ohiensis está ambientada en el libro «La Vida en el Estanque». Junto a Kid, Moi y Piko, los pequeños castores viven en su acogedora madriguera de palitos, barro y virutas, trabajan en equipo manteniendo la Presa sobre el río «Gran Hermano» y aprenden con los Grandes Castores, el sabio búho Malak y la Familia Jones que en la Colonia todo se comparte.',
             lawQuote: '«El castor que es obediente, trabajador, limpio y ordenado, que participa en todo, que juega con todos y comparte con alegría, llega a ser un castor alegre y feliz recordando siempre las enseñanzas de la Colonia.» — La Vida en el Estanque',
             heroSvg: `
-                <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de La Vida en el Estanque">
+                <svg class="unit-hero-illustration-svg" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de La Vida en el Estanque">
                     <defs>
                         <linearGradient id="skyCastores" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stop-color="#0284C7"/>
@@ -161,7 +161,7 @@
             lead: 'Al terminar el «Nado Hacia Arriba» por el Gran Hermano, los castores llegan al río Waigunga en la Selva de Seeonee («El Libro de las Tierras Vírgenes» de Rudyard Kipling). Allí Akela, Baloo, Bagheera y los Viejos Lobos los acogen con el Gran Clamor en la Manada Khanhiwara.',
             lawQuote: '«El Lobato escucha y obedece al Viejo Lobo. El Lobato se vence a sí mismo.» — Ley de la Manada de Seeonee',
             heroSvg: `
-                <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Roca del Consejo en la Selva de Seeonee">
+                <svg class="unit-hero-illustration-svg" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Roca del Consejo en la Selva de Seeonee">
                     <defs>
                         <linearGradient id="skyManada" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stop-color="#1E1B4B"/>
@@ -223,7 +223,7 @@
             lead: 'Inspirada en la leyenda medieval de Lohengrin, el Caballero del Cisne: aquel misterioso guardián del Santo Grial que acudió navegando en una barca tirada por un cisne blanco para defender el honor de una joven injustamente acusada, pidiendo solo que jamás preguntasen su nombre. En la Tropa Lohengrin vivimos ese mismo ideal de honor, lealtad y aventura organizada en Patrullas autónomas, pionerismo y Aymaras.',
             lawQuote: '«Cifra su honor en ser digno de confianza, es leal, útil, amigo de todos y hermano de cualquier otro scout.» — El Honor del Caballero del Cisne (Ley Scout)',
             heroSvg: `
-                <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Tropa Lohengrin">
+                <svg class="unit-hero-illustration-svg" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Tropa Lohengrin">
                     <defs>
                         <linearGradient id="skyTropa" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stop-color="#022C22"/>
@@ -285,7 +285,7 @@
             lead: 'Al ascender por la montaña arbolada y cruzar el sagrado Torii de los Ninjas se abre el territorio de la Unidad Esculta Trea: ambientada en los Ninjas en el Descenso del Sena, donde los jóvenes protagonizan sus propias «Empresas Escultas» autogestionadas, surcan aguas bravas en piragua y superan travesías de montaña.',
             lawQuote: '«Tras cruzar el Torii de la montaña, toda la Unidad rema y camina al mismo paso hacia la cumbre.» — Espíritu Ninja y Descenso · Unidad Esculta Trea',
             heroSvg: `
-                <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Unidad Esculta Trea">
+                <svg class="unit-hero-illustration-svg" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Unidad Esculta Trea">
                     <defs>
                         <linearGradient id="skyEsculta" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stop-color="#1C130E"/>
@@ -338,7 +338,7 @@
             lead: 'En lo más alto de la cordillera, por encima del mar de nubes y tras subir escalando la gran pared de roca, brilla la Laguna Azul del Clan Ama Dablam: el manantial sagrado del que nace todo el río que desciende por la montaña alimentando a Escultas, Tropa, Manada y hasta el Estanque de los Castores.',
             lawQuote: '«Rema tu propia canoa en la Laguna Azul sobre las nubes y deja que tu servicio fluya como el río hacia todo el Grupo.» — Lema Rover «Servir»',
             heroSvg: `
-                <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Laguna Azul del Clan Ama Dablam">
+                <svg class="unit-hero-illustration-svg" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de la Laguna Azul del Clan Ama Dablam">
                     <defs>
                         <linearGradient id="skyClan" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stop-color="#082F49"/>
@@ -1844,6 +1844,16 @@
                     const sheen = card.querySelector('.cromo-sheen');
                     if (sheen) sheen.style.opacity = '0';
                 });
+                card.addEventListener('click', () => {
+                    const idx = parseInt(card.getAttribute('data-cromo-idx'), 10);
+                    const k = unit.kraaletes[idx];
+                    if (!k) return;
+                    if (k.cromoUrl) {
+                        openLightbox(k.cromoUrl, k.name, `${k.role} · ${unit.fullName}`);
+                    } else {
+                        openCromoZoomModal(k, unit);
+                    }
+                });
             });
         }
 
@@ -2128,6 +2138,85 @@
     elBtnCloseLightbox?.addEventListener('click', closeLightbox);
     elLightbox?.addEventListener('click', (e) => {
         if (e.target === elLightbox) closeLightbox();
+    });
+
+    // =========================================================================
+    // 8D. VISOR AMPLIADO DE CROMO DE KRAALETE (3D HOLOGRÁFICO EN CENTRO DE PANTALLA)
+    // =========================================================================
+    const elCromoZoomModal = document.getElementById('cromoZoomModal');
+    const elCromoZoomCard = document.getElementById('cromoZoomCard');
+    const elCromoZoomInner = document.getElementById('cromoZoomInner');
+    const elBtnCloseCromoZoom = document.getElementById('btnCloseCromoZoom');
+
+    function openCromoZoomModal(k, unit) {
+        if (!elCromoZoomModal || !elCromoZoomCard || !elCromoZoomInner || !k) return;
+        const accent = (unit && unit.accentColor) ? unit.accentColor : '#38BDF8';
+        const glow = (unit && unit.glowColor) ? unit.glowColor : 'rgba(56, 189, 248, 0.28)';
+        elCromoZoomCard.style.setProperty('--unit-accent', accent);
+        elCromoZoomCard.style.setProperty('--unit-glow', glow);
+        elCromoZoomCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+
+        const hasCromo = Boolean(k.cromoUrl);
+        elCromoZoomInner.innerHTML = `
+            ${hasCromo ? `
+                <img src="${k.cromoUrl}" alt="${k.name}" class="kraalete-cromo-img" referrerpolicy="no-referrer">
+            ` : `
+                <div class="cromo-fallback-content">
+                    <div class="cromo-scout-badge">${SVG_ICONS.compass}</div>
+                    <span class="cromo-unit-tag">${unit ? unit.shortName : 'ACRUX 518'}</span>
+                    <strong class="cromo-fallback-name" id="cromoZoomName">${k.name}</strong>
+                    <span class="cromo-fallback-role">${k.role}</span>
+                </div>
+            `}
+            <div class="cromo-bottom-label">
+                <strong class="cromo-label-name">${k.name}</strong>
+                <span class="cromo-label-role">${k.role} · ${unit ? unit.fullName : 'Grupo Scout Acrux 518'}</span>
+            </div>
+            <div class="cromo-sheen" aria-hidden="true"></div>
+        `;
+
+        elCromoZoomModal.classList.add('is-open');
+        elCromoZoomModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeCromoZoomModal() {
+        if (!elCromoZoomModal) return;
+        elCromoZoomModal.classList.remove('is-open');
+        elCromoZoomModal.setAttribute('aria-hidden', 'true');
+        if (elCromoZoomCard) {
+            elCromoZoomCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        }
+    }
+
+    if (elCromoZoomCard) {
+        elCromoZoomCard.addEventListener('mousemove', (e) => {
+            const rect = elCromoZoomCard.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotX = ((y - centerY) / centerY) * -12;
+            const rotY = ((x - centerX) / centerX) * 12;
+            const percentX = (x / rect.width) * 100;
+            const percentY = (y / rect.height) * 100;
+            const sheen = elCromoZoomCard.querySelector('.cromo-sheen');
+
+            elCromoZoomCard.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.03, 1.03, 1.03)`;
+            if (sheen) {
+                sheen.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.1) 45%, transparent 72%)`;
+                sheen.style.opacity = '1';
+            }
+        });
+        elCromoZoomCard.addEventListener('mouseleave', () => {
+            elCromoZoomCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            const sheen = elCromoZoomCard.querySelector('.cromo-sheen');
+            if (sheen) sheen.style.opacity = '0';
+        });
+    }
+
+    elBtnCloseCromoZoom?.addEventListener('click', closeCromoZoomModal);
+    elCromoZoomModal?.addEventListener('click', (e) => {
+        if (e.target === elCromoZoomModal) closeCromoZoomModal();
     });
 
     function openCampSuperZoom(campIdx) {
@@ -2539,6 +2628,7 @@
     function closeAllSuperZooms(resetPan = true) {
         clearTimeout(diveTabTimer);
         closeLightbox();
+        closeCromoZoomModal();
         if (superZoomState) {
             hyperspaceJump = {
                 start: performance.now(),
@@ -3039,10 +3129,13 @@
     // =========================================================================
     // 10. EVENTOS DEL MAPA ESTELAR (SCROLL, DRAG, CLIC EN ESTRELLA)
     // =========================================================================
+    const elNavHintPill = document.getElementById('cosmosNavHintPill');
+
     window.addEventListener('wheel', (e) => {
         if (drawerBackdrop?.classList.contains('is-open')) return;
         if (superZoomState) return;
 
+        elNavHintPill?.classList.add('is-dimmed');
         e.preventDefault();
         if (isOverviewMode) {
             isOverviewMode = false;
@@ -3064,8 +3157,15 @@
         pointer.x = e.clientX;
         pointer.y = e.clientY;
 
+        if (elNavHintPill && !superZoomState) {
+            elNavHintPill.classList.toggle('is-near-bottom', e.clientY > vh - 125);
+        }
+
         if (pointer.isDown && !superZoomState) {
             pointer.dragMoved += Math.hypot(dx, dy);
+            if (pointer.dragMoved > 8) {
+                elNavHintPill?.classList.add('is-dimmed');
+            }
             const invZ = 1 / Math.max(0.25, camera.zoom);
             targetFreePanX = clamp(targetFreePanX - dx * invZ, -2200, 2200);
             targetFreePanY = clamp(targetFreePanY - dy * invZ, -1600, 1600);
@@ -3193,6 +3293,10 @@
 
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            if (elCromoZoomModal?.classList.contains('is-open')) {
+                closeCromoZoomModal();
+                return;
+            }
             if (elLightbox?.classList.contains('is-open')) {
                 closeLightbox();
                 return;
