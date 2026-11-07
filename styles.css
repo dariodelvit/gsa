@@ -1246,8 +1246,8 @@ body.cosmos-body {
 
 .kraaletes-cromos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
-    gap: 1.6rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
     perspective: 1000px;
 }
 
@@ -4281,15 +4281,15 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 /* ==========================================================================
-   9. VISOR AMPLIADO DE CROMO DE KRAALETE (3D HOLOGRÁFICO EN CENTRO DE PANTALLA)
+   9. MODAL SPLIT-CARD DE KRAALETE (2 COLUMNAS: CROMO 3:4 + PANEL EDITORIAL)
    ========================================================================== */
 .cromo-zoom-modal-backdrop {
     position: fixed;
     inset: 0;
     z-index: 10600;
     background: rgba(3, 5, 10, 0.86);
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4297,7 +4297,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     opacity: 0;
     visibility: hidden;
     pointer-events: none !important;
-    transition: opacity 0.26s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.26s;
+    transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s;
 }
 
 .cromo-zoom-modal-backdrop.is-open {
@@ -4306,31 +4306,45 @@ body.anniversary-50-mode .hud-scroll-fill {
     pointer-events: auto !important;
 }
 
-.cromo-zoom-modal-wrap {
-    position: relative;
+.cromo-split-dialog {
+    --unit-accent: #38BDF8;
+    --unit-glow: rgba(56, 189, 248, 0.28);
+    width: min(880px, 94vw);
+    min-height: min(520px, 84vh);
+    max-height: 88vh;
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) 1fr;
+    background: linear-gradient(155deg, rgba(10, 14, 24, 0.96) 0%, rgba(5, 7, 13, 0.99) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 26px;
+    box-shadow: 0 36px 95px rgba(0, 0, 0, 0.92), 0 0 54px var(--unit-glow, rgba(56, 189, 248, 0.22));
+    overflow: hidden;
+    transform: scale(0.95) translateY(14px);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cromo-zoom-modal-backdrop.is-open .cromo-split-dialog {
+    transform: scale(1) translateY(0);
+}
+
+.cromo-split-left {
+    padding: 1.65rem;
+    background: radial-gradient(circle at 50% 45%, var(--unit-glow, rgba(56, 189, 248, 0.18)) 0%, rgba(4, 6, 11, 0.92) 78%);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 1.15rem;
+    justify-content: center;
     perspective: 1200px;
 }
 
-.cromo-zoom-close-btn {
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    align-self: flex-end;
-}
-
 .cromo-zoom-card {
-    --unit-accent: #38BDF8;
-    --unit-glow: rgba(56, 189, 248, 0.28);
-    width: min(390px, 86vw);
+    width: 100%;
+    max-width: 320px;
     aspect-ratio: 3 / 4;
-    border-radius: 22px;
+    border-radius: 20px;
     background: #080A12;
     border: 2px solid var(--unit-accent, #38BDF8);
-    box-shadow: 0 32px 85px rgba(0, 0, 0, 0.92), 0 0 48px var(--unit-glow, rgba(56, 189, 248, 0.28));
+    box-shadow: 0 26px 65px rgba(0, 0, 0, 0.88), 0 0 38px var(--unit-glow, rgba(56, 189, 248, 0.28));
     transform-style: preserve-3d;
     transition: transform 0.16s ease-out, box-shadow 0.25s ease;
     overflow: hidden;
@@ -4358,14 +4372,890 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .cromo-zoom-card .cromo-bottom-label {
-    padding: 1.15rem 1.35rem;
+    padding: 1.05rem 1.25rem;
 }
 
 .cromo-zoom-card .cromo-label-name {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
 }
 
 .cromo-zoom-card .cromo-label-role {
-    font-size: 0.9rem;
+    font-size: 0.84rem;
 }
+
+/* Columna Derecha Editorial del Modal Split-Card */
+.cromo-split-right {
+    padding: 2rem 2.4rem 2.4rem 2.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.cromo-split-right::-webkit-scrollbar {
+    display: none;
+}
+
+.cromo-split-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.6rem;
+}
+
+.cromo-split-unit-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.36rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--unit-accent, #38BDF8);
+    color: var(--unit-accent, #38BDF8);
+}
+
+.cromo-zoom-close-btn {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    margin: 0 !important;
+}
+
+.cromo-split-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cromo-split-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(148, 163, 184, 0.85);
+    margin-bottom: 0.4rem;
+}
+
+.cromo-split-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2.1rem, 3.2vw, 2.85rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin: 0 0 0.45rem 0;
+    line-height: 1.1;
+}
+
+.cromo-split-realname {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--unit-accent, #38BDF8);
+    margin: 0;
+}
+
+.cromo-split-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--unit-accent, #38BDF8) 0%, rgba(255, 255, 255, 0.08) 65%, transparent 100%);
+    margin: 1.35rem 0;
+    opacity: 0.65;
+}
+
+.cromo-split-bio-wrap {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 16px;
+    padding: 1.25rem 1.4rem;
+}
+
+.cromo-split-bio {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.72;
+    color: rgba(226, 232, 240, 0.9);
+    margin: 0;
+    white-space: pre-line;
+}
+
+@media (max-width: 780px) {
+    .cromo-zoom-modal-backdrop {
+        padding: 1rem;
+    }
+    .cromo-split-dialog {
+        grid-template-columns: 1fr;
+        max-height: 92vh;
+        overflow-y: auto;
+    }
+    .cromo-split-left {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 1.25rem;
+    }
+    .cromo-zoom-card {
+        max-width: 230px;
+    }
+    .cromo-split-right {
+        padding: 1.4rem;
+    }
+}
+
+/* ==========================================================================
+   10. TIENDA MERCH FULLSCREEN E-COMMERCE (SPLIT-SCREEN ESTILO ÁUREO DESIGN)
+   ========================================================================== */
+.merch-embed-overlay,
+.merch-custom-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10400;
+    background: #04060A;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none !important;
+    transition: opacity 0.36s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.36s;
+}
+
+.merch-embed-overlay.is-open,
+.merch-custom-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto !important;
+}
+
+.merch-ecom-shell {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background:
+        radial-gradient(circle at 24% 42%, rgba(212, 190, 152, 0.06) 0%, rgba(4, 6, 10, 0) 58%),
+        linear-gradient(180deg, #05070C 0%, #030407 100%);
+    color: #F8FAFC;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow: hidden;
+}
+
+/* Barra superior minimalista */
+.merch-ecom-topbar {
+    height: 64px;
+    padding: 0 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(5, 7, 12, 0.85);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    flex-shrink: 0;
+    z-index: 5;
+}
+
+.merch-back-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #E2E8F0;
+    padding: 0.48rem 1rem;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.22s ease;
+}
+
+.merch-back-btn:hover {
+    background: #FFFFFF;
+    color: #04060A;
+    border-color: #FFFFFF;
+}
+
+.merch-back-btn kbd {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.1rem 0.38rem;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-family: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.merch-back-btn:hover kbd {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.merch-forms-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 190, 152, 0.2);
+    padding: 0.28rem 0.4rem;
+    border-radius: 999px;
+    max-width: 52vw;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.merch-forms-switcher::-webkit-scrollbar {
+    display: none;
+}
+
+.merch-topbar-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.merch-topbar-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.18em;
+    color: rgba(212, 190, 152, 0.82);
+    text-transform: uppercase;
+}
+
+/* Split-Screen Principal (50% Escaparate / 50% Configuración) */
+.merch-ecom-split {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.02fr 0.98fr;
+    grid-template-rows: minmax(0, 1fr);
+    min-height: 0;
+    width: 100%;
+    height: calc(100vh - 64px);
+    overflow: hidden;
+}
+
+/* Columna Izquierda: Gran Escaparate Fotográfico */
+.merch-ecom-gallery-col {
+    position: relative;
+    height: calc(100vh - 64px);
+    min-height: 0;
+    box-sizing: border-box;
+    padding: 1.4rem 2.2rem 1.5rem 2.2rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.07);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 46%, rgba(212, 190, 152, 0.09) 0%, rgba(7, 10, 16, 0.4) 52%, rgba(4, 6, 10, 0.95) 100%);
+}
+
+.merch-showcase-stage {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.merch-showcase-badges {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.merch-stage-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.36rem 0.82rem;
+    border-radius: 999px;
+    background: rgba(212, 190, 152, 0.1);
+    border: 1px solid rgba(212, 190, 152, 0.28);
+    color: #E2D5B5;
+}
+
+.merch-stage-pill-muted {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: rgba(226, 232, 240, 0.7);
+}
+
+.merch-showcase-visual {
+    flex: 1;
+    min-height: 0;
+    margin: 0.95rem 0;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+        radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.06) 0%, rgba(8, 11, 18, 0.85) 75%);
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.75), 0 22px 55px rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.merch-showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-height: 52vh;
+    padding: 1.2rem;
+    cursor: zoom-in;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.merch-showcase-img:hover {
+    transform: scale(1.03);
+}
+
+/* Escaparate editorial dinámico cuando el formulario no incluye foto adjunta */
+.merch-studio-garment-stage {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem;
+    position: relative;
+    text-align: center;
+}
+
+.merch-studio-garment-svg {
+    width: min(280px, 38vh);
+    height: min(280px, 38vh);
+    filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.85));
+    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), filter 0.38s ease;
+}
+
+.merch-studio-garment-stage:hover .merch-studio-garment-svg {
+    transform: translateY(-5px) scale(1.02);
+}
+
+.merch-studio-caption {
+    margin-top: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.24rem;
+}
+
+.merch-studio-caption-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.18em;
+    color: #D4BE98;
+    text-transform: uppercase;
+}
+
+.merch-studio-caption-sub {
+    font-size: 0.78rem;
+    color: rgba(203, 213, 225, 0.65);
+}
+
+.merch-thumb-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+    flex-shrink: 0;
+}
+
+.merch-thumb-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(10, 14, 22, 0.8);
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.2s ease;
+}
+
+.merch-thumb-btn.active,
+.merch-thumb-btn:hover {
+    opacity: 1;
+    border-color: #D4BE98;
+    transform: translateY(-2px);
+}
+
+.merch-thumb-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.merch-showcase-footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+}
+
+.merch-spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+}
+
+.merch-spec-item .spec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    color: rgba(148, 163, 184, 0.72);
+    text-transform: uppercase;
+}
+
+.merch-spec-item .spec-value {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #E2E8F0;
+}
+
+/* Columna Derecha: Ficha de Producto & Formulario E-Commerce */
+.merch-ecom-details-col {
+    height: calc(100vh - 64px);
+    min-height: 0;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 2.2rem 3.2rem 6.5rem 3.2rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.merch-ecom-details-col::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.merch-ecom-details-inner {
+    max-width: 560px;
+    margin: 0 auto;
+    padding-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.65rem;
+}
+
+.merch-product-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding-bottom: 1.35rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.merch-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    color: #D4BE98;
+    text-transform: uppercase;
+}
+
+.merch-title-price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.merch-modal-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.75rem, 2.8vw, 2.45rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin: 0;
+    line-height: 1.15;
+}
+
+.merch-price-tag {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 500;
+    color: #E2D5B5;
+    background: rgba(212, 190, 152, 0.1);
+    border: 1px solid rgba(212, 190, 152, 0.3);
+    padding: 0.22rem 0.8rem;
+    border-radius: 999px;
+}
+
+.merch-product-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(203, 213, 225, 0.78);
+    margin: 0.2rem 0 0 0;
+}
+
+/* Loader de sincronización de preguntas */
+.merch-schema-loader {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.1rem 1.3rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 190, 152, 0.2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    color: #E2D5B5;
+}
+
+.merch-loader-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #D4BE98;
+    box-shadow: 0 0 12px #D4BE98;
+    animation: merchPulseDot 1.2s infinite ease-in-out;
+}
+
+@keyframes merchPulseDot {
+    0%, 100% { transform: scale(0.85); opacity: 0.5; }
+    50% { transform: scale(1.25); opacity: 1; }
+}
+
+/* Bloques de campos generados dinámicamente */
+.merch-native-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.55rem;
+}
+
+.merch-dynamic-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.45rem;
+}
+
+.merch-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.62rem;
+}
+
+.merch-field-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.merch-field-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: rgba(226, 232, 240, 0.9);
+}
+
+.merch-field-required {
+    color: #D4BE98;
+    margin-left: 0.25rem;
+}
+
+.merch-field-selected-val {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: #E2D5B5;
+}
+
+.merch-field-help {
+    font-size: 0.76rem;
+    color: rgba(148, 163, 184, 0.72);
+    margin: -0.25rem 0 0.15rem 0;
+}
+
+/* Selectores de Pastilla (Tallas, Colores, Cantidades, Opciones) */
+.merch-pills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.merch-option-pill {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #E2E8F0;
+    padding: 0.62rem 1.15rem;
+    border-radius: 999px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 54px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.merch-option-pill:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(212, 190, 152, 0.55);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+.merch-option-pill.is-selected {
+    background: #F8FAFC;
+    color: #04060A;
+    border-color: #FFFFFF;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.16);
+}
+
+.merch-color-dot {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    flex-shrink: 0;
+}
+
+.merch-option-pill.is-selected .merch-color-dot {
+    border-color: rgba(0, 0, 0, 0.45);
+}
+
+/* Separador de sección (ej. Dirección / Datos del Comprador) */
+.merch-section-divider {
+    margin-top: 0.5rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #E2D5B5;
+    letter-spacing: 0.02em;
+}
+
+/* Campos de texto estilizados (Nombre, Teléfono, Email, Notas) */
+.merch-text-input,
+.merch-textarea-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
+    padding: 0.85rem 1.05rem;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.merch-textarea-input {
+    min-height: 84px;
+    resize: vertical;
+}
+
+.merch-text-input::placeholder,
+.merch-textarea-input::placeholder {
+    color: rgba(148, 163, 184, 0.48);
+}
+
+.merch-text-input:focus,
+.merch-textarea-input:focus {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: #D4BE98;
+    box-shadow: 0 0 0 3px rgba(212, 190, 152, 0.14);
+}
+
+.merch-form-error {
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #FCA5A5;
+    font-size: 0.82rem;
+}
+
+/* Botón Principal de Acción: "Realizar Pedido" */
+.merch-cta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding-top: 0.5rem;
+}
+
+.merch-submit-btn {
+    width: 100%;
+    padding: 1.08rem 1.8rem;
+    border-radius: 999px;
+    border: 1px solid #E2D5B5;
+    background: linear-gradient(135deg, #F8FAFC 0%, #E2D5B5 100%);
+    color: #04060A;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    box-shadow: 0 16px 40px rgba(212, 190, 152, 0.22);
+    transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s ease, filter 0.24s ease;
+}
+
+.merch-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 48px rgba(212, 190, 152, 0.34);
+    filter: brightness(1.04);
+}
+
+.merch-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+.merch-cta-subnote {
+    font-size: 0.74rem;
+    color: rgba(148, 163, 184, 0.68);
+    text-align: center;
+}
+
+/* Vista de Éxito tras Realizar Pedido */
+.merch-order-success {
+    padding: 2.2rem 1.8rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 190, 152, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.85rem;
+}
+
+.merch-success-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: rgba(212, 190, 152, 0.14);
+    border: 1px solid rgba(212, 190, 152, 0.45);
+    color: #E2D5B5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.3rem;
+}
+
+.merch-success-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.65rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.merch-success-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(203, 213, 225, 0.84);
+    margin: 0;
+}
+
+.merch-success-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 0.8rem;
+}
+
+.merch-reset-order-btn,
+.merch-done-order-btn {
+    padding: 0.68rem 1.35rem;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.merch-reset-order-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #FFFFFF;
+}
+
+.merch-reset-order-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.merch-done-order-btn {
+    background: #F8FAFC;
+    border: 1px solid #FFFFFF;
+    color: #04060A;
+    font-weight: 600;
+}
+
+.merch-done-order-btn:hover {
+    background: #E2D5B5;
+    border-color: #E2D5B5;
+}
+
+@media (max-width: 960px) {
+    .merch-ecom-topbar {
+        padding: 0 1.1rem;
+    }
+    .merch-topbar-meta {
+        display: none;
+    }
+    .merch-ecom-split {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    .merch-ecom-gallery-col {
+        height: auto;
+        min-height: 44vh;
+        padding: 1.2rem;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .merch-ecom-details-col {
+        height: auto;
+        overflow-y: visible;
+        padding: 1.6rem 1.3rem 2.8rem 1.3rem;
+    }
+}
+
 

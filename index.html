@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=9.0">
+    <link rel="stylesheet" href="styles.css?v=15.0">
 </head>
 <body class="cosmos-body">
 
@@ -445,19 +445,148 @@
 </div>
 
 <!-- ======================================================================
-     13. VISOR AMPLIADO DE CROMO DE KRAALETE (3D HOLOGRÁFICO EN CENTRO DE PANTALLA)
+     13. MODAL SPLIT-CARD DE KRAALETE (2 COLUMNAS: CROMO 3:4 + FICHA EDITORIAL DRIVE)
      ====================================================================== -->
 <div class="cromo-zoom-modal-backdrop" id="cromoZoomModal" aria-hidden="true">
-    <div class="cromo-zoom-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="cromoZoomName">
-        <button type="button" class="cosmos-lightbox-close cromo-zoom-close-btn" id="btnCloseCromoZoom" aria-label="Cerrar cromo ampliado">
-            Cerrar <kbd>ESC</kbd>
-        </button>
-        <div class="cromo-zoom-card" id="cromoZoomCard">
-            <div class="cromo-inner" id="cromoZoomInner"></div>
+    <div class="cromo-split-dialog" id="cromoSplitDialog" role="dialog" aria-modal="true" aria-labelledby="cromoSplitTitle">
+        <!-- Columna Izquierda: Fotografía vertical del cromo (3:4) con efecto holográfico -->
+        <div class="cromo-split-left">
+            <div class="cromo-zoom-card" id="cromoZoomCard">
+                <div class="cromo-inner" id="cromoZoomInner"></div>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Panel Editorial del Scouter -->
+        <div class="cromo-split-right">
+            <div class="cromo-split-topbar">
+                <span class="cromo-split-unit-pill" id="cromoSplitUnitBadge">KRAALETE · ACRUX 518</span>
+                <button type="button" class="cosmos-lightbox-close cromo-zoom-close-btn" id="btnCloseCromoZoom" aria-label="Cerrar ficha de scouter">
+                    Cerrar <kbd>ESC</kbd>
+                </button>
+            </div>
+
+            <div class="cromo-split-body">
+                <span class="cromo-split-kicker" id="cromoSplitRole">SCOUTER DE UNIDAD</span>
+                <h3 class="cromo-split-title" id="cromoSplitTitle">Scouter</h3>
+                <p class="cromo-split-realname" id="cromoSplitSubtitle">«Nombre Real»</p>
+                <div class="cromo-split-divider" aria-hidden="true"></div>
+                <div class="cromo-split-bio-wrap">
+                    <p class="cromo-split-bio" id="cromoSplitBio"></p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<script src="script.js?v=9.0"></script>
+<!-- ======================================================================
+     14. TIENDA MERCH FULLSCREEN E-COMMERCE (CONECTADA A GOOGLE FORMS)
+     ====================================================================== -->
+<div class="merch-embed-overlay merch-custom-modal" id="merchModal" aria-hidden="true">
+    <div class="merch-ecom-shell" role="dialog" aria-modal="true" aria-labelledby="merchModalTitle">
+        <!-- Barra superior minimalista estilo Áureo Design -->
+        <header class="merch-ecom-topbar">
+            <button type="button" class="merch-back-btn" id="btnCloseMerchModal" aria-label="Cerrar tienda de Merch">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                <span>Volver al Mapa Estelar</span>
+                <kbd>ESC</kbd>
+            </button>
+
+            <div class="merch-forms-switcher" id="merchFormsSwitcher" role="tablist" aria-label="Artículos de Merch disponibles" style="display:none;"></div>
+
+            <div class="merch-topbar-meta">
+                <span class="merch-topbar-badge">ACRUX 518 · MERCH OFICIAL</span>
+            </div>
+        </header>
+
+        <!-- Cuerpo Split-Screen 100% pantalla -->
+        <div class="merch-ecom-split">
+            <!-- COLUMNA IZQUIERDA: Gran Escaparate Fotográfico -->
+            <div class="merch-ecom-gallery-col">
+                <div class="merch-showcase-stage" id="merchShowcaseStage">
+                    <div class="merch-showcase-badges">
+                        <span class="merch-stage-pill" id="merchStageSeasonPill">COLECCIÓN OFICIAL ACRUX 518</span>
+                        <span class="merch-stage-pill merch-stage-pill-muted">ENTREGA EN BASE · RUEDA 53</span>
+                    </div>
+
+                    <div class="merch-showcase-visual" id="merchShowcaseVisual">
+                        <!-- Imagen de producto desde Drive / Formulario o escaparate editorial dinámico -->
+                    </div>
+
+                    <div class="merch-thumb-strip" id="merchThumbStrip" style="display:none;"></div>
+
+                    <div class="merch-showcase-footer">
+                        <div class="merch-spec-item">
+                            <span class="spec-label">EDICIÓN</span>
+                            <span class="spec-value">Grupo Scout Acrux 518</span>
+                        </div>
+                        <div class="merch-spec-item">
+                            <span class="spec-label">RECOGIDA</span>
+                            <span class="spec-value">Sábados 16:30 – 19:00 h</span>
+                        </div>
+                        <div class="merch-spec-item">
+                            <span class="spec-label">REGISTRO</span>
+                            <span class="spec-value">Directo en Hoja Oficial</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA: Ficha de Producto y Formulario Nativo -->
+            <div class="merch-ecom-details-col">
+                <div class="merch-ecom-details-inner">
+                    <div class="merch-product-header">
+                        <span class="merch-kicker" id="merchModalKicker">MERCHANDISING DE GRUPO · ACRUX 518</span>
+                        <div class="merch-title-price-row">
+                            <h2 class="merch-modal-title" id="merchModalTitle">Merch Acrux 518</h2>
+                            <span class="merch-price-tag" id="merchPriceTag" style="display:none;"></span>
+                        </div>
+                        <p class="merch-product-desc" id="merchModalDesc">Selecciona tus opciones y completa tus datos para registrar tu pedido directamente en el listado oficial del grupo.</p>
+                    </div>
+
+                    <!-- Estado de carga mientras se leen las preguntas del Google Form -->
+                    <div class="merch-schema-loader" id="merchIframeLoader" style="display:none;">
+                        <span class="merch-loader-dot"></span>
+                        <span>Sincronizando opciones del artículo desde Google Drive...</span>
+                    </div>
+
+                    <!-- Formulario nativo generado dinámicamente a partir del Google Form -->
+                    <form class="merch-native-form" id="merchNativeForm" novalidate>
+                        <div class="merch-dynamic-fields" id="merchDynamicFields"></div>
+
+                        <div class="merch-form-error" id="merchFormError" style="display:none;"></div>
+
+                        <div class="merch-cta-block">
+                            <button type="submit" class="merch-submit-btn" id="btnSubmitMerchOrder">
+                                <span class="merch-submit-label">Realizar Pedido</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
+                            <span class="merch-cta-subnote">Tu pedido quedará registrado al instante en el formulario oficial del grupo.</span>
+                        </div>
+                    </form>
+
+                    <!-- Pantalla de confirmación tras el envío silencioso -->
+                    <div class="merch-order-success" id="merchOrderSuccess" style="display:none;">
+                        <div class="merch-success-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="merch-kicker">PEDIDO REGISTRADO CORRECTAMENTE</span>
+                        <h3 class="merch-success-title">¡Gracias por tu pedido!</h3>
+                        <p class="merch-success-desc" id="merchSuccessSummary">Hemos registrado tus datos directamente en la hoja oficial de Merch del Grupo Scout Acrux 518.</p>
+                        <div class="merch-success-actions">
+                            <button type="button" class="merch-reset-order-btn" id="btnMerchAnotherOrder">Realizar otro pedido</button>
+                            <button type="button" class="merch-done-order-btn" id="btnMerchFinishOrder">Volver al Mapa Estelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Infraestructura oculta para envío silencioso 100% libre de interfaz de Google -->
+        <iframe name="merchSilentSubmitFrame" id="merchSilentSubmitFrame" title="Envío silencioso de Merch" style="display:none;"></iframe>
+        <form id="merchHiddenGoogleForm" target="merchSilentSubmitFrame" method="POST" style="display:none;"></form>
+    </div>
+</div>
+
+<script src="script.js?v=15.0"></script>
 </body>
 </html>

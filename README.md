@@ -21,7 +21,7 @@ Es decir: **para el 95% del trabajo diario de la Comisión de Redes, solo tenéi
 
 ## 2. Estructura de carpetas en Google Drive (¡Muy importante no cambiar los nombres raíz!)
 
-En el Google Drive oficial del grupo tenemos una carpeta principal de la web que contiene estas **5 carpetas numeradas**. El script busca exactamente estos nombres, así que **nunca cambiéis el nombre de estas 5 carpetas principales**:
+En el Google Drive oficial del grupo tenemos una carpeta principal de la web que contiene estas **6 carpetas numeradas**. El script busca exactamente estos nombres, así que **nunca cambiéis el nombre de estas 6 carpetas principales**:
 
 ```text
 CARPETA RAÍZ DE LA WEB EN GOOGLE DRIVE
@@ -41,16 +41,19 @@ CARPETA RAÍZ DE LA WEB EN GOOGLE DRIVE
 │   ├── 2025 - Vilviestre del Pinar/
 │   └── ... (todas las carpetas de campamentos que vayáis creando)
 │
-├── 03_OBJETOS_PERDIDOS/
+├── 03_COORDINACION/
+│   └── (Fotos de los coordinadores actuales: Nombre | Cargo | Teléfono)
+│
+├── 04_OBJETOS_PERDIDOS/
 │   ├── Cajón 01 · Campamento de Verano/
 │   ├── Cajón 02 · Acampada de Invierno/
 │   └── ... (un cajón por cada carpeta que creéis aquí dentro)
 │
-├── 04_COORDINACION/
-│   └── (Fotos de los coordinadores actuales)
+├── 05_50_ANIVERSARIO/
+│   └── (Fotos históricas por año desde 1976 hasta 2026)
 │
-└── 05_50_ANIVERSARIO/
-    └── (Fotos históricas por año desde 1976 hasta 2026)
+└── 06_INTENDENCIA/
+    └── (Formularios de Google Forms de pedidos de sudaderas, camisetas, pañoletas o merchandising)
 ```
 
 A continuación tienes explicado, carpeta por carpeta, cómo funciona cada una y todos los trucos que tiene programados la web.
@@ -139,12 +142,12 @@ Por privacidad y protección de datos de los chavales, **los enlaces a las carpe
 
 ---
 
-## 6. Cómo gestionar «El Baúl» de Objetos Perdidos (`03_OBJETOS_PERDIDOS`)
+## 6. Cómo gestionar «El Baúl» de Objetos Perdidos (`04_OBJETOS_PERDIDOS`)
 
 El **Sector IV (El Baúl)** sirve para que no tengamos que mandar 80 fotos sueltas por los grupos de WhatsApp después de cada acampada.
 
 ### A) ¿Qué es un «Cajón»?
-Cada **subcarpeta** que creéis dentro de `03_OBJETOS_PERDIDOS` se convierte automáticamente en:
+Cada **subcarpeta** que creéis dentro de `04_OBJETOS_PERDIDOS` se convierte automáticamente en:
 1. Una **mini-estrella** orbitando alrededor de la estrella principal de *El Baúl* en el mapa estelar.
 2. Un **Cajón seleccionable** dentro de la pantalla de El Baúl.
 
@@ -177,7 +180,57 @@ En el **Sector I (Acrux 518)**, cada pocos segundos cruza el cielo un **Cometa D
 
 ---
 
-## 8. ¿Qué tocar en el código si queréis cambiar datos fijos?
+## 8. Cómo gestionar el Merch de Grupo (`06_INTENDENCIA`)
+
+Cuando el grupo quiera lanzar un pedido de **Merch** (sudaderas, camisetas, polares o material), **no hace falta tocar nada del código de la web**:
+
+1. **¿Cómo activar un formulario de Merch en la web?**
+   * Entra en la carpeta **`06_INTENDENCIA`** dentro del Google Drive de la web.
+   * Crea ahí dentro un **Formulario de Google (*Google Form*)** o mueve ahí uno ya creado (por ejemplo, llamado `Sudaderas Acrux 2026`).
+2. **¿Qué pasa automáticamente en la web?**
+   * En el **Sector I (Acrux 518)**, la estrella secundaria **`ε Intrometida`** se activa de forma sutil y elegante con un brillo ámbar/grisáceo atenuado y pasa a llamarse **`ε Merch · [Nombre del Formulario]`**.
+   * Si metéis **varios formularios a la vez** en `06_INTENDENCIA`, se crean estrellas satélite discretas adicionales conectadas a `ε Intrometida` y una barra de pestañas dentro del modal para cambiar entre un producto y otro.
+   * Al hacer clic en la estrella, se abre una ventana flotante de cristal oscuro (`.merch-custom-modal`) con el **Google Form incrustado y adaptado automáticamente al modo oscuro nativo de la web** (`filter: invert(0.92) hue-rotate(180deg) contrast(1.1); background-color: #0A0D14;`), con un botón para alternar a color original si alguien quiere ver los colores reales de una foto del producto.
+3. **¿Cómo cerrar un pedido de Merch cuando termine el plazo?**
+   * Simplemente **saca o borra el Google Form de la carpeta `06_INTENDENCIA`** en Drive. La estrella `ε Intrometida` volverá sola a su estado normal (inactiva) y desaparecerá el acceso al formulario.
+
+### Código para el Google Apps Script (`06_INTENDENCIA`)
+Si algún día reescribís o actualizáis el script en [script.google.com](https://script.google.com), asegúrate de que dentro de `doGet(e)` esté incluido este bloque que escanea la carpeta `06_INTENDENCIA` y devuelve `merchForms`:
+
+```javascript
+// --- 6. ESCANEO AUTOMÁTICO DE 06_INTENDENCIA (GOOGLE FORMS DE MERCHANDISING) ---
+var merchForms = [];
+var intendenciaFolders = rootFolder.getFoldersByName('06_INTENDENCIA');
+if (intendenciaFolders.hasNext()) {
+  var intendenciaFolder = intendenciaFolders.next();
+  var files = intendenciaFolder.getFiles();
+  while (files.hasNext()) {
+    var file = files.next();
+    if (file.getMimeType() === MimeType.GOOGLE_FORMS) {
+      var formId = file.getId();
+      var publishedUrl = 'https://docs.google.com/forms/d/' + formId + '/viewform?embedded=true';
+      try {
+        var formObj = FormApp.openById(formId);
+        var pub = formObj.getPublishedUrl();
+        if (pub) {
+          publishedUrl = pub + (pub.indexOf('?') > -1 ? '&' : '?') + 'embedded=true';
+        }
+      } catch (err) {}
+      merchForms.push({
+        id: formId,
+        title: file.getName(),
+        embedUrl: publishedUrl,
+        date: Utilities.formatDate(file.getDateCreated(), Session.getScriptTimeZone(), 'yyyy-MM-dd')
+      });
+    }
+  }
+}
+// Y añade "merchForms: merchForms" al objeto JSON que devuelve ContentService.
+```
+
+---
+
+## 9. ¿Qué tocar en el código si queréis cambiar datos fijos?
 
 Si algún día necesitáis cambiar algo que no está en Drive (por ejemplo, cambiar la lista de nombres de los Kraaletes cuando empieza una nueva Ronda Solar, o cambiar algún texto de historia), solo hay **3 archivos** en todo el proyecto:
 

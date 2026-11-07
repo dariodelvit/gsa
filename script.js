@@ -131,12 +131,10 @@
             kraalTitle: 'Kraal de la Colonia Ohiensis',
             kraalSub: 'Scouters de Castores (Kraaletes de Colonia)',
             kraaletes: [
-                { star: 'Kibu', name: 'Kibu', role: 'Scouter de Colonia' },
-                { star: 'Malak', name: 'Malak', role: 'Scouter de Colonia' },
-                { star: 'Kapi', name: 'Kapi', role: 'Scouter de Colonia' },
-                { star: 'Tic-Tac', name: 'Tic-Tac', role: 'Scouter de Colonia' },
-                { star: 'Burbuja', name: 'Burbuja', role: 'Scouter de Colonia' },
-                { star: 'Rusty', name: 'Rusty', role: 'Scouter de Colonia' }
+                { star: 'Kapi', name: 'Kapi', role: 'Kraalete' },
+                { star: 'Malak', name: 'Malak', role: 'Kraalete' },
+                { star: 'Burbuja', name: 'Burbuja', role: 'Kraalete' },
+                { star: 'Rusty', name: 'Rusty', role: 'Kraalete' }
             ]
         },
         {
@@ -252,15 +250,13 @@
             kraalTitle: 'Kraal de la Tropa Lohengrin',
             kraalSub: 'Scouters de Tropa (Kraaletes de Lohengrin)',
             kraaletes: [
-                { star: 'Nadia', name: 'Nadia', role: 'Scouter de Tropa' },
-                { star: 'Ángel', name: 'Ángel', role: 'Scouter de Tropa' },
-                { star: 'Hugo', name: 'Hugo', role: 'Scouter de Tropa' },
-                { star: 'Jesús', name: 'Jesús', role: 'Scouter de Tropa' },
-                { star: 'Silvia', name: 'Silvia', role: 'Scouter de Tropa' },
-                { star: 'Edgar', name: 'Edgar', role: 'Scouter de Tropa' },
-                { star: 'Pablo', name: 'Pablo', role: 'Scouter de Tropa' },
-                { star: 'Ane', name: 'Ane', role: 'Scouter de Tropa' },
-                { star: 'Darío', name: 'Darío', role: 'Scouter de Tropa' }
+                { star: 'Ane', name: 'Ane', role: 'Kraalete' },
+                { star: 'Pablo', name: 'Pablo', role: 'Kraalete' },
+                { star: 'Silvia', name: 'Silvia', role: 'Kraalete' },
+                { star: 'Jesús', name: 'Jesús', role: 'Kraalete' },
+                { star: 'Hugo', name: 'Hugo', role: 'Kraalete' },
+                { star: 'Ángel', name: 'Ángel', role: 'Kraalete' },
+                { star: 'Nadia', name: 'Nadia', role: 'Kraalete' }
             ]
         },
         {
@@ -388,6 +384,9 @@
 
     // Coordinación dinámica de Grupo (desde Drive o fallback)
     let coordinadoresDrive = null;
+
+    // Formularios dinámicos de Intendencia / Merchandising (carpeta 06_INTENDENCIA en Google Drive)
+    let MERCH_FORMS_DATA = [];
 
     // =========================================================================
     // 2C. MODO 50 ANIVERSARIO (1976 - 2026) · ESPIRAL ÁUREA Y CONECTOR GOOGLE DRIVE
@@ -1424,6 +1423,177 @@
     window.rebuildLostConstellation = rebuildLostConstellation;
 
     // =========================================================================
+    // 4D. RECONSTRUCCIÓN DINÁMICA DE MERCH (CARPETA DRIVE: 06_INTENDENCIA)
+    // =========================================================================
+    function normalizeGoogleFormEmbedUrl(rawUrl, formId) {
+        let url = (rawUrl || '').trim();
+        if (!url && formId) {
+            url = `https://docs.google.com/forms/d/${formId}/viewform`;
+        }
+        if (!url) return { embedUrl: '', externalUrl: '' };
+
+        // Convertir enlaces de edición (/edit) a vista de formulario (/viewform)
+        url = url.replace(/\/edit(\?.*)?$/i, '/viewform');
+        const externalUrl = url.replace(/[?&]embedded=true/gi, '');
+
+        let embedUrl = url;
+        if (!/embedded=true/i.test(embedUrl)) {
+            embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'embedded=true';
+        }
+        return { embedUrl, externalUrl };
+    }
+
+    function rebuildMerchConstellation(merchFormsFromDrive) {
+        // 1. Limpiar estrellas satélite previas de Merch (clusterType === 'merch')
+        for (let i = worldNodes.length - 1; i >= 0; i--) {
+            if (worldNodes[i].clusterType === 'merch') {
+                worldNodes.splice(i, 1);
+            }
+        }
+        for (let i = worldEdges.length - 1; i >= 0; i--) {
+            if (worldEdges[i].clusterType === 'merch') {
+                worldEdges.splice(i, 1);
+            }
+        }
+
+        const intrometidaNode = worldNodes.find(nd => nd.id === 'intrometida');
+
+        // 2. Validar y normalizar array de formularios recibidos desde Drive
+        const validForms = Array.isArray(merchFormsFromDrive)
+            ? merchFormsFromDrive
+                .map((item, idx) => {
+                    const urls = normalizeGoogleFormEmbedUrl(item.embedUrl || item.url || item.formUrl, item.id);
+                    if (!urls.embedUrl) return null;
+                    const rawName = (item.title || item.name || `Merch ${idx + 1}`)
+                        .replace(/[\r\n]+/g, ' ')
+                        .replace(/\.[^/.]+$/, '')
+                        .replace(/^(copia de|copy of)\s+/i, '')
+                        .replace(/intendencia/gi, 'Merch')
+                        .trim();
+                    const parts = rawName.split('|').map(s => s.trim());
+                    const cleanTitle = parts[0] || rawName;
+                    const priceMatch = rawName.match(/(\d+(?:[.,]\d{1,2})?\s*€)/);
+                    const photos = Array.isArray(item.photos)
+                        ? item.photos.slice()
+                        : (item.imageUrl || item.photoUrl ? [item.imageUrl || item.photoUrl] : []);
+
+                    return {
+                        id: item.id || `merch-form-${idx}`,
+                        title: cleanTitle,
+                        price: item.price || (parts[1] && parts[1].includes('€') ? parts[1] : (priceMatch ? priceMatch[1] : '')),
+                        desc: item.desc || item.description || (parts[2] || (parts[1] && !parts[1].includes('€') ? parts[1] : '')),
+                        embedUrl: urls.embedUrl,
+                        externalUrl: urls.externalUrl || urls.embedUrl,
+                        actionUrl: item.actionUrl || '',
+                        date: item.date || '',
+                        photos: photos,
+                        questions: Array.isArray(item.questions) ? item.questions : null,
+                        _parsedSchema: null
+                    };
+                })
+                .filter(Boolean)
+            : [];
+
+        MERCH_FORMS_DATA = validForms;
+
+        // Pre-cargar en segundo plano el esquema de preguntas de cada Google Form
+        MERCH_FORMS_DATA.forEach(form => {
+            if (typeof preloadMerchFormSchema === 'function') {
+                preloadMerchFormSchema(form);
+            }
+        });
+
+        // 3. Si no hay formularios: la estrella ε Intrometida permanece como estrella astronómica inactiva
+        if (MERCH_FORMS_DATA.length === 0) {
+            if (intrometidaNode) {
+                intrometidaNode.symbol = 'ε Intrometida';
+                intrometidaNode.r = 5.2;
+                intrometidaNode.color = '#FFFFFF';
+                intrometidaNode.halo = 'rgba(255, 255, 255, 0.16)';
+                intrometidaNode.ringColor = null;
+                intrometidaNode.hoverRingColor = null;
+                intrometidaNode.isMerchStar = false;
+                intrometidaNode.isClickable = false;
+                intrometidaNode.isClusterHub = false;
+                intrometidaNode.merchIndex = undefined;
+            }
+            return;
+        }
+
+        // 4. Si hay formularios: activar ε Intrometida de forma sobria y sutil como estrella de Merch
+        const firstForm = MERCH_FORMS_DATA[0];
+        if (intrometidaNode) {
+            const cleanLabel = /^merch\b/i.test(firstForm.title) ? firstForm.title : `Merch · ${firstForm.title}`;
+            intrometidaNode.symbol = `ε ${cleanLabel}`;
+            intrometidaNode.r = 5.6;
+            intrometidaNode.color = '#E2D5B5';
+            intrometidaNode.halo = 'rgba(212, 190, 152, 0.22)';
+            intrometidaNode.ringColor = 'rgba(203, 213, 225, 0.28)';
+            intrometidaNode.hoverRingColor = 'rgba(212, 190, 152, 0.68)';
+            intrometidaNode.isMerchStar = true;
+            intrometidaNode.isClickable = true;
+            intrometidaNode.isClusterHub = false;
+            intrometidaNode.merchIndex = 0;
+            intrometidaNode.labelPos = 'right';
+        }
+
+        // 5. Si hay más de 1 formulario, dibujar estrellas discretas adicionales conectadas a ε Intrometida
+        if (MERCH_FORMS_DATA.length > 1) {
+            const extraOffsets = [
+                { dx: 138, dy: 62, lp: 'right' },
+                { dx: 118, dy: 122, lp: 'bottom' },
+                { dx: 185, dy: 12, lp: 'right' },
+                { dx: 165, dy: 95, lp: 'right' }
+            ];
+
+            const extraStars = MERCH_FORMS_DATA.slice(1).map((form, idx) => {
+                const off = extraOffsets[idx % extraOffsets.length];
+                const radiusMul = 1 + Math.floor(idx / extraOffsets.length) * 0.35;
+                const cleanSubLabel = /^merch\b/i.test(form.title) ? form.title : `Merch · ${form.title}`;
+                return {
+                    id: `merch-star-${form.id}`,
+                    symbol: `✦ ${cleanSubLabel}`,
+                    dx: Math.round(off.dx * radiusMul),
+                    dy: Math.round(off.dy * radiusMul),
+                    r: 5.2,
+                    color: '#CBD5E1',
+                    halo: 'rgba(203, 213, 225, 0.20)',
+                    ringColor: 'rgba(203, 213, 225, 0.26)',
+                    hoverRingColor: 'rgba(212, 190, 152, 0.65)',
+                    isMerchStar: true,
+                    isClickable: true,
+                    isClusterHub: false,
+                    merchIndex: idx + 1,
+                    labelPos: off.lp
+                };
+            });
+
+            const createdExtraNodes = registerStarCluster(extraStars, [], SECTORS[0].worldX, SECTORS[0].worldY, {
+                sectorIndex: 0,
+                clusterType: 'merch'
+            });
+
+            if (intrometidaNode) {
+                createdExtraNodes.forEach((node, idx) => {
+                    const prevNode = idx === 0 ? intrometidaNode : createdExtraNodes[idx - 1];
+                    worldEdges.push({
+                        sectorIndex: 0,
+                        clusterType: 'merch',
+                        nodeA: prevNode,
+                        nodeB: node,
+                        ctrlX: 0,
+                        ctrlY: 0,
+                        vx: 0,
+                        vy: 0,
+                        glow: 0
+                    });
+                });
+            }
+        }
+    }
+    window.rebuildMerchConstellation = rebuildMerchConstellation;
+
+    // =========================================================================
     // 5. CAMPO PROFUNDO DE ESTRELLAS CON PARALLAX (SOLO BLANCO Y TOQUE ROJO SUTIL)
     // =========================================================================
     const bgStars = [];
@@ -1812,7 +1982,7 @@
                             `}
                             <div class="cromo-bottom-label">
                                 <strong class="cromo-label-name">${k.name}</strong>
-                                <span class="cromo-label-role">${k.role}</span>
+                                <span class="cromo-label-role">${k.realName ? `«${k.realName}»` : k.role}</span>
                             </div>
                             <div class="cromo-sheen" aria-hidden="true"></div>
                         </div>
@@ -1848,11 +2018,7 @@
                     const idx = parseInt(card.getAttribute('data-cromo-idx'), 10);
                     const k = unit.kraaletes[idx];
                     if (!k) return;
-                    if (k.cromoUrl) {
-                        openLightbox(k.cromoUrl, k.name, `${k.role} · ${unit.fullName}`);
-                    } else {
-                        openCromoZoomModal(k, unit);
-                    }
+                    openCromoZoomModal(k, unit);
                 });
             });
         }
@@ -2141,17 +2307,28 @@
     });
 
     // =========================================================================
-    // 8D. VISOR AMPLIADO DE CROMO DE KRAALETE (3D HOLOGRÁFICO EN CENTRO DE PANTALLA)
+    // 8D. MODAL SPLIT-CARD DE KRAALETE (2 COLUMNAS: CROMO 3:4 + FICHA EDITORIAL)
     // =========================================================================
     const elCromoZoomModal = document.getElementById('cromoZoomModal');
+    const elCromoSplitDialog = document.getElementById('cromoSplitDialog');
     const elCromoZoomCard = document.getElementById('cromoZoomCard');
     const elCromoZoomInner = document.getElementById('cromoZoomInner');
+    const elCromoSplitUnitBadge = document.getElementById('cromoSplitUnitBadge');
+    const elCromoSplitRole = document.getElementById('cromoSplitRole');
+    const elCromoSplitTitle = document.getElementById('cromoSplitTitle');
+    const elCromoSplitSubtitle = document.getElementById('cromoSplitSubtitle');
+    const elCromoSplitBio = document.getElementById('cromoSplitBio');
     const elBtnCloseCromoZoom = document.getElementById('btnCloseCromoZoom');
 
     function openCromoZoomModal(k, unit) {
         if (!elCromoZoomModal || !elCromoZoomCard || !elCromoZoomInner || !k) return;
         const accent = (unit && unit.accentColor) ? unit.accentColor : '#38BDF8';
         const glow = (unit && unit.glowColor) ? unit.glowColor : 'rgba(56, 189, 248, 0.28)';
+
+        if (elCromoSplitDialog) {
+            elCromoSplitDialog.style.setProperty('--unit-accent', accent);
+            elCromoSplitDialog.style.setProperty('--unit-glow', glow);
+        }
         elCromoZoomCard.style.setProperty('--unit-accent', accent);
         elCromoZoomCard.style.setProperty('--unit-glow', glow);
         elCromoZoomCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
@@ -2165,15 +2342,39 @@
                     <div class="cromo-scout-badge">${SVG_ICONS.compass}</div>
                     <span class="cromo-unit-tag">${unit ? unit.shortName : 'ACRUX 518'}</span>
                     <strong class="cromo-fallback-name" id="cromoZoomName">${k.name}</strong>
-                    <span class="cromo-fallback-role">${k.role}</span>
+                    <span class="cromo-fallback-role">${k.role || 'Kraalete'}</span>
                 </div>
             `}
             <div class="cromo-bottom-label">
                 <strong class="cromo-label-name">${k.name}</strong>
-                <span class="cromo-label-role">${k.role} · ${unit ? unit.fullName : 'Grupo Scout Acrux 518'}</span>
+                <span class="cromo-label-role">${k.realName ? `«${k.realName}»` : (k.role || 'Kraalete')}</span>
             </div>
             <div class="cromo-sheen" aria-hidden="true"></div>
         `;
+
+        // Poblar Columna Derecha (Panel Editorial con Nombre Real y Biografía desde Drive)
+        const unitFullName = unit ? unit.fullName : 'Grupo Scout Acrux 518';
+        const unitShortName = unit ? unit.shortName : 'ACRUX 518';
+        if (elCromoSplitUnitBadge) {
+            elCromoSplitUnitBadge.textContent = `KRAALETE · ${unitShortName.toUpperCase()}`;
+        }
+        if (elCromoSplitRole) {
+            elCromoSplitRole.textContent = `${k.role || 'Scouter'} · ${unitFullName}`;
+        }
+        if (elCromoSplitTitle) {
+            elCromoSplitTitle.textContent = k.name || 'Scouter';
+        }
+        if (elCromoSplitSubtitle) {
+            const cleanRealName = (k.realName || '').trim();
+            elCromoSplitSubtitle.textContent = cleanRealName
+                ? `«${cleanRealName}» · ${unitFullName}`
+                : `«${k.name}» · ${unitFullName}`;
+        }
+        if (elCromoSplitBio) {
+            const cleanBio = (k.bio || '').trim();
+            elCromoSplitBio.textContent = cleanBio
+                || `Scouter del Kraalete de ${unitFullName} en el Grupo Scout Acrux 518. Acompaña cada sábado y acampada educando en valores, escultismo y contacto directo con la naturaleza.`;
+        }
 
         elCromoZoomModal.classList.add('is-open');
         elCromoZoomModal.setAttribute('aria-hidden', 'false');
@@ -2619,6 +2820,9 @@
         elCampZoomOverlay?.setAttribute('aria-hidden', 'true');
         elLostZoomOverlay?.classList.remove('is-open');
         elLostZoomOverlay?.setAttribute('aria-hidden', 'true');
+        const merchOverlay = document.getElementById('merchModal');
+        merchOverlay?.classList.remove('is-open');
+        merchOverlay?.setAttribute('aria-hidden', 'true');
 
         diveTabTimer = setTimeout(() => {
             openDrawerModal('identity');
@@ -2645,6 +2849,9 @@
         elCampZoomOverlay?.setAttribute('aria-hidden', 'true');
         elLostZoomOverlay?.classList.remove('is-open');
         elLostZoomOverlay?.setAttribute('aria-hidden', 'true');
+        const merchOverlay = document.getElementById('merchModal');
+        merchOverlay?.classList.remove('is-open');
+        merchOverlay?.setAttribute('aria-hidden', 'true');
         if (resetPan) {
             targetFreePanX = 0;
             targetFreePanY = 0;
@@ -3110,6 +3317,928 @@
     window.openAnniversaryModal = openAnniversaryModal;
     window.closeAnniversaryModal = closeAnniversaryModal;
 
+    // =========================================================================
+    // 9C. TIENDA MERCH FULLSCREEN E-COMMERCE CONECTADA A GOOGLE FORMS
+    // =========================================================================
+    const elMerchModal = document.getElementById('merchModal');
+    const elMerchModalTitle = document.getElementById('merchModalTitle');
+    const elMerchModalKicker = document.getElementById('merchModalKicker');
+    const elMerchModalDesc = document.getElementById('merchModalDesc');
+    const elMerchPriceTag = document.getElementById('merchPriceTag');
+    const elMerchFormsSwitcher = document.getElementById('merchFormsSwitcher');
+    const elMerchShowcaseVisual = document.getElementById('merchShowcaseVisual');
+    const elMerchThumbStrip = document.getElementById('merchThumbStrip');
+    const elMerchIframeLoader = document.getElementById('merchIframeLoader');
+    const elMerchNativeForm = document.getElementById('merchNativeForm');
+    const elMerchDynamicFields = document.getElementById('merchDynamicFields');
+    const elMerchFormError = document.getElementById('merchFormError');
+    const elBtnSubmitMerchOrder = document.getElementById('btnSubmitMerchOrder');
+    const elMerchOrderSuccess = document.getElementById('merchOrderSuccess');
+    const elMerchSuccessSummary = document.getElementById('merchSuccessSummary');
+    const elBtnMerchAnotherOrder = document.getElementById('btnMerchAnotherOrder');
+    const elBtnMerchFinishOrder = document.getElementById('btnMerchFinishOrder');
+    const elBtnCloseMerchModal = document.getElementById('btnCloseMerchModal');
+    const elMerchHiddenGoogleForm = document.getElementById('merchHiddenGoogleForm');
+
+    let activeMerchFormIdx = 0;
+    let activeMerchOrderState = {};
+    let activeMerchPhotoIdx = 0;
+
+    // Mapa cromático para pastillas de color y vista previa de prenda en estudio
+    function getColorInfoFromLabel(rawLabel) {
+        const s = (rawLabel || '').toLowerCase().trim();
+        if (s.includes('white') || s.includes('blanc')) return { hex: '#F8FAFC', label: rawLabel === 'White' ? 'Blanco (White)' : rawLabel };
+        if (s.includes('black') || s.includes('negr')) return { hex: '#111827', label: rawLabel === 'Black' ? 'Negro (Black)' : rawLabel };
+        if (s.includes('navy') || s.includes('marino')) return { hex: '#1E293B', label: rawLabel };
+        if (s.includes('blue') || s.includes('azul')) return { hex: '#2563EB', label: rawLabel === 'Blue' ? 'Azul (Blue)' : rawLabel };
+        if (s.includes('green') || s.includes('verde')) return { hex: '#15803D', label: rawLabel === 'Green' ? 'Verde (Green)' : rawLabel };
+        if (s.includes('yellow') || s.includes('amarill') || s.includes('oro')) return { hex: '#EAB308', label: rawLabel === 'Yellow' ? 'Amarillo (Yellow)' : rawLabel };
+        if (s.includes('grey') || s.includes('gray') || s.includes('gris')) return { hex: '#64748B', label: (rawLabel === 'Grey' || rawLabel === 'Gray') ? 'Gris (Grey)' : rawLabel };
+        if (s.includes('red') || s.includes('roj') || s.includes('burdeos') || s.includes('granate')) return { hex: '#B91C1C', label: rawLabel === 'Red' ? 'Rojo (Red)' : rawLabel };
+        if (s.includes('beige') || s.includes('arena') || s.includes('crudo') || s.includes('sand')) return { hex: '#D6C7B2', label: rawLabel };
+        if (s.includes('pink') || s.includes('rosa')) return { hex: '#EC4899', label: rawLabel };
+        if (s.includes('purple') || s.includes('morad') || s.includes('lila')) return { hex: '#7C3AED', label: rawLabel };
+        if (s.includes('orange') || s.includes('naranja')) return { hex: '#EA580C', label: rawLabel };
+        return null;
+    }
+
+    function translateMerchFieldTitle(rawTitle) {
+        const t = (rawTitle || '').trim();
+        const lower = t.toLowerCase();
+        const map = {
+            'favorite color': 'Color',
+            'last name': 'Nombre y Apellidos',
+            'first name': 'Nombre',
+            'name': 'Nombre y Apellidos',
+            'phone': 'Teléfono de contacto',
+            'phone number': 'Teléfono de contacto',
+            'email': 'Correo electrónico',
+            'size and color': 'Talla y Color',
+            'size': 'Talla',
+            'color': 'Color',
+            'quantity': 'Cantidad',
+            'shipping address': 'Dirección de Entrega',
+            'street address': 'Dirección (Calle y número)',
+            'street address line 2': 'Piso / Puerta / Escalera (Opcional)',
+            'city': 'Ciudad / Localidad',
+            'state': 'Provincia',
+            'postal code': 'Código Postal',
+            'zip code': 'Código Postal',
+            'notes': 'Observaciones / Comentarios',
+            'comments': 'Observaciones / Comentarios'
+        };
+        return map[lower] || t.replace(/<[^>]*>/g, '').trim();
+    }
+
+    // Extrae el array FB_PUBLIC_LOAD_DATA_ del HTML público de un Google Form
+    function extractFbPublicLoadDataFromHtml(html) {
+        if (!html || typeof html !== 'string') return null;
+        const marker = 'FB_PUBLIC_LOAD_DATA_';
+        const idx = html.indexOf(marker);
+        if (idx === -1) return null;
+        const startBracket = html.indexOf('[', idx);
+        if (startBracket === -1) return null;
+        const endScript = html.indexOf('</script>', startBracket);
+        if (endScript === -1) return null;
+        let jsonStr = html.substring(startBracket, endScript).trim();
+        if (jsonStr.endsWith(';')) jsonStr = jsonStr.slice(0, -1).trim();
+        try {
+            return JSON.parse(jsonStr);
+        } catch (_) {
+            return null;
+        }
+    }
+
+    // Transforma FB_PUBLIC_LOAD_DATA_ en un esquema de e-commerce limpio con entry.xxxxx reales
+    function buildSchemaFromFbLoadData(fbData, htmlText, form) {
+        if (!Array.isArray(fbData) || !Array.isArray(fbData[1])) return null;
+        const formMeta = fbData[1];
+        const rawQuestions = Array.isArray(formMeta[1]) ? formMeta[1] : [];
+        const formDesc = (formMeta[0] || '').replace(/<[^>]*>/g, '').trim();
+        const publicSlug = fbData[14] || '';
+        const actionUrl = publicSlug
+            ? `https://docs.google.com/forms/d/${publicSlug}/formResponse`
+            : `https://docs.google.com/forms/d/${form.id}/formResponse`;
+
+        // Extraer imágenes reales de producto incrustadas (ignorando la miniatura OpenGraph =w1200-h630-p de la página del formulario)
+        const extractedImages = [];
+        if (htmlText) {
+            const imgMatches = htmlText.match(/https:\/\/lh[0-9]\.googleusercontent\.com\/[^\s"'<>]+/g);
+            if (imgMatches) {
+                imgMatches.forEach(u => {
+                    const cleanU = u.replace(/\\u003d/g, '=').replace(/&amp;/g, '&');
+                    if (cleanU.includes('=w1200-h630-p') || cleanU.includes('=w600-h315-p')) return;
+                    if (!extractedImages.includes(cleanU)) extractedImages.push(cleanU);
+                });
+            }
+        }
+
+        const pillFields = [];
+        const textFields = [];
+        const autoSyncColorEntries = [];
+        let hasGridColorSelector = false;
+
+        // Primera pasada: comprobar si existe una cuadrícula Talla x Color (qType === 7)
+        rawQuestions.forEach(q => {
+            if (Array.isArray(q) && q[3] === 7 && Array.isArray(q[4]) && q[4].length > 0) {
+                hasGridColorSelector = true;
+            }
+        });
+
+        rawQuestions.forEach(q => {
+            if (!Array.isArray(q)) return;
+            const qId = q[0];
+            const rawTitle = (q[1] || '').replace(/<[^>]*>/g, '').trim();
+            const title = translateMerchFieldTitle(rawTitle);
+            const helpText = (q[2] || '').replace(/<[^>]*>/g, '').trim();
+            const qType = q[3];
+            const inputs = q[4];
+
+            // Ignorar encabezados de sección vacíos o sin inputs
+            if (qType === 6 || !Array.isArray(inputs) || inputs.length === 0) {
+                return;
+            }
+
+            // CASO A: Cuadrícula de Talla y Color (qType === 7)
+            if (qType === 7) {
+                const rows = inputs.map(r => ({
+                    entryId: `entry.${r[0]}`,
+                    rowLabel: (Array.isArray(r[3]) && r[3][0]) ? String(r[3][0]).trim() : '',
+                    colOptions: Array.isArray(r[1]) ? r[1].map(c => c[0]).filter(Boolean) : [],
+                    required: Boolean(r[2])
+                })).filter(r => r.rowLabel && r.entryId);
+
+                if (rows.length > 0) {
+                    const colOptions = rows[0].colOptions;
+                    pillFields.push({
+                        id: `grid-size-${qId}`,
+                        kind: 'grid-size',
+                        title: 'Selecciona Talla',
+                        required: true,
+                        rows: rows,
+                        options: rows.map(r => r.rowLabel),
+                        defaultVal: rows.find(r => r.rowLabel === 'M' || r.rowLabel === 'L')?.rowLabel || rows[0].rowLabel
+                    });
+
+                    if (colOptions.length > 0) {
+                        pillFields.push({
+                            id: `grid-color-${qId}`,
+                            kind: 'grid-color',
+                            gridSizeFieldId: `grid-size-${qId}`,
+                            title: 'Selecciona Color',
+                            required: true,
+                             isColorField: true,
+                            options: colOptions,
+                            defaultVal: colOptions[0]
+                        });
+                    }
+                }
+                return;
+            }
+
+            const firstInput = inputs[0];
+            if (!Array.isArray(firstInput) || !firstInput[0]) return;
+            const entryId = `entry.${firstInput[0]}`;
+            const isRequired = Boolean(firstInput[2]);
+            const rawOpts = Array.isArray(firstInput[1])
+                ? firstInput[1].map(o => (Array.isArray(o) ? String(o[0] || '').trim() : '')).filter(Boolean)
+                : [];
+
+            const lowerTitle = (rawTitle + ' ' + title).toLowerCase();
+            const isColorQ = lowerTitle.includes('color') || lowerTitle.includes('colour');
+            const isSizeQ = lowerTitle.includes('talla') || lowerTitle.includes('size');
+            const isQtyQ = lowerTitle.includes('cantidad') || lowerTitle.includes('quantity') || lowerTitle.includes('unidades');
+
+            // Si el formulario tiene un campo de texto "Favorite color" pero ya hay selector de Color en la cuadrícula,
+            // lo sincronizamos automáticamente en segundo plano para no duplicar la pregunta de color
+            if ((qType === 0 || qType === 1) && isColorQ && hasGridColorSelector && rawOpts.length === 0) {
+                autoSyncColorEntries.push(entryId);
+                return;
+            }
+
+            // CASO B: Pregunta con opciones (Radio, Desplegable, Casillas, Escala)
+            if (rawOpts.length > 0) {
+                pillFields.push({
+                    id: entryId,
+                    entryId: entryId,
+                    kind: 'pills',
+                    title: title,
+                    helpText: helpText,
+                    required: isRequired,
+                    isColorField: isColorQ,
+                    isSizeField: isSizeQ,
+                    isQtyField: isQtyQ,
+                    options: rawOpts,
+                    defaultVal: isQtyQ ? '1' : rawOpts[0]
+                });
+                return;
+            }
+
+            // CASO C: Si crearon una pregunta de texto corto llamada "Talla" o "Color" sin opciones definidas,
+            // generamos las pastillas interactivas automáticamente
+            if (qType === 0 && isSizeQ) {
+                const defaultSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+                pillFields.push({
+                    id: entryId,
+                    entryId: entryId,
+                    kind: 'pills',
+                    title: title || 'Selecciona Talla',
+                    helpText: helpText,
+                    required: isRequired,
+                    isSizeField: true,
+                    options: defaultSizes,
+                    defaultVal: 'M'
+                });
+                return;
+            }
+
+            if (qType === 0 && isColorQ && !hasGridColorSelector) {
+                const defaultColors = ['Negro', 'Blanco', 'Azul Marino', 'Verde', 'Gris'];
+                pillFields.push({
+                    id: entryId,
+                    entryId: entryId,
+                    kind: 'pills',
+                    title: title || 'Selecciona Color',
+                    helpText: helpText,
+                    required: isRequired,
+                    isColorField: true,
+                    options: defaultColors,
+                    defaultVal: defaultColors[0]
+                });
+                return;
+            }
+
+            // CASO D: Campo de texto estilizado para los datos del comprador
+            let inputType = 'text';
+            if (lowerTitle.includes('email') || lowerTitle.includes('correo')) inputType = 'email';
+            else if (lowerTitle.includes('phone') || lowerTitle.includes('teléfono') || lowerTitle.includes('telefono') || lowerTitle.includes('móvil')) inputType = 'tel';
+
+            textFields.push({
+                id: entryId,
+                entryId: entryId,
+                kind: qType === 1 ? 'textarea' : 'text',
+                inputType: inputType,
+                title: title,
+                helpText: helpText,
+                required: isRequired,
+                placeholder: isRequired ? `Introduce ${title.toLowerCase()}...` : `${title} (opcional)...`
+            });
+        });
+
+        // Ordenar los selectores de pastilla: 1º Talla, 2º Color, 3º Cantidad / Resto
+        pillFields.sort((a, b) => {
+            const rank = f => (f.kind === 'grid-size' || f.isSizeField) ? 1 : ((f.kind === 'grid-color' || f.isColorField) ? 2 : 3);
+            return rank(a) - rank(b);
+        });
+
+        return {
+            actionUrl: actionUrl,
+            description: formDesc,
+            images: extractedImages,
+            pillFields: pillFields,
+            textFields: textFields,
+            autoSyncColorEntries: autoSyncColorEntries
+        };
+    }
+
+    // Esquema pre-verificado para formularios conocidos o fallback instantáneo
+    const KNOWN_MERCH_SCHEMAS = {
+        '1gV6NBsQN0RKxZseGuwFCe6LkNBzDkxtGzLFuSc4Uf8I': {
+            actionUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd_o529V4YaUmeK7QqmbSo8XjnW5B9CQoXCX6nW6WeY37gVPQ/formResponse',
+            description: 'Prenda oficial del Grupo Scout Acrux 518. Selecciona tu talla, color y cantidad para registrar tu reserva directamente en la hoja oficial del grupo.',
+            images: [],
+            autoSyncColorEntries: ['entry.62333980'],
+            pillFields: [
+                {
+                    id: 'grid-size-623016651',
+                    kind: 'grid-size',
+                    title: 'Selecciona Talla',
+                    required: true,
+                    options: ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+                    defaultVal: 'M',
+                    rows: [
+                        { rowLabel: 'XXS', entryId: 'entry.981078897' },
+                        { rowLabel: 'XS', entryId: 'entry.1342802920' },
+                        { rowLabel: 'S', entryId: 'entry.397458137' },
+                        { rowLabel: 'M', entryId: 'entry.1035375086' },
+                        { rowLabel: 'L', entryId: 'entry.1114638134' },
+                        { rowLabel: 'XL', entryId: 'entry.13894194' },
+                        { rowLabel: 'XXL', entryId: 'entry.899119735' },
+                        { rowLabel: 'XXXL', entryId: 'entry.1043840646' }
+                    ]
+                },
+                {
+                    id: 'grid-color-623016651',
+                    kind: 'grid-color',
+                    gridSizeFieldId: 'grid-size-623016651',
+                    title: 'Selecciona Color',
+                    required: true,
+                    isColorField: true,
+                    options: ['White', 'Blue', 'Black', 'Green', 'Yellow', 'Grey'],
+                    defaultVal: 'Black'
+                },
+                {
+                    id: 'entry.1757665021',
+                    entryId: 'entry.1757665021',
+                    kind: 'pills',
+                    title: 'Cantidad',
+                    required: true,
+                    isQtyField: true,
+                    options: ['1', '2', '3', '4', '5'],
+                    defaultVal: '1'
+                }
+            ],
+            textFields: [
+                { id: 'entry.864030240', entryId: 'entry.864030240', kind: 'text', inputType: 'text', title: 'Nombre y Apellidos', required: true, placeholder: 'Ej. Marcos García (Tropa)...' },
+                { id: 'entry.1731174329', entryId: 'entry.1731174329', kind: 'text', inputType: 'tel', title: 'Teléfono de contacto', required: true, placeholder: 'Ej. 600 123 456...' },
+                { id: 'entry.337484795', entryId: 'entry.337484795', kind: 'text', inputType: 'email', title: 'Correo electrónico', required: true, placeholder: 'tu@correo.com...' },
+                { id: 'entry.1585103673', entryId: 'entry.1585103673', kind: 'text', inputType: 'text', title: 'Dirección (Calle y número)', required: true, placeholder: 'Calle / Recogida en Base Rueda 53...' },
+                { id: 'entry.1730369189', entryId: 'entry.1730369189', kind: 'text', inputType: 'text', title: 'Ciudad / Localidad', required: true, placeholder: 'Valladolid' },
+                { id: 'entry.1184868361', entryId: 'entry.1184868361', kind: 'textarea', inputType: 'text', title: 'Observaciones / Rama del Educando', required: false, placeholder: 'Indica tu rama (Castores, Manada, Tropa, Escultas, Clan) o cualquier nota...' }
+            ]
+        }
+    };
+
+    async function preloadMerchFormSchema(form) {
+        if (!form) return null;
+        if (form._parsedSchema) return form._parsedSchema;
+
+        // 1. Si el backend de Google Apps Script ya envió el esquema estructurado (form.schema o form.fbLoadData)
+        if (form.fbLoadData) {
+            const parsed = buildSchemaFromFbLoadData(form.fbLoadData, form.rawHtml || '', form);
+            if (parsed) {
+                form._parsedSchema = parsed;
+                return parsed;
+            }
+        }
+
+        // 2. Si el formulario está en nuestro registro inmediato verificado, úsalo al instante y actualiza en segundo plano
+        if (KNOWN_MERCH_SCHEMAS[form.id]) {
+            form._parsedSchema = KNOWN_MERCH_SCHEMAS[form.id];
+        }
+
+        // 3. Intentar leer el HTML público del Google Form para extraer FB_PUBLIC_LOAD_DATA_ de cualquier formulario nuevo
+        const viewUrl = `https://docs.google.com/forms/d/${form.id}/viewform`;
+        const endpoints = [
+            `${DRIVE_API_URL}?action=formSchema&id=${encodeURIComponent(form.id)}`,
+            `https://api.allorigins.win/raw?url=${encodeURIComponent(viewUrl)}`,
+            `https://corsproxy.io/?${encodeURIComponent(viewUrl)}`
+        ];
+
+        for (const ep of endpoints) {
+            try {
+                const res = await fetch(ep);
+                if (!res.ok) continue;
+                const text = await res.text();
+                if (text.trim().startsWith('{')) {
+                    const json = JSON.parse(text);
+                    if (json && json.fbLoadData) {
+                        const schema = buildSchemaFromFbLoadData(json.fbLoadData, json.html || '', form);
+                        if (schema && (schema.pillFields.length > 0 || schema.textFields.length > 0)) {
+                            form._parsedSchema = schema;
+                            return schema;
+                        }
+                    }
+                } else {
+                    const fbData = extractFbPublicLoadDataFromHtml(text);
+                    if (fbData) {
+                        const schema = buildSchemaFromFbLoadData(fbData, text, form);
+                        if (schema && (schema.pillFields.length > 0 || schema.textFields.length > 0)) {
+                            form._parsedSchema = schema;
+                            return schema;
+                        }
+                    }
+                }
+            } catch (_) {
+                // Continuar con el siguiente endpoint de respaldo
+            }
+        }
+
+        // 4. Si aún no hay esquema (ej. modo demo o sin red), construir un esquema e-commerce universal
+        if (!form._parsedSchema) {
+            form._parsedSchema = {
+                actionUrl: `https://docs.google.com/forms/d/${form.id}/formResponse`,
+                description: form.desc || 'Edición oficial del Grupo Scout Acrux 518. Selecciona tu talla y color preferido.',
+                images: form.photos || [],
+                autoSyncColorEntries: [],
+                pillFields: [
+                    {
+                        id: 'entry.size',
+                        entryId: 'entry.size',
+                        kind: 'pills',
+                        title: 'Selecciona Talla',
+                        required: true,
+                        isSizeField: true,
+                        options: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+                        defaultVal: 'M'
+                    },
+                    {
+                        id: 'entry.color',
+                        entryId: 'entry.color',
+                        kind: 'pills',
+                        title: 'Selecciona Color',
+                        required: true,
+                        isColorField: true,
+                        options: ['Negro', 'Blanco', 'Azul Marino', 'Verde'],
+                        defaultVal: 'Negro'
+                    },
+                    {
+                        id: 'entry.qty',
+                        entryId: 'entry.qty',
+                        kind: 'pills',
+                        title: 'Cantidad',
+                        required: true,
+                        isQtyField: true,
+                        options: ['1', '2', '3', '4'],
+                        defaultVal: '1'
+                    }
+                ],
+                textFields: [
+                    { id: 'entry.name', entryId: 'entry.name', kind: 'text', inputType: 'text', title: 'Nombre y Apellidos', required: true, placeholder: 'Nombre del educando o familiar...' },
+                    { id: 'entry.phone', entryId: 'entry.phone', kind: 'text', inputType: 'tel', title: 'Teléfono de contacto', required: true, placeholder: 'Ej. 600 123 456...' }
+                ]
+            };
+        }
+
+        return form._parsedSchema;
+    }
+
+    // Renderiza el escaparate fotográfico izquierdo (foto de Drive / Formulario + maniquí vectorial de estudio reactivo al color)
+    function renderMerchLeftShowcase(form, schema) {
+        if (!elMerchShowcaseVisual) return;
+
+        const allPhotos = [
+            ...(Array.isArray(form.photos) ? form.photos : []),
+            ...(schema && Array.isArray(schema.images) ? schema.images : [])
+        ].filter((v, i, a) => v && a.indexOf(v) === i);
+
+        // Detectar color activo seleccionado para teñir la prenda de estudio
+        let selectedColorLabel = 'Black';
+        if (schema && Array.isArray(schema.pillFields)) {
+            const colorField = schema.pillFields.find(f => f.isColorField || f.kind === 'grid-color');
+            if (colorField && activeMerchOrderState[colorField.id]) {
+                selectedColorLabel = activeMerchOrderState[colorField.id];
+            }
+        }
+        const colorInfo = getColorInfoFromLabel(selectedColorLabel) || { hex: '#1E293B', label: selectedColorLabel };
+        const selectedSizeLabel = (() => {
+            if (!schema || !Array.isArray(schema.pillFields)) return 'M';
+            const sizeField = schema.pillFields.find(f => f.isSizeField || f.kind === 'grid-size');
+            return (sizeField && activeMerchOrderState[sizeField.id]) ? activeMerchOrderState[sizeField.id] : 'M';
+        })();
+
+        // Mostrar tira de miniaturas si hay fotos + vista de estudio
+        const hasPhotos = allPhotos.length > 0;
+        const showStudioView = !hasPhotos || activeMerchPhotoIdx >= allPhotos.length;
+
+        if (!showStudioView) {
+            const currentPhoto = allPhotos[activeMerchPhotoIdx] || allPhotos[0];
+            elMerchShowcaseVisual.innerHTML = `
+                <img src="${currentPhoto}" alt="${form.title}" class="merch-showcase-img" id="merchMainShowcaseImg">
+            `;
+            const imgEl = document.getElementById('merchMainShowcaseImg');
+            imgEl?.addEventListener('click', () => {
+                if (typeof openLightbox === 'function') {
+                    openLightbox(currentPhoto, `${form.title} · Merch Acrux 518`);
+                }
+            });
+        } else {
+            const isLightGarment = colorInfo.hex === '#F8FAFC' || colorInfo.hex === '#EAB308' || colorInfo.hex === '#D6C7B2';
+            const strokeCol = isLightGarment ? 'rgba(15, 23, 42, 0.35)' : 'rgba(255, 255, 255, 0.24)';
+            const crestCol = isLightGarment ? '#0F172A' : '#E2D5B5';
+
+            elMerchShowcaseVisual.innerHTML = `
+                <div class="merch-studio-garment-stage">
+                    <svg class="merch-studio-garment-svg" viewBox="0 0 320 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="garmentBodyGrad" x1="60" y1="30" x2="260" y2="310" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="${colorInfo.hex}" stop-opacity="0.98"/>
+                                <stop offset="100%" stop-color="#070A10" stop-opacity="0.96"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Silueta técnica editorial de prenda Acrux 518 -->
+                        <path d="M108 42 L62 66 L26 138 L66 162 L86 114 L86 296 C86 302 91 306 97 306 L223 306 C229 306 234 302 234 296 L234 114 L254 162 L294 138 L258 66 L212 42 C198 62 122 62 108 42 Z"
+                              fill="url(#garmentBodyGrad)" stroke="${strokeCol}" stroke-width="2.2" stroke-linejoin="round"/>
+                        <!-- Cuello acanalado -->
+                        <path d="M108 42 C124 72 196 72 212 42 C196 50 124 50 108 42 Z"
+                              fill="rgba(0,0,0,0.35)" stroke="${strokeCol}" stroke-width="1.6"/>
+                        <!-- Costuras de hombro y pecho -->
+                        <line x1="86" y1="114" x2="108" y2="42" stroke="${strokeCol}" stroke-width="1.2" stroke-dasharray="3 3"/>
+                        <line x1="234" y1="114" x2="212" y2="42" stroke="${strokeCol}" stroke-width="1.2" stroke-dasharray="3 3"/>
+                        <!-- Bordado minimalista Acrux 518 en pecho izquierdo -->
+                        <g transform="translate(184, 108)">
+                            <circle cx="14" cy="14" r="14" fill="none" stroke="${crestCol}" stroke-width="1.2" stroke-opacity="0.75"/>
+                            <path d="M14 4 L16.2 11.8 L24 14 L16.2 16.2 L14 24 L11.8 16.2 L4 14 L11.8 11.8 Z" fill="${crestCol}"/>
+                        </g>
+                        <!-- Etiqueta inferior tejida -->
+                        <rect x="132" y="280" width="56" height="14" rx="3" fill="rgba(0,0,0,0.45)" stroke="${crestCol}" stroke-width="0.9" stroke-opacity="0.6"/>
+                        <text x="160" y="290" text-anchor="middle" fill="${crestCol}" font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing="1.5">ACRUX 518</text>
+                    </svg>
+                    <div class="merch-studio-caption">
+                        <span class="merch-studio-caption-tag">VISTA DE ESTUDIO · TALLA ${selectedSizeLabel} · ${colorInfo.label.toUpperCase()}</span>
+                        <span class="merch-studio-caption-sub">${form.title} · Colección Oficial Grupo Scout Acrux 518</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        if (elMerchThumbStrip) {
+            if (allPhotos.length > 0) {
+                elMerchThumbStrip.style.display = 'flex';
+                const photoThumbs = allPhotos.map((p, idx) => `
+                    <button type="button" class="merch-thumb-btn ${activeMerchPhotoIdx === idx ? 'active' : ''}" data-thumb-idx="${idx}" title="Ver fotografía ${idx + 1}">
+                        <img src="${p}" alt="Miniatura ${idx + 1}">
+                    </button>
+                `).join('');
+                const studioThumb = `
+                    <button type="button" class="merch-thumb-btn ${showStudioView ? 'active' : ''}" data-thumb-idx="${allPhotos.length}" title="Vista interactiva de color y talla">
+                        <span style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:#E2D5B5;">COLOR</span>
+                    </button>
+                `;
+                elMerchThumbStrip.innerHTML = photoThumbs + studioThumb;
+                elMerchThumbStrip.querySelectorAll('[data-thumb-idx]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        activeMerchPhotoIdx = parseInt(btn.getAttribute('data-thumb-idx'), 10);
+                        renderMerchLeftShowcase(form, schema);
+                    });
+                });
+            } else {
+                elMerchThumbStrip.style.display = 'none';
+                elMerchThumbStrip.innerHTML = '';
+            }
+        }
+    }
+
+    // Renderiza todos los selectores de pastilla (Tallas, Colores, Cantidad) y los campos de texto del comprador
+    function renderMerchDynamicForm(form, schema) {
+        if (!elMerchDynamicFields) return;
+
+        if (elMerchModalDesc) {
+            elMerchModalDesc.textContent = schema.description || form.desc || 'Selecciona tu talla y color preferido y completa tus datos para registrar tu pedido.';
+        }
+
+        if (elMerchPriceTag) {
+            if (form.price) {
+                elMerchPriceTag.style.display = 'inline-flex';
+                elMerchPriceTag.textContent = form.price;
+            } else {
+                elMerchPriceTag.style.display = 'none';
+            }
+        }
+
+        // Inicializar valores por defecto en activeMerchOrderState
+        activeMerchOrderState = {};
+        schema.pillFields.forEach(pf => {
+            activeMerchOrderState[pf.id] = pf.defaultVal || pf.options[0] || '';
+        });
+
+        const pillsHtml = schema.pillFields.map(pf => {
+            const currentVal = activeMerchOrderState[pf.id];
+            const currentColorInfo = pf.isColorField ? getColorInfoFromLabel(currentVal) : null;
+            const displaySelected = currentColorInfo ? currentColorInfo.label : currentVal;
+
+            const buttonsHtml = pf.options.map(opt => {
+                const isSelected = opt === currentVal;
+                const cInfo = pf.isColorField ? getColorInfoFromLabel(opt) : null;
+                const dotHtml = cInfo
+                    ? `<span class="merch-color-dot" style="background-color: ${cInfo.hex};"></span>`
+                    : '';
+                const labelText = cInfo ? cInfo.label : opt;
+
+                return `
+                    <button type="button"
+                            class="merch-option-pill ${isSelected ? 'is-selected' : ''}"
+                            data-pill-field="${pf.id}"
+                            data-pill-value="${opt.replace(/"/g, '&quot;')}">
+                        ${dotHtml}
+                        <span>${labelText}</span>
+                    </button>
+                `;
+            }).join('');
+
+            return `
+                <div class="merch-field-group" data-field-group="${pf.id}">
+                    <div class="merch-field-label-row">
+                        <label class="merch-field-label">
+                            ${pf.title}
+                            ${pf.required ? '<span class="merch-field-required">*</span>' : ''}
+                        </label>
+                        <span class="merch-field-selected-val" id="selectedLabel-${pf.id}">${displaySelected}</span>
+                    </div>
+                    ${pf.helpText ? `<p class="merch-field-help">${pf.helpText}</p>` : ''}
+                    <div class="merch-pills-grid">
+                        ${buttonsHtml}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        const buyerDividerHtml = schema.textFields.length > 0
+            ? `<div class="merch-section-divider">Datos del Comprador</div>`
+            : '';
+
+        const textsHtml = schema.textFields.map(tf => {
+            const inputHtml = tf.kind === 'textarea'
+                ? `<textarea class="merch-textarea-input" id="input-${tf.id}" data-text-field="${tf.id}" placeholder="${tf.placeholder}" ${tf.required ? 'required' : ''}></textarea>`
+                : `<input type="${tf.inputType || 'text'}" class="merch-text-input" id="input-${tf.id}" data-text-field="${tf.id}" placeholder="${tf.placeholder}" ${tf.required ? 'required' : ''}>`;
+
+            return `
+                <div class="merch-field-group">
+                    <div class="merch-field-label-row">
+                        <label class="merch-field-label" for="input-${tf.id}">
+                            ${tf.title}
+                            ${tf.required ? '<span class="merch-field-required">*</span>' : ''}
+                        </label>
+                    </div>
+                    ${tf.helpText ? `<p class="merch-field-help">${tf.helpText}</p>` : ''}
+                    ${inputHtml}
+                </div>
+            `;
+        }).join('');
+
+        elMerchDynamicFields.innerHTML = pillsHtml + buyerDividerHtml + textsHtml;
+
+        // Eventos interactivos en las pastillas de Talla / Color / Cantidad
+        elMerchDynamicFields.querySelectorAll('[data-pill-field]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const fieldId = btn.getAttribute('data-pill-field');
+                const val = btn.getAttribute('data-pill-value');
+                activeMerchOrderState[fieldId] = val;
+
+                // Actualizar estado visual de las pastillas del grupo
+                const groupEl = btn.closest('.merch-field-group');
+                groupEl?.querySelectorAll('.merch-option-pill').forEach(b => {
+                    b.classList.toggle('is-selected', b === btn);
+                });
+
+                const pf = schema.pillFields.find(f => f.id === fieldId);
+                const selLabelEl = document.getElementById(`selectedLabel-${fieldId}`);
+                if (selLabelEl) {
+                    const cInfo = pf && pf.isColorField ? getColorInfoFromLabel(val) : null;
+                    selLabelEl.textContent = cInfo ? cInfo.label : val;
+                }
+
+                // Si el usuario cambia el color o la talla, pasamos automáticamente a la vista de estudio o actualizamos el escaparate
+                if (pf && (pf.isColorField || pf.isSizeField || pf.kind === 'grid-color' || pf.kind === 'grid-size')) {
+                    const allPhotos = [
+                        ...(Array.isArray(form.photos) ? form.photos : []),
+                        ...(schema && Array.isArray(schema.images) ? schema.images : [])
+                    ].filter((v, i, a) => v && a.indexOf(v) === i);
+                    if (pf.isColorField || pf.kind === 'grid-color') {
+                        activeMerchPhotoIdx = allPhotos.length; // Muestra la prenda reactiva al color elegido
+                    }
+                    renderMerchLeftShowcase(form, schema);
+                }
+            });
+        });
+
+        renderMerchLeftShowcase(form, schema);
+    }
+
+    async function openMerchModal(formIdx = 0) {
+        if (!elMerchModal || !MERCH_FORMS_DATA || MERCH_FORMS_DATA.length === 0) return;
+
+        activeMerchFormIdx = clamp(formIdx, 0, MERCH_FORMS_DATA.length - 1);
+        const form = MERCH_FORMS_DATA[activeMerchFormIdx];
+        if (!form) return;
+
+        activeMerchPhotoIdx = 0;
+
+        // Coordenadas estelares de la estrella de Merch para el Super-Zoom de Hiperespacio
+        const merchNode = worldNodes.find(nd => nd.isMerchStar && nd.merchIndex === activeMerchFormIdx)
+            || worldNodes.find(nd => nd.id === 'intrometida');
+        const targetWx = merchNode ? merchNode.wx : (SECTORS[0].worldX + 66);
+        const targetWy = merchNode ? merchNode.wy : (SECTORS[0].worldY + 42);
+
+        const wasAlreadyOpen = elMerchModal.classList.contains('is-open');
+        clearTimeout(diveTabTimer);
+        isOverviewMode = false;
+        document.body.classList.remove('is-overview-mode');
+
+        targetSectorProgress = 0;
+        activeSectorIdx = 0;
+
+        superZoomState = {
+            type: 'merch',
+            index: activeMerchFormIdx,
+            wx: targetWx,
+            wy: targetWy,
+            zoom: 24.0
+        };
+
+        document.body.classList.add('is-superzoom-open');
+        const diveTime = wasAlreadyOpen ? 80 : 180;
+        triggerStarDiveFlash(targetWx, targetWy, wasAlreadyOpen ? 160 : 260);
+
+        // Resetear vista de éxito y errores
+        if (elMerchOrderSuccess) elMerchOrderSuccess.style.display = 'none';
+        if (elMerchNativeForm) elMerchNativeForm.style.display = 'flex';
+        if (elMerchFormError) elMerchFormError.style.display = 'none';
+
+        if (elMerchModalTitle) {
+            elMerchModalTitle.textContent = form.title;
+        }
+        if (elMerchModalKicker) {
+            elMerchModalKicker.textContent = form.date
+                ? `MERCHANDISING DE GRUPO · ACRUX 518 · ${form.date}`
+                : 'MERCHANDISING DE GRUPO · ACRUX 518';
+        }
+
+        if (elMerchFormsSwitcher) {
+            if (MERCH_FORMS_DATA.length > 1) {
+                elMerchFormsSwitcher.style.display = 'flex';
+                elMerchFormsSwitcher.innerHTML = MERCH_FORMS_DATA.map((f, i) => `
+                    <button type="button" class="star-node-chip ${i === activeMerchFormIdx ? 'active' : ''}" data-merch-switch="${i}">
+                        <span>✦ ${f.title}</span>
+                    </button>
+                `).join('');
+                elMerchFormsSwitcher.querySelectorAll('[data-merch-switch]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        openMerchModal(parseInt(btn.getAttribute('data-merch-switch'), 10));
+                    });
+                });
+            } else {
+                elMerchFormsSwitcher.style.display = 'none';
+                elMerchFormsSwitcher.innerHTML = '';
+            }
+        }
+
+        diveTabTimer = setTimeout(() => {
+            elMerchModal.classList.add('is-open');
+            elMerchModal.setAttribute('aria-hidden', 'false');
+            const detailsCol = elMerchModal.querySelector('.merch-ecom-details-col');
+            if (detailsCol) detailsCol.scrollTop = 0;
+            const splitWrap = elMerchModal.querySelector('.merch-ecom-split');
+            if (splitWrap) splitWrap.scrollTop = 0;
+        }, diveTime);
+
+        // Cargar o recuperar el esquema del Google Form
+        if (!form._parsedSchema && elMerchIframeLoader) {
+            elMerchIframeLoader.style.display = 'flex';
+        }
+        const schema = await preloadMerchFormSchema(form);
+        if (elMerchIframeLoader) {
+            elMerchIframeLoader.style.display = 'none';
+        }
+        if (schema) {
+            renderMerchDynamicForm(form, schema);
+        }
+    }
+
+    function closeMerchModal() {
+        if (!elMerchModal) return;
+        clearTimeout(diveTabTimer);
+        if (superZoomState && superZoomState.type === 'merch') {
+            hyperspaceJump = {
+                start: performance.now(),
+                duration: 420,
+                wx: superZoomState.wx,
+                wy: superZoomState.wy
+            };
+            superZoomState = null;
+            document.body.classList.remove('is-superzoom-open');
+        }
+        elMerchModal.classList.remove('is-open');
+        elMerchModal.setAttribute('aria-hidden', 'true');
+        targetFreePanX = 0;
+        targetFreePanY = 0;
+    }
+
+    // Envío silencioso al Google Form (sin abrir jamás la interfaz blanca de Google)
+    elMerchNativeForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = MERCH_FORMS_DATA[activeMerchFormIdx];
+        const schema = form?._parsedSchema;
+        if (!form || !schema) return;
+
+        if (elMerchFormError) elMerchFormError.style.display = 'none';
+
+        // 1. Validar campos de texto obligatorios
+        for (const tf of schema.textFields) {
+            const inputEl = document.getElementById(`input-${tf.id}`);
+            const val = (inputEl?.value || '').trim();
+            activeMerchOrderState[tf.id] = val;
+            if (tf.required && !val) {
+                if (elMerchFormError) {
+                    elMerchFormError.textContent = `Por favor, completa el campo obligatorio: «${tf.title}».`;
+                    elMerchFormError.style.display = 'block';
+                }
+                inputEl?.focus();
+                return;
+            }
+        }
+
+        // 2. Construir el diccionario exacto de pares entry.xxxxx -> valor para Google Forms
+        const submissionEntries = {};
+
+        schema.pillFields.forEach(pf => {
+            if (pf.kind === 'grid-size') {
+                const chosenSize = activeMerchOrderState[pf.id];
+                const colorField = schema.pillFields.find(f => f.kind === 'grid-color' && f.gridSizeFieldId === pf.id);
+                const chosenColor = colorField ? activeMerchOrderState[colorField.id] : '';
+                const matchedRow = pf.rows.find(r => r.rowLabel === chosenSize);
+                if (matchedRow && chosenColor) {
+                    submissionEntries[matchedRow.entryId] = chosenColor;
+                }
+            } else if (pf.kind === 'grid-color') {
+                // Ya fue procesado junto con su fila en grid-size
+            } else if (pf.entryId) {
+                submissionEntries[pf.entryId] = activeMerchOrderState[pf.id] || '';
+            }
+        });
+
+        // Sincronizar campos de color auxiliares si el Google Form los tiene como obligatorios
+        if (Array.isArray(schema.autoSyncColorEntries) && schema.autoSyncColorEntries.length > 0) {
+            const colorField = schema.pillFields.find(f => f.isColorField || f.kind === 'grid-color');
+            const chosenColor = colorField ? (activeMerchOrderState[colorField.id] || 'Black') : 'Black';
+            schema.autoSyncColorEntries.forEach(entryKey => {
+                submissionEntries[entryKey] = chosenColor;
+            });
+        }
+
+        schema.textFields.forEach(tf => {
+            const val = activeMerchOrderState[tf.id] || '';
+            if (val !== '') {
+                submissionEntries[tf.entryId] = val;
+            }
+        });
+
+        // 3. Estado de carga en el botón principal
+        const submitLabelEl = elBtnSubmitMerchOrder?.querySelector('.merch-submit-label');
+        if (elBtnSubmitMerchOrder) elBtnSubmitMerchOrder.disabled = true;
+        if (submitLabelEl) submitLabelEl.textContent = 'Registrando Pedido...';
+
+        // 4. Envío silencioso mediante fetch (no-cors) + formulario oculto de respaldo hacia formResponse
+        const urlParams = new URLSearchParams();
+        Object.entries(submissionEntries).forEach(([k, v]) => {
+            urlParams.append(k, v);
+        });
+        urlParams.append('submit', 'Submit');
+
+        try {
+            await fetch(schema.actionUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: urlParams.toString()
+            });
+        } catch (_) {
+            // Respaldo mediante el formulario oculto apuntando al iframe silencioso
+            if (elMerchHiddenGoogleForm) {
+                elMerchHiddenGoogleForm.action = schema.actionUrl;
+                elMerchHiddenGoogleForm.innerHTML = '';
+                Object.entries(submissionEntries).forEach(([k, v]) => {
+                    const inp = document.createElement('input');
+                    inp.type = 'hidden';
+                    inp.name = k;
+                    inp.value = v;
+                    elMerchHiddenGoogleForm.appendChild(inp);
+                });
+                try {
+                    elMerchHiddenGoogleForm.submit();
+                } catch (_) {}
+            }
+        }
+
+        if (elBtnSubmitMerchOrder) elBtnSubmitMerchOrder.disabled = false;
+        if (submitLabelEl) submitLabelEl.textContent = 'Realizar Pedido';
+
+        // 5. Mostrar confirmación de pedido estilo e-commerce
+        const summaryParts = [];
+        schema.pillFields.forEach(pf => {
+            const val = activeMerchOrderState[pf.id];
+            if (val) summaryParts.push(`${pf.title.replace('Selecciona ', '')}: ${val}`);
+        });
+        const buyerName = schema.textFields.length > 0 ? activeMerchOrderState[schema.textFields[0].id] : '';
+
+        if (elMerchSuccessSummary) {
+            elMerchSuccessSummary.textContent = `Hemos registrado tu pedido de «${form.title}» (${summaryParts.join(' · ')})${buyerName ? ` a nombre de ${buyerName}` : ''} directamente en el Google Sheet oficial del Grupo Scout Acrux 518.`;
+        }
+        if (elMerchNativeForm) elMerchNativeForm.style.display = 'none';
+        if (elMerchOrderSuccess) elMerchOrderSuccess.style.display = 'flex';
+    });
+
+    elBtnMerchAnotherOrder?.addEventListener('click', () => {
+        const form = MERCH_FORMS_DATA[activeMerchFormIdx];
+        if (elMerchOrderSuccess) elMerchOrderSuccess.style.display = 'none';
+        if (elMerchNativeForm) {
+            elMerchNativeForm.reset();
+            elMerchNativeForm.style.display = 'flex';
+        }
+        if (form && form._parsedSchema) {
+            renderMerchDynamicForm(form, form._parsedSchema);
+        }
+    });
+
+    elBtnMerchFinishOrder?.addEventListener('click', closeMerchModal);
+    elBtnCloseMerchModal?.addEventListener('click', closeMerchModal);
+
+    window.openMerchModal = openMerchModal;
+    window.closeMerchModal = closeMerchModal;
+    window.preloadMerchFormSchema = preloadMerchFormSchema;
+
     if (elPrimaryBtn) {
         elPrimaryBtn.addEventListener('click', () => {
             if (activeSectorIdx === 0) {
@@ -3131,9 +4260,28 @@
     // =========================================================================
     const elNavHintPill = document.getElementById('cosmosNavHintPill');
 
+    const elMerchDetailsScrollCol = document.querySelector('.merch-ecom-details-col');
+
     window.addEventListener('wheel', (e) => {
-        if (drawerBackdrop?.classList.contains('is-open')) return;
-        if (superZoomState) return;
+        // Si la tienda de Merch está abierta, permitir scroll nativo con touchpad/rueda en toda la pantalla
+        if (elMerchModal?.classList.contains('is-open')) {
+            if (elMerchDetailsScrollCol && window.innerWidth > 960 && !elMerchDetailsScrollCol.contains(e.target)) {
+                elMerchDetailsScrollCol.scrollTop += e.deltaY;
+            }
+            return;
+        }
+        // Si cualquier otro modal o vista Super-Zoom está abierta, permitir su scroll nativo sin bloquearlo
+        if (
+            superZoomState ||
+            drawerBackdrop?.classList.contains('is-open') ||
+            elUnitZoomOverlay?.classList.contains('is-open') ||
+            elCampZoomOverlay?.classList.contains('is-open') ||
+            elLostZoomOverlay?.classList.contains('is-open') ||
+            elAnniversaryModal?.classList.contains('is-open') ||
+            elCromoZoomModal?.classList.contains('is-open')
+        ) {
+            return;
+        }
 
         elNavHintPill?.classList.add('is-dimmed');
         e.preventDefault();
@@ -3224,7 +4372,9 @@
                 }
             }
             if (hitNode) {
-                if (hitNode.clusterType === 'unit') {
+                if (hitNode.isMerchStar) {
+                    openMerchModal(typeof hitNode.merchIndex === 'number' ? hitNode.merchIndex : 0);
+                } else if (hitNode.clusterType === 'unit') {
                     openUnitSuperZoom(hitNode.unitIndex);
                 } else if (hitNode.clusterType === 'camp') {
                     openCampSuperZoom(hitNode.campIndex);
@@ -3232,7 +4382,7 @@
                     if (hitNode.sectorIndex === 3) {
                         openLostSuperZoom(typeof hitNode.cajonIndex === 'number' ? hitNode.cajonIndex : 0);
                     } else if (hitNode.sectorIndex === 0) {
-                        // En el Sector I, solo Acrux es interactiva y abre la historia
+                        // En el Sector I, Acrux abre la historia y las estrellas de Intendencia abren el formulario
                         if (hitNode.id === 'acrux') {
                             openAcruxSuperZoom();
                         }
@@ -3293,6 +4443,10 @@
 
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            if (elMerchModal?.classList.contains('is-open')) {
+                closeMerchModal();
+                return;
+            }
             if (elCromoZoomModal?.classList.contains('is-open')) {
                 closeCromoZoomModal();
                 return;
@@ -3704,8 +4858,8 @@
                 nd.hover += (f - nd.hover) * 0.18;
 
                 if (dM < 52 && dM < closestDist) {
-                    // En el Sector I (Acrux 518), solo Acrux es interactiva y cliqueable
-                    if (nd.sectorIndex === 0 && nd.id !== 'acrux') {
+                    // En el Sector I (Acrux 518), son interactivas Acrux y las estrellas activas de Intendencia (isMerchStar)
+                    if (nd.sectorIndex === 0 && nd.id !== 'acrux' && !nd.isMerchStar) {
                         // Las demás estrellas de la constelación son puramente astronómicas decorativas
                     } else {
                         closestDist = dM;
@@ -3732,7 +4886,7 @@
         if (cursorRing) cursorRing.classList.toggle('is-star-hover', Boolean(closestNode));
         if (cursorLabel) {
             if (closestNode) {
-                cursorLabel.textContent = (closestNode.clusterType === 'unit' || closestNode.clusterType === 'camp' || closestNode.sectorIndex === 3 || closestNode.id === 'acrux')
+                cursorLabel.textContent = (closestNode.isMerchStar || closestNode.clusterType === 'unit' || closestNode.clusterType === 'camp' || closestNode.sectorIndex === 3 || closestNode.id === 'acrux')
                     ? `Abrir ${closestNode.symbol}`
                     : `${closestNode.symbol}`;
             } else {
@@ -3796,6 +4950,9 @@
                     rgbBase = '255, 246, 230';
                     edgeShadow = 'rgba(255, 215, 140, 0.60)';
                 }
+            } else if (ed.clusterType === 'merch') {
+                rgbBase = '203, 213, 225';
+                edgeShadow = 'rgba(212, 190, 152, 0.30)';
             } else if (ed.sectorIndex === 0) {
                 edgeShadow = 'rgba(217, 56, 58, 0.45)';
             }
@@ -3865,25 +5022,28 @@
                 : clamp(camera.zoom, 0.55, 2.2);
             const r = (nd.r || 5) * scale + nd.hover * 3.2;
 
-            // Halo radial
-            const glowR = r * (nd.isMainCross || nd.isClusterHub || isHovered ? 4.8 : 3.2);
+            // Halo radial (sobrio y sutil para Merch, sin pulsos excesivos)
+            const merchPulse = nd.isMerchStar ? (1.0 + Math.sin(elapsed * 1.8 + i) * 0.06) : 1.0;
+            const glowR = r * (nd.isMainCross || nd.isClusterHub || isHovered ? 4.8 : 3.2) * merchPulse;
             const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, glowR);
-            g.addColorStop(0, anniversaryLerp > 0.3 ? '#FFF3B0' : (nd.isRedStar ? '#FFA39E' : '#FFFFFF'));
+            g.addColorStop(0, anniversaryLerp > 0.3 ? '#FFF3B0' : (nd.isMerchStar ? '#F8FAFC' : (nd.isRedStar ? '#FFA39E' : '#FFFFFF')));
             g.addColorStop(
                 0.35,
                 anniversaryLerp > 0.35
                     ? (isHovered || isSelectedInSector ? 'rgba(212, 175, 55, 0.42)' : 'rgba(212, 175, 55, 0.22)')
-                    : (nd.isRedStar
-                        ? (isHovered || isSelectedInSector ? 'rgba(239, 68, 68, 0.55)' : 'rgba(217, 56, 58, 0.38)')
-                        : (nd.isBaulMain
-                            ? (isHovered || isSelectedInSector ? 'rgba(217, 56, 58, 0.30)' : 'rgba(217, 56, 58, 0.16)')
-                            : (nd.clusterType === 'unit'
-                                ? (isHovered || isSelectedInSector ? (nd.ringColor || 'rgba(255, 255, 255, 0.22)') : (nd.halo || 'rgba(255, 255, 255, 0.12)'))
-                                : (isPureWhiteStar
-                                    ? (isHovered || isSelectedInSector ? 'rgba(255, 255, 255, 0.28)' : 'rgba(255, 255, 255, 0.16)')
-                                    : ((isHovered || isSelectedInSector)
-                                        ? 'rgba(217, 56, 58, 0.30)'
-                                        : (nd.halo || 'rgba(255, 255, 255, 0.18)'))))))
+                    : (nd.isMerchStar
+                        ? (isHovered ? 'rgba(212, 190, 152, 0.34)' : 'rgba(203, 213, 225, 0.18)')
+                        : (nd.isRedStar
+                            ? (isHovered || isSelectedInSector ? 'rgba(239, 68, 68, 0.55)' : 'rgba(217, 56, 58, 0.38)')
+                            : (nd.isBaulMain
+                                ? (isHovered || isSelectedInSector ? 'rgba(217, 56, 58, 0.30)' : 'rgba(217, 56, 58, 0.16)')
+                                : (nd.clusterType === 'unit'
+                                    ? (isHovered || isSelectedInSector ? (nd.ringColor || 'rgba(255, 255, 255, 0.22)') : (nd.halo || 'rgba(255, 255, 255, 0.12)'))
+                                    : (isPureWhiteStar
+                                        ? (isHovered || isSelectedInSector ? 'rgba(255, 255, 255, 0.28)' : 'rgba(255, 255, 255, 0.16)')
+                                        : ((isHovered || isSelectedInSector)
+                                            ? 'rgba(217, 56, 58, 0.30)'
+                                            : (nd.halo || 'rgba(255, 255, 255, 0.18)')))))))
             );
             g.addColorStop(1, 'rgba(255, 255, 255, 0)');
             ctx.fillStyle = g;
@@ -4024,11 +5184,13 @@
             }
 
             // Anillo orbital: en Unidades usa el color sutil de cada rama; en «El Baúl» usa rojo Acrux sutil; en Campamentos y Cajones blanco puro
-            if ((nd.isClusterHub || isHovered) && !superZoomState) {
-                const ringR = r * 1.95 + Math.sin(elapsed * 2.6 + i) * 1.2;
+            if ((nd.isClusterHub || nd.isMerchStar || isHovered) && !superZoomState) {
+                const ringR = r * 1.95 + Math.sin(elapsed * 2.1 + i) * 0.85;
                 let ringStroke;
                 if (anniversaryLerp > 0.35) {
                     ringStroke = (isHovered || isSelectedInSector) ? 'rgba(243, 229, 171, 0.85)' : 'rgba(212, 175, 55, 0.45)';
+                } else if (nd.isMerchStar) {
+                    ringStroke = isHovered ? 'rgba(212, 190, 152, 0.65)' : 'rgba(203, 213, 225, 0.24)';
                 } else if (nd.isRedStar) {
                     ringStroke = (isHovered || isSelectedInSector) ? 'rgba(239, 68, 68, 0.95)' : 'rgba(217, 56, 58, 0.65)';
                 } else if (nd.isBaulMain) {
@@ -4044,14 +5206,14 @@
                     ringStroke = (isHovered || isSelectedInSector) ? 'rgba(224, 82, 84, 0.65)' : 'rgba(255, 255, 255, 0.26)';
                 }
                 ctx.strokeStyle = ringStroke;
-                ctx.lineWidth = isHovered ? 1.25 : 0.95;
+                ctx.lineWidth = isHovered ? 1.2 : 0.85;
                 ctx.beginPath();
                 ctx.arc(sx, sy, ringR, 0, Math.PI * 2);
                 ctx.stroke();
             }
 
             // Núcleo
-            ctx.fillStyle = nd.isRedStar ? '#EF4444' : '#FFFFFF';
+            ctx.fillStyle = nd.isMerchStar ? (isHovered ? '#F3E5AB' : '#E2E8F0') : (nd.isRedStar ? '#EF4444' : '#FFFFFF');
             ctx.beginPath();
             ctx.arc(sx, sy, r * 0.5, 0, Math.PI * 2);
             ctx.fill();
@@ -4068,7 +5230,9 @@
                 ctx.shadowColor = 'rgba(0, 0, 0, 0.90)';
                 ctx.shadowBlur = 5;
 
-                if (nd.isRedStar) {
+                if (nd.isMerchStar) {
+                    ctx.fillStyle = isHovered ? '#E2D5B5' : 'rgba(203, 213, 225, 0.78)';
+                } else if (nd.isRedStar) {
                     ctx.fillStyle = (isHovered || isSelectedInSector) ? '#FFA39E' : '#FF6B6B';
                 } else {
                     ctx.fillStyle = (isHovered || isSelectedInSector)
@@ -4432,15 +5596,24 @@
             const uData = unidadesData[unit.id];
             if (!uData) return;
 
-            // Kraaletes / Cromos (soporta array directo o subpropiedad .kraaletes)
+            // Kraaletes / Cromos (soporta array directo o subpropiedad .kraaletes + Nombre Real | Biografía desde Descripción de Drive)
             const kraalList = Array.isArray(uData) ? uData : uData.kraaletes;
             if (Array.isArray(kraalList) && kraalList.length > 0) {
-                unit.kraaletes = kraalList.map((k, i) => ({
-                    star: k.star || `${i + 1} · ${unit.shortName}`,
-                    name: k.name || 'Scouter',
-                    role: k.role || 'Kraalete',
-                    cromoUrl: k.cromoUrl || k.fotoUrl || k.photoUrl || null
-                }));
+                unit.kraaletes = kraalList.map((k, i) => {
+                    const rawDesc = (k.desc || k.description || '').trim();
+                    const descParts = rawDesc ? rawDesc.split('|').map(s => s.trim()) : [];
+                    const parsedRealName = (k.realName || (descParts.length > 1 ? descParts[0] : '') || '').trim();
+                    const parsedBio = (k.bio || (descParts.length > 1 ? descParts.slice(1).join(' | ') : (descParts[0] || '')) || '').trim();
+
+                    return {
+                        star: k.star || `${i + 1} · ${unit.shortName}`,
+                        name: k.name || 'Scouter',
+                        role: k.role || 'Kraalete',
+                        realName: parsedRealName,
+                        bio: parsedBio || `Scouter del Kraalete de ${unit.fullName} en el Grupo Scout Acrux 518. Acompaña cada sábado y acampada educando en valores, escultismo y contacto con la naturaleza.`,
+                        cromoUrl: k.cromoUrl || k.fotoUrl || k.photoUrl || null
+                    };
+                });
             }
 
             // Salidas / Aventuras de la unidad
@@ -4474,6 +5647,12 @@
     function syncCajonesFromDrive(cajonesData) {
         if (typeof rebuildLostConstellation === 'function') {
             rebuildLostConstellation(cajonesData);
+        }
+    }
+
+    function syncMerchFromDrive(merchData) {
+        if (typeof rebuildMerchConstellation === 'function') {
+            rebuildMerchConstellation(merchData);
         }
     }
 
@@ -4523,6 +5702,9 @@
                 if (data.cajones !== undefined) {
                     rebuildLostConstellation(data.cajones);
                 }
+                if (data.merchForms !== undefined || data.intendencia !== undefined) {
+                    syncMerchFromDrive(data.merchForms !== undefined ? data.merchForms : data.intendencia);
+                }
                 if (data.aniversario) {
                     syncAnniversaryFromDrive(data.aniversario);
                 }
@@ -4536,7 +5718,7 @@
     window.syncUnitsFromDrive = syncUnitsFromDrive;
     window.syncCoordinacionFromDrive = syncCoordinacionFromDrive;
     window.syncCajonesFromDrive = syncCajonesFromDrive;
-    window.rebuildLostConstellation = rebuildLostConstellation;
+    window.syncMerchFromDrive = syncMerchFromDrive;
     window.syncAnniversaryFromDrive = syncAnniversaryFromDrive;
 
     try {
@@ -4555,6 +5737,16 @@
         if (urlParams.has('annivModal')) {
             toggleAnniversaryMode(true);
             openAnniversaryModal(urlParams.get('annivModal'));
+        }
+        if (urlParams.has('demoMerch')) {
+            rebuildMerchConstellation([
+                {
+                    id: 'demo-form-sudaderas-2026',
+                    title: 'Pedido de Sudaderas Acrux 2026',
+                    embedUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfDemoAcrux518Merch/viewform?embedded=true',
+                    date: '2026-11-07'
+                }
+            ]);
         }
         if (urlParams.has('sector')) {
             goToSector(parseInt(urlParams.get('sector'), 10), 0, true);
