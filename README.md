@@ -95,7 +95,7 @@ En el bloque **«02 · Los Kraaletes de la Unidad»** se muestra una rejilla de 
      ```
    * *Ejemplo real:*
      ```text
-     Guillermo | Lleva 8 años en el grupo, experto en cabuyería, rutas de montaña y dinámicas de grupo.
+     Darío | Hola, soy Darío llevo 14 años en...
      ```
 
 #### ¿Qué ocurre cuando alguien hace clic en un cromo?
