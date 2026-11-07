@@ -1,30 +1,31 @@
-# Manual Interno de la Web · Comisión de Redes Sociales (Grupo Scout ACRUX 518)
+# Manual de la Web · Comisión de Página Web (Grupo Scout ACRUX 518)
 
-¡Hola! Si estás leyendo esto es porque formas parte de la **Comisión de Redes Sociales** (o del Kraal) del **Grupo Scout Acrux 518**.
+¡Buenas, equipo de web! Si estás leyendo este documento es porque te toca gestionar, actualizar o meter mano a la web del **Grupo Scout Acrux 518**. 
 
-Este documento es nuestro manual interno, escrito de tú a tú, para que entiendas **cómo funciona toda la web por dentro**, cómo subir fotos de campamentos, salidas, cromos de Kraaletes u objetos perdidos **directamente desde nuestro Google Drive sin tener que tocar código**, y qué tocar si algún día al empezar la Ronda Solar queréis cambiar algún texto, foto de portada o lista de monitores.
-
----
-
-## 1. ¿Cómo está pensada la web? (La idea general)
-
-La web es un **Mapa Estelar Interactivo** dividido en **4 grandes sectores** (más un modo secreto por el 50º Aniversario). En lugar de ser una página estática que se queda vieja a los dos meses, está **conectada en vivo con el Google Drive del grupo**.
-
-Cada vez que una familia o un educando entra en la web:
-1. La página carga al instante la estructura principal y las fotos de portada locales (para que vaya a 60 fotogramas por segundo y no tarde nada en abrir).
-2. En segundo plano, la web llama a nuestro conector de Google Drive (`DRIVE_API_URL` en [`script.js`](script.js)) y descarga la lista actualizada de **Campamentos**, **Salidas de cada Unidad**, **Cromos de los Kraaletes**, **Objetos Perdidos de El Baúl**, **Coordinación** y **Recuerdos del 50º Aniversario**.
-3. Con esos datos, la web **dibuja sola las estrellas en el cielo** y rellena las galerías de fotos.
-
-Es decir: **para el 95% del trabajo diario de la Comisión de Redes, solo tenéis que subir o borrar carpetas y fotos en Google Drive**.
+Este manual está escrito de scouter a scouter, sin tecnicismos raros, para que cualquiera de la comisión pueda entender **cómo está montada la página**, cómo subir fotos, campamentos, cromos o pedidos de merch **directamente desde Google Drive sin tener que tocar una sola línea de código**, y qué editar en los archivos si al empezar la Ronda Solar hay que cambiar textos, fotos de cabecera o monitores.
 
 ---
 
-## 2. Estructura de carpetas en Google Drive (¡Muy importante no cambiar los nombres raíz!)
+## 1. ¿Cómo funciona la web por dentro? (La filosofía)
 
-En el Google Drive oficial del grupo tenemos una carpeta principal de la web que contiene estas **6 carpetas numeradas**. El script busca exactamente estos nombres, así que **nunca cambiéis el nombre de estas 6 carpetas principales**:
+Nuestra web no es la típica página de WordPress pesada ni un sitio estático que se queda desfasado a los tres meses. Es un **Mapa Estelar Interactivo** que vuela a 60 fps en el navegador y que está **conectado en tiempo real con nuestro Google Drive**.
+
+El flujo funciona así:
+1. Cuando alguien entra (sea una familia, un chaval o un scouter), la web carga en décimas de segundo el diseño base y las fotos locales de portada para que la experiencia sea inmediata.
+2. Por detrás, de forma transparente, hace una llamada a nuestro script conector de Google Drive (`DRIVE_API_URL` en `script.js`).
+3. El script escanea nuestro Drive y devuelve las carpetas de **Campamentos**, las **Salidas de cada Rama**, los **Cromos de los Kraaletes**, los **Cajones de Objetos Perdidos**, las fotos de **Coordinación** y los formularios de **Merch**.
+4. Con esa información, la web dibuja sola las constelaciones en el cielo y monta las galerías.
+
+> **En resumen:** El 95% del mantenimiento habitual de la web consiste simplemente en crear carpetas y soltar fotos dentro del Google Drive del grupo.
+
+---
+
+## 2. La regla de oro: Estructura de carpetas en Google Drive
+
+En la cuenta de Google Drive oficial del grupo hay una carpeta principal dedicada a la web. Dentro de ella tenemos estas **6 carpetas numeradas**. El conector busca estos nombres exactos, así que **nunca cambiéis ni renombréis estas carpetas raíz**:
 
 ```text
-CARPETA RAÍZ DE LA WEB EN GOOGLE DRIVE
+CARPETA PRINCIPAL EN GOOGLE DRIVE
 │
 ├── 01_UNIDADES/
 │   ├── Castores/
@@ -39,245 +40,199 @@ CARPETA RAÍZ DE LA WEB EN GOOGLE DRIVE
 │   ├── 2024 - Valdeavellano de Tera/
 │   ├── 2025 - Arija/
 │   ├── 2025 - Vilviestre del Pinar/
-│   └── ... (todas las carpetas de campamentos que vayáis creando)
+│   └── ... (las carpetas de campamentos que vayáis sumando)
 │
 ├── 03_COORDINACION/
-│   └── (Fotos de los coordinadores actuales: Nombre | Cargo | Teléfono)
+│   └── (Fotos de los coordinadores: Nombre | Cargo | Teléfono)
 │
 ├── 04_OBJETOS_PERDIDOS/
 │   ├── Cajón 01 · Campamento de Verano/
-│   ├── Cajón 02 · Acampada de Invierno/
-│   └── ... (un cajón por cada carpeta que creéis aquí dentro)
+│   ├── Cajón 02 · Acampada de Otoño/
+│   └── ... (una subcarpeta por cada cajón que abráis)
 │
 ├── 05_50_ANIVERSARIO/
-│   └── (Fotos históricas por año desde 1976 hasta 2026)
+│   └── (Fotos y recuerdos por año para el modo conmemorativo)
 │
 └── 06_INTENDENCIA/
-    └── (Formularios de Google Forms de pedidos de sudaderas, camisetas, pañoletas o merchandising)
+    └── (Formularios de Google Forms para sudaderas, camisetas o material)
 ```
 
-A continuación tienes explicado, carpeta por carpeta, cómo funciona cada una y todos los trucos que tiene programados la web.
+A continuación os explicamos cómo se gestiona cada sección en detalle.
 
 ---
 
-## 3. Cómo gestionar las Unidades, Cromos y Salidas (`01_UNIDADES`)
+## 3. Sector II · Unidades, Cromos de Kraaletes y Salidas (`01_UNIDADES`)
 
-Cuando entras en el **Sector II (Unidades)** y pulsas en cualquiera de las 5 estrellas (*Castores*, *Manada*, *Tropa*, *Escultas* o *Clan*), se abre la pantalla completa de esa rama. Ahí hay **tres bloques fotográficos distintos**:
+Cuando alguien entra en el **Sector II (Unidades)** del mapa estelar, verá la constelación en línea recta ascendente con las cinco ramas ordenadas de menor a mayor edad: `1 · Castores`, `2 · Manada`, `3 · Tropa`, `4 · Escultas` y `5 · Clan`. 
 
-### A) La Foto Grande de Portada de cada Unidad (Local en la carpeta `images/`)
-Nada más entrar a una unidad, arriba a la derecha se ve una fotografía panorámica grande de toda la rama (y al hacer clic sobre ella se abre a pantalla completa en el visor Lightbox).
-* **¿Por qué esta foto no viene de Drive?** Porque es la primera imagen que se ve al abrir la unidad y queremos que cargue de forma instantánea sin esperar a Google Drive.
-* **¿Dónde están guardadas?** Están en la carpeta [`images/`](images/) del proyecto con estos nombres exactos:
+Al hacer clic en cualquiera de ellas, se hace zoom y se entra a la ficha completa de esa rama.
+
+### A) La Foto de Portada de la Unidad (en local, carpeta `images/`)
+En lo alto de la página de cada unidad se muestra una foto panorámica horizontal de la rama.
+* **¿Por qué está en local y no en Drive?** Porque es lo primero que se ve al abrir la rama y queremos que cargue al milisegundo sin depender de la velocidad de los servidores de Google.
+* **Ubicación y nombres exactos:**
   * Castores: `images/Castores.jpg`
   * Manada: `images/Manada.jpg`
   * Tropa: `images/Tropa.jpg`
   * Escultas: `images/Escultas.jpg`
   * Clan: `images/Clan.jpg`
-* **¿Cómo se cambia al empezar una nueva Ronda Solar?** Tan fácil como coger la foto nueva de la rama en horizontal, llamarla exactamente igual (por ejemplo `Castores.jpg`) y sustituir el archivo dentro de la carpeta `images/`.
-
-### B) Los Cromos Coleccionables de los Kraaletes (`01_UNIDADES/[Rama]`)
-En el apartado **«02 · Los Kraaletes de la Unidad»** aparecen las cartas coleccionables con efecto holográfico 3D de los scouters de esa rama.
-* **Formato ideal del cromo:** Proporción vertical **3:4** (por ejemplo, `900 x 1200 px` en `.jpg` o `.png`).
-* **Cómo subirlos en Drive:** Sube las fotos de los cromos dentro de la carpeta de su rama en `01_UNIDADES/Castores/`, `01_UNIDADES/Manada/`, etc., poniendo como nombre del archivo el nombre del Kraalete (por ejemplo: `Kibu.jpg`, `Baloo.jpg`, `Nadia.jpg`).
-* **¿Qué pasa si un scouter todavía no tiene foto de cromo subida?** No se rompe nada: la web genera automáticamente un cromo elegante con el fondo estelar de la unidad, el icono de la brújula scout, su nombre y su cargo.
-* **Ampliación al hacer clic:**
-  * Si el cromo **tiene foto**, al hacer clic sobre él se abre en grande en el visor fotográfico (Lightbox).
-  * Si el cromo **no tiene foto todavía**, al hacer clic se abre en el centro de la pantalla como una carta holográfica 3D gigante que se inclina al mover el ratón.
-
-### C) Salidas, Acampadas y Aventuras de Rama (`01_UNIDADES/[Rama]/[Nombre de la Salida]`)
-En el apartado **«03 · Aventuras, Salidas y Campamentos»** de cada unidad aparecen los álbumes de las acampadas trimestrales o salidas de esa rama.
-* **Cómo publicar una salida nueva:**
-  1. Entra en `01_UNIDADES/` y abre la carpeta de la rama (ej. `Tropa`).
-  2. Crea una **subcarpeta** con el nombre de la acampada (ejemplo: `2025-11 Acampada Pinar de Antequera`).
-  3. Mete dentro todas las fotos de la salida.
-* **¿Qué muestra la web?** La web creará sola una tarjeta para esa salida, mostrará **las 3 primeras fotografías** de la carpeta como miniatura (si haces clic en cualquiera de las 3 se amplía a pantalla completa) y debajo pondrá el cajetín de contraseña para que los padres puedan desbloquear y abrir el álbum completo en Google Drive.
-* **¿Qué pasa si una rama aún no tiene subcarpetas de salidas?** Aparece un recuadro limpio avisando de que aún no hay álbumes publicados en Drive para esa unidad.
+* **¿Cómo actualizarla en una nueva Ronda Solar?** Guardáis la foto nueva de la rama en formato horizontal, le ponéis el mismo nombre (ej. `Castores.jpg`) y sustituís el archivo dentro de `images/`.
 
 ---
 
-## 4. Cómo gestionar los Campamentos de Grupo (`02_CAMPAMENTOS`)
+### B) Los Cromos de los Scouters (Kraaletes) y la Vista Ampliada (Split-Card)
+En el bloque **«02 · Los Kraaletes de la Unidad»** se muestra una rejilla de cartas coleccionables verticales con estética holográfica 3D (se inclinan y brillan siguiendo el movimiento del cursor).
 
-El **Sector III (Campamentos)** es 100% dinámico: **no hay ningún campamento metido a fuego en el código**. Cada carpeta que exista dentro de `02_CAMPAMENTOS` en Google Drive se convierte automáticamente en una estrella en el mapa.
+#### Cómo subir un cromo nuevo a Google Drive:
+1. Entrad en `01_UNIDADES/` y abrid la carpeta de la rama correspondiente (ej. `01_UNIDADES/Castores/`).
+2. Subid la fotografía vertical del scouter (proporción vertical **3:4**, por ejemplo `900 x 1200 px` en `.jpg` o `.png`).
+3. **Nombre del archivo:** El apodo scout o de selva del monitor (ejemplo: `Rusty.jpg`, `Baloo.jpg`, `Kapi.jpg`). Si además queréis definir su cargo en el archivo, podéis separarlo con una barra: `Rusty | Scouter de Colonia.jpg`.
+4. **Nombre Real y Biografía (Propiedad «Descripción» de Drive):**
+   * Haced clic derecho sobre la foto en Google Drive > **Información del archivo** > **Detalles** (o el botón **ⓘ** que hay arriba a la derecha en Drive).
+   * En el campo **«Descripción»**, escribid los datos siguiendo este formato con una barra vertical `|`:
+     ```text
+     Nombre Real | Biografía o descripción divertida del scouter
+     ```
+   * *Ejemplo real:*
+     ```text
+     Guillermo | Lleva 8 años en el grupo, experto en cabuyería, rutas de montaña y dinámicas de grupo.
+     ```
 
-### A) ¿Cómo sabe la web si un campamento es de Verano o de Semana Santa?
-En el cielo del Sector III verás que se forman **dos constelaciones separadas**: arriba **CAMPAMENTOS DE VERANO** (en tonos cálidos dorados) y abajo **CAMPAMENTOS DE SEMANA SANTA** (en tonos verde esmeralda suave).
+#### ¿Qué ocurre cuando alguien hace clic en un cromo?
+Al hacer clic en cualquier tarjeta de la rejilla se abre el **Modal Split-Card en 2 columnas**:
+* **Columna izquierda:** La fotografía vertical del cromo a gran tamaño con marco estelar limpio y brillo holográfico.
+* **Columna derecha (Ficha Editorial):** 
+  * Badge superior con el número y rama del Kraalete.
+  * Título grande con su apodo scout (ej. **RUSTY**).
+  * Subtítulo con su nombre real entre comillas y su rama (ej. *«Guillermo» · Castores · Colonia Ohiensis*).
+  * Párrafo con la biografía completa que habéis escrito en Drive.
+  * Botón para cerrar en la esquina o pulsando la tecla `ESC`.
 
-La web lee el nombre de la carpeta que creéis en Drive y la clasifica sola siguiendo estas reglas:
-1. **Va a Campamentos de Semana Santa** si el nombre de la carpeta contiene palabras como:
-   * `Semana Santa`, `SS`, `Pascua`, `Primavera`, `Acampada`
-   * O nombres de nuestros pueblos de Semana Santa: `Barbadillo`, `Cofiñal`, `Arija`, `Alcalá de Moncayo`, `Moncayo`.
-2. **Va a Campamentos de Verano** si contiene:
-   * `Verano`, `Estival`, `Julio`, `Agosto`
-   * O nombres de pueblos de verano: `Prioro`, `Cóbreces`, `Valdeavellano`, `Vilviestre`, `Priaranza`.
-   * *(Si no reconoce ninguna palabra clave de Semana Santa, por defecto lo coloca en Verano).*
+> **Limpieza automática:** Si al escribir en Drive habéis copiado y pegado texto con formato rico desde WhatsApp o Docs, la web elimina automáticamente cualquier etiqueta `<div>` o código oculto para que el texto siempre quede 100% limpio en pantalla.
 
-### B) Cómo nombrar las carpetas de Campamento (¡La regla del año!)
-Pon siempre el **año de 4 cifras** en el nombre de la carpeta. Por ejemplo:
+---
+
+### C) Salidas y Acampadas de Rama (`01_UNIDADES/[Rama]/[Nombre_Salida]`)
+En el bloque **«03 · Aventuras, Salidas y Campamentos»** se publican los álbumes de las salidas trimestrales de cada rama:
+1. Dentro de la carpeta de la rama en Drive, cread una subcarpeta con el nombre de la actividad (ejemplo: `2025-11 Acampada Pinar de Antequera`).
+2. Meted dentro las fotos de la salida.
+3. La web generará sola una tarjeta con las **3 fotos más representativas** (que se pueden ampliar a pantalla completa en el visor) y el cajón con contraseña para que las familias abran el álbum completo en Google Drive.
+
+---
+
+## 4. Sector III · Campamentos de Grupo (`02_CAMPAMENTOS`)
+
+El Sector III es totalmente dinámico: **no hay campamentos hardcodeados en el código**. Cada subcarpeta que creéis dentro de `02_CAMPAMENTOS` se convierte en una estrella del mapa estelar.
+
+### A) Dos constelaciones: Verano y Semana Santa
+La web divide el cielo de campamentos en dos hemisferios:
+* Arriba: **Campamentos de Verano** (constelación en tonos dorados cálidos).
+* Abajo: **Campamentos de Semana Santa** (constelación en tonos verde esmeralda).
+
+La web clasifica automáticamente la carpeta según su nombre:
+* **Semana Santa:** Si contiene palabras como `Semana Santa`, `SS`, `Pascua`, `Primavera`, o nombres de nuestros pueblos típicos (`Barbadillo`, `Cofiñal`, `Arija`, `Alcalá de Moncayo`, `Moncayo`).
+* **Verano:** Si contiene `Verano`, `Estival`, `Julio`, `Agosto`, o pueblos como `Prioro`, `Cóbreces`, `Valdeavellano`, `Vilviestre`, `Priaranza`. *(Por defecto, si no detecta Semana Santa, lo asigna a Verano).*
+
+### B) La regla del año en el nombre de la carpeta
+Poned siempre el **año de 4 cifras** en el nombre de la carpeta:
 * `2024 - Cofiñal`
 * `2025 - Vilviestre del Pinar`
 * `2026 - Alcalá de Moncayo SS`
 
-**¿Por qué es tan importante poner el año?**
-1. Porque la web ordena las estrellas de izquierda a derecha **por orden cronológico**.
-2. Porque limpia el título automáticamente para que en el mapa estelar quede súper estético en dos líneas (ej. arriba `α 2024` y debajo `Cofiñal`).
-3. Porque **el último campamento cronológico** de Verano y el último de Semana Santa se pintan automáticamente como una **Estrella Roja Destacada** más grande y brillante, indicando cuál ha sido el campamento más reciente del grupo.
+Esto permite que:
+1. La web ordene las estrellas cronológicamente de izquierda a derecha.
+2. Genere etiquetas limpias en el mapa estelar (ej. `α 2024` y debajo `Cofiñal`).
+3. El **último campamento realizado** se pinte automáticamente como una **Estrella Roja Destacada** más grande y brillante.
 
-### C) Las 3 fotos destacadas del campamento
-Cuando entras en la estrella de un campamento, la web muestra en grande **las 3 primeras fotos** que encuentre dentro de esa carpeta de Drive como *«Bitácora Gráfica · 3 Fotografías Destacadas»*.
-* **Truco para Redes Sociales:** Si queréis elegir exactamente qué 3 fotos salen en la portada del campamento sin que Google Drive las desordene, ponedles delante `01_`, `02_` y `03_` en el nombre del archivo (por ejemplo: `01_foto_grupo.jpg`, `02_fuego_campamento.jpg`, `03_marcha.jpg`).
-
----
-
-## 5. Cómo funcionan las Contraseñas de los Álbumes de Drive
-
-Por privacidad y protección de datos de los chavales, **los enlaces a las carpetas completas de Google Drive nunca están escritos en el código de la web**.
-* Cualquier visitante puede entrar a la web y ver las 3 fotos de muestra que habéis elegido.
-* Pero para abrir la carpeta de Google Drive donde están las 300 o 500 fotos del campamento, las familias tienen que escribir la **contraseña del campamento** en el recuadro de *«Álbum completo en Google Drive»* y pulsar **«Abrir Drive»**.
-
-**¿Qué ocurre por detrás cuando una familia mete la contraseña?**
-1. La web envía el ID de la carpeta y la contraseña escrita al Google Apps Script:
-   `DRIVE_API_URL?action=unlock&id=[ID_CARPETA]&pass=[CONTRASEÑA]`
-2. El script de Google comprueba en privado si la contraseña es la correcta.
-3. Si coincide, devuelve el enlace real de Google Drive y abre la carpeta en una pestaña nueva. Si no coincide, muestra *«Contraseña incorrecta»*.
+### C) Elegir las 3 fotos de portada del campamento
+Al abrir un campamento se muestran 3 fotos destacadas. Si queréis asegurar cuáles son esas 3 fotos sin que Drive las ordene al azar, renombradlas con un prefijo numérico: `01_foto_grupo.jpg`, `02_fuego.jpg`, `03_marcha.jpg`.
 
 ---
 
-## 6. Cómo gestionar «El Baúl» de Objetos Perdidos (`04_OBJETOS_PERDIDOS`)
+## 5. El Sistema de Contraseñas de los Álbumes de Fotos
 
-El **Sector IV (El Baúl)** sirve para que no tengamos que mandar 80 fotos sueltas por los grupos de WhatsApp después de cada acampada.
-
-### A) ¿Qué es un «Cajón»?
-Cada **subcarpeta** que creéis dentro de `04_OBJETOS_PERDIDOS` se convierte automáticamente en:
-1. Una **mini-estrella** orbitando alrededor de la estrella principal de *El Baúl* en el mapa estelar.
-2. Un **Cajón seleccionable** dentro de la pantalla de El Baúl.
-
-* **Truco pro para el nombre de la subcarpeta:** Si usáis una barra vertical `|` en el nombre de la carpeta en Drive, lo que pongáis antes de la barra será el título del cajón y lo que pongáis después será la descripción. Ejemplo:
-  `Cajón 01 · Cofiñal | Prendas encontradas tras el campamento`
-* **¿Qué pasa si borráis todas las subcarpetas porque ya se ha entregado toda la ropa?** La web no da error: muestra el mensaje limpio *«El Baúl está vacío · ¡Todo el material está en casa!»*.
-
-### B) Cómo nombrar las fotos de ropa perdida para que funcionen los filtros automáticos
-Dentro de El Baúl hay un buscador de texto y **5 botones de filtro rápido** (*Todas las prendas*, *Ropa y Sudaderas*, *Cantimploras y Menaje*, *Calzado y Botas*, *Sacos y Aislantes*).
-
-La web **clasifica las fotos sola leyendo el nombre del archivo** que subáis a Drive. Así que, en lugar de subir una foto llamada `IMG_4829.JPG`, renombradla en Drive antes o después de subirla poniendo qué es:
-* **Para que entre en «Ropa y Sudaderas»:** usa palabras como `sudadera`, `camiseta`, `polo`, `pantalon`, `polar`, `forro`, `calcetin`, `braga`, `guante`, `bufanda`, `gorro`, `gorra`, `bañador`, `toalla`, `chandal`, `anorak` o `chaqueta`. *(Ej: `Sudadera azul Quechua talla 12.jpg`)*.
-* **Para que entre en «Cantimploras y Menaje»:** usa `cantimplora`, `botella`, `poto`, `plato`, `cubierto`, `vaso`, `fiambrera`, `termo` o `navaja`. *(Ej: `Cantimplora aluminio roja.jpg`)*.
-* **Para que entre en «Calzado y Botas»:** usa `bota`, `zapatilla`, `chancla`, `calzado`, `zapato` o `sandalia`. *(Ej: `Botas Chiruca marrones talla 39.jpg`)*.
-* **Para que entre en «Sacos y Aislantes»:** usa `saco`, `esterilla`, `aislante`, `colchoneta`, `manta`, `cojin` o `funda`. *(Ej: `Saco dormir negro Decathlon.jpg`)*.
-
-### C) ¿Qué hace el botón «Es mío · Reclamar»?
-Cuando un padre o un educando ve su prenda y pulsa **«Es mío · Reclamar»**, se le abre automáticamente WhatsApp con un mensaje ya redactado dirigido a Coordinación indicando el nombre exacto de la prenda y el cajón en el que está, recordándole que puede pasar a recogerla el **sábado de 16:30 a 19:00 h por la sede de Carretera de Rueda, 53**.
+Por privacidad y protección a la infancia:
+* Las fotos de muestra (las 3 portadas) son públicas para mostrar la vida scout del grupo a quien visite la web.
+* El enlace a la carpeta completa de Google Drive (donde están los cientos de fotos del campamento) **nunca está visible en el código fuente**.
+* Para desbloquearlo, la familia introduce la contraseña oficial del grupo en el cajetín del álbum. La web valida la clave contra el script y, solo si coincide, abre la carpeta de Drive en una pestaña nueva.
 
 ---
 
-## 7. Cómo funciona el Modo Secreto del 50º Aniversario (`05_50_ANIVERSARIO`)
+## 6. Sector IV · «El Baúl» de Objetos Perdidos (`04_OBJETOS_PERDIDOS`)
 
-En el **Sector I (Acrux 518)**, cada pocos segundos cruza el cielo un **Cometa Dorado** dejando una estela de polvo de oro:
-* Si pasas el ratón por encima del cometa, el cursor avisa: *«¡ATRÁPALO! (50º ANIVERSARIO)»*.
-* Al hacer clic sobre el cometa, explota una onda expansiva dorada (Supernova) y toda la web cambia su estética al **Modo 50º Aniversario (Oro Imperial y Obsidiana)**.
-* Alrededor de la estrella Acrux aparece una **espiral áurea de 50 estrellas doradas**, una por cada año desde **1976 hasta 2026**.
-* Al pulsar en cualquiera de las 50 estrellas se abre una ventana de cristal con la fotografía histórica y la crónica de ese año.
-* Las fotos que subáis a la carpeta `05_50_ANIVERSARIO` de Drive asociadas a un año desbloquean e iluminan automáticamente la estrella de ese año en la espiral.
+Para no saturar los grupos de WhatsApp de familias con fotos sueltas de ropa después de cada salida, tenemos el Sector IV.
 
----
+### A) Los Cajones de Material
+Cada subcarpeta creada en `04_OBJETOS_PERDIDOS` se convierte en un **cajón seleccionable**.
+* Podéis usar una barra `|` en el nombre de la carpeta para poner título y descripción:
+  `Cajón 01 · Vilviestre 2025 | Prendas encontradas tras el campamento de verano`
+* Si el baúl está vacío porque se ha devuelto todo el material, no hay fallo: la web avisa con un mensaje limpio indicando que todo el material está en casa.
 
-## 8. Cómo gestionar el Merch de Grupo (`06_INTENDENCIA`)
+### B) Filtros automáticos por nombre de archivo
+La web incluye filtros rápidos (*Todas*, *Ropa y Sudaderas*, *Cantimploras y Menaje*, *Calzado*, *Sacos y Aislantes*). Para que clasifique la foto sola en su categoría, basta con que el archivo contenga la palabra clave:
+* **Ropa:** `sudadera`, `camiseta`, `polar`, `pantalon`, `gorro`, `bañador`, `chaqueta`...
+* **Cantimploras y menaje:** `cantimplora`, `botella`, `poto`, `plato`, `cubierto`, `navaja`...
+* **Calzado:** `bota`, `zapatilla`, `chancla`, `sandalia`...
+* **Sacos:** `saco`, `aislante`, `esterilla`, `colchoneta`...
 
-Cuando el grupo quiera lanzar un pedido de **Merch** (sudaderas, camisetas, polares o material), **no hace falta tocar nada del código de la web**:
-
-1. **¿Cómo activar un formulario de Merch en la web?**
-   * Entra en la carpeta **`06_INTENDENCIA`** dentro del Google Drive de la web.
-   * Crea ahí dentro un **Formulario de Google (*Google Form*)** o mueve ahí uno ya creado (por ejemplo, llamado `Sudaderas Acrux 2026`).
-2. **¿Qué pasa automáticamente en la web?**
-   * En el **Sector I (Acrux 518)**, la estrella secundaria **`ε Intrometida`** se activa de forma sutil y elegante con un brillo ámbar/grisáceo atenuado y pasa a llamarse **`ε Merch · [Nombre del Formulario]`**.
-   * Si metéis **varios formularios a la vez** en `06_INTENDENCIA`, se crean estrellas satélite discretas adicionales conectadas a `ε Intrometida` y una barra de pestañas dentro del modal para cambiar entre un producto y otro.
-   * Al hacer clic en la estrella, se abre una ventana flotante de cristal oscuro (`.merch-custom-modal`) con el **Google Form incrustado y adaptado automáticamente al modo oscuro nativo de la web** (`filter: invert(0.92) hue-rotate(180deg) contrast(1.1); background-color: #0A0D14;`), con un botón para alternar a color original si alguien quiere ver los colores reales de una foto del producto.
-3. **¿Cómo cerrar un pedido de Merch cuando termine el plazo?**
-   * Simplemente **saca o borra el Google Form de la carpeta `06_INTENDENCIA`** en Drive. La estrella `ε Intrometida` volverá sola a su estado normal (inactiva) y desaparecerá el acceso al formulario.
-
-### Código para el Google Apps Script (`06_INTENDENCIA`)
-Si algún día reescribís o actualizáis el script en [script.google.com](https://script.google.com), asegúrate de que dentro de `doGet(e)` esté incluido este bloque que escanea la carpeta `06_INTENDENCIA` y devuelve `merchForms`:
-
-```javascript
-// --- 6. ESCANEO AUTOMÁTICO DE 06_INTENDENCIA (GOOGLE FORMS DE MERCHANDISING) ---
-var merchForms = [];
-var intendenciaFolders = rootFolder.getFoldersByName('06_INTENDENCIA');
-if (intendenciaFolders.hasNext()) {
-  var intendenciaFolder = intendenciaFolders.next();
-  var files = intendenciaFolder.getFiles();
-  while (files.hasNext()) {
-    var file = files.next();
-    if (file.getMimeType() === MimeType.GOOGLE_FORMS) {
-      var formId = file.getId();
-      var publishedUrl = 'https://docs.google.com/forms/d/' + formId + '/viewform?embedded=true';
-      try {
-        var formObj = FormApp.openById(formId);
-        var pub = formObj.getPublishedUrl();
-        if (pub) {
-          publishedUrl = pub + (pub.indexOf('?') > -1 ? '&' : '?') + 'embedded=true';
-        }
-      } catch (err) {}
-      merchForms.push({
-        id: formId,
-        title: file.getName(),
-        embedUrl: publishedUrl,
-        date: Utilities.formatDate(file.getDateCreated(), Session.getScriptTimeZone(), 'yyyy-MM-dd')
-      });
-    }
-  }
-}
-// Y añade "merchForms: merchForms" al objeto JSON que devuelve ContentService.
-```
+### C) Botón «Es mío · Reclamar»
+Al pulsar sobre una prenda, se abre directamente WhatsApp con un mensaje pre-redactado para Coordinación con el nombre de la prenda y el cajón, recordando que se recoge los **sábados de 16:30 a 19:00 h en Carretera de Rueda, 53**.
 
 ---
 
-## 9. ¿Qué tocar en el código si queréis cambiar datos fijos?
+## 7. Sector I · Merch Oficial de Grupo (`06_INTENDENCIA`)
 
-Si algún día necesitáis cambiar algo que no está en Drive (por ejemplo, cambiar la lista de nombres de los Kraaletes cuando empieza una nueva Ronda Solar, o cambiar algún texto de historia), solo hay **3 archivos** en todo el proyecto:
+Cuando el grupo lance una campaña de sudaderas, camisetas o pañoletas:
 
-1. **[`index.html`](index.html)**:
-   * Contiene el esqueleto de las pantallas, los botones superiores y los textos fijos de la portada.
-2. **[`script.js`](script.js)**:
-   * **Línea 15 (`DRIVE_API_URL`)**: Aquí va la URL terminada en `/exec` de nuestro Google Apps Script.
-   * **Líneas 52 a 371 (`UNITS_DATA`)**: Aquí están las 5 unidades (*Castores*, *Manada*, *Tropa*, *Escultas* y *Clan*) con sus textos de introducción, lemas, etapas de progresión, enlaces de Instagram (`@escultas_trea` y `@clan_amadablam`) y la lista por defecto de `kraaletes` de cada unidad.
-   * **Líneas 2620 a 2645 (`defaultCoords`)**: Aquí están los nombres y teléfonos por defecto del Equipo de Coordinación (**JJ, Raksha y Hugo**) por si Drive no tuviera fotos cargadas en `04_COORDINACION`.
-3. **[`styles.css`](styles.css)**:
-   * Contiene todo el diseño visual oscuro espacial, las tarjetas flotantes de cristal (`backdrop-filter`), el tamaño de los cromos y las animaciones.
-
----
-
-## 9. Solución de problemas frecuentes (Troubleshooting para la Comisión)
-
-### «He subido una carpeta o foto a Drive pero no sale en la web»
-1. Asegúrate de haberla metido dentro de la carpeta correcta (`01_UNIDADES`, `02_CAMPAMENTOS`, `03_OBJETOS_PERDIDOS`, etc.).
-2. Recarga la página en el navegador con `Ctrl + F5` (en Windows) o `Cmd + Shift + R` (en Mac) para limpiar la caché.
-
-### «En la consola del navegador sale un aviso de que Drive devolvió HTML / pantalla de login»
-Eso pasa si alguien ha editado el código del **Google Apps Script** en [script.google.com](https://script.google.com) y al guardar se han cerrado los permisos públicos. Para arreglarlo en 30 segundos:
-1. Entra con la cuenta de Google del grupo en [script.google.com](https://script.google.com) y abre el proyecto del conector de la web.
-2. Arriba a la derecha, pulsa en **Implementar > Gestionar implementaciones**.
-3. Pulsa el icono del lápiz (**Editar**) en la implementación activa.
-4. Asegúrate de que esté configurado exactamente así:
-   * **Ejecutar como:** *Yo (gruposcoutacrux518@gmail.com)*
-   * **Quién tiene acceso:** **Cualquier persona (*Anyone*)**
-5. Pulsa **Implementar**. Si te da una URL nueva terminada en `/exec`, pégala en la constante `DRIVE_API_URL` (línea 15 de [`script.js`](script.js)).
-
-### «He cambiado una imagen en `images/` o un estilo en `styles.css` y sigo viendo la versión antigua»
-En [`index.html`](index.html) verás que los archivos se cargan con un número de versión al final (`styles.css?v=9.0` y `script.js?v=9.0`). Cuando subáis un cambio de código a GitHub Pages, subid ese número (por ejemplo a `?v=10.0`) para obligar a los móviles y ordenadores de todas las familias a descargar la versión nueva al instante.
+1. **Cómo activarlo:**
+   * Cread un **Google Form** en la carpeta `06_INTENDENCIA` de Drive (o moved allí uno existente).
+   * La estrella secundaria **`ε Intrometida`** del Sector I se encenderá automáticamente con brillo dorado y pasará a llamarse **`ε Merch · [Nombre del Formulario]`**.
+2. **Cómo lo ve la gente:**
+   * Al hacer clic en la estrella de Merch se abre el modal e-commerce de pantalla completa.
+   * En la barra superior hay además un botón directo: **«Abrir en Google Forms»**. De este modo, si alguien prefiere responder en la interfaz nativa de Google o habéis añadido preguntas nuevas de última hora, siempre tienen acceso al formulario en vivo al 100%.
+3. **Cómo cerrarlo:**
+   * Cuando termine el plazo de pedidos, sacad o borrad el Google Form de la carpeta `06_INTENDENCIA`. La estrella volverá sola a su estado astronómico inactivo.
 
 ---
 
-## 10. Resumen de datos oficiales actuales en la web
+## 8. Sector I · Modo 50º Aniversario (`05_50_ANIVERSARIO`)
 
-* **Nombre oficial en toda la web:** Grupo Scout ACRUX 518 · Valladolid *(Nota importante para la Comisión: nunca usar el nombre de otros grupos scouts de Valladolid en los textos ni en los subtítulos de las constelaciones; el Sector I se llama siempre única y exclusivamente **Acrux 518**)*.
-* **Sede y horario:** Carretera de Rueda, 53 (CP 47008, Valladolid) · **Sábados de 16:30 a 19:00 h**.
-* **Equipo de Coordinación:** JJ, Raksha y Hugo.
-* **Redes Sociales conectadas:**
-  * Instagram General: [@gruposcoutacrux518](https://www.instagram.com/gruposcoutacrux518/)
-  * Instagram Unidad Esculta Trea: [@escultas_trea](https://www.instagram.com/escultas_trea/)
-  * Instagram Clan Ama Dablam: [@clan_amadablam](https://www.instagram.com/clan_amadablam/)
-  * Facebook: [Grupo Scout Acrux 518](https://www.facebook.com/GrupoScoutAcrux518)
+En el Sector I, un **Cometa Dorado** cruza el cielo cada pocos segundos:
+* Al hacer clic sobre el cometa, se activa el modo especial conmemorativo: la paleta de colores cambia a oro y obsidiana.
+* Alrededor de Acrux se despliega una **espiral áurea de 50 estrellas doradas** (1976 - 2026).
+* Al pulsar en cada estrella se abre la fotografía histórica y reseña de ese año.
+* Las fotos subidas a la carpeta `05_50_ANIVERSARIO` de Google Drive se encargan de iluminar y completar los recuerdos de cada año.
+
+---
+
+## 9. Mantenimiento del Código (Por si hay que tocar algo a mano)
+
+Si alguna vez tenéis que modificar algo de código (por ejemplo, textos fijos de historia, cambiar los teléfonos de Coordinación o retocar estilos), el proyecto consta únicamente de 3 archivos:
+
+1. **`index.html`**: Estructura del DOM, modales, botones y cabeceras.
+2. **`script.js`**:
+   * **Línea 15 (`DRIVE_API_URL`)**: La URL del conector de Google Apps Script.
+   * **`UNITS_DATA` (líneas 52 a 370)**: Lemas, etapas de progresión de cada unidad, enlaces de Instagram (`@escultas_trea` y `@clan_amadablam`) y listas por defecto de Kraaletes de respaldo.
+   * **`defaultCoords` (líneas 2600 a 2630)**: Nombres y teléfonos de Coordinación por defecto (**JJ, Raksha y Hugo**) por si Drive no estuviese disponible.
+3. **`styles.css`**: Todo el diseño visual, tipografías (`Outfit`, `Plus Jakarta Sans`, `JetBrains Mono`), sombras de cristal (`backdrop-filter`) y comportamiento responsivo para móviles.
+
+### El truco de la caché al publicar cambios (`?v=XX`)
+Los navegadores de los móviles guardan los archivos CSS y JS en memoria para ir más rápido. Cuando hagáis cambios en `styles.css` o `script.js` y los subáis a GitHub, recordad **subir el número de versión** en `index.html` (por ejemplo, de `styles.css?v=19.0` a `styles.css?v=20.0`). Así forzaréis a que a todos los padres y monitores se les actualice la web al instante sin tener que borrar datos de navegación.
+
+---
+
+## 10. Datos Oficiales del Grupo (Para no meter la pata)
+
+* **Nombre oficial del grupo:** **Grupo Scout ACRUX 518** · Valladolid *(Cuidado con esto: no mezclar jamás con nombres de otros grupos scouts de la ciudad; nuestra estrella y sector se llaman siempre única y exclusivamente **Acrux 518**)*.
+* **Sede:** Carretera de Rueda, 53 (47008 Valladolid).
+* **Horario de reuniones:** Sábados de 16:30 a 19:00 h.
+* **Coordinación actual:** JJ, Raksha y Hugo.
+* **Canales oficiales:**
+  * Instagram Grupo: [@gruposcoutacrux518](https://www.instagram.com/gruposcoutacrux518/)
+  * Instagram Escultas: [@escultas_trea](https://www.instagram.com/escultas_trea/)
+  * Instagram Clan: [@clan_amadablam](https://www.instagram.com/clan_amadablam/)
   * Correo: `gruposcoutacrux518@gmail.com`
 
 ---
 
-*Manual interno preparado para la Comisión de Redes Sociales · **Grupo Scout ACRUX 518** · «Siempre Listos para Servir»*
+*Cualquier duda técnica que surja, revisad este manual o hablad con la Comisión de Página Web. ¡Buena caza y siempre listos!*

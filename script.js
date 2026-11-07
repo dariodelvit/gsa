@@ -43,6 +43,21 @@
         return t * t * (3 - 2 * t);
     };
 
+    // Limpiador universal de etiquetas HTML y entidades que Drive pueda introducir al copiar/pegar
+    function stripHtmlTags(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/<[^>]*>/g, ' ')
+            .replace(/&nbsp;/g, ' ')
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
     // =========================================================================
     // 1. LAS 5 UNIDADES EN CONSTELACIÓN DE LÍNEA RECTA + SUS KRAALETES
     // =========================================================================
@@ -181,7 +196,6 @@
             `,
             salidas: [],
             pillars: [
-                { title: 'La Selva de Seeonee y la Roca del Consejo', desc: 'Espacio de asamblea donde la Manada valora sus cazas, celebra promesas y aprende a escucharse.' },
                 { title: 'La Senda de Mowgli (Progresión)', desc: 'Cuatro etapas de crecimiento: Huella Tierna, Lobo Saltador, Lobo Rastreador y Lobo Cazador.' },
                 { title: 'Vida en Seisenas', desc: 'Pequeños grupos de seis lobatos donde los mayores acompañan y enseñan con el ejemplo a los más jóvenes.' }
             ],
@@ -203,7 +217,7 @@
             id: 'tropa',
             index: 2,
             starSymbol: 'γ Tropa (Lohengrin)',
-            shortName: '3 · Tropa (Lohengrin)',
+            shortName: '3 · Tropa',
             fullName: 'Tropa · Lohengrin',
             constellationTitle: 'ESTRELLA III · TROPA LOHENGRIN',
             age: '11 a 14 años (6º Primaria, 1º y 2º de ESO)',
@@ -243,7 +257,6 @@
             `,
             salidas: [],
             pillars: [
-                { title: 'La Leyenda del Caballero del Cisne (Lohengrin)', desc: 'De los poemas medievales y el Parzival de Wolfram von Eschenbach a la ópera de Wagner: el protector del Santo Grial que llega en una barca tirada por un cisne para defender el honor y la justicia sin buscar fama ni recompensa.' },
                 { title: 'La Corte de Honor y el Sistema de Patrullas', desc: 'Autonomía real en acampada, cargos de responsabilidad en cada Patrulla y toma de decisiones en la Corte de Honor bajo la palabra dada.' },
                 { title: 'Las Aymaras y el Pionerismo', desc: 'Aventuras trimestrales ideadas por los propios troperos, construcciones en madera y sisal, orientación topográfica y vida en la naturaleza.' }
             ],
@@ -263,7 +276,7 @@
             id: 'escultas',
             index: 3,
             starSymbol: 'δ Escultas (Trea)',
-            shortName: '4 · Unidad Esculta (Trea)',
+            shortName: '4 · Escultas',
             fullName: 'Unidad Esculta · Trea',
             constellationTitle: 'ESTRELLA IV · UNIDAD ESCULTA TREA',
             age: '14 a 17 años (3º, 4º de ESO y 1º de Bachillerato)',
@@ -298,7 +311,6 @@
             `,
             salidas: [],
             pillars: [
-                { title: 'Ninjas en el Descenso del Sena y Empresas Escultas', desc: 'Retos y aventuras de acción ideados, presupuestados, financiados y vividos íntegramente por los propios escultas en Asamblea.' },
                 { title: 'El Camino del Torii y Superación en Montaña', desc: 'Ascensiones por laderas boscosas, orientación, vivac bajo las estrellas y espíritu de superación colectiva.' },
                 { title: 'Unidad, Cohesión y Servicio Activo', desc: 'Sentido de pertenencia en el dojo esculta, pensamiento crítico y preparación para alcanzar las cumbres del Clan.' }
             ],
@@ -316,7 +328,7 @@
             id: 'clan',
             index: 4,
             starSymbol: 'ε Clan (Ama Dablam)',
-            shortName: '5 · Clan (Ama Dablam)',
+            shortName: '5 · Clan',
             fullName: 'Clan Rover · Ama Dablam',
             constellationTitle: 'ESTRELLA V · CLAN ROVER AMA DABLAM',
             age: '17 a 21 años (2º Bachillerato, FP y Universidad)',
@@ -351,7 +363,6 @@
             `,
             salidas: [],
             pillars: [
-                { title: 'La Laguna Azul por Encima de las Nubes (Origen del Río)', desc: 'Alcanzada escalando por encima del mar de nubes: de sus aguas cristalinas nace el gran río que baja dando vida a todas las unidades hasta el Estanque de los Castores.' },
                 { title: 'La Horquilla Rover y el Lema «Servir»', desc: 'Símbolo de la elección consciente del propio camino, el voluntariado social y el apoyo constante a las ramas menores.' },
                 { title: 'De Rover a Scouter (El Manantial del Grupo)', desc: 'Como el agua que baja desde la Laguna Azul hasta los Castores, los Rovers se forman para devolver al grupo todo lo aprendido.' }
             ],
@@ -844,6 +855,7 @@
         dx: unit.dx,
         dy: unit.dy,
         r: unit.r,
+        labelPos: (uIdx % 2 === 0) ? 'bottom' : 'top',
         color: unit.accentColor || '#FFFFFF',
         accentColor: unit.accentColor || '#38BDF8',
         halo: unit.glowColor || 'rgba(56, 189, 248, 0.12)',
@@ -1967,22 +1979,25 @@
         if (kraalWrap) {
             kraalWrap.innerHTML = unit.kraaletes.map((k, kIdx) => {
                 const hasCromo = !!k.cromoUrl;
+                const cleanName = stripHtmlTags(k.name || 'Scouter');
+                const cleanRole = stripHtmlTags(k.role || 'Kraalete');
+                const cleanRealName = stripHtmlTags(k.realName || '');
                 return `
                     <article class="kraalete-cromo-card ${hasCromo ? 'has-cromo-img' : 'no-cromo'}" data-cromo-idx="${kIdx}">
                         <div class="cromo-inner">
                             ${hasCromo ? `
-                                <img src="${k.cromoUrl}" alt="${k.name}" class="kraalete-cromo-img" referrerpolicy="no-referrer" loading="lazy">
+                                <img src="${k.cromoUrl}" alt="${cleanName}" class="kraalete-cromo-img" referrerpolicy="no-referrer" loading="lazy">
                             ` : `
                                 <div class="cromo-fallback-content">
                                     <div class="cromo-scout-badge">${SVG_ICONS.compass}</div>
                                     <span class="cromo-unit-tag">${unit.shortName}</span>
-                                    <strong class="cromo-fallback-name">${k.name}</strong>
-                                    <span class="cromo-fallback-role">${k.role}</span>
+                                    <strong class="cromo-fallback-name">${cleanName}</strong>
+                                    <span class="cromo-fallback-role">${cleanRole}</span>
                                 </div>
                             `}
                             <div class="cromo-bottom-label">
-                                <strong class="cromo-label-name">${k.name}</strong>
-                                <span class="cromo-label-role">${k.realName ? `«${k.realName}»` : k.role}</span>
+                                <strong class="cromo-label-name">${cleanName}</strong>
+                                <span class="cromo-label-role">${cleanRealName ? `«${cleanRealName}»` : cleanRole}</span>
                             </div>
                             <div class="cromo-sheen" aria-hidden="true"></div>
                         </div>
@@ -2333,21 +2348,26 @@
         elCromoZoomCard.style.setProperty('--unit-glow', glow);
         elCromoZoomCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
 
+        const cleanName = stripHtmlTags(k.name || 'Scouter');
+        const cleanRole = stripHtmlTags(k.role || 'Kraalete');
+        const cleanRealName = stripHtmlTags(k.realName || '');
+        const cleanBio = stripHtmlTags(k.bio || '');
+
         const hasCromo = Boolean(k.cromoUrl);
         elCromoZoomInner.innerHTML = `
             ${hasCromo ? `
-                <img src="${k.cromoUrl}" alt="${k.name}" class="kraalete-cromo-img" referrerpolicy="no-referrer">
+                <img src="${k.cromoUrl}" alt="${cleanName}" class="kraalete-cromo-img" referrerpolicy="no-referrer">
             ` : `
                 <div class="cromo-fallback-content">
                     <div class="cromo-scout-badge">${SVG_ICONS.compass}</div>
                     <span class="cromo-unit-tag">${unit ? unit.shortName : 'ACRUX 518'}</span>
-                    <strong class="cromo-fallback-name" id="cromoZoomName">${k.name}</strong>
-                    <span class="cromo-fallback-role">${k.role || 'Kraalete'}</span>
+                    <strong class="cromo-fallback-name" id="cromoZoomName">${cleanName}</strong>
+                    <span class="cromo-fallback-role">${cleanRole}</span>
                 </div>
             `}
             <div class="cromo-bottom-label">
-                <strong class="cromo-label-name">${k.name}</strong>
-                <span class="cromo-label-role">${k.realName ? `«${k.realName}»` : (k.role || 'Kraalete')}</span>
+                <strong class="cromo-label-name">${cleanName}</strong>
+                <span class="cromo-label-role">${cleanRealName ? `«${cleanRealName}»` : cleanRole}</span>
             </div>
             <div class="cromo-sheen" aria-hidden="true"></div>
         `;
@@ -2359,19 +2379,17 @@
             elCromoSplitUnitBadge.textContent = `KRAALETE · ${unitShortName.toUpperCase()}`;
         }
         if (elCromoSplitRole) {
-            elCromoSplitRole.textContent = `${k.role || 'Scouter'} · ${unitFullName}`;
+            elCromoSplitRole.textContent = `${cleanRole} · ${unitFullName}`;
         }
         if (elCromoSplitTitle) {
-            elCromoSplitTitle.textContent = k.name || 'Scouter';
+            elCromoSplitTitle.textContent = cleanName;
         }
         if (elCromoSplitSubtitle) {
-            const cleanRealName = (k.realName || '').trim();
             elCromoSplitSubtitle.textContent = cleanRealName
                 ? `«${cleanRealName}» · ${unitFullName}`
-                : `«${k.name}» · ${unitFullName}`;
+                : `«${cleanName}» · ${unitFullName}`;
         }
         if (elCromoSplitBio) {
-            const cleanBio = (k.bio || '').trim();
             elCromoSplitBio.textContent = cleanBio
                 || `Scouter del Kraalete de ${unitFullName} en el Grupo Scout Acrux 518. Acompaña cada sábado y acampada educando en valores, escultismo y contacto directo con la naturaleza.`;
         }
@@ -3346,11 +3364,15 @@
 
     // Mapa cromático para pastillas de color y vista previa de prenda en estudio
     function getColorInfoFromLabel(rawLabel) {
-        const s = (rawLabel || '').toLowerCase().trim();
+        const s = (rawLabel || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .trim();
         if (s.includes('white') || s.includes('blanc')) return { hex: '#F8FAFC', label: rawLabel === 'White' ? 'Blanco (White)' : rawLabel };
         if (s.includes('black') || s.includes('negr')) return { hex: '#111827', label: rawLabel === 'Black' ? 'Negro (Black)' : rawLabel };
         if (s.includes('navy') || s.includes('marino')) return { hex: '#1E293B', label: rawLabel };
-        if (s.includes('blue') || s.includes('azul')) return { hex: '#2563EB', label: rawLabel === 'Blue' ? 'Azul (Blue)' : rawLabel };
+        if (s.includes('blue') || s.includes('azul') || s.includes('celeste')) return { hex: '#2563EB', label: rawLabel === 'Blue' ? 'Azul (Blue)' : rawLabel };
         if (s.includes('green') || s.includes('verde')) return { hex: '#15803D', label: rawLabel === 'Green' ? 'Verde (Green)' : rawLabel };
         if (s.includes('yellow') || s.includes('amarill') || s.includes('oro')) return { hex: '#EAB308', label: rawLabel === 'Yellow' ? 'Amarillo (Yellow)' : rawLabel };
         if (s.includes('grey') || s.includes('gray') || s.includes('gris')) return { hex: '#64748B', label: (rawLabel === 'Grey' || rawLabel === 'Gray') ? 'Gris (Grey)' : rawLabel };
@@ -3363,7 +3385,7 @@
     }
 
     function translateMerchFieldTitle(rawTitle) {
-        const t = (rawTitle || '').trim();
+        const t = (rawTitle || '').replace(/<[^>]*>/g, '').trim();
         const lower = t.toLowerCase();
         const map = {
             'favorite color': 'Color',
@@ -3387,7 +3409,7 @@
             'notes': 'Observaciones / Comentarios',
             'comments': 'Observaciones / Comentarios'
         };
-        return map[lower] || t.replace(/<[^>]*>/g, '').trim();
+        return map[lower] || t;
     }
 
     // Extrae el array FB_PUBLIC_LOAD_DATA_ del HTML público de un Google Form
@@ -3409,27 +3431,47 @@
         }
     }
 
-    // Transforma FB_PUBLIC_LOAD_DATA_ en un esquema de e-commerce limpio con entry.xxxxx reales
+    // Transforma FB_PUBLIC_LOAD_DATA_ en tiempo real en un esquema de e-commerce 100% fiel al Google Form
     function buildSchemaFromFbLoadData(fbData, htmlText, form) {
         if (!Array.isArray(fbData) || !Array.isArray(fbData[1])) return null;
         const formMeta = fbData[1];
         const rawQuestions = Array.isArray(formMeta[1]) ? formMeta[1] : [];
         const formDesc = (formMeta[0] || '').replace(/<[^>]*>/g, '').trim();
+        const liveTitle = (fbData[3] || formMeta[8] || '').replace(/<[^>]*>/g, '').trim();
         const publicSlug = fbData[14] || '';
         const actionUrl = publicSlug
             ? `https://docs.google.com/forms/d/${publicSlug}/formResponse`
             : `https://docs.google.com/forms/d/${form.id}/formResponse`;
 
-        // Extraer imágenes reales de producto incrustadas (ignorando la miniatura OpenGraph =w1200-h630-p de la página del formulario)
+        // Actualizar título del formulario en vivo si cambió dentro de Google Forms
+        if (liveTitle && form) {
+            form.title = liveTitle;
+            if (elMerchModalTitle && elMerchModal?.classList.contains('is-open')) {
+                elMerchModalTitle.textContent = liveTitle;
+            }
+            const intrometidaNode = worldNodes.find(nd => nd.id === 'intrometida');
+            if (intrometidaNode && intrometidaNode.isMerchStar && intrometidaNode.merchIndex === 0) {
+                const cleanLabel = /^merch\b/i.test(liveTitle) ? liveTitle : `Merch · ${liveTitle}`;
+                intrometidaNode.symbol = `ε ${cleanLabel}`;
+            }
+        }
+
+        // Extraer todas las imágenes reales de preguntas incrustadas en el Google Form (<img src="https://docs.google.com/forms-images-rt/..." o lh3)
+        // Nota: Google Forms envía el header `Cross-Origin-Resource-Policy: same-site` en `forms-images-rt`,
+        // por lo que las servimos a través de `images.weserv.nl` (CORP: cross-origin) para que Chrome las muestre sin bloqueo.
         const extractedImages = [];
         if (htmlText) {
-            const imgMatches = htmlText.match(/https:\/\/lh[0-9]\.googleusercontent\.com\/[^\s"'<>]+/g);
-            if (imgMatches) {
-                imgMatches.forEach(u => {
-                    const cleanU = u.replace(/\\u003d/g, '=').replace(/&amp;/g, '&');
-                    if (cleanU.includes('=w1200-h630-p') || cleanU.includes('=w600-h315-p')) return;
-                    if (!extractedImages.includes(cleanU)) extractedImages.push(cleanU);
-                });
+            const imgTagRegex = /<img[^>]+src=["'](https:\/\/(?:docs\.google\.com\/forms-images-rt|lh[0-9]\.googleusercontent\.com)\/[^"'\s<>]+)["'][^>]*>/gi;
+            let match;
+            while ((match = imgTagRegex.exec(htmlText)) !== null) {
+                const cleanU = match[1].replace(/\\u003d/g, '=').replace(/&amp;/g, '&');
+                if (cleanU.includes('=w1200-h630-p') || cleanU.includes('=w600-h315-p')) continue;
+                const safeImgUrl = cleanU.startsWith('https://docs.google.com/forms-images-rt/')
+                    ? `https://images.weserv.nl/?url=${encodeURIComponent(cleanU)}`
+                    : cleanU;
+                if (!extractedImages.includes(safeImgUrl)) {
+                    extractedImages.push(safeImgUrl);
+                }
             }
         }
 
@@ -3438,7 +3480,13 @@
         const autoSyncColorEntries = [];
         let hasGridColorSelector = false;
 
-        // Primera pasada: comprobar si existe una cuadrícula Talla x Color (qType === 7)
+        // Variables para unificar 1 o varias cuadrículas de Talla y Color (ej. una cuadrícula para "Negro" con su foto y otra para "Azúl" con su foto)
+        const unifiedSizes = [];
+        const unifiedColors = [];
+        const gridCellMap = {}; // clave: `${size}|||${color}` -> `entry.xxxxx`
+        const colorPhotoUrlMap = {}; // clave: `color` -> url de la imagen asociada a esa pregunta
+        let qImgCursor = 0;
+
         rawQuestions.forEach(q => {
             if (Array.isArray(q) && q[3] === 7 && Array.isArray(q[4]) && q[4].length > 0) {
                 hasGridColorSelector = true;
@@ -3454,7 +3502,11 @@
             const qType = q[3];
             const inputs = q[4];
 
-            // Ignorar encabezados de sección vacíos o sin inputs
+            // Comprobar si esta pregunta tiene una imagen adjunta en el Google Form (q[9] o q[6])
+            const hasAttachedImg = (Array.isArray(q[9]) && q[9].length > 0) || (Array.isArray(q[6]) && q[6].length > 0);
+            const questionImageUrl = hasAttachedImg ? (extractedImages[qImgCursor++] || null) : null;
+
+            // Si es un bloque de imagen suelto sin inputs (qType === 6 o 9), ya quedó registrado en extractedImages
             if (qType === 6 || !Array.isArray(inputs) || inputs.length === 0) {
                 return;
             }
@@ -3464,35 +3516,24 @@
                 const rows = inputs.map(r => ({
                     entryId: `entry.${r[0]}`,
                     rowLabel: (Array.isArray(r[3]) && r[3][0]) ? String(r[3][0]).trim() : '',
-                    colOptions: Array.isArray(r[1]) ? r[1].map(c => c[0]).filter(Boolean) : [],
+                    colOptions: Array.isArray(r[1]) ? r[1].map(c => String(c[0] || '').trim()).filter(Boolean) : [],
                     required: Boolean(r[2])
                 })).filter(r => r.rowLabel && r.entryId);
 
-                if (rows.length > 0) {
-                    const colOptions = rows[0].colOptions;
-                    pillFields.push({
-                        id: `grid-size-${qId}`,
-                        kind: 'grid-size',
-                        title: 'Selecciona Talla',
-                        required: true,
-                        rows: rows,
-                        options: rows.map(r => r.rowLabel),
-                        defaultVal: rows.find(r => r.rowLabel === 'M' || r.rowLabel === 'L')?.rowLabel || rows[0].rowLabel
-                    });
-
-                    if (colOptions.length > 0) {
-                        pillFields.push({
-                            id: `grid-color-${qId}`,
-                            kind: 'grid-color',
-                            gridSizeFieldId: `grid-size-${qId}`,
-                            title: 'Selecciona Color',
-                            required: true,
-                             isColorField: true,
-                            options: colOptions,
-                            defaultVal: colOptions[0]
-                        });
+                rows.forEach(r => {
+                    if (!unifiedSizes.includes(r.rowLabel)) {
+                        unifiedSizes.push(r.rowLabel);
                     }
-                }
+                    r.colOptions.forEach(colOpt => {
+                        if (!unifiedColors.includes(colOpt)) {
+                            unifiedColors.push(colOpt);
+                        }
+                        gridCellMap[`${r.rowLabel}|||${colOpt}`] = r.entryId;
+                        if (questionImageUrl && !colorPhotoUrlMap[colOpt]) {
+                            colorPhotoUrlMap[colOpt] = questionImageUrl;
+                        }
+                    });
+                });
                 return;
             }
 
@@ -3509,8 +3550,6 @@
             const isSizeQ = lowerTitle.includes('talla') || lowerTitle.includes('size');
             const isQtyQ = lowerTitle.includes('cantidad') || lowerTitle.includes('quantity') || lowerTitle.includes('unidades');
 
-            // Si el formulario tiene un campo de texto "Favorite color" pero ya hay selector de Color en la cuadrícula,
-            // lo sincronizamos automáticamente en segundo plano para no duplicar la pregunta de color
             if ((qType === 0 || qType === 1) && isColorQ && hasGridColorSelector && rawOpts.length === 0) {
                 autoSyncColorEntries.push(entryId);
                 return;
@@ -3534,8 +3573,7 @@
                 return;
             }
 
-            // CASO C: Si crearon una pregunta de texto corto llamada "Talla" o "Color" sin opciones definidas,
-            // generamos las pastillas interactivas automáticamente
+            // CASO C: Si crearon una pregunta de texto corto llamada "Talla" o "Color" sin opciones definidas
             if (qType === 0 && isSizeQ) {
                 const defaultSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
                 pillFields.push({
@@ -3568,7 +3606,7 @@
                 return;
             }
 
-            // CASO D: Campo de texto estilizado para los datos del comprador
+            // CASO D: Campo de texto estilizado para las preguntas abiertas del formulario
             let inputType = 'text';
             if (lowerTitle.includes('email') || lowerTitle.includes('correo')) inputType = 'email';
             else if (lowerTitle.includes('phone') || lowerTitle.includes('teléfono') || lowerTitle.includes('telefono') || lowerTitle.includes('móvil')) inputType = 'tel';
@@ -3585,6 +3623,33 @@
             });
         });
 
+        // Si el formulario tenía cuadrículas de Talla y Color, añadir el selector unificado de Talla y de Color
+        if (unifiedSizes.length > 0) {
+            pillFields.push({
+                id: 'grid-size-unified',
+                kind: 'grid-size',
+                title: 'Selecciona Talla',
+                required: true,
+                gridCellMap: gridCellMap,
+                options: unifiedSizes,
+                defaultVal: unifiedSizes.find(s => s === 'M' || s === 'L') || unifiedSizes[0]
+            });
+
+            if (unifiedColors.length > 0) {
+                pillFields.push({
+                    id: 'grid-color-unified',
+                    kind: 'grid-color',
+                    gridSizeFieldId: 'grid-size-unified',
+                    title: 'Selecciona Color',
+                    required: true,
+                    isColorField: true,
+                    colorPhotoUrlMap: colorPhotoUrlMap,
+                    options: unifiedColors,
+                    defaultVal: unifiedColors[0]
+                });
+            }
+        }
+
         // Ordenar los selectores de pastilla: 1º Talla, 2º Color, 3º Cantidad / Resto
         pillFields.sort((a, b) => {
             const rank = f => (f.kind === 'grid-size' || f.isSizeField) ? 1 : ((f.kind === 'grid-color' || f.isColorField) ? 2 : 3);
@@ -3592,79 +3657,23 @@
         });
 
         return {
+            liveTitle: liveTitle,
             actionUrl: actionUrl,
             description: formDesc,
             images: extractedImages,
+            colorPhotoUrlMap: colorPhotoUrlMap,
             pillFields: pillFields,
             textFields: textFields,
             autoSyncColorEntries: autoSyncColorEntries
         };
     }
 
-    // Esquema pre-verificado para formularios conocidos o fallback instantáneo
-    const KNOWN_MERCH_SCHEMAS = {
-        '1gV6NBsQN0RKxZseGuwFCe6LkNBzDkxtGzLFuSc4Uf8I': {
-            actionUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd_o529V4YaUmeK7QqmbSo8XjnW5B9CQoXCX6nW6WeY37gVPQ/formResponse',
-            description: 'Prenda oficial del Grupo Scout Acrux 518. Selecciona tu talla, color y cantidad para registrar tu reserva directamente en la hoja oficial del grupo.',
-            images: [],
-            autoSyncColorEntries: ['entry.62333980'],
-            pillFields: [
-                {
-                    id: 'grid-size-623016651',
-                    kind: 'grid-size',
-                    title: 'Selecciona Talla',
-                    required: true,
-                    options: ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-                    defaultVal: 'M',
-                    rows: [
-                        { rowLabel: 'XXS', entryId: 'entry.981078897' },
-                        { rowLabel: 'XS', entryId: 'entry.1342802920' },
-                        { rowLabel: 'S', entryId: 'entry.397458137' },
-                        { rowLabel: 'M', entryId: 'entry.1035375086' },
-                        { rowLabel: 'L', entryId: 'entry.1114638134' },
-                        { rowLabel: 'XL', entryId: 'entry.13894194' },
-                        { rowLabel: 'XXL', entryId: 'entry.899119735' },
-                        { rowLabel: 'XXXL', entryId: 'entry.1043840646' }
-                    ]
-                },
-                {
-                    id: 'grid-color-623016651',
-                    kind: 'grid-color',
-                    gridSizeFieldId: 'grid-size-623016651',
-                    title: 'Selecciona Color',
-                    required: true,
-                    isColorField: true,
-                    options: ['White', 'Blue', 'Black', 'Green', 'Yellow', 'Grey'],
-                    defaultVal: 'Black'
-                },
-                {
-                    id: 'entry.1757665021',
-                    entryId: 'entry.1757665021',
-                    kind: 'pills',
-                    title: 'Cantidad',
-                    required: true,
-                    isQtyField: true,
-                    options: ['1', '2', '3', '4', '5'],
-                    defaultVal: '1'
-                }
-            ],
-            textFields: [
-                { id: 'entry.864030240', entryId: 'entry.864030240', kind: 'text', inputType: 'text', title: 'Nombre y Apellidos', required: true, placeholder: 'Ej. Marcos García (Tropa)...' },
-                { id: 'entry.1731174329', entryId: 'entry.1731174329', kind: 'text', inputType: 'tel', title: 'Teléfono de contacto', required: true, placeholder: 'Ej. 600 123 456...' },
-                { id: 'entry.337484795', entryId: 'entry.337484795', kind: 'text', inputType: 'email', title: 'Correo electrónico', required: true, placeholder: 'tu@correo.com...' },
-                { id: 'entry.1585103673', entryId: 'entry.1585103673', kind: 'text', inputType: 'text', title: 'Dirección (Calle y número)', required: true, placeholder: 'Calle / Recogida en Base Rueda 53...' },
-                { id: 'entry.1730369189', entryId: 'entry.1730369189', kind: 'text', inputType: 'text', title: 'Ciudad / Localidad', required: true, placeholder: 'Valladolid' },
-                { id: 'entry.1184868361', entryId: 'entry.1184868361', kind: 'textarea', inputType: 'text', title: 'Observaciones / Rama del Educando', required: false, placeholder: 'Indica tu rama (Castores, Manada, Tropa, Escultas, Clan) o cualquier nota...' }
-            ]
-        }
-    };
-
-    async function preloadMerchFormSchema(form) {
+    async function preloadMerchFormSchema(form, forceRefresh = false) {
         if (!form) return null;
-        if (form._parsedSchema) return form._parsedSchema;
+        if (form._parsedSchema && !forceRefresh) return form._parsedSchema;
 
-        // 1. Si el backend de Google Apps Script ya envió el esquema estructurado (form.schema o form.fbLoadData)
-        if (form.fbLoadData) {
+        // 1. Si el backend de Google Apps Script ya envió el esquema estructurado (form.fbLoadData)
+        if (form.fbLoadData && !forceRefresh) {
             const parsed = buildSchemaFromFbLoadData(form.fbLoadData, form.rawHtml || '', form);
             if (parsed) {
                 form._parsedSchema = parsed;
@@ -3672,95 +3681,48 @@
             }
         }
 
-        // 2. Si el formulario está en nuestro registro inmediato verificado, úsalo al instante y actualiza en segundo plano
-        if (KNOWN_MERCH_SCHEMAS[form.id]) {
-            form._parsedSchema = KNOWN_MERCH_SCHEMAS[form.id];
-        }
-
-        // 3. Intentar leer el HTML público del Google Form para extraer FB_PUBLIC_LOAD_DATA_ de cualquier formulario nuevo
+        // 2. Leer en tiempo real el HTML público del Google Form para extraer FB_PUBLIC_LOAD_DATA_ y las fotos actuales
         const viewUrl = `https://docs.google.com/forms/d/${form.id}/viewform`;
-        const endpoints = [
-            `${DRIVE_API_URL}?action=formSchema&id=${encodeURIComponent(form.id)}`,
-            `https://api.allorigins.win/raw?url=${encodeURIComponent(viewUrl)}`,
-            `https://corsproxy.io/?${encodeURIComponent(viewUrl)}`
+        const fetchCandidates = [
+            {
+                url: `https://r.jina.ai/${viewUrl}`,
+                options: {
+                    headers: { 'X-Return-Format': 'html', 'X-No-Cache': 'true' },
+                    cache: 'no-store'
+                }
+            },
+            {
+                url: `https://r.jina.ai/${viewUrl}`,
+                options: {
+                    headers: { 'X-Return-Format': 'html' },
+                    cache: 'no-store'
+                }
+            },
+            {
+                url: `https://api.allorigins.win/raw?url=${encodeURIComponent(viewUrl)}`,
+                options: { cache: 'no-store' }
+            }
         ];
 
-        for (const ep of endpoints) {
+        for (const candidate of fetchCandidates) {
             try {
-                const res = await fetch(ep);
+                const res = await fetch(candidate.url, candidate.options);
                 if (!res.ok) continue;
                 const text = await res.text();
-                if (text.trim().startsWith('{')) {
-                    const json = JSON.parse(text);
-                    if (json && json.fbLoadData) {
-                        const schema = buildSchemaFromFbLoadData(json.fbLoadData, json.html || '', form);
-                        if (schema && (schema.pillFields.length > 0 || schema.textFields.length > 0)) {
-                            form._parsedSchema = schema;
-                            return schema;
-                        }
-                    }
-                } else {
-                    const fbData = extractFbPublicLoadDataFromHtml(text);
-                    if (fbData) {
-                        const schema = buildSchemaFromFbLoadData(fbData, text, form);
-                        if (schema && (schema.pillFields.length > 0 || schema.textFields.length > 0)) {
-                            form._parsedSchema = schema;
-                            return schema;
-                        }
+                const fbData = extractFbPublicLoadDataFromHtml(text);
+                if (fbData) {
+                    const schema = buildSchemaFromFbLoadData(fbData, text, form);
+                    if (schema && (schema.pillFields.length > 0 || schema.textFields.length > 0)) {
+                        form._parsedSchema = schema;
+                        return schema;
                     }
                 }
             } catch (_) {
-                // Continuar con el siguiente endpoint de respaldo
+                // Intentar siguiente endpoint en vivo
             }
         }
 
-        // 4. Si aún no hay esquema (ej. modo demo o sin red), construir un esquema e-commerce universal
-        if (!form._parsedSchema) {
-            form._parsedSchema = {
-                actionUrl: `https://docs.google.com/forms/d/${form.id}/formResponse`,
-                description: form.desc || 'Edición oficial del Grupo Scout Acrux 518. Selecciona tu talla y color preferido.',
-                images: form.photos || [],
-                autoSyncColorEntries: [],
-                pillFields: [
-                    {
-                        id: 'entry.size',
-                        entryId: 'entry.size',
-                        kind: 'pills',
-                        title: 'Selecciona Talla',
-                        required: true,
-                        isSizeField: true,
-                        options: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-                        defaultVal: 'M'
-                    },
-                    {
-                        id: 'entry.color',
-                        entryId: 'entry.color',
-                        kind: 'pills',
-                        title: 'Selecciona Color',
-                        required: true,
-                        isColorField: true,
-                        options: ['Negro', 'Blanco', 'Azul Marino', 'Verde'],
-                        defaultVal: 'Negro'
-                    },
-                    {
-                        id: 'entry.qty',
-                        entryId: 'entry.qty',
-                        kind: 'pills',
-                        title: 'Cantidad',
-                        required: true,
-                        isQtyField: true,
-                        options: ['1', '2', '3', '4'],
-                        defaultVal: '1'
-                    }
-                ],
-                textFields: [
-                    { id: 'entry.name', entryId: 'entry.name', kind: 'text', inputType: 'text', title: 'Nombre y Apellidos', required: true, placeholder: 'Nombre del educando o familiar...' },
-                    { id: 'entry.phone', entryId: 'entry.phone', kind: 'text', inputType: 'tel', title: 'Teléfono de contacto', required: true, placeholder: 'Ej. 600 123 456...' }
-                ]
-            };
-        }
-
-        return form._parsedSchema;
+        return form._parsedSchema || null;
     }
 
     // Renderiza el escaparate fotográfico izquierdo (foto de Drive / Formulario + maniquí vectorial de estudio reactivo al color)
@@ -3773,7 +3735,7 @@
         ].filter((v, i, a) => v && a.indexOf(v) === i);
 
         // Detectar color activo seleccionado para teñir la prenda de estudio
-        let selectedColorLabel = 'Black';
+        let selectedColorLabel = 'Negro';
         if (schema && Array.isArray(schema.pillFields)) {
             const colorField = schema.pillFields.find(f => f.isColorField || f.kind === 'grid-color');
             if (colorField && activeMerchOrderState[colorField.id]) {
@@ -3794,7 +3756,7 @@
         if (!showStudioView) {
             const currentPhoto = allPhotos[activeMerchPhotoIdx] || allPhotos[0];
             elMerchShowcaseVisual.innerHTML = `
-                <img src="${currentPhoto}" alt="${form.title}" class="merch-showcase-img" id="merchMainShowcaseImg">
+                <img src="${currentPhoto}" alt="${form.title}" class="merch-showcase-img" id="merchMainShowcaseImg" referrerpolicy="no-referrer">
             `;
             const imgEl = document.getElementById('merchMainShowcaseImg');
             imgEl?.addEventListener('click', () => {
@@ -3847,18 +3809,33 @@
                 elMerchThumbStrip.style.display = 'flex';
                 const photoThumbs = allPhotos.map((p, idx) => `
                     <button type="button" class="merch-thumb-btn ${activeMerchPhotoIdx === idx ? 'active' : ''}" data-thumb-idx="${idx}" title="Ver fotografía ${idx + 1}">
-                        <img src="${p}" alt="Miniatura ${idx + 1}">
+                        <img src="${p}" alt="Miniatura ${idx + 1}" referrerpolicy="no-referrer">
                     </button>
                 `).join('');
-                const studioThumb = `
-                    <button type="button" class="merch-thumb-btn ${showStudioView ? 'active' : ''}" data-thumb-idx="${allPhotos.length}" title="Vista interactiva de color y talla">
-                        <span style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:#E2D5B5;">COLOR</span>
-                    </button>
-                `;
-                elMerchThumbStrip.innerHTML = photoThumbs + studioThumb;
+                elMerchThumbStrip.innerHTML = photoThumbs;
                 elMerchThumbStrip.querySelectorAll('[data-thumb-idx]').forEach(btn => {
                     btn.addEventListener('click', () => {
                         activeMerchPhotoIdx = parseInt(btn.getAttribute('data-thumb-idx'), 10);
+                        const clickedPhotoUrl = allPhotos[activeMerchPhotoIdx];
+                        if (clickedPhotoUrl && schema && schema.colorPhotoUrlMap) {
+                            const matchedColorEntry = Object.entries(schema.colorPhotoUrlMap).find(([, u]) => u === clickedPhotoUrl);
+                            if (matchedColorEntry) {
+                                const colorName = matchedColorEntry[0];
+                                const colorField = (schema.pillFields || []).find(f => f.isColorField || f.kind === 'grid-color');
+                                if (colorField) {
+                                    activeMerchOrderState[colorField.id] = colorName;
+                                    const groupEl = elMerchDynamicFields?.querySelector(`[data-field-group="${colorField.id}"]`);
+                                    groupEl?.querySelectorAll('.merch-option-pill').forEach(b => {
+                                        b.classList.toggle('is-selected', b.getAttribute('data-pill-value') === colorName);
+                                    });
+                                    const selLabelEl = document.getElementById(`selectedLabel-${colorField.id}`);
+                                    if (selLabelEl) {
+                                        const cInfo = getColorInfoFromLabel(colorName);
+                                        selLabelEl.textContent = cInfo ? cInfo.label : colorName;
+                                    }
+                                }
+                            }
+                        }
                         renderMerchLeftShowcase(form, schema);
                     });
                 });
@@ -3872,6 +3849,10 @@
     // Renderiza todos los selectores de pastilla (Tallas, Colores, Cantidad) y los campos de texto del comprador
     function renderMerchDynamicForm(form, schema) {
         if (!elMerchDynamicFields) return;
+
+        if (elMerchModalTitle && (schema.liveTitle || form.title)) {
+            elMerchModalTitle.textContent = schema.liveTitle || form.title;
+        }
 
         if (elMerchModalDesc) {
             elMerchModalDesc.textContent = schema.description || form.desc || 'Selecciona tu talla y color preferido y completa tus datos para registrar tu pedido.';
@@ -3978,14 +3959,25 @@
                     selLabelEl.textContent = cInfo ? cInfo.label : val;
                 }
 
-                // Si el usuario cambia el color o la talla, pasamos automáticamente a la vista de estudio o actualizamos el escaparate
+                // Si el usuario cambia el color o la talla, mostrar la foto asociada a ese color (si existe en el Google Form) o actualizar el escaparate
                 if (pf && (pf.isColorField || pf.isSizeField || pf.kind === 'grid-color' || pf.kind === 'grid-size')) {
                     const allPhotos = [
                         ...(Array.isArray(form.photos) ? form.photos : []),
                         ...(schema && Array.isArray(schema.images) ? schema.images : [])
                     ].filter((v, i, a) => v && a.indexOf(v) === i);
+
                     if (pf.isColorField || pf.kind === 'grid-color') {
-                        activeMerchPhotoIdx = allPhotos.length; // Muestra la prenda reactiva al color elegido
+                        const mappedPhotoUrl = (pf.colorPhotoUrlMap && pf.colorPhotoUrlMap[val])
+                            || (schema.colorPhotoUrlMap && schema.colorPhotoUrlMap[val])
+                            || null;
+                        if (mappedPhotoUrl) {
+                            const matchedIdx = allPhotos.indexOf(mappedPhotoUrl);
+                            if (matchedIdx !== -1) {
+                                activeMerchPhotoIdx = matchedIdx;
+                            }
+                        } else if (allPhotos.length === 0) {
+                            activeMerchPhotoIdx = 0;
+                        }
                     }
                     renderMerchLeftShowcase(form, schema);
                 }
@@ -4044,6 +4036,17 @@
                 : 'MERCHANDISING DE GRUPO · ACRUX 518';
         }
 
+        const elDirectFormBtn = document.getElementById('merchDirectFormBtn');
+        if (elDirectFormBtn) {
+            const formUrl = form.externalUrl || form.embedUrl || (form.id ? `https://docs.google.com/forms/d/${form.id}/viewform` : '');
+            if (formUrl) {
+                elDirectFormBtn.href = formUrl;
+                elDirectFormBtn.style.display = 'inline-flex';
+            } else {
+                elDirectFormBtn.style.display = 'none';
+            }
+        }
+
         if (elMerchFormsSwitcher) {
             if (MERCH_FORMS_DATA.length > 1) {
                 elMerchFormsSwitcher.style.display = 'flex';
@@ -4072,16 +4075,20 @@
             if (splitWrap) splitWrap.scrollTop = 0;
         }, diveTime);
 
-        // Cargar o recuperar el esquema del Google Form
-        if (!form._parsedSchema && elMerchIframeLoader) {
+        // Si ya se había pre-cargado al iniciar la página, mostrar al instante y refrescar siempre en vivo desde Google Forms
+        if (form._parsedSchema) {
+            renderMerchDynamicForm(form, form._parsedSchema);
+            if (elMerchIframeLoader) elMerchIframeLoader.style.display = 'none';
+        } else if (elMerchIframeLoader) {
             elMerchIframeLoader.style.display = 'flex';
         }
-        const schema = await preloadMerchFormSchema(form);
+
+        const freshSchema = await preloadMerchFormSchema(form, !form._parsedSchema);
         if (elMerchIframeLoader) {
             elMerchIframeLoader.style.display = 'none';
         }
-        if (schema) {
-            renderMerchDynamicForm(form, schema);
+        if (freshSchema) {
+            renderMerchDynamicForm(form, freshSchema);
         }
     }
 
@@ -4136,12 +4143,19 @@
                 const chosenSize = activeMerchOrderState[pf.id];
                 const colorField = schema.pillFields.find(f => f.kind === 'grid-color' && f.gridSizeFieldId === pf.id);
                 const chosenColor = colorField ? activeMerchOrderState[colorField.id] : '';
-                const matchedRow = pf.rows.find(r => r.rowLabel === chosenSize);
-                if (matchedRow && chosenColor) {
-                    submissionEntries[matchedRow.entryId] = chosenColor;
+                if (pf.gridCellMap && chosenSize && chosenColor) {
+                    const cellEntryId = pf.gridCellMap[`${chosenSize}|||${chosenColor}`];
+                    if (cellEntryId) {
+                        submissionEntries[cellEntryId] = chosenColor;
+                    }
+                } else if (Array.isArray(pf.rows)) {
+                    const matchedRow = pf.rows.find(r => r.rowLabel === chosenSize);
+                    if (matchedRow && chosenColor) {
+                        submissionEntries[matchedRow.entryId] = chosenColor;
+                    }
                 }
             } else if (pf.kind === 'grid-color') {
-                // Ya fue procesado junto con su fila en grid-size
+                // Ya fue procesado junto con su celda en grid-size
             } else if (pf.entryId) {
                 submissionEntries[pf.entryId] = activeMerchOrderState[pf.id] || '';
             }
@@ -5600,15 +5614,15 @@
             const kraalList = Array.isArray(uData) ? uData : uData.kraaletes;
             if (Array.isArray(kraalList) && kraalList.length > 0) {
                 unit.kraaletes = kraalList.map((k, i) => {
-                    const rawDesc = (k.desc || k.description || '').trim();
-                    const descParts = rawDesc ? rawDesc.split('|').map(s => s.trim()) : [];
-                    const parsedRealName = (k.realName || (descParts.length > 1 ? descParts[0] : '') || '').trim();
-                    const parsedBio = (k.bio || (descParts.length > 1 ? descParts.slice(1).join(' | ') : (descParts[0] || '')) || '').trim();
+                    const rawDesc = stripHtmlTags(k.desc || k.description || '');
+                    const descParts = rawDesc ? rawDesc.split('|').map(s => stripHtmlTags(s)) : [];
+                    const parsedRealName = stripHtmlTags(k.realName || (descParts.length > 1 ? descParts[0] : '') || '');
+                    const parsedBio = stripHtmlTags(k.bio || (descParts.length > 1 ? descParts.slice(1).join(' | ') : (descParts[0] || '')) || '');
 
                     return {
                         star: k.star || `${i + 1} · ${unit.shortName}`,
-                        name: k.name || 'Scouter',
-                        role: k.role || 'Kraalete',
+                        name: stripHtmlTags(k.name || 'Scouter'),
+                        role: stripHtmlTags(k.role || 'Kraalete'),
                         realName: parsedRealName,
                         bio: parsedBio || `Scouter del Kraalete de ${unit.fullName} en el Grupo Scout Acrux 518. Acompaña cada sábado y acampada educando en valores, escultismo y contacto con la naturaleza.`,
                         cromoUrl: k.cromoUrl || k.fotoUrl || k.photoUrl || null
