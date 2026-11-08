@@ -129,10 +129,6 @@ La web divide el cielo de campamentos en dos hemisferios:
 * Arriba: **Campamentos de Verano** (constelación en tonos dorados cálidos).
 * Abajo: **Campamentos de Semana Santa** (constelación en tonos verde esmeralda).
 
-La web clasifica automáticamente la carpeta según su nombre:
-* **Semana Santa:** Si contiene palabras como `Semana Santa`, `SS`, `Pascua`, `Primavera`, o nombres de nuestros pueblos típicos (`Barbadillo`, `Cofiñal`, `Arija`, `Alcalá de Moncayo`, `Moncayo`).
-* **Verano:** Si contiene `Verano`, `Estival`, `Julio`, `Agosto`, o pueblos como `Prioro`, `Cóbreces`, `Valdeavellano`, `Vilviestre`, `Priaranza`. *(Por defecto, si no detecta Semana Santa, lo asigna a Verano).*
-
 ### B) La regla del año en el nombre de la carpeta
 Poned siempre el **año de 4 cifras** en el nombre de la carpeta:
 * `2024 - Cofiñal`
