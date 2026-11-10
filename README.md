@@ -95,7 +95,7 @@ En el bloque **«02 · Los Kraaletes de la Unidad»** se muestra una rejilla de 
      ```
    * *Ejemplo real:*
      ```text
-     Darío | Hola, soy Darío llevo 14 años en...
+     Guillermo | Lleva 8 años en el grupo, experto en cabuyería, rutas de montaña y dinámicas de grupo.
      ```
 
 #### ¿Qué ocurre cuando alguien hace clic en un cromo?
@@ -128,6 +128,10 @@ El Sector III es totalmente dinámico: **no hay campamentos hardcodeados en el c
 La web divide el cielo de campamentos en dos hemisferios:
 * Arriba: **Campamentos de Verano** (constelación en tonos dorados cálidos).
 * Abajo: **Campamentos de Semana Santa** (constelación en tonos verde esmeralda).
+
+La web clasifica automáticamente la carpeta según su nombre:
+* **Semana Santa:** Si contiene palabras como `Semana Santa`, `SS`, `Pascua`, `Primavera`, o nombres de nuestros pueblos típicos (`Barbadillo`, `Cofiñal`, `Arija`, `Alcalá de Moncayo`, `Moncayo`).
+* **Verano:** Si contiene `Verano`, `Estival`, `Julio`, `Agosto`, o pueblos como `Prioro`, `Cóbreces`, `Valdeavellano`, `Vilviestre`, `Priaranza`. *(Por defecto, si no detecta Semana Santa, lo asigna a Verano).*
 
 ### B) La regla del año en el nombre de la carpeta
 Poned siempre el **año de 4 cifras** en el nombre de la carpeta:

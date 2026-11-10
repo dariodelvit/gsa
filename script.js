@@ -8,6 +8,12 @@
    - Modo 50 Aniversario (1976–2026): cometa dorado + espiral áurea de 50 estrellas
    ========================================================================== */
 (function initAcruxGlobalStarMapEngine() {
+    // Red de seguridad independiente: aunque algo falle más abajo, el loader nunca bloquea la web
+    setTimeout(() => {
+        const bl = document.getElementById('cosmosBootLoader');
+        if (bl) { bl.classList.add('is-hidden'); bl.setAttribute('aria-hidden', 'true'); }
+    }, 1800);
+
     const canvas = document.getElementById('cosmosCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -44,18 +50,39 @@
     };
 
     // Limpiador universal de etiquetas HTML y entidades que Drive pueda introducir al copiar/pegar
+    // Orden importante: primero se decodifican las entidades (Drive a veces entrega "&lt;div&gt;"),
+    // y después se eliminan las etiquetas, repitiendo por si hay doble codificación.
     function stripHtmlTags(str) {
-        if (!str) return '';
-        return String(str)
-            .replace(/<[^>]*>/g, ' ')
-            .replace(/&nbsp;/g, ' ')
-            .replace(/&amp;/g, '&')
-            .replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"')
-            .replace(/&#39;/g, "'")
+        if (str === null || str === undefined) return '';
+        let out = String(str);
+        for (let pass = 0; pass < 3; pass++) {
+            const before = out;
+            out = out
+                .replace(/&nbsp;|&#160;|&#xA0;/gi, ' ')
+                .replace(/&lt;/gi, '<')
+                .replace(/&gt;/gi, '>')
+                .replace(/&quot;|&#34;/gi, '"')
+                .replace(/&#39;|&apos;|&#x27;/gi, "'")
+                .replace(/&amp;/gi, '&')
+                .replace(/<\s*br\s*\/?>/gi, ' ')
+                .replace(/<\/(p|div|li|h[1-6]|tr)\s*>/gi, ' ')
+                .replace(/<[^>]*>/g, ' ');
+            if (out === before) break;
+        }
+        return out
+            .replace(/[<>]/g, '')
             .replace(/\s+/g, ' ')
             .trim();
+    }
+
+    // Escapado seguro para atributos HTML (alt, data-*, title...). Limpia etiquetas y escapa & " ' < >
+    function escapeAttr(str) {
+        return stripHtmlTags(str)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
     }
 
     // =========================================================================
@@ -139,9 +166,9 @@
             `,
             salidas: [],
             pillars: [
-                { title: '1 · Castor sin Paletas (Llegada al Estanque)', desc: 'Como Kid al salir de la madriguera: descubre la Colonia, aprende la llamada «¡Splash, Splash, Splash!» y hace sus primeros amigos.' },
-                { title: '2 · Castor con Paletas (Como en el Gran Incendio)', desc: 'Tras aprender a ayudar y compartir el trabajo en la presa junto a los Grandes Castores y la Familia Jones, al castor le crecen las paletas.' },
-                { title: '3 · Castor Plateado y «Nado Hacia Arriba»', desc: 'Siguiendo el ejemplo de Keeo, comparte siempre con alegría y se prepara en el remolino del Gran Roble para nadar río arriba hacia el río Waigunga y la Manada.' }
+                { badge: 'INTEGRACIÓN', title: 'Castor sin paletas o Castorcito', desc: 'El Castor que acaba de entrar en la Colonia e inicia su progresión: acaba de nacer y tiene que empezar a aprender muchas cosas para poder vivir con el resto de la Colonia. Como no tiene paletas, éstas le irán creciendo a medida que vaya aprendiendo a estar en la Colonia.' },
+                { badge: 'PARTICIPACIÓN', title: 'Castor con paletas', desc: 'Un Castor fuerte, al que le han crecido las paletas y que se vale por sí mismo para conseguir su alimento y cortar troncos para hacer su presa y su madriguera. Sus dientes deben ir siendo cada vez más fuertes para compartir su trabajo con la Colonia y ser cada vez más útil a la misma.' },
+                { badge: 'ANIMACIÓN', title: 'Castor Keeo', desc: 'El castor Keeo recibe la propiedad de hablar con los humanos: es el Castor parlante, el enlace entre los adultos y la Colonia. Es el Castor más responsable de la Colonia y por ello debe aprender a ser un buen referente de los demás.' }
             ],
             kraalTitle: 'Kraal de la Colonia Ohiensis',
             kraalSub: 'Scouters de Castores (Kraaletes de Colonia)',
@@ -196,8 +223,9 @@
             `,
             salidas: [],
             pillars: [
-                { title: 'La Senda de Mowgli (Progresión)', desc: 'Cuatro etapas de crecimiento: Huella Tierna, Lobo Saltador, Lobo Rastreador y Lobo Cazador.' },
-                { title: 'Vida en Seisenas', desc: 'Pequeños grupos de seis lobatos donde los mayores acompañan y enseñan con el ejemplo a los más jóvenes.' }
+                { badge: 'INTEGRACIÓN', title: 'Huella de Akela', desc: 'Etapa pensada para que el nuevo lobezno se adapte y se sienta feliz de formar parte de la Manada, descubriendo las normas que rigen su vida y los valores que aportan a la suya. Simbolismo: el lobato es joven e inexperto y no puede ir solo de cacería por la selva; debe seguir la huella del lobo más experto. Akela lo introduce en la selva enseñándole los secretos de la caza.' },
+                { badge: 'PARTICIPACIÓN', title: 'Huella de Baloo', desc: 'El lobato se ha integrado en la vida de la Manada, acepta las normas de la vida en grupo y está preparado para compartir sus experiencias con los demás lobatos. Simbolismo: Baloo, con sus Máximas, le da el sentido cercano de la Ley de la Manada y le enseña el lenguaje de la selva para que pueda jugar en ella con los demás.' },
+                { badge: 'ANIMACIÓN', title: 'Huella de Bagheera', desc: 'El lobato se encuentra en su recta final: es la hora de poner todo lo aprendido al servicio de los demás. Simbolismo: Bagheera, el amigo de Mowgli más cercano a los hombres, le enseña la técnica para participar en la vida de la selva y en la de la aldea: cazar, trepar… sin olvidar nunca la vida de la selva.' }
             ],
             kraalTitle: 'Kraal de la Manada Khanhiwara',
             kraalSub: 'Los Viejos Lobos (Kraaletes de Manada)',
@@ -257,8 +285,9 @@
             `,
             salidas: [],
             pillars: [
-                { title: 'La Corte de Honor y el Sistema de Patrullas', desc: 'Autonomía real en acampada, cargos de responsabilidad en cada Patrulla y toma de decisiones en la Corte de Honor bajo la palabra dada.' },
-                { title: 'Las Aymaras y el Pionerismo', desc: 'Aventuras trimestrales ideadas por los propios troperos, construcciones en madera y sisal, orientación topográfica y vida en la naturaleza.' }
+                { badge: 'INTEGRACIÓN', title: 'La Senda del Compromiso', desc: 'Se descubre la Sección, su simbología, tradiciones y forma de trabajo, y se participa activamente de su dinámica. El Scout se integra de forma comprometida colaborando con su Patrulla y con la Tropa, se adapta a la vida de la Patrulla, se convierte en un miembro más y empieza a tomar alguna responsabilidad. Símbolo: el nudo margarita en su primera fase, el educando que llega y se entrelaza con sus compañeros hasta ser parte de un mismo elemento.' },
+                { badge: 'PARTICIPACIÓN', title: 'La Senda del Desafío', desc: 'La mayor implicación real del chico en el trabajo por el progreso personal y colectivo. Una vez adquiridos los conocimientos básicos, el Scout juega un papel más activo en el grupo, ha tomado su decisión voluntaria de trabajar dentro del Escultismo, adopta una actitud participativa y aprende técnicas nuevas de forma práctica. Símbolo: el nudo de trébol, que expresa el trabajo compartido de la Patrulla y el periodo de aprendizaje.' },
+                { badge: 'ANIMACIÓN', title: 'La Senda de la Colaboración', desc: 'El chico tiene un papel fundamental en la Patrulla y en la Tropa: toma mayor iniciativa y, con su actitud de servicio, contribuye a la buena marcha de la Sección. Probablemente será el Guía o Subguía de su Patrulla y animará a sus compañeros a participar. Símbolo: la vuelta de escota, que une cuerdas de distinto grosor: el scout con más experiencia ayuda a progresar a quienes están en etapas anteriores.' }
             ],
             kraalTitle: 'Kraal de la Tropa Lohengrin',
             kraalSub: 'Scouters de Tropa (Kraaletes de Lohengrin)',
@@ -311,8 +340,9 @@
             `,
             salidas: [],
             pillars: [
-                { title: 'El Camino del Torii y Superación en Montaña', desc: 'Ascensiones por laderas boscosas, orientación, vivac bajo las estrellas y espíritu de superación colectiva.' },
-                { title: 'Unidad, Cohesión y Servicio Activo', desc: 'Sentido de pertenencia en el dojo esculta, pensamiento crítico y preparación para alcanzar las cumbres del Clan.' }
+                { badge: 'INTEGRACIÓN', title: 'Etapa de Integración', desc: 'Se toma contacto con los elementos metodológicos básicos de la Sección y con sus miembros. La actitud del esculta/pionero es observar y explorar la forma de vida de la Unidad para decidir si le interesa comprometerse con los demás con unos objetivos comunes. Símbolo: manos que entrelazan sus dedos; es una etapa de encuentro, en la que los recién llegados son acogidos e integrados con sus compañeros.' },
+                { badge: 'PARTICIPACIÓN', title: 'Etapa de Participación', desc: 'El esculta/pionero se marca objetivos más precisos y más exigentes, desde una actitud de participación y análisis permanente. Se implica en toda la vida de la Sección, alcanzando niveles de plena participación y un compromiso más colectivo. Símbolo: manos que se sujetan unas a otras, el compromiso colectivo y el apoyo mutuo que se traduce en esfuerzo común y unidad de acción: la fuerza de la unión.' },
+                { badge: 'ANIMACIÓN', title: 'Etapa de Animación', desc: 'Toma mayor iniciativa en la Sección y dinamiza más el grupo. Pone especial cuidado en su progresión, matiza y reafirma los contenidos y objetivos asumidos hasta ahora, colabora aportando soluciones y coordina actuaciones de la Unidad, ayudando a los escultas nuevos a integrarse y a entender la vida en la Unidad. Símbolo: dos manos entrelazadas; la que está en primer término sostiene y ayuda a progresar a otro esculta más joven.' }
             ],
             kraalTitle: 'Kraal de la Unidad Esculta Trea',
             kraalSub: 'Scouters de Escultas (Kraaletes de Trea)',
@@ -363,8 +393,9 @@
             `,
             salidas: [],
             pillars: [
-                { title: 'La Horquilla Rover y el Lema «Servir»', desc: 'Símbolo de la elección consciente del propio camino, el voluntariado social y el apoyo constante a las ramas menores.' },
-                { title: 'De Rover a Scouter (El Manantial del Grupo)', desc: 'Como el agua que baja desde la Laguna Azul hasta los Castores, los Rovers se forman para devolver al grupo todo lo aprendido.' }
+                { badge: 'INTEGRACIÓN', title: 'Rover/Compañero Aspirante', desc: 'A su llegada al Clan, el Rover/Compañero se enfrenta a todas las decisiones y responsabilidades que supone unirse a la Hermandad Róver e iniciar la travesía por el «río de la vida», donde deberá «remar su propia canoa». Símbolo: la canoa y el remo sobre el óvalo rover.' },
+                { badge: 'PARTICIPACIÓN', title: 'Rover/Compañero en Formación', desc: 'Ha comenzado su etapa de participación asumiendo los retos del Roverismo y entrando a formar parte de la Hermandad de la Ruta. En esta andadura de Comunidad, Lucha y Servicio siempre podrá apoyarse en su horquilla, símbolo de la dualidad de toda situación y de la necesidad de tomar partido e implicarse ante cada una de ellas.' },
+                { badge: 'ANIMACIÓN', title: 'Rover/Compañero en Acción', desc: 'Está en permanente disposición de prestar servicio dentro y fuera de su Clan/Comunidad. Por un lado, ya ha trazado la senda por la que ha decidido plantear su proyecto de vida; por otro, se convierte en guía, animador y referente del resto del Clan. Su compromiso de crecimiento personal pasa por ayudar a crecer al resto de integrantes.' }
             ],
             kraalTitle: 'Kraal del Clan Ama Dablam',
             kraalSub: 'Acompañantes Rovers (Kraaletes de Clan)',
@@ -1965,13 +1996,14 @@
         // 1 · METODOLOGÍA Y ETAPAS DE PROGRESIÓN (ESTÉTICA DE CRISTAL ESTELAR)
         const pillarsWrap = document.getElementById('uzPillarsList');
         if (pillarsWrap) {
-            pillarsWrap.innerHTML = unit.pillars.map((p, idx) => `
+            const stageItems = (unit.pillars || []).map((p, idx) => `
                 <div class="sz-pillar-item">
-                    <span class="pillar-num-badge">ETAPA 0${idx + 1}</span>
-                    <strong>${p.title}</strong>
-                    <span>${p.desc}</span>
+                    <span class="pillar-num-badge">${stripHtmlTags(p.badge) || `ETAPA 0${idx + 1}`}</span>
+                    <strong>${stripHtmlTags(p.title)}</strong>
+                    <span>${stripHtmlTags(p.desc)}</span>
                 </div>
-            `).join('');
+            `);
+            pillarsWrap.innerHTML = stageItems.join('');
         }
 
         // 2 · LOS KRAALETES DE LA UNIDAD (CROMOS 3/4 CON BRILLO HOLOGRÁFICO)
@@ -1986,7 +2018,7 @@
                     <article class="kraalete-cromo-card ${hasCromo ? 'has-cromo-img' : 'no-cromo'}" data-cromo-idx="${kIdx}">
                         <div class="cromo-inner">
                             ${hasCromo ? `
-                                <img src="${k.cromoUrl}" alt="${cleanName}" class="kraalete-cromo-img" referrerpolicy="no-referrer" loading="lazy">
+                                <img src="${escapeAttr(k.cromoUrl)}" alt="${escapeAttr(cleanName)}" class="kraalete-cromo-img" referrerpolicy="no-referrer" loading="lazy">
                             ` : `
                                 <div class="cromo-fallback-content">
                                     <div class="cromo-scout-badge">${SVG_ICONS.compass}</div>
@@ -2046,23 +2078,23 @@
                     const photosHtml = (s.photos && s.photos.length > 0)
                         ? `<div class="salida-photos-row">
                             ${s.photos.slice(0, 3).map((p, pIdx) => `
-                                <div class="salida-photo-thumb" data-photo-src="${p}" data-photo-title="${s.name} · Foto ${pIdx + 1}">
-                                    <img src="${p}" alt="${s.name} ${pIdx + 1}" referrerpolicy="no-referrer" loading="lazy">
+                                <div class="salida-photo-thumb" data-photo-src="${escapeAttr(p)}" data-photo-title="${escapeAttr(s.name)} · Foto ${pIdx + 1}">
+                                    <img src="${escapeAttr(p)}" alt="${escapeAttr(s.name)} ${pIdx + 1}" referrerpolicy="no-referrer" loading="lazy">
                                 </div>
                             `).join('')}
                            </div>`
                         : '';
 
                     return `
-                        <article class="unit-salida-card" data-salida-id="${s.id}">
+                        <article class="unit-salida-card" data-salida-id="${escapeAttr(s.id)}">
                             <div class="salida-card-header">
                                 <div class="salida-tags-row">
                                     <span class="salida-badge">${SVG_ICONS.compass} Salida / Acampada</span>
-                                    ${s.location ? `<span class="salida-location-tag">${s.location}</span>` : ''}
-                                    ${s.date ? `<span class="salida-date-tag">${SVG_ICONS.calendar} ${s.date}</span>` : ''}
+                                    ${s.location ? `<span class="salida-location-tag">${stripHtmlTags(s.location)}</span>` : ''}
+                                    ${s.date ? `<span class="salida-date-tag">${SVG_ICONS.calendar} ${stripHtmlTags(s.date)}</span>` : ''}
                                 </div>
-                                <h4 class="salida-title">${s.name}</h4>
-                                <p class="salida-desc">${s.desc || 'Álbum oficial sincronizado directamente desde Google Drive.'}</p>
+                                <h4 class="salida-title">${stripHtmlTags(s.name)}</h4>
+                                <p class="salida-desc">${stripHtmlTags(s.desc) || 'Álbum oficial sincronizado directamente desde Google Drive.'}</p>
                             </div>
                             ${photosHtml}
                             <div class="salida-unlock-box">
@@ -2356,7 +2388,7 @@
         const hasCromo = Boolean(k.cromoUrl);
         elCromoZoomInner.innerHTML = `
             ${hasCromo ? `
-                <img src="${k.cromoUrl}" alt="${cleanName}" class="kraalete-cromo-img" referrerpolicy="no-referrer">
+                <img src="${escapeAttr(k.cromoUrl)}" alt="${escapeAttr(cleanName)}" class="kraalete-cromo-img" referrerpolicy="no-referrer">
             ` : `
                 <div class="cromo-fallback-content">
                     <div class="cromo-scout-badge">${SVG_ICONS.compass}</div>
@@ -2490,14 +2522,14 @@
                 : 'CAMPAMENTOS DE VERANO';
         }
         const locPill = document.getElementById('czLocationPill');
-        if (locPill) locPill.textContent = camp.location || 'Ubicación en naturaleza';
+        if (locPill) locPill.textContent = stripHtmlTags(camp.location) || 'Ubicación en naturaleza';
         const folderBadge = document.getElementById('czDriveFolderBadge');
-        if (folderBadge) folderBadge.textContent = `Drive: ${camp.driveFolderName || camp.name}`;
-        document.getElementById('czTitle').textContent = camp.name;
-        document.getElementById('czDesc').textContent = camp.desc;
+        if (folderBadge) folderBadge.textContent = `Drive: ${stripHtmlTags(camp.driveFolderName || camp.name)}`;
+        document.getElementById('czTitle').textContent = stripHtmlTags(camp.name);
+        document.getElementById('czDesc').textContent = stripHtmlTags(camp.desc);
 
         const folderTitle = document.getElementById('czDriveFolderTitle');
-        if (folderTitle) folderTitle.textContent = `Carpeta: ${camp.driveFolderName || camp.name}`;
+        if (folderTitle) folderTitle.textContent = `Carpeta: ${stripHtmlTags(camp.driveFolderName || camp.name)}`;
 
         const threePhotosGrid = document.getElementById('czThreePhotosGrid');
         if (threePhotosGrid) {
@@ -2513,15 +2545,15 @@
             } else {
                 const samplePhotos = photos.slice(0, 3);
                 threePhotosGrid.innerHTML = samplePhotos.map((ph, i) => `
-                    <article class="camp-photo-card" data-lightbox-src="${ph.src}" data-lightbox-title="${ph.title || camp.name}" data-lightbox-meta="Foto 0${i + 1}/03 · ${camp.name}">
+                    <article class="camp-photo-card" data-lightbox-src="${escapeAttr(ph.src)}" data-lightbox-title="${escapeAttr(ph.title || camp.name)}" data-lightbox-meta="Foto 0${i + 1}/03 · ${escapeAttr(camp.name)}">
                         <div class="camp-photo-img-wrap">
                             <span class="camp-photo-badge">MUESTRA 0${i + 1} / 03 · DRIVE</span>
-                            <img src="${ph.src}" alt="${ph.title || 'Foto de campamento'}" loading="lazy" referrerpolicy="no-referrer">
+                            <img src="${escapeAttr(ph.src)}" alt="${escapeAttr(ph.title || 'Foto de campamento')}" loading="lazy" referrerpolicy="no-referrer">
                             <span class="camp-photo-enlarge-hint">${SVG_ICONS.zoomIn} Ampliar</span>
                         </div>
                         <div class="camp-photo-caption">
-                            <strong>${ph.title || camp.name}</strong>
-                            <span>${ph.meta || `Muestra fotográfica sincronizada desde Google Drive`}</span>
+                            <strong>${stripHtmlTags(ph.title || camp.name)}</strong>
+                            <span>${stripHtmlTags(ph.meta) || `Muestra fotográfica sincronizada desde Google Drive`}</span>
                         </div>
                     </article>
                 `).join('');
@@ -2681,19 +2713,19 @@
             grid.innerHTML = filtered.map(it => {
                 const imgSrc = it.img || it.photoUrl || '';
                 return `
-                <article class="lost-photo-card" data-item-name="${it.name}">
+                <article class="lost-photo-card" data-item-name="${escapeAttr(it.name)}">
                     <div class="lost-photo-art" title="Clic para ampliar foto">
-                        ${it.svg ? it.svg : `<img src="${imgSrc}" alt="${it.name}" loading="lazy" referrerpolicy="no-referrer">`}
-                        <span class="lost-drive-file-chip">${it.file}</span>
+                        ${it.svg ? it.svg : `<img src="${escapeAttr(imgSrc)}" alt="${escapeAttr(it.name)}" loading="lazy" referrerpolicy="no-referrer">`}
+                        <span class="lost-drive-file-chip">${stripHtmlTags(it.file)}</span>
                     </div>
                     <div class="lost-photo-body">
                         <div>
-                            <h4>${it.name}</h4>
-                            <p>${it.desc}</p>
+                            <h4>${stripHtmlTags(it.name)}</h4>
+                            <p>${stripHtmlTags(it.desc)}</p>
                         </div>
                         <div class="lost-photo-footer">
                             <span class="star-pillar-tag">Sede Rueda 53</span>
-                            <button type="button" class="lost-claim-btn" data-claim-item="${it.name}">Es mío · Reclamar</button>
+                            <button type="button" class="lost-claim-btn" data-claim-item="${escapeAttr(it.name)}">Es mío · Reclamar</button>
                         </div>
                     </div>
                 </article>
@@ -2715,13 +2747,19 @@
             grid.querySelectorAll('[data-claim-item]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const itemName = btn.getAttribute('data-claim-item');
+                    const itemName = stripHtmlTags(btn.getAttribute('data-claim-item'));
                     const banner = document.getElementById('lzClaimBanner');
                     const waText = `Hola Acrux, he visto en la web en El Baúl la prenda "${itemName}" (${cajon.folderName}) y es mía. Me gustaría pasar a recogerla este sábado por la base de Carretera de Rueda 53. ¡Muchas gracias!`;
-                    const waUrl = `https://wa.me/34616289119?text=${encodeURIComponent(waText)}`;
+                    // Teléfono del primer coordinador de Drive (sin espacios); 616289119 solo como respaldo
+                    const firstCoordPhone = (Array.isArray(coordinadoresDrive) && coordinadoresDrive.length > 0)
+                        ? String(coordinadoresDrive[0].telefono || coordinadoresDrive[0].phone || '').replace(/\s+/g, '')
+                        : '';
+                    const coordPhone = firstCoordPhone || '616289119';
+                    const waPhone = (coordPhone.startsWith('+') ? coordPhone.slice(1) : (coordPhone.length === 9 ? '34' + coordPhone : coordPhone));
+                    const waUrl = `https://wa.me/${waPhone}?text=${encodeURIComponent(waText)}`;
                     if (banner) {
                         banner.style.display = 'block';
-                        banner.innerHTML = `<strong>Solicitud registrada para «${itemName}» (${cajon.folderName}):</strong> Hemos abierto WhatsApp para avisar a Coordinación. Pásate cualquier sábado de <strong>16:30 a 19:00 h</strong> por nuestra Base de <strong>Carretera de Rueda, 53</strong> para recogerlo.`;
+                        banner.innerHTML = `<strong>Solicitud registrada para «${escapeAttr(itemName)}» (${escapeAttr(cajon.folderName)}):</strong> Hemos abierto WhatsApp para avisar a Coordinación. Pásate cualquier sábado de <strong>16:30 a 19:00 h</strong> por nuestra Base de <strong>Carretera de Rueda, 53</strong> para recogerlo.`;
                     }
                     window.open(waUrl, '_blank', 'noopener');
                 });
@@ -2951,8 +2989,8 @@
             ? coordinadoresDrive.map(c => {
                 const rawPhone = (c.telefono || c.phone || '616289119').replace(/\s+/g, '');
                 return {
-                    name: c.name || 'Coordinación',
-                    role: c.cargo || c.role || 'Equipo de Coordinación',
+                    name: stripHtmlTags(c.name || 'Coordinación'),
+                    role: stripHtmlTags(c.cargo || c.role || 'Equipo de Coordinación'),
                     phone: rawPhone,
                     displayPhone: c.telefono || c.phone || '616 28 91 19',
                     photoUrl: c.fotoUrl || c.cromoUrl || c.photoUrl || null
@@ -3068,7 +3106,7 @@
                                 <div style="display:flex; align-items:center; gap:0.95rem;">
                                     <div class="coord-avatar-frame">
                                         ${c.photoUrl ? `
-                                            <img src="${c.photoUrl}" alt="${c.name}" class="coord-avatar-img" referrerpolicy="no-referrer">
+                                            <img src="${escapeAttr(c.photoUrl)}" alt="${escapeAttr(c.name)}" class="coord-avatar-img" referrerpolicy="no-referrer">
                                         ` : `
                                             <div class="coord-avatar-fallback">${SVG_ICONS.users}</div>
                                         `}
@@ -3289,8 +3327,8 @@
                 : `50º ANIVERSARIO · ARCHIVO EN DIGITALIZACIÓN (${starData.year})`;
         }
         if (elAnYearNumber) elAnYearNumber.textContent = starData.year;
-        if (elAnYearTitle) elAnYearTitle.textContent = starData.title;
-        if (elAnYearDesc) elAnYearDesc.textContent = starData.desc;
+        if (elAnYearTitle) elAnYearTitle.textContent = stripHtmlTags(starData.title);
+        if (elAnYearDesc) elAnYearDesc.textContent = stripHtmlTags(starData.desc);
         if (elAnDriveBadge) elAnDriveBadge.textContent = `Google Drive: ${starData.driveFolder}`;
         if (elAnDriveBtn) elAnDriveBtn.href = starData.driveUrl || DRIVE_ANNIVERSARY_URL;
 
@@ -3298,7 +3336,7 @@
         if (elAnPhotoFrame) {
             if (starData.isUnlocked && starData.photoUrl) {
                 elAnPhotoFrame.innerHTML = `
-                    <img src="${starData.photoUrl}" alt="${starData.title}" loading="lazy">
+                    <img src="${escapeAttr(starData.photoUrl)}" alt="${escapeAttr(starData.title)}" loading="lazy">
                 `;
             } else {
                 elAnPhotoFrame.innerHTML = `
@@ -3673,7 +3711,7 @@
         if (form._parsedSchema && !forceRefresh) return form._parsedSchema;
 
         // 1. Si el backend de Google Apps Script ya envió el esquema estructurado (form.fbLoadData)
-        if (form.fbLoadData && !forceRefresh) {
+        if (form.fbLoadData) {
             const parsed = buildSchemaFromFbLoadData(form.fbLoadData, form.rawHtml || '', form);
             if (parsed) {
                 form._parsedSchema = parsed;
@@ -3939,9 +3977,57 @@
 
         elMerchDynamicFields.innerHTML = pillsHtml + buyerDividerHtml + textsHtml;
 
+        // VALIDADOR EN VIVO DE COMBINACIONES TALLA + COLOR
+        // Deshabilita tallas que no existan en el color elegido y salta automáticamente a una talla válida
+        function syncGridAvailability() {
+            const sizeField = schema.pillFields.find(f => f.kind === 'grid-size');
+            const colorField = schema.pillFields.find(f => f.kind === 'grid-color');
+            if (!sizeField || !colorField || !sizeField.gridCellMap) return;
+
+            const cellMap = sizeField.gridCellMap;
+            const currentColor = activeMerchOrderState[colorField.id];
+            let currentSize = activeMerchOrderState[sizeField.id];
+
+            // 1. Si la talla actual NO existe para el nuevo color elegido, cambiar sola a la primera talla válida
+            if (currentColor && !cellMap[`${currentSize}|||${currentColor}`]) {
+                const firstValidSize = sizeField.options.find(sz => Boolean(cellMap[`${sz}|||${currentColor}`]));
+                if (firstValidSize) {
+                    currentSize = firstValidSize;
+                    activeMerchOrderState[sizeField.id] = firstValidSize;
+                }
+            }
+
+            // 2. Activar/desactivar botones de Talla según el Color activo
+            const sizeGroupEl = elMerchDynamicFields.querySelector(`[data-field-group="${sizeField.id}"]`);
+            if (sizeGroupEl) {
+                sizeGroupEl.querySelectorAll('.merch-option-pill').forEach(btn => {
+                    const szVal = btn.getAttribute('data-pill-value');
+                    const isAvailable = Boolean(cellMap[`${szVal}|||${currentColor}`]);
+                    btn.disabled = !isAvailable;
+                    btn.classList.toggle('is-unavailable', !isAvailable);
+                    btn.classList.toggle('is-selected', isAvailable && szVal === currentSize);
+                });
+                const selSizeLabel = document.getElementById(`selectedLabel-${sizeField.id}`);
+                if (selSizeLabel) selSizeLabel.textContent = currentSize || '';
+            }
+
+            // 3. Activar/desactivar botones de Color (por si hubiera algún color vacío sin ninguna talla)
+            const colorGroupEl = elMerchDynamicFields.querySelector(`[data-field-group="${colorField.id}"]`);
+            if (colorGroupEl) {
+                colorGroupEl.querySelectorAll('.merch-option-pill').forEach(btn => {
+                    const colVal = btn.getAttribute('data-pill-value');
+                    const hasAnySize = sizeField.options.some(sz => Boolean(cellMap[`${sz}|||${colVal}`]));
+                    btn.disabled = !hasAnySize;
+                    btn.classList.toggle('is-unavailable', !hasAnySize);
+                    btn.classList.toggle('is-selected', hasAnySize && colVal === currentColor);
+                });
+            }
+        }
+
         // Eventos interactivos en las pastillas de Talla / Color / Cantidad
         elMerchDynamicFields.querySelectorAll('[data-pill-field]').forEach(btn => {
             btn.addEventListener('click', () => {
+                if (btn.disabled || btn.classList.contains('is-unavailable')) return;
                 const fieldId = btn.getAttribute('data-pill-field');
                 const val = btn.getAttribute('data-pill-value');
                 activeMerchOrderState[fieldId] = val;
@@ -3959,7 +4045,10 @@
                     selLabelEl.textContent = cInfo ? cInfo.label : val;
                 }
 
-                // Si el usuario cambia el color o la talla, mostrar la foto asociada a ese color (si existe en el Google Form) o actualizar el escaparate
+                // Re-validar disponibilidad cruzada Talla/Color
+                syncGridAvailability();
+
+                // Actualizar foto asociada a ese color o escaparate
                 if (pf && (pf.isColorField || pf.isSizeField || pf.kind === 'grid-color' || pf.kind === 'grid-size')) {
                     const allPhotos = [
                         ...(Array.isArray(form.photos) ? form.photos : []),
@@ -3984,6 +4073,8 @@
             });
         });
 
+        // Ejecutar validación nada más abrir el modal
+        syncGridAvailability();
         renderMerchLeftShowcase(form, schema);
     }
 
@@ -4137,6 +4228,7 @@
 
         // 2. Construir el diccionario exacto de pares entry.xxxxx -> valor para Google Forms
         const submissionEntries = {};
+        let invalidCombinationError = '';
 
         schema.pillFields.forEach(pf => {
             if (pf.kind === 'grid-size') {
@@ -4147,6 +4239,8 @@
                     const cellEntryId = pf.gridCellMap[`${chosenSize}|||${chosenColor}`];
                     if (cellEntryId) {
                         submissionEntries[cellEntryId] = chosenColor;
+                    } else {
+                        invalidCombinationError = `La talla «${chosenSize}» no está disponible en el color «${chosenColor}». Por favor, elige otra combinación.`;
                     }
                 } else if (Array.isArray(pf.rows)) {
                     const matchedRow = pf.rows.find(r => r.rowLabel === chosenSize);
@@ -4160,6 +4254,14 @@
                 submissionEntries[pf.entryId] = activeMerchOrderState[pf.id] || '';
             }
         });
+
+        if (invalidCombinationError) {
+            if (elMerchFormError) {
+                elMerchFormError.textContent = invalidCombinationError;
+                elMerchFormError.style.display = 'block';
+            }
+            return;
+        }
 
         // Sincronizar campos de color auxiliares si el Google Form los tiene como obligatorios
         if (Array.isArray(schema.autoSyncColorEntries) && schema.autoSyncColorEntries.length > 0) {
@@ -5681,8 +5783,8 @@
             const star = aniversarioFotos.find(s => s.year === y);
             if (star) {
                 star.isUnlocked = true;
-                if (item.title) star.title = item.title;
-                if (item.desc) star.desc = item.desc;
+                if (item.title) star.title = stripHtmlTags(item.title);
+                if (item.desc) star.desc = stripHtmlTags(item.desc);
                 if (item.photoUrl) star.photoUrl = item.photoUrl;
                 if (item.driveUrl) star.driveUrl = item.driveUrl;
                 star.r = 5.6;
@@ -5690,7 +5792,94 @@
         });
     }
 
+    // --- Boot Loader (#cosmosBootLoader) + caché instantánea en localStorage ---
+    const LOCAL_STORAGE_CACHE_KEY = 'acrux_drive_cache_v21';
+    const elBootLoader = document.getElementById('cosmosBootLoader');
+    const elBootProgressFill = document.getElementById('bootProgressFill');
+    const elBootStatusText = document.getElementById('bootStatusText');
+    let bootLoaderHidden = false;
+
+    function setBootProgress(percent, msg) {
+        if (bootLoaderHidden) return;
+        if (elBootProgressFill) elBootProgressFill.style.width = `${clamp(percent, 15, 100)}%`;
+        if (elBootStatusText && msg) elBootStatusText.textContent = msg;
+    }
+
+    function hideBootLoader(delayMs = 0) {
+        if (bootLoaderHidden) return;
+        bootLoaderHidden = true;
+        if (elBootProgressFill) elBootProgressFill.style.width = '100%';
+        setTimeout(() => {
+            if (elBootLoader) {
+                elBootLoader.classList.add('is-hidden');
+                elBootLoader.setAttribute('aria-hidden', 'true');
+            }
+        }, delayMs);
+    }
+
+    // Limpia en origen todos los textos que vienen de Drive (descripciones con <div>, <br />, &nbsp;...).
+    // Se saltan URLs, ids, fotos y el esquema de formularios (fbLoadData) para no corromperlos.
+    const SANITIZE_SKIP_KEYS = /url|src|photo|^id$|fbloaddata|rawhtml|embed/i;
+    function sanitizeDriveValue(val, key) {
+        if (typeof val === 'string') {
+            if (key && SANITIZE_SKIP_KEYS.test(key)) return val;
+            return /[<>]|&[a-z#0-9]+;/i.test(val) ? stripHtmlTags(val) : val;
+        }
+        if (Array.isArray(val)) return val.map(v => sanitizeDriveValue(v, key));
+        if (val && typeof val === 'object') {
+            if (key && /fbloaddata/i.test(key)) return val;
+            const out = {};
+            Object.keys(val).forEach(k => { out[k] = sanitizeDriveValue(val[k], k); });
+            return out;
+        }
+        return val;
+    }
+
+    // Aplica un payload del Apps Script (de caché o de red) a todas las secciones. Cada bloque va aislado
+    // para que un fallo en uno (p. ej. Merch) no impida pintar el resto.
+    function applyDrivePayload(data) {
+        if (!data || typeof data !== 'object') return;
+        data = sanitizeDriveValue(data, '');
+        const safe = (label, fn) => {
+            try { fn(); } catch (err) { console.warn(`Google Drive Sync: fallo aplicando «${label}».`, err); }
+        };
+        if (data.error) console.error('Google Drive Sync: Error reportado por Google Apps Script:', data.error);
+        if (data.campamentos !== undefined) safe('campamentos', () => rebuildCampsConstellation(data.campamentos));
+        if (data.unidades) safe('unidades', () => syncUnitsFromDrive(data.unidades));
+        if (data.coordinacion && data.coordinacion.length > 0) safe('coordinación', () => syncCoordinacionFromDrive(data.coordinacion));
+        if (data.cajones !== undefined) safe('cajones', () => rebuildLostConstellation(data.cajones));
+        if (data.merchForms !== undefined || data.intendencia !== undefined) {
+            safe('merch', () => syncMerchFromDrive(data.merchForms !== undefined ? data.merchForms : data.intendencia));
+        }
+        if (data.aniversario) safe('aniversario', () => syncAnniversaryFromDrive(data.aniversario));
+    }
+
     async function fetchDriveData() {
+        // Tope de seguridad: pase lo que pase, el loader desaparece a los 1800 ms
+        setBootProgress(15, 'Trazando carta estelar · Valladolid');
+        const bootStart = performance.now();
+        const progressTimer = setInterval(() => {
+            if (bootLoaderHidden) { clearInterval(progressTimer); return; }
+            const t = clamp((performance.now() - bootStart) / 1800, 0, 1);
+            setBootProgress(15 + 85 * t);
+        }, 60);
+        setTimeout(() => { clearInterval(progressTimer); hideBootLoader(0); }, 1800);
+
+        let hadCache = false;
+        try {
+            const cachedRaw = localStorage.getItem(LOCAL_STORAGE_CACHE_KEY);
+            if (cachedRaw) {
+                const cachedData = JSON.parse(cachedRaw);
+                applyDrivePayload(cachedData);
+                hadCache = true;
+                setBootProgress(70, 'Cargando desde caché local');
+                setTimeout(() => hideBootLoader(0), 350);
+            }
+        } catch (err) {
+            console.warn('Google Drive Sync: caché local inválida, se descarta.', err);
+            try { localStorage.removeItem(LOCAL_STORAGE_CACHE_KEY); } catch (_) {}
+        }
+
         try {
             const res = await fetch(DRIVE_API_URL);
             if (!res.ok) throw new Error(`HTTP error ${res.status}`);
@@ -5700,31 +5889,16 @@
                 return;
             }
             const data = JSON.parse(text);
-            if (data) {
-                if (data.error) {
-                    console.error('Google Drive Sync: Error reportado por Google Apps Script:', data.error);
-                }
-                if (data.campamentos !== undefined) {
-                    rebuildCampsConstellation(data.campamentos);
-                }
-                if (data.unidades) {
-                    syncUnitsFromDrive(data.unidades);
-                }
-                if (data.coordinacion && data.coordinacion.length > 0) {
-                    syncCoordinacionFromDrive(data.coordinacion);
-                }
-                if (data.cajones !== undefined) {
-                    rebuildLostConstellation(data.cajones);
-                }
-                if (data.merchForms !== undefined || data.intendencia !== undefined) {
-                    syncMerchFromDrive(data.merchForms !== undefined ? data.merchForms : data.intendencia);
-                }
-                if (data.aniversario) {
-                    syncAnniversaryFromDrive(data.aniversario);
-                }
+            if (data && !data.error) {
+                try { localStorage.setItem(LOCAL_STORAGE_CACHE_KEY, JSON.stringify(data)); } catch (_) {}
             }
+            applyDrivePayload(data);
+            if (!hadCache) hideBootLoader(150);
         } catch (err) {
             console.warn('Google Drive Sync: operando en modo offline / fallback.', err);
+        } finally {
+            clearInterval(progressTimer);
+            if (!hadCache) hideBootLoader(150);
         }
     }
 
@@ -5767,7 +5941,7 @@
         }
         if (urlParams.has('unit')) {
             setTimeout(() => {
-                openUnitModal(parseInt(urlParams.get('unit'), 10));
+                openUnitSuperZoom(parseInt(urlParams.get('unit'), 10));
             }, 50);
         }
     } catch (_) {}

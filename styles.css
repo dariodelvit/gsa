@@ -5057,6 +5057,15 @@ body.anniversary-50-mode .hud-scroll-fill {
     box-shadow: 0 8px 24px rgba(255, 255, 255, 0.16);
 }
 
+.merch-option-pill.is-unavailable,
+.merch-option-pill:disabled {
+    opacity: 0.25;
+    text-decoration: line-through;
+    cursor: not-allowed;
+    pointer-events: none;
+    border-color: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.01);
+}
 .merch-color-dot {
     width: 13px;
     height: 13px;
@@ -5278,5 +5287,141 @@ body.anniversary-50-mode .hud-scroll-fill {
         padding: 1.6rem 1.3rem 2.8rem 1.3rem;
     }
 }
+/* ==========================================================================
+   PANTALLA DE INICIO ESTELAR RÁPIDA (BOOT LOADER CORTO Y FLUIDO)
+   ========================================================================== */
+.cosmos-boot-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 99990;
+    background: radial-gradient(circle at 50% 45%, #0A0D16 0%, #040406 75%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
+.cosmos-boot-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none !important;
+}
+
+.boot-loader-core {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.15rem;
+    text-align: center;
+    padding: 2rem;
+    transform: translateY(0) scale(1);
+    transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cosmos-boot-loader.is-hidden .boot-loader-core {
+    transform: translateY(-8px) scale(0.96);
+}
+
+.boot-orb-wrap {
+    position: relative;
+    width: 68px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.boot-orb-ring {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.16);
+    border-top-color: #D9383A;
+    border-right-color: rgba(255, 255, 255, 0.65);
+    animation: bootOrbitSpin 1.15s linear infinite;
+}
+
+.boot-orb-pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(217, 56, 58, 0.42) 0%, transparent 72%);
+    animation: bootPulseGlow 1.6s ease-in-out infinite;
+}
+
+.boot-logo-circle {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(176, 35, 36, 0.9);
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 24px rgba(217, 56, 58, 0.5);
+}
+
+.boot-logo-circle img {
+    width: 26px;
+    height: 26px;
+    filter: brightness(0) invert(1);
+}
+
+.boot-text-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.boot-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #FFFFFF;
+}
+
+.boot-title em {
+    font-style: normal;
+    color: #E05254;
+}
+
+.boot-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.boot-progress-bar {
+    width: 170px;
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+}
+
+.boot-progress-fill {
+    width: 35%;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #D9383A 0%, #FFFFFF 100%);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    transition: width 0.28s ease-out;
+}
+
+@keyframes bootOrbitSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes bootPulseGlow {
+    0%, 100% { transform: scale(0.95); opacity: 0.65; }
+    50% { transform: scale(1.18); opacity: 1; }
+}
 

@@ -2,16 +2,41 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Grupo Scout ACRUX 518 · Valladolid (ASDE Exploradores de Castilla y León). Mapa estelar interactivo: Acrux 518, Unidades, Campamentos y El Baúl.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Grupo Scout ACRUX 518 · Valladolid (ASDE Exploradores de Castilla y León). Educando en valores, escultismo y naturaleza desde 1977: Castores, Manada, Tropa, Escultas y Clan.">
+    <meta name="theme-color" content="#040406">
     <title>Grupo Scout ACRUX 518 · Valladolid</title>
     <link rel="icon" type="image/svg+xml" href="images/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://script.google.com">
+    <link rel="preconnect" href="https://lh3.googleusercontent.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=19.0">
+    <link rel="stylesheet" href="styles.css?v=20.1">
 </head>
 <body class="cosmos-body">
+
+<!-- ======================================================================
+     0. PANTALLA DE INICIO ESTELAR RÁPIDA (BOOT LOADER CORTO Y FLUIDO)
+     ====================================================================== -->
+<div class="cosmos-boot-loader" id="cosmosBootLoader" role="status" aria-live="polite">
+    <div class="boot-loader-core">
+        <div class="boot-orb-wrap">
+            <span class="boot-orb-ring"></span>
+            <span class="boot-orb-pulse"></span>
+            <div class="boot-logo-circle">
+                <img src="images/logo.svg" alt="Flor de Lis ACRUX 518" width="28" height="28">
+            </div>
+        </div>
+        <div class="boot-text-wrap">
+            <span class="boot-title">ACRUX <em>518</em></span>
+            <span class="boot-subtitle" id="bootStatusText">Trazando carta estelar · Valladolid</span>
+        </div>
+        <div class="boot-progress-bar">
+            <div class="boot-progress-fill" id="bootProgressFill"></div>
+        </div>
+    </div>
+</div>
 
 <!-- ======================================================================
      1. CANVAS ESTELAR 100VW x 100VH (MOTOR DE CONSTELACIONES Y SUPER-ZOOM)
@@ -74,11 +99,14 @@
             <svg class="hud-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <span id="overviewBtnText">Mapa Global</span>
         </button>
+        <button type="button" class="hud-btn-cta" id="btnQuickContactTop" title="Contacto directo, sede e inscripciones">
+            <span>Contacto</span>
+        </button>
     </div>
 </header>
 
 <!-- ======================================================================
-     5. INTRODUCCIÓN FLOTANTE MINIMALISTA SOBRE EL COSMOS (SIN CAJA PESADA)
+     5. INTRODUCCIÓN FLOTANTE MINIMALISTA SOBRE EL COSMOS
      ====================================================================== -->
 <main class="cosmos-stage-viewport" id="cosmosStageViewport" aria-live="polite">
     <article class="constellation-stage-panel is-floating-minimal" id="constellationStagePanel">
@@ -107,7 +135,7 @@
 </main>
 
 <!-- ======================================================================
-     6. VISTA ESTELAR DE UNIDAD (PANTALLA COMPLETA · SIN SCROLLER · INTRODUCCIÓN FLOTANTE)
+     6. VISTA ESTELAR DE UNIDAD (PANTALLA COMPLETA · INTRODUCCIÓN FLOTANTE)
      ====================================================================== -->
 <section class="star-tab-view star-tab-unit-view" id="unitSuperZoomOverlay" data-unit-world="castores" aria-hidden="true">
     <header class="star-tab-topbar">
@@ -120,7 +148,7 @@
     </header>
 
     <div class="star-tab-container is-fullbleed">
-        <!-- CABECERA FLOTANTE DE LA UNIDAD (SIN CAJA PESADA) -->
+        <!-- CABECERA FLOTANTE DE LA UNIDAD -->
         <div class="unit-floating-showcase">
             <div class="unit-floating-title-block">
                 <div class="star-tab-meta-row">
@@ -165,7 +193,7 @@
                 <div>
                     <span class="sz-section-index">02 · LOS KRAALETES DE LA UNIDAD</span>
                     <h3 id="uzKraalTitle">El Kraal y Personajes del Bosque</h3>
-                    <p id="uzKraalSub">Cromos coleccionables de los scouters y figuras del marco simbólico de esta rama</p>
+                    <p id="uzKraalSub">Cromos coleccionables de los scouters y figuras del marco simbólico de esta rama (haz clic en cualquier cromo para ver su ficha)</p>
                 </div>
             </div>
             <div class="kraaletes-cromos-grid" id="uzKraaletesGrid"></div>
@@ -199,7 +227,7 @@
 </section>
 
 <!-- ======================================================================
-     7. VISTA ESTELAR DE CAMPAMENTO (DESPEJADA · PANTALLA COMPLETA · SIN SCROLLER)
+     7. VISTA ESTELAR DE CAMPAMENTO (PANTALLA COMPLETA)
      ====================================================================== -->
 <section class="star-tab-view star-tab-camp-view" id="campSuperZoomOverlay" aria-hidden="true">
     <header class="star-tab-topbar">
@@ -266,7 +294,7 @@
 </section>
 
 <!-- ======================================================================
-     8. VISTA ESTELAR «EL BAÚL» (PANTALLA COMPLETA · SIN SCROLLER)
+     8. VISTA ESTELAR «EL BAÚL» (PANTALLA COMPLETA)
      ====================================================================== -->
 <section class="star-tab-view star-tab-lost-view" id="lostSuperZoomOverlay" aria-hidden="true">
     <header class="star-tab-topbar">
@@ -336,7 +364,7 @@
 </section>
 
 <!-- ======================================================================
-     9. PÍLDORA SUTIL DE AYUDA A LA NAVEGACIÓN Y HUD INFERIOR MINIMALISTA (4 SECTORES)
+     9. PÍLDORA SUTIL DE AYUDA A LA NAVEGACIÓN Y HUD INFERIOR MINIMALISTA
      ====================================================================== -->
 <div class="cosmos-nav-hint-pill cosmos-interactive" id="cosmosNavHintPill" aria-live="off">
     <svg class="nav-hint-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
@@ -374,7 +402,7 @@
 </footer>
 
 <!-- ======================================================================
-     10. VISTA ESTELAR SECCIÓN 1 (ACRUX 518 · PANTALLA COMPLETA · SIN SCROLLER)
+     10. VISTA ESTELAR SECCIÓN 1 (ACRUX 518 · PANTALLA COMPLETA)
      ====================================================================== -->
 <div class="cosmos-drawer-backdrop is-fullscreen-star-view" id="cosmosDrawerBackdrop" aria-hidden="true">
     <div class="cosmos-drawer-modal is-fullscreen-star-modal" role="dialog" aria-modal="true" aria-labelledby="drawerModalTitle">
@@ -483,7 +511,6 @@
      ====================================================================== -->
 <div class="merch-embed-overlay merch-custom-modal" id="merchModal" aria-hidden="true">
     <div class="merch-ecom-shell" role="dialog" aria-modal="true" aria-labelledby="merchModalTitle">
-        <!-- Barra superior minimalista estilo Áureo Design -->
         <header class="merch-ecom-topbar">
             <button type="button" class="merch-back-btn" id="btnCloseMerchModal" aria-label="Cerrar tienda de Merch">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -502,7 +529,6 @@
             </div>
         </header>
 
-        <!-- Cuerpo Split-Screen 100% pantalla -->
         <div class="merch-ecom-split">
             <!-- COLUMNA IZQUIERDA: Gran Escaparate Fotográfico -->
             <div class="merch-ecom-gallery-col">
@@ -512,9 +538,7 @@
                         <span class="merch-stage-pill merch-stage-pill-muted">ENTREGA EN BASE · RUEDA 53</span>
                     </div>
 
-                    <div class="merch-showcase-visual" id="merchShowcaseVisual">
-                        <!-- Imagen de producto desde Drive / Formulario o escaparate editorial dinámico -->
-                    </div>
+                    <div class="merch-showcase-visual" id="merchShowcaseVisual"></div>
 
                     <div class="merch-thumb-strip" id="merchThumbStrip" style="display:none;"></div>
 
@@ -547,13 +571,11 @@
                         <p class="merch-product-desc" id="merchModalDesc">Selecciona tus opciones y completa tus datos para registrar tu pedido directamente en el listado oficial del grupo.</p>
                     </div>
 
-                    <!-- Estado de carga mientras se leen las preguntas del Google Form -->
                     <div class="merch-schema-loader" id="merchIframeLoader" style="display:none;">
                         <span class="merch-loader-dot"></span>
                         <span>Sincronizando opciones del artículo desde Google Drive...</span>
                     </div>
 
-                    <!-- Formulario nativo generado dinámicamente a partir del Google Form -->
                     <form class="merch-native-form" id="merchNativeForm" novalidate>
                         <div class="merch-dynamic-fields" id="merchDynamicFields"></div>
 
@@ -568,7 +590,6 @@
                         </div>
                     </form>
 
-                    <!-- Pantalla de confirmación tras el envío silencioso -->
                     <div class="merch-order-success" id="merchOrderSuccess" style="display:none;">
                         <div class="merch-success-icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -585,12 +606,11 @@
             </div>
         </div>
 
-        <!-- Infraestructura oculta para envío silencioso 100% libre de interfaz de Google -->
         <iframe name="merchSilentSubmitFrame" id="merchSilentSubmitFrame" title="Envío silencioso de Merch" style="display:none;"></iframe>
         <form id="merchHiddenGoogleForm" target="merchSilentSubmitFrame" method="POST" style="display:none;"></form>
     </div>
 </div>
 
-<script src="script.js?v=19.0"></script>
+<script src="script.js?v=20.0"></script>
 </body>
 </html>
