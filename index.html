@@ -11,10 +11,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://script.google.com">
     <link rel="preconnect" href="https://lh3.googleusercontent.com">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20.1">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Montserrat:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=21.0">
 </head>
-<body class="cosmos-body">
+<body class="cosmos-body day-mode">
 
 <!-- ======================================================================
      0. PANTALLA DE INICIO ESTELAR RÁPIDA (BOOT LOADER CORTO Y FLUIDO)
@@ -95,6 +95,10 @@
     </nav>
 
     <div class="hud-actions-right cosmos-interactive">
+        <button type="button" class="hud-btn-daymode" id="btnToggleDayMode" title="Alternar Modo Luminoso / Nocturno" aria-pressed="true">
+            <svg class="hud-icon icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <svg class="hud-icon icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </button>
         <button type="button" class="hud-btn-overview" id="btnToggleOverview" title="Ver el Mapa Estelar Global completo (Tecla M)">
             <svg class="hud-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <span id="overviewBtnText">Mapa Global</span>
@@ -122,6 +126,16 @@
         <p class="stage-description" id="stageDescription">
             Desde 1977 educando en valores, escultismo y contacto con la naturaleza en Valladolid. Pulsa en nuestra estrella guía Acrux para conocer el grupo, nuestra sede, el equipo de coordinación y cómo unirte.
         </p>
+
+        <figure class="stage-welcome-photo-card cosmos-interactive" id="stageWelcomePhotoCard" role="button" tabindex="0" aria-label="Ampliar fotografía del Grupo Scout Acrux 518">
+            <div class="stage-welcome-photo-frame">
+                <img src="images/DSC_066412.jpg" alt="Familia Acrux 518 con pañoletas en Valladolid" loading="lazy" onerror="this.onerror=null; this.src='images/Tropa.jpg';">
+                <span class="stage-welcome-photo-zoom" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </span>
+            </div>
+            <figcaption class="stage-welcome-photo-caption">Familia Acrux 518 · Sábados 16:30h en Crtra. Rueda 53</figcaption>
+        </figure>
 
         <div class="stage-star-nodes cosmos-interactive" id="stageStarNodes" role="tablist" aria-label="Estrellas del sector" style="display:none;"></div>
 
@@ -611,6 +625,54 @@
     </div>
 </div>
 
-<script src="script.js?v=20.0"></script>
+<!-- ======================================================================
+     12. MODAL DE DOCUMENTACIÓN OFICIAL (γ GACRUX · DOCUMENTOS)
+     ====================================================================== -->
+<section class="star-tab-view star-tab-docs-view" id="documentosModal" aria-hidden="true">
+    <header class="star-tab-topbar">
+        <button type="button" class="star-tab-back-btn" id="btnCloseDocumentosModal">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Volver al Cosmos <kbd>ESC</kbd>
+        </button>
+        <div class="star-tab-coords">γ GACRUX · DOCUMENTACIÓN OFICIAL ACRUX 518</div>
+    </header>
+    <div class="star-tab-scroll-container">
+        <div class="docs-modal-content" id="documentosModalBody"></div>
+    </div>
+</section>
+
+<!-- ======================================================================
+     13. MODAL DEL KRAAL DE RESPONSABLES (δ IMAI · EL KRAAL)
+     ====================================================================== -->
+<section class="star-tab-view star-tab-kraal-view" id="kraalGeneralModal" aria-hidden="true">
+    <header class="star-tab-topbar">
+        <button type="button" class="star-tab-back-btn" id="btnCloseKraalGeneralModal">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Volver al Cosmos <kbd>ESC</kbd>
+        </button>
+        <div class="star-tab-coords">δ IMAI · KRAAL DE RESPONSABLES Y COORDINACIÓN</div>
+    </header>
+    <div class="star-tab-scroll-container">
+        <div class="kraal-general-content" id="kraalGeneralModalBody"></div>
+    </div>
+</section>
+
+<!-- ======================================================================
+     14. MODAL DE CALENDARIO DE RONDA SOLAR (ζ CALENDARIO)
+     ====================================================================== -->
+<section class="star-tab-view star-tab-calendar-view" id="calendarioModal" aria-hidden="true">
+    <header class="star-tab-topbar">
+        <button type="button" class="star-tab-back-btn" id="btnCloseCalendarioModal">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Volver al Cosmos <kbd>ESC</kbd>
+        </button>
+        <div class="star-tab-coords">ζ CALENDARIO · RONDA SOLAR ACRUX 518</div>
+    </header>
+    <div class="star-tab-scroll-container">
+        <div class="calendar-modal-content" id="calendarioModalBody"></div>
+    </div>
+</section>
+
+<script src="script.js?v=21.0"></script>
 </body>
 </html>

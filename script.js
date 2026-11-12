@@ -161,7 +161,7 @@
                     <ellipse cx="422" cy="257" rx="12" ry="5" fill="#78350F"/>
                     <path d="M 382 248 Q 372 232 364 242 M 436 246 Q 446 230 454 240" stroke="#E0F2FE" stroke-width="2.5" fill="none"/>
                     <rect x="20" y="286" width="520" height="14" rx="7" fill="#78350F" stroke="#D97706" stroke-width="2"/>
-                    <text x="24" y="34" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">EL ESTANQUE DEL GRAN ROBLE · «SPLASH, SPLASH, SPLASH»</text>
+                    <text x="24" y="34" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600">EL ESTANQUE DEL GRAN ROBLE · «SPLASH, SPLASH, SPLASH»</text>
                 </svg>
             `,
             salidas: [],
@@ -218,7 +218,7 @@
                     <polygon points="25,320 65,175 105,320" fill="#064E3B"/>
                     <polygon points="455,320 498,165 542,320" fill="#064E3B"/>
                     <path d="M 0 285 Q 280 255 560 295 L 560 320 L 0 320 Z" fill="#022C22"/>
-                    <text x="24" y="34" fill="#FEF08A" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">LA ROCA DEL CONSEJO · SELVA DE SEEONEE</text>
+                    <text x="24" y="34" fill="#FEF08A" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600">LA ROCA DEL CONSEJO · SELVA DE SEEONEE</text>
                 </svg>
             `,
             salidas: [],
@@ -280,7 +280,7 @@
                     <line x1="460" y1="275" x2="415" y2="150" stroke="#FDE68A" stroke-width="4"/>
                     <line x1="420" y1="275" x2="420" y2="145" stroke="#F59E0B" stroke-width="4"/>
                     <rect y="272" width="560" height="48" fill="#022C22"/>
-                    <text x="24" y="34" fill="#A7F3D0" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">TROPA LOHENGRIN · EL CABALLERO DEL CISNE Y LAS PATRULLAS</text>
+                    <text x="24" y="34" fill="#A7F3D0" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600">TROPA LOHENGRIN · EL CABALLERO DEL CISNE Y LAS PATRULLAS</text>
                 </svg>
             `,
             salidas: [],
@@ -335,7 +335,7 @@
                     <polygon points="0,320 190,65 360,320" fill="#2E1B0F"/>
                     <polygon points="210,320 405,48 560,320" fill="#5C3A21"/>
                     <path d="M 190 65 L 255 180 L 295 240 L 245 320" stroke="#38BDF8" stroke-width="5" fill="none"/>
-                    <text x="24" y="34" fill="#EDE0D4" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">ESCULTAS TREA · EL TORII DE LOS NINJAS Y EL DESCENSO DEL SENA</text>
+                    <text x="24" y="34" fill="#EDE0D4" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600">ESCULTAS TREA · EL TORII DE LOS NINJAS Y EL DESCENSO DEL SENA</text>
                 </svg>
             `,
             salidas: [],
@@ -388,7 +388,7 @@
                     <polygon points="60,320 280,42 500,320" fill="#1E293B" stroke="#38BDF8" stroke-width="2"/>
                     <polygon points="280,42 225,112 280,96 335,112" fill="#F8FAFC"/>
                     <circle cx="280" cy="22" r="4" fill="#FFFFFF"/>
-                    <text x="24" y="34" fill="#E0F2FE" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">LA LAGUNA AZUL SOBRE LAS NUBES · CLAN AMA DABLAM</text>
+                    <text x="24" y="34" fill="#E0F2FE" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="600">LA LAGUNA AZUL SOBRE LAS NUBES · CLAN AMA DABLAM</text>
                 </svg>
             `,
             salidas: [],
@@ -429,6 +429,9 @@
 
     // Formularios dinámicos de Intendencia / Merchandising (carpeta 06_INTENDENCIA en Google Drive)
     let MERCH_FORMS_DATA = [];
+
+    // Formulario dinámico de Inscripción (carpeta 07_INSCRIPCIONES en Google Drive)
+    let inscripcionFormsDrive = [];
 
     // =========================================================================
     // 2C. MODO 50 ANIVERSARIO (1976 - 2026) · ESPIRAL ÁUREA Y CONECTOR GOOGLE DRIVE
@@ -666,7 +669,7 @@
                 },
                 {
                     id: 'gacrux',
-                    symbol: 'γ Gacrux',
+                    symbol: 'γ Documentos',
                     dx: -22,
                     dy: -192,
                     r: 6.8,
@@ -677,7 +680,7 @@
                 },
                 {
                     id: 'mimosa',
-                    symbol: 'β Mimosa',
+                    symbol: 'β Inscripciones',
                     dx: -152,
                     dy: -16,
                     r: 7.0,
@@ -688,7 +691,7 @@
                 },
                 {
                     id: 'imai',
-                    symbol: 'δ Imai',
+                    symbol: 'δ El Kraal',
                     dx: 104,
                     dy: -74,
                     r: 6.0,
@@ -984,8 +987,8 @@
         const sortedCamps = [...campsFromDrive].sort((a, b) => {
             const yA = getYear(a.name || a.driveFolderName || '');
             const yB = getYear(b.name || b.driveFolderName || '');
-            if (yA !== yB) return yA - yB;
-            return (a.name || '').localeCompare(b.name || '');
+            if (yA !== yB) return yB - yA;
+            return (b.name || '').localeCompare(a.name || '');
         });
 
         // 3. Separar en dos constelaciones distintas: Verano y Semana Santa
@@ -1037,7 +1040,7 @@
 
         const summerCamps = rawSummer.map((c, idx) => {
             const letter = GREEK_ALPHABET[idx] || `${idx + 1}`;
-            const isLast = (idx === N_s - 1);
+            const isLast = (idx === 0);
             const lbl = getCampDisplayLabels(c.name, letter);
             let dx = 0;
             let dy = baseY_s;
@@ -1051,12 +1054,12 @@
                 const jitterX = Math.cos(idx * 2.3 + 1.2) * 16;
                 dx = Math.round(baseX + jitterX);
 
-                const arcY = -Math.sin(t * Math.PI) * 45;
-                const waveY = (idx % 2 === 0 ? -22 : 22) + Math.sin(t * Math.PI * 2.2) * 14;
+                const arcY = Math.sin(t * Math.PI) * 45;
+                const waveY = (idx % 2 === 0 ? 22 : -22) - Math.sin(t * Math.PI * 2.2) * 14;
                 dy = Math.round(baseY_s + arcY + waveY);
             }
 
-            const r = isLast ? 9.5 : (idx === 0 ? 8.2 : 6.8 + ((idx * 3 + 1) % 4) * 0.3);
+            const r = isLast ? 9.5 : (idx === N_s - 1 ? 8.2 : 6.8 + ((idx * 3 + 1) % 4) * 0.3);
             const labelPos = (idx % 2 === 0) ? 'top' : 'bottom';
 
             return {
@@ -1088,7 +1091,7 @@
 
         const easterCamps = rawEaster.map((c, idx) => {
             const letter = GREEK_ALPHABET[idx] || `${idx + 1}`;
-            const isLast = (idx === N_e - 1);
+            const isLast = (idx === 0);
             const lbl = getCampDisplayLabels(c.name, letter);
             let dx = 0;
             let dy = baseY_e;
@@ -1102,12 +1105,12 @@
                 const jitterX = Math.sin(idx * 2.1 + 0.8) * 16;
                 dx = Math.round(baseX + jitterX);
 
-                const arcY = Math.sin(t * Math.PI) * 35;
-                const waveY = (idx % 2 === 0 ? 22 : -22) + Math.cos(t * Math.PI * 2.0) * 14;
+                const arcY = -Math.sin(t * Math.PI) * 35;
+                const waveY = (idx % 2 === 0 ? -22 : 22) - Math.cos(t * Math.PI * 2.0) * 14;
                 dy = Math.round(baseY_e + arcY + waveY);
             }
 
-            const r = isLast ? 9.2 : (idx === 0 ? 8.0 : 6.6 + ((idx * 2 + 1) % 4) * 0.3);
+            const r = isLast ? 9.2 : (idx === N_e - 1 ? 8.0 : 6.6 + ((idx * 2 + 1) % 4) * 0.3);
             const labelPos = (idx % 2 === 0) ? 'bottom' : 'top';
 
             return {
@@ -1486,6 +1489,30 @@
         return { embedUrl, externalUrl };
     }
 
+    // Título real y actual del Google Form, tal y como lo manda el servidor dentro de FB_PUBLIC_LOAD_DATA_.
+    // fbLoadData[1][8] es el título del formulario; fbLoadData[3] es el respaldo (nombre del documento).
+    function extractFbFormTitle(fbLoadData) {
+        if (!Array.isArray(fbLoadData)) return '';
+        const candidates = [Array.isArray(fbLoadData[1]) ? fbLoadData[1][8] : '', fbLoadData[3]];
+        for (let i = 0; i < candidates.length; i++) {
+            const c = candidates[i];
+            if (typeof c === 'string' && c.trim()) return c.trim();
+        }
+        return '';
+    }
+
+    // Misma limpieza de título que usa rebuildMerchConstellation, para que ambos caminos den siempre el mismo resultado
+    function normalizeMerchFormTitle(raw) {
+        const cleaned = String(raw || '')
+            .replace(/<[^>]*>/g, ' ')
+            .replace(/[\r\n]+/g, ' ')
+            .replace(/^\s*(copia de|copy of)\s+/i, '')
+            .replace(/intendencia/gi, 'Merch')
+            .replace(/\s+/g, ' ')
+            .trim();
+        return (cleaned.split('|')[0] || cleaned).trim();
+    }
+
     function rebuildMerchConstellation(merchFormsFromDrive) {
         // 1. Limpiar estrellas satélite previas de Merch (clusterType === 'merch')
         for (let i = worldNodes.length - 1; i >= 0; i--) {
@@ -1507,9 +1534,12 @@
                 .map((item, idx) => {
                     const urls = normalizeGoogleFormEmbedUrl(item.embedUrl || item.url || item.formUrl, item.id);
                     if (!urls.embedUrl) return null;
-                    const rawName = (item.title || item.name || `Merch ${idx + 1}`)
-                        .replace(/[\r\n]+/g, ' ')
-                        .replace(/\.[^/.]+$/, '')
+                    // Prioridad: título interno real del formulario (fbLoadData) y, solo como respaldo, el nombre del archivo
+                    const fbTitle = extractFbFormTitle(item.fbLoadData);
+                    let rawName = (fbTitle || item.title || item.name || `Merch ${idx + 1}`)
+                        .replace(/[\r\n]+/g, ' ');
+                    if (!fbTitle) rawName = rawName.replace(/\.[^/.]+$/, ''); // la "extensión" solo se quita del nombre de archivo
+                    rawName = rawName
                         .replace(/^(copia de|copy of)\s+/i, '')
                         .replace(/intendencia/gi, 'Merch')
                         .trim();
@@ -1531,6 +1561,9 @@
                         date: item.date || '',
                         photos: photos,
                         questions: Array.isArray(item.questions) ? item.questions : null,
+                        // Datos nativos del servidor: evitan los proxies externos lentos (r.jina.ai) en preloadMerchFormSchema
+                        fbLoadData: item.fbLoadData || null,
+                        rawHtml: item.rawHtml || '',
                         _parsedSchema: null
                     };
                 })
@@ -1782,6 +1815,11 @@
             if (elDescription) elDescription.textContent = sec.desc;
             if (elCoordsReadout) elCoordsReadout.textContent = sec.coords;
             if (elPrimaryBtnText) elPrimaryBtnText.textContent = sec.primaryBtnText;
+
+            const welcomePhotoCard = document.getElementById('stageWelcomePhotoCard');
+            if (welcomePhotoCard) {
+                welcomePhotoCard.style.display = (sIdx === 0) ? '' : 'none';
+            }
 
             // Ocultar botón primario en Sector III si no hay campamentos en Drive
             if (sIdx === 2 && CAMPS_DATA.length === 0) {
@@ -2751,8 +2789,11 @@
                     const banner = document.getElementById('lzClaimBanner');
                     const waText = `Hola Acrux, he visto en la web en El Baúl la prenda "${itemName}" (${cajon.folderName}) y es mía. Me gustaría pasar a recogerla este sábado por la base de Carretera de Rueda 53. ¡Muchas gracias!`;
                     // Teléfono del primer coordinador de Drive (sin espacios); 616289119 solo como respaldo
-                    const firstCoordPhone = (Array.isArray(coordinadoresDrive) && coordinadoresDrive.length > 0)
-                        ? String(coordinadoresDrive[0].telefono || coordinadoresDrive[0].phone || '').replace(/\s+/g, '')
+                    const coordWithPhone = Array.isArray(coordinadoresDrive)
+                        ? coordinadoresDrive.find(c => String(c.telefono || c.phone || '').replace(/\s+/g, '').length >= 6)
+                        : null;
+                    const firstCoordPhone = coordWithPhone
+                        ? String(coordWithPhone.telefono || coordWithPhone.phone || '').replace(/\s+/g, '')
                         : '';
                     const coordPhone = firstCoordPhone || '616289119';
                     const waPhone = (coordPhone.startsWith('+') ? coordPhone.slice(1) : (coordPhone.length === 9 ? '34' + coordPhone : coordPhone));
@@ -2908,11 +2949,357 @@
         const merchOverlay = document.getElementById('merchModal');
         merchOverlay?.classList.remove('is-open');
         merchOverlay?.setAttribute('aria-hidden', 'true');
+        document.getElementById('documentosModal')?.classList.remove('is-open');
+        document.getElementById('documentosModal')?.setAttribute('aria-hidden', 'true');
+        document.getElementById('kraalGeneralModal')?.classList.remove('is-open');
+        document.getElementById('kraalGeneralModal')?.setAttribute('aria-hidden', 'true');
+        document.getElementById('calendarioModal')?.classList.remove('is-open');
+        document.getElementById('calendarioModal')?.setAttribute('aria-hidden', 'true');
         if (resetPan) {
             targetFreePanX = 0;
             targetFreePanY = 0;
         }
     }
+
+    // =========================================================================
+    // 8B. ACCESOS DIRECTOS SECTOR I: DOCUMENTOS, EL KRAAL Y CALENDARIO + MODO DÍA
+    // =========================================================================
+    const elDocumentosModal = document.getElementById('documentosModal');
+    const elDocumentosModalBody = document.getElementById('documentosModalBody');
+    const elKraalGeneralModal = document.getElementById('kraalGeneralModal');
+    const elKraalGeneralModalBody = document.getElementById('kraalGeneralModalBody');
+    const elCalendarioModal = document.getElementById('calendarioModal');
+    const elCalendarioModalBody = document.getElementById('calendarioModalBody');
+
+    function launchSectorOneSubModal(node, modalEl) {
+        if (!modalEl) return;
+        const sec0 = SECTORS[0];
+        const targetWx = node ? node.wx : sec0.worldX;
+        const targetWy = node ? node.wy : sec0.worldY;
+        clearTimeout(diveTabTimer);
+        isOverviewMode = false;
+        document.body.classList.remove('is-overview-mode');
+        targetSectorProgress = 0;
+        activeSectorIdx = 0;
+        superZoomState = { type: 'sector-sub', index: 0, wx: targetWx, wy: targetWy, zoom: 20.0 };
+        document.body.classList.add('is-superzoom-open');
+        triggerStarDiveFlash(targetWx, targetWy, 240);
+        diveTabTimer = setTimeout(() => {
+            modalEl.classList.add('is-open');
+            modalEl.setAttribute('aria-hidden', 'false');
+        }, 160);
+    }
+
+    function openDocumentosModal(node) {
+        if (!elDocumentosModal || !elDocumentosModalBody) return;
+        const docArrow = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+        elDocumentosModalBody.innerHTML = `
+            <div class="docs-hero">
+                <span class="docs-hero-kicker">DOCUMENTACIÓN OFICIAL · GRUPO SCOUT ACRUX 518</span>
+                <h2 class="docs-hero-title">Documentos y Guías del Grupo</h2>
+                <p class="docs-hero-desc">Aquí tienes toda la documentación necesaria para inscribirte, conocer el proyecto educativo del grupo y consultar las guías metodológicas de cada rama.</p>
+            </div>
+
+            <section class="docs-block">
+                <div class="docs-block-header">
+                    <div>
+                        <h3 class="docs-block-title">1. Inscripción</h3>
+                        <p class="docs-block-subtitle">Descarga cada documento, rellénalo y envíalo a <strong>secretaria.acrux@gmail.com</strong></p>
+                    </div>
+                    <a href="mailto:secretaria.acrux@gmail.com?subject=Documentaci%C3%B3n%20Inscripci%C3%B3n%20Acrux%20518" class="docs-mail-btn">
+                        Enviar a secretaria.acrux@gmail.com
+                    </a>
+                </div>
+                <div class="docs-grid">
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Ficha-de-pertenencia.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">PDF · INSCRIPCIÓN</span>
+                            <span class="doc-download-title">Ficha de pertenencia</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Permiso-medicamentos.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">PDF · INSCRIPCIÓN</span>
+                            <span class="doc-download-title">Permiso de medicamentos</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Permiso-de-imagen-ASDE.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">PDF · INSCRIPCIÓN</span>
+                            <span class="doc-download-title">Permiso de Imagen de ASDE</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="docs-block">
+                <div class="docs-block-header">
+                    <div>
+                        <h3 class="docs-block-title">2. Información General</h3>
+                        <p class="docs-block-subtitle">Cuotas, proyecto educativo y normas del grupo</p>
+                    </div>
+                </div>
+                <div class="docs-grid">
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Cuotas-del-Grupo.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">PDF · INFORMACIÓN</span>
+                            <span class="doc-download-title">Cuotas del Grupo</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/PEG-Grupo-Scout-Acrux-518.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">PDF · INFORMACIÓN</span>
+                            <span class="doc-download-title">Proyecto Educativo de Grupo (PEG)</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Reglamento-de-Regimen-Interno.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">PDF · INFORMACIÓN</span>
+                            <span class="doc-download-title">Reglamento de Régimen Interno</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="docs-block">
+                <div class="docs-block-header">
+                    <div>
+                        <h3 class="docs-block-title">3. Guías Metodológicas por Sección</h3>
+                        <p class="docs-block-subtitle">Material educativo oficial para familias y educandos de las 5 ramas</p>
+                    </div>
+                </div>
+                <div class="docs-grid">
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Guia-Castores.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">COLONIA · 6–8 AÑOS</span>
+                            <span class="doc-download-title">Castores (6–8 años)</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Guia-Manada.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">MANADA · 8–11 AÑOS</span>
+                            <span class="doc-download-title">Manada (8–11 años)</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Guia-Tropa.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">TROPA · 11–14 AÑOS</span>
+                            <span class="doc-download-title">Sección Scout / Tropa (11–14 años)</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Guia-Escultas.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">UNIDAD · 14–17 AÑOS</span>
+                            <span class="doc-download-title">Escultas (14–17 años)</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                    <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Guia-Clan.pdf" target="_blank" rel="noopener">
+                        <div class="doc-download-meta">
+                            <span class="doc-download-badge">CLAN · 17–21 AÑOS</span>
+                            <span class="doc-download-title">Clan (17–21 años)</span>
+                        </div>
+                        <span class="doc-download-icon">${docArrow}</span>
+                    </a>
+                </div>
+            </section>
+        `;
+        launchSectorOneSubModal(node, elDocumentosModal);
+    }
+
+    function openKraalGeneralModal(node) {
+        if (!elKraalGeneralModal || !elKraalGeneralModalBody) return;
+        const coordsHtml = (Array.isArray(coordinadoresDrive) && coordinadoresDrive.length > 0)
+            ? `
+                <section class="kraal-unit-section">
+                    <div class="kraal-unit-header">
+                        <h3 class="kraal-unit-title"><span class="kraal-unit-dot" style="background:#D9383A;"></span>Coordinación de Grupo</h3>
+                        <span class="kraal-unit-ages">Equipo de Coordinación · Acrux 518</span>
+                    </div>
+                    <div class="coords-drive-grid">
+                        ${coordinadoresDrive.map(c => `
+                            <article class="coord-drive-card">
+                                ${c.photoUrl ? `<img src="${escapeAttr(c.photoUrl)}" alt="${escapeAttr(c.name || 'Coordinación')}" class="coord-avatar-img" referrerpolicy="no-referrer">` : ''}
+                                <div class="coord-drive-info">
+                                    <strong>${stripHtmlTags(c.name || 'Coordinador/a')}</strong>
+                                    <span>${stripHtmlTags(c.role || 'Coordinación de Grupo')}</span>
+                                    ${c.telefono ? `<a href="tel:${escapeAttr(String(c.telefono).replace(/\s+/g, ''))}">${stripHtmlTags(c.telefono)}</a>` : ''}
+                                </div>
+                            </article>
+                        `).join('')}
+                    </div>
+                </section>
+            `
+            : '';
+
+        const unitsHtml = UNITS_DATA.map((unit, uIdx) => {
+            const list = Array.isArray(unit.kraaletes) ? unit.kraaletes : [];
+            const cards = list.length > 0
+                ? list.map((k, kIdx) => {
+                    const cleanName = stripHtmlTags(k.name || 'Scouter');
+                    const cleanRole = stripHtmlTags(k.role || 'Kraalete');
+                    const hasCromo = Boolean(k.cromoUrl);
+                    return `
+                        <article class="kraalete-cromo-card ${hasCromo ? 'has-cromo-img' : 'no-cromo'}" data-unit-idx="${uIdx}" data-cromo-idx="${kIdx}">
+                            <div class="cromo-inner">
+                                ${hasCromo ? `<img src="${escapeAttr(k.cromoUrl)}" alt="${escapeAttr(cleanName)}" class="kraalete-cromo-img" referrerpolicy="no-referrer" loading="lazy">` : `
+                                    <div class="cromo-fallback-content">
+                                        <div class="cromo-scout-badge">${SVG_ICONS.compass}</div>
+                                        <span class="cromo-unit-tag">${unit.shortName}</span>
+                                        <strong class="cromo-fallback-name">${cleanName}</strong>
+                                        <span class="cromo-fallback-role">${cleanRole}</span>
+                                    </div>
+                                `}
+                                <div class="cromo-bottom-label">
+                                    <strong class="cromo-label-name">${cleanName}</strong>
+                                    <span class="cromo-label-role">${cleanRole}</span>
+                                </div>
+                                <div class="cromo-sheen" aria-hidden="true"></div>
+                            </div>
+                        </article>
+                    `;
+                }).join('')
+                : '<p style="margin:0; font-size:0.9rem; color:var(--ice-muted);">Kraalete en actualización desde Google Drive.</p>';
+
+            return `
+                <section class="kraal-unit-section">
+                    <div class="kraal-unit-header">
+                        <h3 class="kraal-unit-title"><span class="kraal-unit-dot" style="background:${unit.accentColor || '#FFFFFF'};"></span>${unit.fullName}</h3>
+                        <span class="kraal-unit-ages">${unit.ages || ''}</span>
+                    </div>
+                    <div class="unit-kraal-grid">${cards}</div>
+                </section>
+            `;
+        }).join('');
+
+        elKraalGeneralModalBody.innerHTML = `
+            <div class="kraal-general-hero">
+                <span class="kraal-general-kicker">EQUIPO DE SCOUTERS VOLUNTARIOS · ACRUX 518</span>
+                <h2 class="kraal-general-title">El Kraal del Grupo Scout Acrux 518</h2>
+                <p class="kraal-general-desc">Pulsa en cualquier cromo para conocer la historia, apodo scout y función de cada responsable educativo de nuestras cinco ramas.</p>
+            </div>
+            ${coordsHtml}
+            ${unitsHtml}
+        `;
+
+        elKraalGeneralModalBody.querySelectorAll('.kraalete-cromo-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const uIdx = parseInt(card.getAttribute('data-unit-idx'), 10);
+                const kIdx = parseInt(card.getAttribute('data-cromo-idx'), 10);
+                const unit = UNITS_DATA[uIdx];
+                const k = unit && unit.kraaletes ? unit.kraaletes[kIdx] : null;
+                if (k && unit) openCromoZoomModal(k, unit);
+            });
+        });
+
+        launchSectorOneSubModal(node, elKraalGeneralModal);
+    }
+
+    function openCalendarioModal(node) {
+        if (!elCalendarioModal || !elCalendarioModalBody) return;
+        elCalendarioModalBody.innerHTML = `
+            <div class="calendar-hero">
+                <span class="calendar-hero-kicker">PLANIFICACIÓN ANUAL · RONDA SOLAR</span>
+                <h2 class="calendar-hero-title">Calendario de Ronda Solar Acrux 518</h2>
+                <p class="calendar-hero-desc">Nos reunimos todos los <strong>sábados de 16:30 a 19:00 h</strong> en nuestra base de Carretera de Rueda, 53 (Valladolid), además de salidas trimestrales y grandes campamentos.</p>
+            </div>
+
+            <div class="calendar-trimesters-grid">
+                <article class="calendar-trimester-card">
+                    <span class="calendar-trimester-tag">1º Trimestre · Oct – Dic</span>
+                    <h3 class="calendar-trimester-title">Inauguración, Pases y Navidad</h3>
+                    <p class="calendar-trimester-desc">Acogida de nuevos educandos, ceremonia de Pases de Unidad, salidas de otoño por secciones, Luz de la Paz de Belén y Campamento de Navidad.</p>
+                </article>
+                <article class="calendar-trimester-card">
+                    <span class="calendar-trimester-tag">2º Trimestre · Ene – Mar/Abr</span>
+                    <h3 class="calendar-trimester-title">Progresión, Promesas y Semana Santa</h3>
+                    <p class="calendar-trimester-desc">Proyectos y aventuras de cada rama, acampadas de invierno, preparación de Promesas Scouts y Campamento de Semana Santa.</p>
+                </article>
+                <article class="calendar-trimester-card">
+                    <span class="calendar-trimester-tag">3º Trimestre · Abr – Jul</span>
+                    <h3 class="calendar-trimester-title">San Jorge y Campamento de Verano</h3>
+                    <p class="calendar-trimester-desc">Celebración de San Jorge con ASDE Castilla y León, acampada de familias, cierre de curso en la base y gran Campamento de Verano (15 días en julio).</p>
+                </article>
+            </div>
+
+            <section class="docs-block">
+                <div class="docs-block-header">
+                    <div>
+                        <h3 class="docs-block-title">Hitos clave de la Ronda Solar</h3>
+                        <p class="docs-block-subtitle">Fechas orientativas del curso scout (las circulares concretas se envían por sección)</p>
+                    </div>
+                </div>
+                <div class="calendar-milestones-list">
+                    <div class="calendar-milestone-row">
+                        <span class="calendar-milestone-when">Octubre</span>
+                        <strong class="calendar-milestone-name">Acampada de Inicio y Pases</strong>
+                        <span class="calendar-milestone-note">Arranque oficial de la Ronda Solar y paso de rama.</span>
+                    </div>
+                    <div class="calendar-milestone-row">
+                        <span class="calendar-milestone-when">Diciembre</span>
+                        <strong class="calendar-milestone-name">Campamento de Navidad</strong>
+                        <span class="calendar-milestone-note">Convivencia de grupo y reparto de la Luz de la Paz.</span>
+                    </div>
+                    <div class="calendar-milestone-row">
+                        <span class="calendar-milestone-when">Marzo / Abril</span>
+                        <strong class="calendar-milestone-name">Campamento de Semana Santa</strong>
+                        <span class="calendar-milestone-note">Acampada de primavera y rutas por la naturaleza.</span>
+                    </div>
+                    <div class="calendar-milestone-row">
+                        <span class="calendar-milestone-when">23 de Abril</span>
+                        <strong class="calendar-milestone-name">Día de San Jorge</strong>
+                        <span class="calendar-milestone-note">Encuentro scout con otros grupos de Castilla y León.</span>
+                    </div>
+                    <div class="calendar-milestone-row">
+                        <span class="calendar-milestone-when">2ª Quincena de Julio</span>
+                        <strong class="calendar-milestone-name">Campamento de Verano</strong>
+                        <span class="calendar-milestone-note">La gran aventura anual de 15 días en el monte.</span>
+                    </div>
+                </div>
+            </section>
+        `;
+        launchSectorOneSubModal(node, elCalendarioModal);
+    }
+
+    document.getElementById('btnCloseDocumentosModal')?.addEventListener('click', () => closeAllSuperZooms(true));
+    document.getElementById('btnCloseKraalGeneralModal')?.addEventListener('click', () => closeAllSuperZooms(true));
+    document.getElementById('btnCloseCalendarioModal')?.addEventListener('click', () => closeAllSuperZooms(true));
+
+    // Toggle Modo Día / Noche (por defecto Modo Luminoso al abrir por primera vez)
+    const btnToggleDayMode = document.getElementById('btnToggleDayMode');
+    const storedDayMode = localStorage.getItem('acrux_day_mode');
+    const savedDayMode = storedDayMode === null ? true : storedDayMode === '1';
+    document.body.classList.toggle('day-mode', savedDayMode);
+    btnToggleDayMode?.setAttribute('aria-pressed', savedDayMode ? 'true' : 'false');
+    btnToggleDayMode?.addEventListener('click', () => {
+        const isDay = document.body.classList.toggle('day-mode');
+        btnToggleDayMode.setAttribute('aria-pressed', isDay ? 'true' : 'false');
+        localStorage.setItem('acrux_day_mode', isDay ? '1' : '0');
+    });
+
+    // Foto de bienvenida del Sector I -> Lightbox
+    const elWelcomePhotoCard = document.getElementById('stageWelcomePhotoCard');
+    const triggerWelcomePhoto = () => {
+        const imgEl = elWelcomePhotoCard?.querySelector('img');
+        const imgSrc = (imgEl && (imgEl.currentSrc || imgEl.getAttribute('src'))) || 'images/Tropa.jpg';
+        openLightbox(imgSrc, 'Familia Acrux 518', 'Sábados 16:30h en Crtra. Rueda 53 · Valladolid');
+    };
+    elWelcomePhotoCard?.addEventListener('click', triggerWelcomePhoto);
+    elWelcomePhotoCard?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            triggerWelcomePhoto();
+        }
+    });
 
     document.getElementById('btnCloseUnitZoom')?.addEventListener('click', () => closeAllSuperZooms(true));
     document.getElementById('btnCloseCampZoom')?.addEventListener('click', () => closeAllSuperZooms(true));
@@ -2987,16 +3374,19 @@
 
         const coordsList = (coordinadoresDrive && Array.isArray(coordinadoresDrive) && coordinadoresDrive.length > 0)
             ? coordinadoresDrive.map(c => {
-                const rawPhone = (c.telefono || c.phone || '616289119').replace(/\s+/g, '');
+                const rawDisplay = String(c.telefono || c.phone || '').trim();
+                const rawPhone = rawDisplay.replace(/\s+/g, '');
+                const hasPhone = rawPhone.length >= 6;
                 return {
                     name: stripHtmlTags(c.name || 'Coordinación'),
                     role: stripHtmlTags(c.cargo || c.role || 'Equipo de Coordinación'),
-                    phone: rawPhone,
-                    displayPhone: c.telefono || c.phone || '616 28 91 19',
+                    phone: hasPhone ? rawPhone : '',
+                    displayPhone: hasPhone ? rawDisplay : '',
+                    hasPhone,
                     photoUrl: c.fotoUrl || c.cromoUrl || c.photoUrl || null
                 };
             })
-            : defaultCoords;
+            : defaultCoords.map(c => ({ ...c, hasPhone: true }));
 
         drawerKicker.textContent = 'SECTOR I · ESTRELLA GUÍA ACRUX 518';
         drawerTitle.innerHTML = 'Grupo Scout <span class="ice-italic">Acrux 518</span>';
@@ -3114,9 +3504,10 @@
                                     <div class="coord-info-col">
                                         <strong class="coord-name">${c.name}</strong>
                                         <span class="coord-role">${c.role}</span>
-                                        <span class="coord-phone-text">${SVG_ICONS.phone} ${c.displayPhone}</span>
+                                        ${c.hasPhone ? `<span class="coord-phone-text">${SVG_ICONS.phone} ${c.displayPhone}</span>` : ''}
                                     </div>
                                 </div>
+                                ${c.hasPhone ? `
                                 <div class="coord-btn-row">
                                     <a href="https://wa.me/34${c.phone}?text=${encodeURIComponent('Hola ' + c.name + ', me pongo en contacto desde la web del Grupo Scout Acrux 518 para pedir información.')}" 
                                        target="_blank" rel="noopener" class="btn-coord-action btn-coord-wa">
@@ -3128,6 +3519,7 @@
                                         <span>Llamar</span>
                                     </a>
                                 </div>
+                                ` : ''}
                             </article>
                         `).join('')}
                     </div>
@@ -3147,24 +3539,52 @@
                         </div>
 
                         <div class="inscripcion-form-col">
-                            <form id="acruxContactForm">
-                                <div class="inscripcion-fields-stack">
-                                    <input type="text" id="acruxName" class="dossier-form-input" required placeholder="Nombre">
-                                    <input type="tel" id="acruxPhone" class="dossier-form-input" required placeholder="Teléfono">
-                                    <select id="acruxUnit" class="dossier-form-input">
-                                        <option value="Castores (6 a 8 años)">Castores · Colonia Ohiensis (6 a 8 años)</option>
-                                        <option value="Manada (8 a 11 años)">Manada · Khanhiwara (8 a 11 años)</option>
-                                        <option value="Tropa (11 a 14 años)">Tropa · Lohengrin (11 a 14 años)</option>
-                                        <option value="Escultas (14 a 17 años)">Unidad Esculta · Trea (14 a 17 años)</option>
-                                        <option value="Clan Rover (17 a 21 años)">Clan Rover · Ama Dablam (17 a 21 años)</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn-cosmos-primary inscripcion-submit-btn">
-                                    ${SVG_ICONS.whatsapp}
-                                    <span>Contactar con Coordinación</span>
-                                </button>
-                                <div id="acruxSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
-                            </form>
+                            ${(() => {
+                                const inscForm = Array.isArray(inscripcionFormsDrive) && inscripcionFormsDrive.length > 0 ? inscripcionFormsDrive[0] : null;
+                                const inscSchema = (inscForm && inscForm.fbLoadData) ? buildSchemaFromFbLoadData(inscForm.fbLoadData, inscForm.rawHtml || '', inscForm) : null;
+                                const hasNativeInsc = Boolean(inscSchema && ((inscSchema.pillFields && inscSchema.pillFields.length > 0) || (inscSchema.textFields && inscSchema.textFields.length > 0)));
+                                if (hasNativeInsc) {
+                                    const pillInputs = (inscSchema.pillFields || []).map(pf => `
+                                        <label class="dossier-field-label" style="display:block; font-size:0.75rem; font-weight:600; margin-bottom:0.25rem;">${stripHtmlTags(pf.title || 'Opción')}${pf.required ? ' *' : ''}</label>
+                                        <select class="dossier-form-input js-insc-drive-field" data-entry-id="${escapeAttr(pf.id)}" ${pf.required ? 'required' : ''}>
+                                            <option value="">Selecciona una opción...</option>
+                                            ${(pf.options || []).map(opt => `<option value="${escapeAttr(opt)}">${stripHtmlTags(opt)}</option>`).join('')}
+                                        </select>
+                                    `).join('');
+                                    const textInputs = (inscSchema.textFields || []).map(tf => `
+                                        <input type="${tf.type === 'email' ? 'email' : (tf.type === 'tel' ? 'tel' : 'text')}" class="dossier-form-input js-insc-drive-field" data-entry-id="${escapeAttr(tf.id)}" ${tf.required ? 'required' : ''} placeholder="${escapeAttr(stripHtmlTags(tf.title || 'Dato'))}${tf.required ? ' *' : ''}">
+                                    `).join('');
+                                    return `
+                                        <form id="acruxContactForm" data-drive-action="${escapeAttr(inscSchema.actionUrl)}" data-form-title="${escapeAttr(inscForm.title || 'Inscripción Acrux 518')}">
+                                            <div class="inscripcion-fields-stack">${textInputs}${pillInputs}</div>
+                                            <button type="submit" class="btn-cosmos-primary inscripcion-submit-btn">
+                                                <span>Enviar Inscripción</span>
+                                            </button>
+                                            <div id="acruxSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
+                                        </form>
+                                    `;
+                                }
+                                return `
+                                    <form id="acruxContactForm">
+                                        <div class="inscripcion-fields-stack">
+                                            <input type="text" id="acruxName" class="dossier-form-input" required placeholder="Nombre">
+                                            <input type="tel" id="acruxPhone" class="dossier-form-input" required placeholder="Teléfono">
+                                            <select id="acruxUnit" class="dossier-form-input">
+                                                <option value="Castores (6 a 8 años)">Castores · Colonia Ohiensis (6 a 8 años)</option>
+                                                <option value="Manada (8 a 11 años)">Manada · Khanhiwara (8 a 11 años)</option>
+                                                <option value="Tropa (11 a 14 años)">Tropa · Lohengrin (11 a 14 años)</option>
+                                                <option value="Escultas (14 a 17 años)">Unidad Esculta · Trea (14 a 17 años)</option>
+                                                <option value="Clan Rover (17 a 21 años)">Clan Rover · Ama Dablam (17 a 21 años)</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn-cosmos-primary inscripcion-submit-btn">
+                                            ${SVG_ICONS.whatsapp}
+                                            <span>Contactar con Coordinación</span>
+                                        </button>
+                                        <div id="acruxSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
+                                    </form>
+                                `;
+                            })()}
                         </div>
                     </div>
                 </div>
@@ -3249,19 +3669,45 @@
             });
         });
 
-        // Formulario de contacto de Acrux
-        document.getElementById('acruxContactForm')?.addEventListener('submit', (e) => {
+        // Formulario de contacto / inscripción de Acrux (Drive Google Form o respaldo WhatsApp)
+        document.getElementById('acruxContactForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const formEl = e.currentTarget;
+            const driveAction = formEl.getAttribute('data-drive-action');
+            const msg = document.getElementById('acruxSuccessMsg');
+
+            if (driveAction) {
+                const urlParams = new URLSearchParams();
+                formEl.querySelectorAll('.js-insc-drive-field').forEach(inp => {
+                    const entryId = inp.getAttribute('data-entry-id');
+                    if (entryId) urlParams.append(entryId, inp.value || '');
+                });
+                urlParams.append('submit', 'Submit');
+                try {
+                    await fetch(driveAction, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: urlParams.toString()
+                    });
+                } catch (_) {}
+                formEl.reset();
+                if (msg) {
+                    msg.style.display = 'block';
+                    msg.innerHTML = '<strong>¡Inscripción registrada!</strong><br>Tus datos se han enviado directamente al formulario oficial del Grupo Scout Acrux 518 en Google Drive.';
+                }
+                return;
+            }
+
             const name = document.getElementById('acruxName')?.value || '';
             const phone = document.getElementById('acruxPhone')?.value || '';
             const unit = document.getElementById('acruxUnit')?.value || '';
-            const targetCoord = coordsList[0] || defaultCoords[0];
+            const targetCoord = coordsList.find(c => c.hasPhone) || defaultCoords[0];
             const cleanTargetPhone = (targetCoord.phone || '616289119').replace(/\s+/g, '');
 
             const waText = `Hola ${targetCoord.name}, me pongo en contacto desde la web del Grupo Scout Acrux 518.\n\nSoy ${name} (Tel: ${phone}). Me gustaría consultar información / disponibilidad en la rama: ${unit}. ¡Gracias!`;
             const waUrl = `https://wa.me/34${cleanTargetPhone}?text=${encodeURIComponent(waText)}`;
 
-            const msg = document.getElementById('acruxSuccessMsg');
             if (msg) {
                 msg.style.display = 'block';
                 msg.innerHTML = `
@@ -3475,22 +3921,28 @@
         const formMeta = fbData[1];
         const rawQuestions = Array.isArray(formMeta[1]) ? formMeta[1] : [];
         const formDesc = (formMeta[0] || '').replace(/<[^>]*>/g, '').trim();
-        const liveTitle = (fbData[3] || formMeta[8] || '').replace(/<[^>]*>/g, '').trim();
+        // Título real del formulario (fbData[1][8]); fbData[3] es el nombre antiguo del archivo y solo se usa de respaldo
+        const liveTitle = normalizeMerchFormTitle(extractFbFormTitle(fbData));
         const publicSlug = fbData[14] || '';
         const actionUrl = publicSlug
             ? `https://docs.google.com/forms/d/${publicSlug}/formResponse`
             : `https://docs.google.com/forms/d/${form.id}/formResponse`;
 
-        // Actualizar título del formulario en vivo si cambió dentro de Google Forms
+        // Solo usar liveTitle si el servidor no envió un título ya limpio, y nunca pisar el modal si el usuario está viendo otro artículo
         if (liveTitle && form) {
-            form.title = liveTitle;
-            if (elMerchModalTitle && elMerchModal?.classList.contains('is-open')) {
-                elMerchModalTitle.textContent = liveTitle;
+            if (!form.title || /^merch\b/i.test(form.title)) {
+                form.title = liveTitle;
             }
-            const intrometidaNode = worldNodes.find(nd => nd.id === 'intrometida');
-            if (intrometidaNode && intrometidaNode.isMerchStar && intrometidaNode.merchIndex === 0) {
-                const cleanLabel = /^merch\b/i.test(liveTitle) ? liveTitle : `Merch · ${liveTitle}`;
-                intrometidaNode.symbol = `ε ${cleanLabel}`;
+            const formIdx = MERCH_FORMS_DATA.indexOf(form);
+            if (formIdx === activeMerchFormIdx && elMerchModalTitle && elMerchModal?.classList.contains('is-open')) {
+                elMerchModalTitle.textContent = form.title;
+            }
+            if (formIdx === 0) {
+                const intrometidaNode = worldNodes.find(nd => nd.id === 'intrometida');
+                if (intrometidaNode && intrometidaNode.isMerchStar && intrometidaNode.merchIndex === 0) {
+                    const cleanLabel = /^merch\b/i.test(form.title) ? form.title : `Merch · ${form.title}`;
+                    intrometidaNode.symbol = `ε ${cleanLabel}`;
+                }
             }
         }
 
@@ -3832,7 +4284,7 @@
                         </g>
                         <!-- Etiqueta inferior tejida -->
                         <rect x="132" y="280" width="56" height="14" rx="3" fill="rgba(0,0,0,0.45)" stroke="${crestCol}" stroke-width="0.9" stroke-opacity="0.6"/>
-                        <text x="160" y="290" text-anchor="middle" fill="${crestCol}" font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing="1.5">ACRUX 518</text>
+                        <text x="160" y="290" text-anchor="middle" fill="${crestCol}" font-family="Plus Jakarta Sans, sans-serif" font-size="6.5" letter-spacing="1.5">ACRUX 518</text>
                     </svg>
                     <div class="merch-studio-caption">
                         <span class="merch-studio-caption-tag">VISTA DE ESTUDIO · TALLA ${selectedSizeLabel} · ${colorInfo.label.toUpperCase()}</span>
@@ -4498,7 +4950,6 @@
                     if (hitNode.sectorIndex === 3) {
                         openLostSuperZoom(typeof hitNode.cajonIndex === 'number' ? hitNode.cajonIndex : 0);
                     } else if (hitNode.sectorIndex === 0) {
-                        // En el Sector I, Acrux abre la historia y las estrellas de Intendencia abren el formulario
                         if (hitNode.id === 'acrux') {
                             openAcruxSuperZoom();
                         }
@@ -4709,8 +5160,20 @@
         // ---------------------------------------------------------------------
         anniversaryLerp += (targetAnniversaryLerp - anniversaryLerp) * 0.055;
 
-        // En Modo 50 Aniversario: Negro Obsidiana ultra sobrio y profundo (#030304)
-        ctx.fillStyle = anniversaryLerp > 0.4 ? '#030304' : '#040406';
+        const isDayMode = document.body.classList.contains('day-mode');
+
+        // En Modo 50 Aniversario: Negro Obsidiana (#030304); en Modo Luminoso: Cielo Azul Estelar (#1D3C6A -> #0D1E3A); en Modo Noche: #040406
+        if (anniversaryLerp > 0.4) {
+            ctx.fillStyle = '#030304';
+        } else if (isDayMode) {
+            const skyGrad = ctx.createRadialGradient(vw * 0.62, vh * 0.42, 0, vw * 0.5, vh * 0.5, Math.max(vw, vh) * 0.85);
+            skyGrad.addColorStop(0, '#22477A');
+            skyGrad.addColorStop(0.5, '#152F56');
+            skyGrad.addColorStop(1, '#0C1D38');
+            ctx.fillStyle = skyGrad;
+        } else {
+            ctx.fillStyle = '#040406';
+        }
         ctx.fillRect(0, 0, vw, vh);
 
         // Halo del cursor: sutil, compacto y contenido (cero resplandor desbordante)
@@ -4814,7 +5277,7 @@
             if (!superZoomState) {
                 const retR = 210 * camera.zoom;
                 ctx.save();
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+                ctx.strokeStyle = isDayMode ? 'rgba(186, 230, 253, 0.10)' : 'rgba(255, 255, 255, 0.04)';
                 ctx.lineWidth = 1;
                 ctx.setLineDash([3, 7]);
                 ctx.beginPath();
@@ -4847,7 +5310,7 @@
             if (idx === 0) ctx.moveTo(sc.x, sc.y);
             else ctx.lineTo(sc.x, sc.y);
         });
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+        ctx.strokeStyle = isDayMode ? 'rgba(186, 230, 253, 0.12)' : 'rgba(255, 255, 255, 0.05)';
         ctx.lineWidth = 1;
         ctx.setLineDash([4, 10]);
         ctx.stroke();
@@ -4886,8 +5349,9 @@
             fs.oy += fs.vy;
 
             const tw = 0.68 + 0.32 * Math.sin(elapsed * fs.twSpeed + fs.twPhase);
-            ctx.fillStyle = fs.tint;
-            ctx.globalAlpha = fs.alpha * tw;
+            const starTint = (isDayMode && anniversaryLerp <= 0.35) ? 'rgba(240, 249, 255, 0.92)' : fs.tint;
+            ctx.fillStyle = starTint;
+            ctx.globalAlpha = Math.min(1, fs.alpha * tw * (isDayMode ? 1.25 : 1));
 
             if (hyperIntensity > 0.04) {
                 // Estiramiento radial hacia afuera desde la estrella objetivo (efecto Star Wars ligero)
@@ -5073,10 +5537,18 @@
                 edgeShadow = 'rgba(217, 56, 58, 0.45)';
             }
 
+            if (isDayMode && anniversaryLerp <= 0.2) {
+                rgbBase = '224, 242, 254';
+                edgeShadow = 'rgba(186, 230, 253, 0.55)';
+            }
+
+            const dAlphaEnd = (isDayMode && anniversaryLerp <= 0.2) ? Math.min(0.95, alphaEnd * 1.15) : alphaEnd;
+            const dAlphaMid = (isDayMode && anniversaryLerp <= 0.2) ? Math.min(0.8, alphaMid * 1.15) : alphaMid;
+
             const lineGrad = ctx.createLinearGradient(ax, ay, bx, by);
-            lineGrad.addColorStop(0, `rgba(${rgbBase}, ${alphaEnd.toFixed(3)})`);
-            lineGrad.addColorStop(0.5, `rgba(${rgbBase}, ${alphaMid.toFixed(3)})`);
-            lineGrad.addColorStop(1, `rgba(${rgbBase}, ${alphaEnd.toFixed(3)})`);
+            lineGrad.addColorStop(0, `rgba(${rgbBase}, ${dAlphaEnd.toFixed(3)})`);
+            lineGrad.addColorStop(0.5, `rgba(${rgbBase}, ${dAlphaMid.toFixed(3)})`);
+            lineGrad.addColorStop(1, `rgba(${rgbBase}, ${dAlphaEnd.toFixed(3)})`);
 
             ctx.strokeStyle = lineGrad;
             ctx.lineWidth = (isFocusedSector ? 1.4 : 0.85) + ed.glow * 1.05;
@@ -5093,21 +5565,21 @@
         // ---------------------------------------------------------------------
         if (activeSectorIdx === 2 && !superZoomState && hasBothCampsConstellations) {
             ctx.save();
-            ctx.font = '600 11px "JetBrains Mono", monospace';
+            ctx.font = '600 11px "Plus Jakarta Sans", sans-serif';
             ctx.textAlign = 'center';
 
             // Título de Campamentos de Verano (arriba)
             const scSummerTitle = worldToScreen(CAMPS_ORIGIN_X, CAMPS_ORIGIN_Y - 200);
-            ctx.fillStyle = 'rgba(255, 235, 180, 0.52)';
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
-            ctx.shadowBlur = 6;
+            ctx.fillStyle = isDayMode ? 'rgba(254, 243, 199, 0.90)' : 'rgba(255, 235, 180, 0.52)';
+            ctx.shadowColor = isDayMode ? 'transparent' : 'rgba(0, 0, 0, 0.9)';
+            ctx.shadowBlur = isDayMode ? 0 : 6;
             ctx.fillText('CAMPAMENTOS DE VERANO', scSummerTitle.x, scSummerTitle.y);
 
             // Título de Campamentos de Semana Santa (abajo)
             const scEasterTitle = worldToScreen(CAMPS_ORIGIN_X, CAMPS_ORIGIN_Y + 215);
-            ctx.fillStyle = 'rgba(167, 243, 208, 0.52)';
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
-            ctx.shadowBlur = 6;
+            ctx.fillStyle = isDayMode ? 'rgba(209, 250, 229, 0.90)' : 'rgba(167, 243, 208, 0.52)';
+            ctx.shadowColor = isDayMode ? 'transparent' : 'rgba(0, 0, 0, 0.9)';
+            ctx.shadowBlur = isDayMode ? 0 : 6;
             ctx.fillText('CAMPAMENTOS DE SEMANA SANTA', scEasterTitle.x, scEasterTitle.y);
 
             ctx.restore();
@@ -5339,21 +5811,21 @@
                 if (isOverviewMode && !nd.isClusterHub && !nd.isMainCross) continue;
                 ctx.save();
                 ctx.font = (nd.isBaulMain || nd.isClusterHub || nd.isMainCross || isHovered)
-                    ? '600 12px "JetBrains Mono", monospace'
-                    : '400 10.5px "JetBrains Mono", monospace';
+                    ? '600 12px "Plus Jakarta Sans", sans-serif'
+                    : '500 10.5px "Plus Jakarta Sans", sans-serif';
 
-                // Sombra suave que garantiza legibilidad cinematográfica sin importar el fondo
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.90)';
-                ctx.shadowBlur = 5;
+                // Sombra suave que garantiza legibilidad cinematográfica en modo noche; limpia en modo luminoso
+                ctx.shadowColor = (isDayMode && anniversaryLerp <= 0.35) ? 'transparent' : 'rgba(0, 0, 0, 0.90)';
+                ctx.shadowBlur = (isDayMode && anniversaryLerp <= 0.35) ? 0 : 5;
 
                 if (nd.isMerchStar) {
-                    ctx.fillStyle = isHovered ? '#E2D5B5' : 'rgba(203, 213, 225, 0.78)';
+                    ctx.fillStyle = isHovered ? '#E2D5B5' : 'rgba(226, 232, 240, 0.88)';
                 } else if (nd.isRedStar) {
                     ctx.fillStyle = (isHovered || isSelectedInSector) ? '#FFA39E' : '#FF6B6B';
                 } else {
                     ctx.fillStyle = (isHovered || isSelectedInSector)
                         ? (anniversaryLerp > 0.35 ? '#FFF3B0' : '#FFFFFF')
-                        : (anniversaryLerp > 0.35 ? 'rgba(243, 229, 171, 0.75)' : 'rgba(255, 255, 255, 0.74)');
+                        : (anniversaryLerp > 0.35 ? 'rgba(243, 229, 171, 0.75)' : (isDayMode ? 'rgba(255, 255, 255, 0.92)' : 'rgba(255, 255, 255, 0.74)'));
                 }
 
                 if (nd.clusterType === 'camp' && nd.labelLine1) {
@@ -5364,10 +5836,10 @@
 
                     ctx.fillText(nd.labelLine1, sx, y1);
                     if (nd.labelLine2) {
-                        ctx.font = '400 9.5px "JetBrains Mono", monospace';
-                        ctx.fillStyle = nd.isRedStar 
-                            ? 'rgba(255, 163, 158, 0.90)' 
-                            : ((isHovered || isSelectedInSector) ? '#FFFFFF' : 'rgba(255, 255, 255, 0.68)');
+                        ctx.font = '500 9.5px "Plus Jakarta Sans", sans-serif';
+                        ctx.fillStyle = nd.isRedStar
+                            ? 'rgba(255, 163, 158, 0.95)'
+                            : ((isHovered || isSelectedInSector) ? '#FFFFFF' : (isDayMode ? 'rgba(224, 242, 254, 0.86)' : 'rgba(255, 255, 255, 0.68)'));
                         ctx.fillText(nd.labelLine2, sx, y2);
                     }
                 } else if (nd.labelPos === 'top') {
@@ -5472,7 +5944,7 @@
 
                     // Tipografía del año cronológico
                     ctx.save();
-                    ctx.font = '600 9.5px "JetBrains Mono", monospace';
+                    ctx.font = '600 9.5px "Plus Jakarta Sans", sans-serif';
                     ctx.fillStyle = `rgba(243, 229, 171, ${(0.88 * anniversaryLerp).toFixed(3)})`;
                     ctx.fillText(st.year.toString(), st.sx + r * 1.2 + 5, st.sy + 3.5);
                     ctx.restore();
@@ -5485,7 +5957,7 @@
                     ctx.arc(st.sx, st.sy, r * 0.45, 0, Math.PI * 2);
                     ctx.fill();
 
-                    ctx.font = '400 8.5px "JetBrains Mono", monospace';
+                    ctx.font = '400 8.5px "Plus Jakarta Sans", sans-serif';
                     ctx.fillStyle = '#AA771C';
                     ctx.fillText(st.year.toString(), st.sx + r * 1.1 + 4, st.sy + 3);
                     ctx.restore();
@@ -5793,7 +6265,7 @@
     }
 
     // --- Boot Loader (#cosmosBootLoader) + caché instantánea en localStorage ---
-    const LOCAL_STORAGE_CACHE_KEY = 'acrux_drive_cache_v21';
+    const LOCAL_STORAGE_CACHE_KEY = 'acrux_drive_cache_v23';
     const elBootLoader = document.getElementById('cosmosBootLoader');
     const elBootProgressFill = document.getElementById('bootProgressFill');
     const elBootStatusText = document.getElementById('bootStatusText');
@@ -5850,6 +6322,9 @@
         if (data.cajones !== undefined) safe('cajones', () => rebuildLostConstellation(data.cajones));
         if (data.merchForms !== undefined || data.intendencia !== undefined) {
             safe('merch', () => syncMerchFromDrive(data.merchForms !== undefined ? data.merchForms : data.intendencia));
+        }
+        if (data.inscripcionForms !== undefined) {
+            inscripcionFormsDrive = Array.isArray(data.inscripcionForms) ? data.inscripcionForms : [];
         }
         if (data.aniversario) safe('aniversario', () => syncAnniversaryFromDrive(data.aniversario));
     }

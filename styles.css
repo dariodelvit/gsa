@@ -152,7 +152,7 @@ body.cosmos-body {
 }
 
 .cosmos-cursor-label {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.56rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -257,7 +257,7 @@ body.cosmos-body {
 }
 
 .hud-brand-name {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-weight: 700;
     font-size: 0.92rem;
     letter-spacing: 0.08em;
@@ -271,7 +271,7 @@ body.cosmos-body {
 }
 
 .hud-brand-coords {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.6rem;
     color: var(--ice-muted);
 }
@@ -284,7 +284,7 @@ body.cosmos-body {
     border-radius: 999px;
     background: rgba(8, 9, 13, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.66rem;
     color: var(--ice-grey);
     backdrop-filter: blur(10px);
@@ -327,7 +327,7 @@ body.cosmos-body {
 }
 
 .hud-nav-node .node-roman {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.64rem;
     opacity: 0.55;
 }
@@ -362,7 +362,7 @@ body.cosmos-body {
     color: var(--ice-grey);
     padding: 0.5rem 0.95rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.68rem;
     display: inline-flex;
     align-items: center;
@@ -384,7 +384,7 @@ body.cosmos-body {
     color: #FFFFFF;
     padding: 0.5rem 1.05rem;
     border-radius: 999px;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-weight: 600;
     font-size: 0.8rem;
     cursor: pointer;
@@ -453,7 +453,7 @@ body.cosmos-body {
 }
 
 .stage-index-tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.62rem;
     font-weight: 600;
     letter-spacing: 0.14em;
@@ -465,14 +465,14 @@ body.cosmos-body {
 }
 
 .stage-altitude-tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.6rem;
     letter-spacing: 0.11em;
     color: var(--ice-muted);
 }
 
 .stage-giant-heading {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-weight: 300;
     font-size: clamp(2.05rem, 3.3vw, 2.95rem);
     line-height: 1.08;
@@ -511,7 +511,7 @@ body.cosmos-body {
 
 .camps-group-title {
     display: block;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.62rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -533,7 +533,7 @@ body.cosmos-body {
     color: var(--ice-grey);
     padding: 0.36rem 0.78rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.67rem;
     cursor: pointer;
     display: inline-flex;
@@ -611,7 +611,7 @@ body.cosmos-body {
 }
 
 .star-designation {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.65rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -619,7 +619,7 @@ body.cosmos-body {
 }
 
 .star-badge-pill {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.61rem;
     padding: 0.16rem 0.55rem;
     border-radius: 999px;
@@ -629,7 +629,7 @@ body.cosmos-body {
 }
 
 .star-readout-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.1rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -650,7 +650,7 @@ body.cosmos-body {
 }
 
 .star-pillar-tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.63rem;
     color: rgba(255, 255, 255, 0.85);
     background: rgba(255, 255, 255, 0.05);
@@ -673,7 +673,7 @@ body.cosmos-body {
     border: 1px solid rgba(255, 255, 255, 0.92);
     padding: 0.72rem 1.3rem;
     border-radius: 999px;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-weight: 600;
     font-size: 0.84rem;
     letter-spacing: 0.01em;
@@ -719,7 +719,7 @@ body.cosmos-body {
     border: 1px solid rgba(255, 255, 255, 0.28);
     padding: 0.64rem 1.15rem;
     border-radius: 999px;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-weight: 500;
     font-size: 0.82rem;
     display: inline-flex;
@@ -755,14 +755,14 @@ body.cosmos-body {
 }
 
 .telemetry-label {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.56rem;
     letter-spacing: 0.14em;
     color: var(--ice-muted);
 }
 
 .telemetry-value {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.74rem;
     font-weight: 500;
     color: #FFFFFF;
@@ -839,7 +839,7 @@ body.cosmos-body {
     color: #FFFFFF;
     padding: 0.52rem 1.15rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.72rem;
     display: inline-flex;
     align-items: center;
@@ -908,7 +908,7 @@ body.cosmos-body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.65rem;
     letter-spacing: 0.12em;
     color: rgba(255, 255, 255, 0.65);
@@ -1097,7 +1097,7 @@ body.cosmos-body {
 }
 
 .salida-badge {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.64rem;
     letter-spacing: 0.08em;
     padding: 0.22rem 0.6rem;
@@ -1119,7 +1119,7 @@ body.cosmos-body {
 }
 
 .salida-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.15rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -1231,7 +1231,7 @@ body.cosmos-body {
 }
 
 .unit-camps-empty code {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.8rem;
     color: var(--unit-accent);
     background: rgba(255, 255, 255, 0.06);
@@ -1310,7 +1310,7 @@ body.cosmos-body {
 }
 
 .cromo-unit-tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.62rem;
     color: var(--unit-accent);
     letter-spacing: 0.1em;
@@ -1319,7 +1319,7 @@ body.cosmos-body {
 }
 
 .cromo-fallback-name {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.05rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -1349,7 +1349,7 @@ body.cosmos-body {
 }
 
 .cromo-label-name {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.08rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -1359,7 +1359,7 @@ body.cosmos-body {
 }
 
 .cromo-label-role {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 0.78rem;
     color: var(--unit-accent);
     white-space: nowrap;
@@ -1385,7 +1385,7 @@ body.cosmos-body {
 }
 
 .unit-scene-body h4 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.05rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -1408,14 +1408,14 @@ body.cosmos-body {
 }
 
 .sz-constellation-badge {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.66rem;
     letter-spacing: 0.14em;
     color: var(--unit-accent);
 }
 
 .sz-age-pill {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.66rem;
     padding: 0.22rem 0.68rem;
     border-radius: 999px;
@@ -1426,7 +1426,7 @@ body.cosmos-body {
 
 .sz-motto-banner {
     display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     font-size: 0.68rem;
     color: #040406;
@@ -1437,7 +1437,7 @@ body.cosmos-body {
 }
 
 .sz-unit-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: clamp(2.1rem, 3.6vw, 3.1rem);
     font-weight: 400;
     letter-spacing: -0.02em;
@@ -1468,7 +1468,7 @@ body.cosmos-body {
 }
 
 .sz-section-index {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.64rem;
     letter-spacing: 0.14em;
     color: var(--unit-accent);
@@ -1477,7 +1477,7 @@ body.cosmos-body {
 }
 
 .sz-section-header h3 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.2rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -1514,7 +1514,7 @@ body.cosmos-body {
 
 .sz-pillar-item strong {
     color: #FFFFFF;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 0.98rem;
     display: block;
     margin-bottom: 0.22rem;
@@ -1552,7 +1552,7 @@ body.cosmos-body {
 }
 
 .sz-kraal-header h3 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.18rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -1586,7 +1586,7 @@ body.cosmos-body {
 }
 
 .kraalete-star {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.61rem;
     letter-spacing: 0.08em;
     color: var(--unit-accent);
@@ -1595,7 +1595,7 @@ body.cosmos-body {
 }
 
 .kraalete-name {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.04rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -1657,7 +1657,7 @@ body.cosmos-body {
 }
 
 .camp-main-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 2.35rem;
     font-weight: 700;
     line-height: 1.15;
@@ -1686,7 +1686,7 @@ body.cosmos-body {
 }
 
 .camp-hpill {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.66rem;
     color: rgba(255, 255, 255, 0.78);
     background: rgba(255, 255, 255, 0.05);
@@ -1717,7 +1717,7 @@ body.cosmos-body {
 }
 
 .camp-drive-kicker {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.64rem;
     letter-spacing: 0.14em;
     color: #F59E0B;
@@ -1726,7 +1726,7 @@ body.cosmos-body {
 }
 
 .camp-drive-cta-box strong {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.25rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -1773,7 +1773,7 @@ body.cosmos-body {
     border: 1px solid rgba(255, 255, 255, 0.18) !important;
     border-radius: 12px !important;
     color: #FFFFFF !important;
-    font-family: 'JetBrains Mono', monospace !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
     font-size: 0.84rem !important;
     transition: all 0.22s ease !important;
     margin-bottom: 0 !important;
@@ -1807,7 +1807,7 @@ body.cosmos-body {
 
 .camp-unlock-feedback {
     display: block;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.74rem;
     min-height: 1.1rem;
     color: var(--ice-muted);
@@ -1877,7 +1877,7 @@ body.cosmos-body {
     border-radius: 999px;
     background: rgba(4, 5, 8, 0.82);
     border: 1px solid rgba(255, 255, 255, 0.22);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.62rem;
     color: #FFFFFF;
     backdrop-filter: blur(10px);
@@ -1892,7 +1892,7 @@ body.cosmos-body {
     border-radius: 999px;
     background: rgba(245, 158, 11, 0.9);
     color: #040406;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.6rem;
     font-weight: 700;
     opacity: 0;
@@ -1913,14 +1913,14 @@ body.cosmos-body {
 }
 
 .camp-photo-caption strong {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.05rem;
     font-weight: 600;
     color: #FFFFFF;
 }
 
 .camp-photo-caption span {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.68rem;
     color: rgba(255, 255, 255, 0.62);
 }
@@ -1950,7 +1950,7 @@ body.cosmos-body {
 }
 
 .lost-main-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 2.35rem;
     font-weight: 700;
     line-height: 1.15;
@@ -1992,14 +1992,14 @@ body.cosmos-body {
 
 .lost-key-card strong {
     display: block;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 0.84rem;
     color: #FFFFFF;
 }
 
 .lost-key-card span {
     display: block;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.64rem;
     color: rgba(255, 255, 255, 0.65);
     margin-top: 0.12rem;
@@ -2024,7 +2024,7 @@ body.cosmos-body {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.5rem;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.64rem;
     letter-spacing: 0.1em;
     color: #A5B4FC;
@@ -2104,7 +2104,7 @@ body.cosmos-body {
 }
 
 .cajon-ministar-meta strong {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 0.94rem;
     color: #FFFFFF;
     white-space: nowrap;
@@ -2113,7 +2113,7 @@ body.cosmos-body {
 }
 
 .cajon-ministar-meta span {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.63rem;
     color: rgba(255, 255, 255, 0.65);
 }
@@ -2197,7 +2197,7 @@ body.cosmos-body {
 .lost-filter-chip {
     padding: 0.42rem 0.95rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.7rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.14);
@@ -2292,7 +2292,7 @@ body.cosmos-body {
     border-radius: 6px;
     background: rgba(4, 5, 8, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.62rem;
     color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(8px);
@@ -2308,7 +2308,7 @@ body.cosmos-body {
 }
 
 .lost-photo-body h4 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.1rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -2337,7 +2337,7 @@ body.cosmos-body {
     color: #4ADE80;
     padding: 0.42rem 0.88rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.7rem;
     cursor: pointer;
     transition: all 0.22s ease;
@@ -2409,7 +2409,7 @@ body.cosmos-body {
     color: #FFFFFF;
     padding: 0.45rem 0.95rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.72rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -2448,13 +2448,13 @@ body.cosmos-body {
 }
 
 .cosmos-lightbox-info strong {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.15rem;
     color: #FFFFFF;
 }
 
 .cosmos-lightbox-info span {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.74rem;
     color: rgba(255, 255, 255, 0.65);
 }
@@ -2510,7 +2510,7 @@ body.cosmos-body {
     border-radius: 999px;
     padding: 0.38rem 0.85rem;
     color: #FFFFFF;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.72rem;
     cursor: pointer;
     display: inline-flex;
@@ -2545,7 +2545,7 @@ body.cosmos-body {
     padding: 0.55rem 1.15rem;
     border-radius: 999px;
     font-size: 0.84rem;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -2572,7 +2572,7 @@ body.cosmos-body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.56rem;
     letter-spacing: 0.1em;
     color: var(--ice-muted);
@@ -2686,7 +2686,7 @@ body.cosmos-body {
 }
 
 .drawer-kicker {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.64rem;
     letter-spacing: 0.14em;
     color: #E05254;
@@ -2695,7 +2695,7 @@ body.cosmos-body {
 }
 
 .drawer-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.45rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -2708,7 +2708,7 @@ body.cosmos-body {
     color: #FFFFFF;
     padding: 0.48rem 0.95rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.7rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -2750,7 +2750,7 @@ body.cosmos-body {
 
 .drawer-anchor-pill {
     padding: 0.4rem 0.85rem;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -2782,7 +2782,7 @@ body.cosmos-body {
 }
 
 .bases-pill-badge {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.62rem;
     letter-spacing: 0.12em;
     padding: 0.2rem 0.55rem;
@@ -2795,7 +2795,7 @@ body.cosmos-body {
 }
 
 .bases-section-title-row h3 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.18rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -2861,7 +2861,7 @@ body.cosmos-body {
 }
 
 .coord-name {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.05rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -2873,7 +2873,7 @@ body.cosmos-body {
 }
 
 .coord-phone-text {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.76rem;
     color: #F3E5AB;
     margin-top: 0.15rem;
@@ -2944,7 +2944,7 @@ body.cosmos-body {
 }
 
 .base-type-badge {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.63rem;
     letter-spacing: 0.08em;
     color: #E05254;
@@ -2954,7 +2954,7 @@ body.cosmos-body {
 }
 
 .base-location-card h4 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.12rem;
     color: #FFFFFF;
     margin: 0;
@@ -3006,7 +3006,7 @@ body.cosmos-body {
 }
 
 .step-num {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--accent-red, #D9383A);
@@ -3036,7 +3036,7 @@ body.cosmos-body {
 }
 
 .quick-signup-box h4 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     color: #FFFFFF;
     font-size: 1.05rem;
     margin: 0 0 0.3rem 0;
@@ -3138,7 +3138,7 @@ body.cosmos-body {
 
 .group-social-info strong {
     display: block;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     color: #FFFFFF;
     font-size: 0.92rem;
     font-weight: 600;
@@ -3149,7 +3149,7 @@ body.cosmos-body {
 
 .group-social-info span {
     display: block;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.7rem;
     color: var(--ice-muted);
     white-space: nowrap;
@@ -3184,7 +3184,7 @@ body.cosmos-body {
 }
 
 .identity-hero-badge h3 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.35rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -3235,7 +3235,7 @@ body.cosmos-body {
 }
 
 .story-card-body h4 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.08rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -3267,7 +3267,7 @@ body.cosmos-body {
 }
 
 .dossier-card h3 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     color: #FFFFFF;
     font-size: 1.04rem;
     margin: 0.45rem 0 0.35rem 0;
@@ -3281,7 +3281,7 @@ body.cosmos-body {
 
 .dossier-tag {
     display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.62rem;
     color: #FFFFFF;
     background: rgba(176, 35, 36, 0.28);
@@ -3313,7 +3313,7 @@ body.cosmos-body {
     color: #FFFFFF;
     padding: 0.38rem 0.8rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.68rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -3499,7 +3499,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 
 .anniversary-year-tag {
     display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.14em;
@@ -3513,7 +3513,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 
 .anniversary-year-display {
     display: block;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 3.2rem;
     font-weight: 700;
     line-height: 1;
@@ -3529,7 +3529,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     color: #F3E5AB;
     padding: 0.55rem 0.95rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.75rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -3583,7 +3583,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .anniversary-memory-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.4rem;
     font-weight: 600;
     color: #F3E5AB;
@@ -3611,7 +3611,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.72rem;
     color: #D4AF37;
     background: rgba(212, 175, 55, 0.08);
@@ -3833,7 +3833,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     gap: 0.45rem;
     padding: 0.42rem 0.88rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.66rem;
     letter-spacing: 0.05em;
     color: rgba(255, 255, 255, 0.92);
@@ -3910,14 +3910,14 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .pillar-num-badge {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.68rem;
     letter-spacing: 0.12em;
     color: var(--unit-accent, #38BDF8);
 }
 
 .unit-pillars-grid .sz-pillar-item strong {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.1rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -3984,7 +3984,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .camp-floating-drive-dock .camp-vault-header strong {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.12rem;
     color: #FFFFFF;
 }
@@ -4044,7 +4044,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .acrux-giant-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: clamp(2.4rem, 4.2vw, 3.7rem);
     font-weight: 600;
     letter-spacing: -0.025em;
@@ -4077,7 +4077,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .acrux-dock-kicker {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.66rem;
     letter-spacing: 0.14em;
     color: #F87171;
@@ -4085,7 +4085,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .acrux-floating-base-dock h3 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.3rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -4132,7 +4132,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .inscripcion-info-col h3 {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.45rem;
     font-weight: 600;
     color: #FFFFFF;
@@ -4161,7 +4161,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.14);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.68rem;
     color: var(--ice-grey);
 }
@@ -4406,7 +4406,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .cromo-split-unit-pill {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.64rem;
     font-weight: 600;
     letter-spacing: 0.15em;
@@ -4433,7 +4433,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .cromo-split-kicker {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.68rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -4442,7 +4442,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .cromo-split-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: clamp(2.1rem, 3.2vw, 2.85rem);
     font-weight: 600;
     letter-spacing: -0.02em;
@@ -4452,7 +4452,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .cromo-split-realname {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.15rem;
     font-weight: 400;
     color: var(--unit-accent, #38BDF8);
@@ -4567,7 +4567,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     color: #E2E8F0;
     padding: 0.48rem 1rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.7rem;
     letter-spacing: 0.04em;
     cursor: pointer;
@@ -4629,7 +4629,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #FFFFFF;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.68rem;
     text-decoration: none;
     transition: all 0.2s ease;
@@ -4642,7 +4642,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .merch-topbar-badge {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.64rem;
     letter-spacing: 0.18em;
     color: rgba(212, 190, 152, 0.82);
@@ -4698,7 +4698,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .merch-stage-pill {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.62rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -4779,7 +4779,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .merch-studio-caption-tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.64rem;
     letter-spacing: 0.18em;
     color: #D4BE98;
@@ -4842,7 +4842,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .merch-spec-item .spec-label {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.58rem;
     letter-spacing: 0.15em;
     color: rgba(148, 163, 184, 0.72);
@@ -4892,7 +4892,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .merch-kicker {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.65rem;
     font-weight: 500;
     letter-spacing: 0.16em;
@@ -4909,7 +4909,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .merch-modal-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: clamp(1.75rem, 2.8vw, 2.45rem);
     font-weight: 300;
     letter-spacing: -0.02em;
@@ -4919,7 +4919,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .merch-price-tag {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.45rem;
     font-weight: 500;
     color: #E2D5B5;
@@ -4945,7 +4945,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     border-radius: 14px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(212, 190, 152, 0.2);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.74rem;
     color: #E2D5B5;
 }
@@ -4991,7 +4991,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .merch-field-label {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.68rem;
     font-weight: 500;
     letter-spacing: 0.13em;
@@ -5083,7 +5083,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     margin-top: 0.5rem;
     padding-top: 1.1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.05rem;
     font-weight: 500;
     color: #E2D5B5;
@@ -5146,7 +5146,7 @@ body.anniversary-50-mode .hud-scroll-fill {
     border: 1px solid #E2D5B5;
     background: linear-gradient(135deg, #F8FAFC 0%, #E2D5B5 100%);
     color: #04060A;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.05rem;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -5205,7 +5205,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .merch-success-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.65rem;
     font-weight: 500;
     color: #FFFFFF;
@@ -5232,7 +5232,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 .merch-done-order-btn {
     padding: 0.68rem 1.35rem;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.72rem;
     letter-spacing: 0.05em;
     cursor: pointer;
@@ -5378,7 +5378,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .boot-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Montserrat', 'Fraunces', sans-serif;
     font-size: 1.25rem;
     font-weight: 700;
     letter-spacing: 0.12em;
@@ -5391,7 +5391,7 @@ body.anniversary-50-mode .hud-scroll-fill {
 }
 
 .boot-subtitle {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.66rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -5425,3 +5425,801 @@ body.anniversary-50-mode .hud-scroll-fill {
     50% { transform: scale(1.18); opacity: 1; }
 }
 
+/* ==========================================================================
+   24. ACTA COMISIÓN WEB · TIPOGRAFÍA SCOUT, FOTO BIENVENIDA, MODO DÍA Y MODALES
+   ========================================================================== */
+.stage-giant-heading,
+.hud-brand-name,
+.boot-title,
+.drawer-title,
+.docs-hero-title,
+.kraal-general-title,
+.calendar-hero-title {
+    font-family: 'Fraunces', 'Montserrat', Georgia, serif;
+}
+
+.hud-btn-daymode {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--ice-border);
+    color: var(--ice-white);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.hud-btn-daymode:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: var(--ice-border-bright);
+    transform: translateY(-1px);
+}
+
+.hud-btn-daymode .icon-moon {
+    display: none;
+}
+
+body.day-mode .hud-btn-daymode .icon-sun {
+    display: none;
+}
+
+body.day-mode .hud-btn-daymode .icon-moon {
+    display: inline-block;
+}
+
+/* Tarjeta fotográfica de bienvenida en Sector I */
+.stage-welcome-photo-card {
+    margin: 0.9rem 0 1.05rem 0;
+    padding: 0.45rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+    transition: transform 0.28s ease, border-color 0.28s ease, background 0.28s ease;
+}
+
+.stage-welcome-photo-card:hover,
+.stage-welcome-photo-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(217, 56, 58, 0.55);
+    background: rgba(255, 255, 255, 0.08);
+    outline: none;
+}
+
+.stage-welcome-photo-frame {
+    position: relative;
+    width: 100%;
+    height: 128px;
+    border-radius: 11px;
+    overflow: hidden;
+}
+
+.stage-welcome-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    display: block;
+    transition: transform 0.45s ease;
+}
+
+.stage-welcome-photo-card:hover .stage-welcome-photo-frame img {
+    transform: scale(1.04);
+}
+
+.stage-welcome-photo-zoom {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: rgba(4, 4, 6, 0.65);
+    backdrop-filter: blur(8px);
+    color: #FFFFFF;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.stage-welcome-photo-caption {
+    margin-top: 0.45rem;
+    padding: 0 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.72);
+    text-align: center;
+}
+
+/* ==========================================================================
+   MODO LUMINOSO Y AMIGABLE · CIELO AZUL ESTELAR (body.day-mode)
+   ========================================================================== */
+body.day-mode {
+    --abyss-black: #132A4E;
+    --midnight-deep: #1B3B6B;
+    --space-anthracite: #22477A;
+    --ice-white: #FFFFFF;
+    --ice-grey: rgba(241, 245, 249, 0.92);
+    --ice-muted: rgba(226, 232, 240, 0.76);
+    --ice-border: rgba(255, 255, 255, 0.22);
+    --ice-border-bright: rgba(255, 255, 255, 0.45);
+    --acrux-crimson: #D9383A;
+    --acrux-red-subtle: #F87171;
+    --acrux-red-glow: rgba(248, 113, 113, 0.28);
+    background-color: #132A4E;
+    color: #FFFFFF;
+}
+
+body.day-mode .vignette-abyss-overlay {
+    background: radial-gradient(circle at center, rgba(186, 230, 253, 0.06) 0%, rgba(12, 29, 56, 0.22) 100%);
+}
+
+body.day-mode .film-grain-overlay {
+    opacity: 0.02;
+}
+
+body.day-mode .hud-constellation-nav,
+body.day-mode .constellation-stage-panel,
+body.day-mode .cosmos-drawer-modal,
+body.day-mode .hud-brand-trigger,
+body.day-mode .hud-nav-arrow-btn,
+body.day-mode .cosmos-nav-hint-pill {
+    background: linear-gradient(145deg, rgba(28, 59, 107, 0.72) 0%, rgba(16, 37, 72, 0.64) 100%);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border-color: rgba(255, 255, 255, 0.24);
+    box-shadow: 0 24px 60px rgba(7, 17, 36, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    color: #FFFFFF;
+}
+
+body.day-mode .hud-nav-arrow-btn:hover,
+body.day-mode .hud-brand-trigger:hover {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+body.day-mode .stage-index-tag {
+    background: rgba(224, 72, 74, 0.26);
+    border-color: rgba(248, 113, 113, 0.55);
+    color: #FFFFFF;
+}
+
+body.day-mode .cosmos-lightbox-backdrop {
+    background: rgba(12, 29, 56, 0.86);
+}
+
+body.day-mode .hud-nav-node {
+    color: rgba(226, 232, 240, 0.85);
+}
+
+body.day-mode .hud-nav-node:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+body.day-mode .hud-nav-node.active {
+    color: #0F172A;
+    background: #FFFFFF;
+    border-color: #FFFFFF;
+}
+
+body.day-mode .hud-btn-daymode,
+body.day-mode .hud-btn-overview,
+body.day-mode .star-tab-back-btn {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.32);
+    color: #FFFFFF;
+}
+
+body.day-mode .hud-btn-daymode:hover,
+body.day-mode .hud-btn-overview:hover,
+body.day-mode .star-tab-back-btn:hover {
+    background: rgba(255, 255, 255, 0.26);
+    border-color: rgba(255, 255, 255, 0.52);
+}
+
+body.day-mode .hud-btn-cta,
+body.day-mode .btn-cosmos-primary {
+    background: #E0484A;
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: 0 10px 26px rgba(224, 72, 74, 0.35);
+}
+
+body.day-mode .hud-btn-cta:hover,
+body.day-mode .btn-cosmos-primary:hover {
+    background: #C93537;
+}
+
+body.day-mode .stage-welcome-photo-card {
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.24);
+}
+
+body.day-mode .star-tab-view,
+body.day-mode .cosmos-drawer-backdrop,
+body.day-mode .cosmos-drawer-backdrop.is-fullscreen-star-view {
+    background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.22) 0%, rgba(20, 44, 82, 0.94) 55%, rgba(12, 29, 56, 0.98) 100%) !important;
+}
+
+body.day-mode .stage-giant-heading,
+body.day-mode .stage-description,
+body.day-mode .constellation-stage-panel.is-floating-minimal .stage-description,
+body.day-mode .hud-brand-name,
+body.day-mode .hud-brand-coords,
+body.day-mode .acrux-giant-title,
+body.day-mode .drawer-title,
+body.day-mode .star-tab-title,
+body.day-mode .unit-tab-title,
+body.day-mode .camp-tab-title,
+body.day-mode .lost-tab-title {
+    text-shadow: none !important;
+}
+
+body.day-mode .constellation-stage-panel.is-floating-minimal::before {
+    background: none !important;
+}
+
+body.day-mode .star-tab-topbar {
+    background: rgba(19, 42, 78, 0.78);
+    border-bottom-color: rgba(255, 255, 255, 0.18);
+}
+
+body.day-mode .unit-story-card,
+body.day-mode .doc-download-card,
+body.day-mode .calendar-trimester-card,
+body.day-mode .calendar-milestone-row,
+body.day-mode .bases-modal-section,
+body.day-mode .coord-drive-card,
+body.day-mode .kraal-unit-section,
+body.day-mode .docs-hero,
+body.day-mode .kraal-general-hero,
+body.day-mode .calendar-hero {
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.20);
+}
+
+/* Merchandising y Modal Split-Card en Modo Luminoso */
+body.day-mode .star-tab-merch-view,
+body.day-mode #merchModal,
+body.day-mode .merch-custom-modal,
+body.day-mode .merch-ecom-shell {
+    background: radial-gradient(circle at 28% 38%, #22477A 0%, #152F56 55%, #0D203E 100%) !important;
+    color: #FFFFFF;
+}
+
+body.day-mode .merch-ecom-topbar {
+    background: rgba(19, 42, 78, 0.82) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.18);
+}
+
+body.day-mode .merch-back-btn,
+body.day-mode .merch-direct-form-link,
+body.day-mode .merch-thumb-btn,
+body.day-mode .merch-option-pill {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.24);
+    color: #FFFFFF;
+}
+
+body.day-mode .merch-option-pill.is-selected {
+    background: #FFFFFF;
+    color: #0F172A;
+    border-color: #FFFFFF;
+}
+
+body.day-mode .merch-forms-switcher {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.24);
+}
+
+body.day-mode .star-node-chip {
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #FFFFFF;
+}
+
+body.day-mode .star-node-chip.active {
+    background: #FFFFFF;
+    color: #0F172A;
+    border-color: #FFFFFF;
+}
+
+body.day-mode .hud-scroll-track {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+body.day-mode .hud-scroll-fill {
+    background: #FFFFFF;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+body.day-mode .rail-tick {
+    background: #1B3B6B;
+    border-color: rgba(255, 255, 255, 0.72);
+}
+
+body.day-mode .rail-tick:hover,
+body.day-mode .rail-tick.active {
+    background: #FFFFFF;
+    border-color: #FFFFFF;
+    box-shadow: 0 0 10px #FFFFFF;
+}
+
+body.day-mode .merch-ecom-gallery-col {
+    background: transparent !important;
+    border-right-color: rgba(255, 255, 255, 0.16);
+}
+
+body.day-mode .merch-showcase-visual {
+    background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.12) 0%, rgba(16, 37, 72, 0.55) 75%);
+    border-color: rgba(255, 255, 255, 0.20);
+    box-shadow: 0 18px 45px rgba(7, 17, 36, 0.35);
+}
+
+body.day-mode .merch-ecom-details-col {
+    background: transparent !important;
+}
+
+body.day-mode .merch-spec-item,
+body.day-mode .merch-pill-option,
+body.day-mode .merch-text-input,
+body.day-mode .merch-textarea-input,
+body.day-mode .merch-order-success,
+body.day-mode .merch-stage-pill,
+body.day-mode .merch-gallery-thumbs button,
+body.day-mode .dossier-form-input {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.24);
+    color: #FFFFFF;
+}
+
+body.day-mode .merch-text-input::placeholder,
+body.day-mode .merch-textarea-input::placeholder {
+    color: rgba(226, 232, 240, 0.72);
+}
+
+body.day-mode .merch-submit-btn {
+    background: #E0484A;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+body.day-mode .merch-submit-btn:hover {
+    background: #C93537;
+}
+
+body.day-mode .merch-pill-option.is-selected,
+body.day-mode .merch-pill-option.active {
+    background: #E0484A;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+}
+
+body.day-mode .cromo-zoom-modal-backdrop {
+    background: rgba(12, 29, 56, 0.88);
+}
+
+body.day-mode .cromo-split-dialog {
+    background: linear-gradient(155deg, rgba(24, 52, 96, 0.96) 0%, rgba(13, 31, 60, 0.98) 100%);
+    border-color: rgba(255, 255, 255, 0.24);
+}
+
+/* ==========================================================================
+   MODALES NUEVOS: DOCUMENTOS, EL KRAAL Y CALENDARIO DE RONDA SOLAR
+   ========================================================================== */
+.docs-modal-content,
+.kraal-general-content,
+.calendar-modal-content {
+    width: min(1080px, 92vw);
+    margin: 2rem auto 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.docs-hero,
+.kraal-general-hero,
+.calendar-hero {
+    padding: 1.8rem 2rem;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--ice-border);
+}
+
+body.day-mode .docs-hero,
+body.day-mode .kraal-general-hero,
+body.day-mode .calendar-hero {
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.docs-hero-kicker,
+.kraal-general-kicker,
+.calendar-hero-kicker {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--acrux-red-subtle);
+    margin-bottom: 0.45rem;
+}
+
+.docs-hero-title,
+.kraal-general-title,
+.calendar-hero-title {
+    margin: 0 0 0.55rem;
+    font-size: clamp(1.65rem, 3vw, 2.35rem);
+    line-height: 1.15;
+}
+
+.docs-hero-desc,
+.kraal-general-desc,
+.calendar-hero-desc {
+    margin: 0;
+    color: var(--ice-grey);
+    font-size: 0.96rem;
+    line-height: 1.6;
+}
+
+.docs-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.docs-block-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+}
+
+.docs-block-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.docs-block-subtitle {
+    margin: 0.2rem 0 0;
+    font-size: 0.88rem;
+    color: var(--ice-muted);
+}
+
+.docs-mail-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    background: var(--acrux-crimson);
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.docs-mail-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+}
+
+.docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0.9rem;
+}
+
+.doc-download-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.9rem;
+    padding: 1rem 1.15rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid var(--ice-border);
+    text-decoration: none;
+    color: var(--ice-white);
+    transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+
+.doc-download-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--acrux-red-subtle);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.doc-download-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.doc-download-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--acrux-red-subtle);
+}
+
+.doc-download-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.doc-download-icon {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: rgba(217, 56, 58, 0.14);
+    color: var(--acrux-red-subtle);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Kraal General */
+.kraal-unit-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.4rem 1.5rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--ice-border);
+}
+
+body.day-mode .kraal-unit-section {
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.kraal-unit-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem;
+    border-bottom: 1px solid var(--ice-border);
+    padding-bottom: 0.65rem;
+}
+
+.kraal-unit-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.kraal-unit-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.kraal-unit-ages {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ice-muted);
+}
+
+/* Calendario Ronda Solar */
+.calendar-trimesters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.calendar-trimester-card {
+    padding: 1.25rem 1.35rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid var(--ice-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.calendar-trimester-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #A78BFA;
+}
+
+body.day-mode .calendar-trimester-tag {
+    color: #6D28D9;
+}
+
+.calendar-trimester-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.calendar-trimester-desc {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ice-grey);
+}
+
+.calendar-milestones-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.85rem;
+}
+
+.calendar-milestone-row {
+    padding: 1rem 1.15rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--ice-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.calendar-milestone-when {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--acrux-red-subtle);
+}
+
+.calendar-milestone-name {
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.calendar-milestone-note {
+    font-size: 0.84rem;
+    color: var(--ice-muted);
+    line-height: 1.45;
+}
+
+@media (max-width: 768px) {
+    .cosmos-hud-top {
+        padding: 0.65rem 0.75rem;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .hud-brand-trigger {
+        padding: 0.3rem 0.65rem 0.3rem 0.35rem;
+        gap: 0.45rem;
+    }
+    .hud-logo-orb {
+        width: 28px;
+        height: 28px;
+    }
+    .hud-brand-name {
+        font-size: 0.82rem;
+    }
+    .hud-brand-coords {
+        display: none;
+    }
+    .hud-actions-right {
+        gap: 0.35rem;
+    }
+    .hud-btn-overview #overviewBtnText {
+        display: none;
+    }
+    .hud-btn-overview {
+        padding: 0.45rem 0.6rem;
+    }
+    .hud-btn-cta {
+        padding: 0.45rem 0.85rem;
+        font-size: 0.74rem;
+    }
+    .hud-constellation-nav {
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+        overflow-x: auto;
+        scrollbar-width: none;
+        padding: 0.22rem;
+        gap: 0.15rem;
+    }
+    .hud-constellation-nav::-webkit-scrollbar {
+        display: none;
+    }
+    .hud-nav-node {
+        padding: 0.35rem 0.62rem;
+        font-size: 0.72rem;
+        flex: 1 0 auto;
+        justify-content: center;
+    }
+    .cosmos-stage-viewport {
+        padding: 6.5rem 0.85rem 4.6rem 0.85rem;
+        align-items: flex-end;
+        overflow-y: auto;
+    }
+    .constellation-stage-panel.is-floating-minimal {
+        max-width: 100%;
+        width: 100%;
+        padding: 1rem 1.05rem !important;
+        border-radius: 18px;
+        background: rgba(8, 12, 22, 0.66) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    }
+    body.day-mode .constellation-stage-panel.is-floating-minimal {
+        background: rgba(16, 37, 72, 0.72) !important;
+        border-color: rgba(255, 255, 255, 0.22) !important;
+    }
+    .stage-giant-heading {
+        font-size: clamp(1.5rem, 6.2vw, 2.1rem);
+        margin-bottom: 0.45rem;
+    }
+    .constellation-stage-panel.is-floating-minimal .stage-description {
+        font-size: 0.82rem;
+        line-height: 1.5;
+        margin-bottom: 0.75rem;
+    }
+    .stage-welcome-photo-card {
+        margin: 0.55rem 0 0.75rem 0;
+    }
+    .stage-welcome-photo-frame {
+        height: 86px;
+    }
+    .constellation-stage-panel.is-floating-minimal #btnStagePrimaryAction {
+        width: 100%;
+        justify-content: center;
+        padding: 0.68rem 1rem;
+    }
+    .cosmos-nav-hint-pill,
+    .hud-scroll-hint {
+        display: none !important;
+    }
+    .cosmos-hud-bottom {
+        padding: 0.65rem 0.85rem;
+    }
+    .hud-bottom-nav-container {
+        gap: 0.5rem;
+    }
+    .hud-nav-arrow-btn {
+        padding: 0.36rem 0.7rem;
+        font-size: 0.7rem;
+    }
+    .acrux-floating-showcase,
+    .inscripcion-split-card,
+    .cromo-split-dialog {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem;
+    }
+    .merch-ecom-split {
+        grid-template-columns: 1fr !important;
+        height: auto !important;
+        overflow-y: auto !important;
+    }
+    .merch-ecom-gallery-col,
+    .merch-ecom-details-col {
+        height: auto !important;
+        overflow: visible !important;
+        padding: 1.2rem 1rem 2rem 1rem !important;
+        border-right: none !important;
+    }
+    .docs-modal-content,
+    .kraal-general-content,
+    .calendar-modal-content {
+        width: 94vw;
+        margin: 1.2rem auto 3rem;
+        gap: 1.25rem;
+    }
+}
