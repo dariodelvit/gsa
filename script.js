@@ -918,37 +918,9 @@
     const GREEK_ALPHABET = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'];
     let hasBothCampsConstellations = false;
 
-    // Clasificador inteligente para diferenciar Campamentos de Verano vs Semana Santa / Primavera
+    // Clasificador 100% por carpeta de Google Drive (Verano vs Semana Santa / Invierno, sin mirar títulos)
     function detectCampSeason(camp) {
-        // 0. Si viene directamente categorizado desde Google Drive (por subcarpeta Verano / Semana Santa)
-        if (camp.seasonType === 'easter' || camp.seasonType === 'summer') {
-            return camp.seasonType;
-        }
-
-        const raw = `${camp.name || ''} ${camp.driveFolderName || ''} ${camp.desc || ''} ${camp.location || ''} ${camp.season || ''}`.toLowerCase();
-
-        // 1. Detección explícita por palabras clave de Semana Santa / Primavera
-        if (/(semana\s*santa|\bss\b|pascua|primavera|acampada)/i.test(raw)) {
-            return 'easter';
-        }
-        // 2. Detección explícita por palabras clave de Verano
-        if (/(verano|estival|julio|agosto|campamento\s*de\s*verano)/i.test(raw)) {
-            return 'summer';
-        }
-
-        // 3. Lugares icónicos conocidos del Grupo Scout Acrux 518
-        const easterPlaces = ['barbadillo', 'cofiñal', 'cofial', 'arija', 'alcalá de moncayo', 'alcala de moncayo', 'moncayo'];
-        const summerPlaces = ['prioro', 'cóbreces', 'cobreces', 'valdeavellano', 'vilviestre', 'vilvuestre', 'priaranza'];
-
-        for (const p of easterPlaces) {
-            if (raw.includes(p)) return 'easter';
-        }
-        for (const p of summerPlaces) {
-            if (raw.includes(p)) return 'summer';
-        }
-
-        // 4. Por defecto, campamento de verano
-        return 'summer';
+        return (camp && camp.seasonType === 'easter') ? 'easter' : 'summer';
     }
 
     function rebuildCampsConstellation(campsFromDrive) {
@@ -4888,7 +4860,11 @@
         }
     });
 
-    canvas.addEventListener('pointerdown', () => {
+    canvas.addEventListener('pointerdown', (e) => {
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+        pointer.lerpX = e.clientX;
+        pointer.lerpY = e.clientY;
         pointer.isDown = true;
         pointer.dragMoved = 0;
     });
@@ -4897,7 +4873,8 @@
         if (!pointer.isDown) return;
         pointer.isDown = false;
 
-        if (pointer.dragMoved < 10) {
+        const tapThreshold = e.pointerType === 'touch' ? 18 : 10;
+        if (pointer.dragMoved < tapThreshold) {
             // 1. Detección de clic en el Cometa Dorado (Easter Egg 50º Aniversario)
             if (goldenComet.state === 'flying' && goldenComet.alpha > 0.15) {
                 const dComet = Math.hypot(e.clientX - goldenComet.sx, e.clientY - goldenComet.sy);
@@ -5054,8 +5031,9 @@
     // 11. BUCLE DE RENDERIZADO 60FPS · BLANCO PURO, ROJO SUTIL Y SALTO HIPERESPACIO
     // =========================================================================
     function worldToScreen(wx, wy) {
+        const isMobile = vw <= 768;
         const cx = (vw > 900 && !isOverviewMode && !superZoomState) ? vw * 0.63 : vw * 0.5;
-        const cy = vh * 0.5;
+        const cy = (isMobile && !isOverviewMode && !superZoomState) ? vh * 0.27 : vh * 0.5;
         return {
             x: (wx - camera.x) * camera.zoom + cx,
             y: (wy - camera.y) * camera.zoom + cy
@@ -5109,7 +5087,9 @@
         } else if (isOverviewMode) {
             camera.targetX = 820 + freePanX * 0.35;
             camera.targetY = 360 + freePanY * 0.35;
-            camera.targetZoom = Math.min(vw / 5400, vh / 3500);
+            camera.targetZoom = vw <= 768
+                ? Math.min(vw / 4200, vh / 3600)
+                : Math.min(vw / 5400, vh / 3500);
         } else {
             const iFloor = clamp(Math.floor(currentSectorProgress), 0, SECTORS.length - 1);
             const iCeil = clamp(Math.ceil(currentSectorProgress), 0, SECTORS.length - 1);
@@ -5122,14 +5102,30 @@
             const iy = lerp(sA.worldY, sB.worldY, tSeg);
             const iz = lerp(sA.baseZoom, sB.baseZoom, tSeg);
 
-            const parX = ((pointer.lerpX / vw) - 0.5) * 42;
-            const parY = ((pointer.lerpY / vh) - 0.5) * 30;
+            const isMobile = vw <= 768;
+            const parX = isMobile ? 0 : ((pointer.lerpX / vw) - 0.5) * 42;
+            const parY = isMobile ? 0 : ((pointer.lerpY / vh) - 0.5) * 30;
 
             camera.targetX = ix + freePanX + parX;
             camera.targetY = iy + freePanY + parY;
 
             const travelWarp = Math.min(1, Math.abs(scrollDiff) * 0.8);
-            camera.targetZoom = Math.max(0.55, iz - travelWarp * 0.24);
+            if (isMobile) {
+                const mobileScaleBySector = [
+                    Math.min(0.82, (vw - 36) / 500),
+                    Math.min(0.55, (vw - 28) / 1450),
+                    Math.min(0.55, (vw - 28) / 1550),
+                    Math.min(0.75, (vw - 32) / 760)
+                ];
+                const mScale = lerp(
+                    mobileScaleBySector[iFloor] ?? 0.65,
+                    mobileScaleBySector[iCeil] ?? 0.65,
+                    tSeg
+                );
+                camera.targetZoom = Math.max(0.22, (iz * mScale) - travelWarp * 0.12);
+            } else {
+                camera.targetZoom = Math.max(0.55, iz - travelWarp * 0.24);
+            }
         }
 
         const prevCamX = camera.x;
@@ -6265,7 +6261,7 @@
     }
 
     // --- Boot Loader (#cosmosBootLoader) + caché instantánea en localStorage ---
-    const LOCAL_STORAGE_CACHE_KEY = 'acrux_drive_cache_v23';
+    const LOCAL_STORAGE_CACHE_KEY = 'acrux_drive_cache_v24';
     const elBootLoader = document.getElementById('cosmosBootLoader');
     const elBootProgressFill = document.getElementById('bootProgressFill');
     const elBootStatusText = document.getElementById('bootStatusText');

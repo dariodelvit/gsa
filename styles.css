@@ -6093,14 +6093,43 @@ body.day-mode .calendar-trimester-tag {
     line-height: 1.45;
 }
 
+@media (hover: none), (pointer: coarse) {
+    .cosmos-cursor-dot,
+    .cosmos-cursor-ring {
+        display: none !important;
+    }
+}
+
 @media (max-width: 768px) {
+    #cosmosCanvas {
+        touch-action: none;
+    }
+    body.cosmos-body,
+    #cosmosCanvas,
+    .star-tab-view,
+    .merch-custom-modal,
+    .merch-ecom-shell {
+        height: 100dvh !important;
+        min-height: 100dvh !important;
+    }
+
+    /* 1. CABECERA SUPERIOR LIMPIA Y SIN SOLAPAMIENTOS */
     .cosmos-hud-top {
-        padding: 0.65rem 0.75rem;
-        gap: 0.5rem;
+        padding: calc(0.55rem + env(safe-area-inset-top, 0px)) 0.75rem 0.55rem 0.75rem;
+        gap: 0.45rem;
         flex-wrap: wrap;
+        background: linear-gradient(180deg, rgba(6, 8, 13, 0.90) 0%, rgba(6, 8, 13, 0.65) 100%);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        pointer-events: auto;
+    }
+    body.day-mode .cosmos-hud-top {
+        background: linear-gradient(180deg, rgba(16, 37, 72, 0.90) 0%, rgba(16, 37, 72, 0.68) 100%);
+        border-bottom-color: rgba(255, 255, 255, 0.16);
     }
     .hud-brand-trigger {
-        padding: 0.3rem 0.65rem 0.3rem 0.35rem;
+        padding: 0.25rem 0.65rem 0.25rem 0.3rem;
         gap: 0.45rem;
     }
     .hud-logo-orb {
@@ -6108,118 +6137,324 @@ body.day-mode .calendar-trimester-tag {
         height: 28px;
     }
     .hud-brand-name {
-        font-size: 0.82rem;
+        font-size: 0.84rem;
     }
     .hud-brand-coords {
         display: none;
     }
     .hud-actions-right {
         gap: 0.35rem;
+        margin-left: auto;
+    }
+    .hud-btn-daymode {
+        width: 34px;
+        height: 34px;
     }
     .hud-btn-overview #overviewBtnText {
         display: none;
     }
     .hud-btn-overview {
-        padding: 0.45rem 0.6rem;
+        padding: 0.44rem 0.58rem;
+        min-height: 34px;
     }
     .hud-btn-cta {
-        padding: 0.45rem 0.85rem;
-        font-size: 0.74rem;
+        padding: 0.44rem 0.82rem;
+        font-size: 0.75rem;
+        min-height: 34px;
     }
     .hud-constellation-nav {
         order: 3;
         width: 100%;
-        justify-content: space-between;
-        overflow-x: auto;
-        scrollbar-width: none;
-        padding: 0.22rem;
-        gap: 0.15rem;
-    }
-    .hud-constellation-nav::-webkit-scrollbar {
-        display: none;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        padding: 0.2rem;
+        gap: 0.18rem;
+        border-radius: 14px;
     }
     .hud-nav-node {
-        padding: 0.35rem 0.62rem;
-        font-size: 0.72rem;
-        flex: 1 0 auto;
+        padding: 0.42rem 0.25rem;
+        font-size: 0.7rem;
         justify-content: center;
+        text-align: center;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
+    .hud-nav-node .node-roman {
+        display: none;
+    }
+
+    /* 2. PANEL INFERIOR COMPACTO (DEJA LIBRE EL CIELO ARRIBA PARA VER Y TOCAR ESTRELLAS) */
     .cosmos-stage-viewport {
-        padding: 6.5rem 0.85rem 4.6rem 0.85rem;
+        padding: 0 0.75rem calc(3.85rem + env(safe-area-inset-bottom, 0px)) 0.75rem;
         align-items: flex-end;
-        overflow-y: auto;
+        justify-content: center;
+        pointer-events: none;
     }
     .constellation-stage-panel.is-floating-minimal {
         max-width: 100%;
         width: 100%;
-        padding: 1rem 1.05rem !important;
+        max-height: 41dvh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0.9rem 1rem !important;
         border-radius: 18px;
-        background: rgba(8, 12, 22, 0.66) !important;
-        backdrop-filter: blur(14px) !important;
-        -webkit-backdrop-filter: blur(14px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        background: rgba(8, 12, 22, 0.76) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.16) !important;
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55) !important;
+        pointer-events: auto;
     }
     body.day-mode .constellation-stage-panel.is-floating-minimal {
-        background: rgba(16, 37, 72, 0.72) !important;
-        border-color: rgba(255, 255, 255, 0.22) !important;
+        background: rgba(16, 37, 72, 0.80) !important;
+        border-color: rgba(255, 255, 255, 0.24) !important;
+    }
+    .stage-meta-line {
+        margin-bottom: 0.35rem;
+    }
+    .stage-altitude-tag {
+        display: none;
+    }
+    .stage-index-tag {
+        font-size: 0.58rem;
+        padding: 0.2rem 0.58rem;
     }
     .stage-giant-heading {
-        font-size: clamp(1.5rem, 6.2vw, 2.1rem);
-        margin-bottom: 0.45rem;
+        font-size: clamp(1.3rem, 5.5vw, 1.7rem);
+        margin-bottom: 0.35rem;
     }
     .constellation-stage-panel.is-floating-minimal .stage-description {
-        font-size: 0.82rem;
-        line-height: 1.5;
-        margin-bottom: 0.75rem;
+        font-size: 0.8rem;
+        line-height: 1.44;
+        margin-bottom: 0.65rem;
     }
     .stage-welcome-photo-card {
-        margin: 0.55rem 0 0.75rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin: 0.45rem 0 0.65rem 0;
+        padding: 0.38rem;
+        border-radius: 12px;
     }
     .stage-welcome-photo-frame {
-        height: 86px;
+        width: 92px;
+        min-width: 92px;
+        height: 58px;
+        border-radius: 8px;
+    }
+    .stage-welcome-photo-zoom {
+        width: 22px;
+        height: 22px;
+        right: 4px;
+        bottom: 4px;
+    }
+    .stage-welcome-photo-caption {
+        margin-top: 0;
+        padding: 0;
+        text-align: left;
+        font-size: 0.72rem;
+        line-height: 1.35;
+    }
+    .stage-star-nodes {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 0.25rem;
+        margin-bottom: 0.65rem;
+    }
+    .stage-star-nodes::-webkit-scrollbar {
+        display: none;
+    }
+    .star-node-chip {
+        flex-shrink: 0;
     }
     .constellation-stage-panel.is-floating-minimal #btnStagePrimaryAction {
         width: 100%;
         justify-content: center;
-        padding: 0.68rem 1rem;
+        padding: 0.66rem 1rem;
+        font-size: 0.84rem;
     }
+
+    /* 3. BARRA INFERIOR COMPACTA */
     .cosmos-nav-hint-pill,
     .hud-scroll-hint {
         display: none !important;
     }
     .cosmos-hud-bottom {
-        padding: 0.65rem 0.85rem;
+        padding: 0.45rem 0.75rem calc(0.45rem + env(safe-area-inset-bottom, 0px)) 0.75rem;
+        background: linear-gradient(0deg, rgba(6, 8, 13, 0.90) 0%, rgba(6, 8, 13, 0.45) 100%);
+    }
+    body.day-mode .cosmos-hud-bottom {
+        background: linear-gradient(0deg, rgba(12, 29, 56, 0.90) 0%, rgba(12, 29, 56, 0.45) 100%);
     }
     .hud-bottom-nav-container {
-        gap: 0.5rem;
+        gap: 0.55rem;
     }
     .hud-nav-arrow-btn {
-        padding: 0.36rem 0.7rem;
-        font-size: 0.7rem;
+        padding: 0.42rem 0.72rem;
+        font-size: 0.72rem;
+        min-height: 34px;
     }
+
+    /* 4. TODOS LOS MODALES Y VISTAS INTERNAS ADAPTADOS AL 100% EN MÓVIL */
+    .star-tab-topbar,
+    .merch-ecom-topbar,
+    .drawer-modal-header {
+        height: auto;
+        min-height: 54px;
+        padding: 0.6rem 0.85rem;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .star-tab-back-btn kbd,
+    .merch-back-btn kbd,
+    .star-tab-coords,
+    .merch-topbar-badge {
+        display: none !important;
+    }
+    .star-tab-scroll-container,
+    .drawer-modal-body {
+        padding: 1rem 0.9rem 3rem 0.9rem !important;
+        overflow-x: hidden;
+    }
+    .cosmos-drawer-backdrop {
+        padding: 0 !important;
+    }
+    .cosmos-drawer-modal {
+        max-height: 100dvh !important;
+        height: 100dvh !important;
+        border-radius: 0 !important;
+        border: none !important;
+    }
+    .unit-panorama-stage,
+    .unit-hero-grid,
+    .unit-salidas-grid,
+    .unit-kraal-grid,
+    .identity-story-grid,
+    .bases-locations-grid,
+    .coordinators-action-grid,
+    .coords-drive-grid,
+    .group-socials-grid,
+    .camp-drive-hero,
+    .camp-three-photos-grid,
+    .camp-photos-grid,
+    .camp-floating-header,
+    .lost-superstar-hero,
+    .lost-key-cards-grid,
+    .lost-items-grid,
+    .lost-floating-header,
+    .cajones-ministar-map,
     .acrux-floating-showcase,
     .inscripcion-split-card,
-    .cromo-split-dialog {
+    .cromo-split-dialog,
+    .docs-grid,
+    .calendar-trimesters-grid,
+    .calendar-milestones-list {
         grid-template-columns: 1fr !important;
-        gap: 1.25rem;
+        gap: 0.95rem !important;
+    }
+    .unit-panorama-photo,
+    .uz-glass-photo-card,
+    .unit-floating-intro-card {
+        grid-column: 1 / -1 !important;
+        grid-row: auto !important;
+    }
+    .unit-panorama-photo img.unit-banner-img,
+    .uz-glass-photo-card img.unit-banner-img {
+        height: 210px !important;
+        max-height: 220px !important;
+    }
+    .unit-tabs-bar {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 0.4rem;
+        padding-bottom: 0.25rem;
+    }
+    .unit-tab-btn {
+        flex-shrink: 0;
+    }
+
+    /* Merch en móvil */
+    .merch-custom-modal,
+    .merch-ecom-shell {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    .merch-forms-switcher {
+        order: 3;
+        width: 100%;
+        max-width: 100% !important;
     }
     .merch-ecom-split {
-        grid-template-columns: 1fr !important;
+        display: block !important;
         height: auto !important;
-        overflow-y: auto !important;
+        overflow: visible !important;
     }
     .merch-ecom-gallery-col,
     .merch-ecom-details-col {
         height: auto !important;
         overflow: visible !important;
-        padding: 1.2rem 1rem 2rem 1rem !important;
+        padding: 1rem 0.9rem 1.8rem 0.9rem !important;
         border-right: none !important;
+    }
+    .merch-showcase-visual {
+        min-height: 210px;
+        max-height: 250px;
+    }
+    .merch-showcase-img {
+        max-height: 220px !important;
+        padding: 0.7rem !important;
+    }
+    .merch-showcase-footer {
+        grid-template-columns: 1fr !important;
+        gap: 0.55rem !important;
+    }
+
+    /* Split-Card y Lightbox en móvil */
+    .cromo-zoom-modal-backdrop {
+        padding: 0.65rem !important;
+        align-items: flex-start !important;
+        overflow-y: auto !important;
+    }
+    .cromo-split-dialog {
+        width: 100% !important;
+        max-height: none !important;
+        min-height: 0 !important;
+        margin: 0.5rem 0 2rem 0;
+        padding: 1rem !important;
+    }
+    .cromo-zoom-card {
+        max-width: 230px;
+        margin: 0 auto;
+    }
+    .cosmos-lightbox-frame img {
+        max-width: 94vw !important;
+        max-height: 68dvh !important;
     }
     .docs-modal-content,
     .kraal-general-content,
     .calendar-modal-content {
-        width: 94vw;
-        margin: 1.2rem auto 3rem;
-        gap: 1.25rem;
+        width: 100% !important;
+        margin: 0.5rem auto 2.5rem;
+        gap: 1.15rem;
+    }
+    .docs-hero,
+    .kraal-general-hero,
+    .calendar-hero,
+    .kraal-unit-section {
+        padding: 1.1rem 1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .hud-nav-node {
+        font-size: 0.64rem;
+        padding: 0.38rem 0.15rem;
+    }
+    .hud-btn-cta span {
+        font-size: 0.7rem;
     }
 }
