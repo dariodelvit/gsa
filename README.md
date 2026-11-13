@@ -122,7 +122,7 @@ Si Google Drive fallase o no tuviera conexión, la web recurre al listado de eme
   * Facebook: `https://www.facebook.com/GrupoScoutAcrux518`
   * Correo oficial: `gruposcoutacrux518@gmail.com`
 * Sede: **Carretera de Rueda, 53 (47008 Valladolid)**.
-* Horarios de base: **Sábados de 16:30 a 19:00 h**.
+* Horarios de base: **Sábados de 16:30 a 18:30 h**.
 
 ---
 

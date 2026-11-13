@@ -361,7 +361,7 @@
             shortName: '5 · Clan',
             fullName: 'Clan Rover · Ama Dablam',
             constellationTitle: 'ESTRELLA V · CLAN ROVER AMA DABLAM',
-            age: '17 a 21 años (2º Bachillerato, FP y Universidad)',
+            age: '17 a 20 años (2º Bachillerato, FP y Universidad)',
             motto: 'Lema: «Servir»',
             bannerImg: 'images/Clan.jpg',
             socialUrl: 'https://www.instagram.com/clan_amadablam/',
@@ -721,10 +721,10 @@
             index: 1,
             roman: 'II',
             code: 'SECTOR II / IV · LÍNEA DE LAS UNIDADES',
-            subtitle: 'CINCO RAMAS EDUCATIVAS · DE 6 A 21 AÑOS',
-            coords: 'DE 6 A 21 AÑOS · 5 UNIDADES',
+            subtitle: 'CINCO RAMAS EDUCATIVAS · DE 6 A 20 AÑOS',
+            coords: 'DE 6 A 20 AÑOS · 5 UNIDADES',
             headingHTML: 'El Camino de <span class="ice-italic">las Unidades</span>',
-            desc: 'Cinco estrellas trazan nuestro camino educativo de 6 a 21 años: Castores, Manada, Tropa, Escultas y Clan. Haz clic en cualquier estrella para entrar.',
+            desc: 'Cinco estrellas trazan nuestro camino educativo de 6 a 20 años: Castores, Manada, Tropa, Escultas y Clan. Haz clic en cualquier estrella para entrar.',
             worldX: UNITS_ORIGIN_X,
             worldY: UNITS_ORIGIN_Y,
             baseZoom: 1.0,
@@ -913,6 +913,30 @@
         u.worldX = UNITS_ORIGIN_X + u.dx;
         u.worldY = UNITS_ORIGIN_Y + u.dy;
     });
+
+    // 2B. ESTRELLA SECRETA OCULTA EN EL CENTRO DEL COSMOS (solo visible al desplazarse al medio y solo interactiva al pasar por encima)
+    registerStarCluster(
+        [{
+            id: 'secret-kraal-album',
+            symbol: '✦ Sobre Secreto del Kraal',
+            dx: 0,
+            dy: 0,
+            r: 3.4,
+            color: '#FFFFFF',
+            halo: 'rgba(253, 230, 138, 0.42)',
+            ringColor: 'rgba(253, 230, 138, 0.72)',
+            isSecretStar: true,
+            isClickable: true,
+            labelPos: 'top'
+        }],
+        [],
+        1155,
+        535,
+        {
+            sectorIndex: -1,
+            clusterType: 'secret'
+        }
+    );
 
     // 3. Registrar Sector III: CONSTELACIÓN DE CAMPAMENTOS CONECTADOS (100% DINÁMICO DESDE GOOGLE DRIVE)
     const GREEK_ALPHABET = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'];
@@ -2025,7 +2049,7 @@
             loreHeading: 'Empresas Escultas, Montaña y Espíritu de Unidad en Trea'
         },
         clan: {
-            kicker: 'Quinta Etapa Educativa · De 17 a 21 años',
+            kicker: 'Quinta Etapa Educativa · De 17 a 20 años',
             loreHeading: 'Ruta, Proyectos y Servicio Rover en el Clan Ama Dablam'
         }
     };
@@ -2319,6 +2343,7 @@
 
     function openUnitSuperZoom(unitIdx) {
         const unit = UNITS_DATA[unitIdx] || UNITS_DATA[0];
+        pushStarRoute(`unidad-${unit.id || unitIdx}`);
         const wasAlreadyOpen = elUnitZoomOverlay?.classList.contains('is-open');
         clearTimeout(diveTabTimer);
         isOverviewMode = false;
@@ -2467,10 +2492,18 @@
     const elCromoSplitBio = document.getElementById('cromoSplitBio');
     const elBtnCloseCromoZoom = document.getElementById('btnCloseCromoZoom');
 
-    function openCromoZoomModal(k, unit) {
+    function openCromoZoomModal(k, unit, secretOptions = null) {
         if (!elCromoZoomModal || !elCromoZoomCard || !elCromoZoomInner || !k) return;
         const accent = (unit && unit.accentColor) ? unit.accentColor : '#38BDF8';
         const glow = (unit && unit.glowColor) ? unit.glowColor : 'rgba(56, 189, 248, 0.28)';
+
+        elCromoZoomCard.classList.remove('secret-cromo-holo', 'has-effect-holo', 'rarity-comun', 'rarity-raro', 'rarity-epico', 'rarity-legendario');
+        const secretRarity = secretOptions && secretOptions.rarity ? secretOptions.rarity : null;
+        if (secretRarity) {
+            elCromoZoomCard.classList.add('secret-cromo-holo', `rarity-${secretRarity}`);
+            elCromoZoomCard.style.setProperty('--holo-x', '50%');
+            elCromoZoomCard.style.setProperty('--holo-y', '50%');
+        }
 
         if (elCromoSplitDialog) {
             elCromoSplitDialog.style.setProperty('--unit-accent', accent);
@@ -2484,6 +2517,14 @@
         const cleanRole = stripHtmlTags(k.role || 'Kraalete');
         const cleanRealName = stripHtmlTags(k.realName || '');
         const cleanBio = stripHtmlTags(k.bio || '');
+        const zoomBadgeHtml = (secretOptions && secretOptions.rarityLabel)
+            ? `<div class="secret-cromo-badge-top">
+                    <span class="secret-rarity-pill rarity-${escapeAttr(secretRarity || 'comun')}">${escapeAttr(secretOptions.rarityLabel)}</span>
+               </div>`
+            : '';
+        const zoomEffectHtml = secretRarity === 'epico' || secretRarity === 'legendario'
+            ? '<div class="secret-holo-foil" aria-hidden="true"></div>'
+            : (secretRarity === 'raro' ? '<div class="secret-rare-sweep" aria-hidden="true"></div>' : '');
 
         const hasCromo = Boolean(k.cromoUrl);
         elCromoZoomInner.innerHTML = `
@@ -2497,10 +2538,12 @@
                     <span class="cromo-fallback-role">${cleanRole}</span>
                 </div>
             `}
+            ${zoomBadgeHtml}
             <div class="cromo-bottom-label">
                 <strong class="cromo-label-name">${cleanName}</strong>
                 <span class="cromo-label-role">${cleanRealName ? `«${cleanRealName}»` : cleanRole}</span>
             </div>
+            ${zoomEffectHtml}
             <div class="cromo-sheen" aria-hidden="true"></div>
         `;
 
@@ -2535,6 +2578,7 @@
         elCromoZoomModal.classList.remove('is-open');
         elCromoZoomModal.setAttribute('aria-hidden', 'true');
         if (elCromoZoomCard) {
+            elCromoZoomCard.classList.remove('secret-cromo-holo', 'has-effect-holo', 'rarity-comun', 'rarity-raro', 'rarity-epico', 'rarity-legendario');
             elCromoZoomCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
         }
     }
@@ -2552,6 +2596,8 @@
             const percentY = (y / rect.height) * 100;
             const sheen = elCromoZoomCard.querySelector('.cromo-sheen');
 
+            elCromoZoomCard.style.setProperty('--holo-x', `${percentX.toFixed(1)}%`);
+            elCromoZoomCard.style.setProperty('--holo-y', `${percentY.toFixed(1)}%`);
             elCromoZoomCard.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.03, 1.03, 1.03)`;
             if (sheen) {
                 sheen.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.1) 45%, transparent 72%)`;
@@ -2559,6 +2605,8 @@
             }
         });
         elCromoZoomCard.addEventListener('mouseleave', () => {
+            elCromoZoomCard.style.setProperty('--holo-x', '50%');
+            elCromoZoomCard.style.setProperty('--holo-y', '50%');
             elCromoZoomCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
             const sheen = elCromoZoomCard.querySelector('.cromo-sheen');
             if (sheen) sheen.style.opacity = '0';
@@ -2574,6 +2622,7 @@
         if (!CAMPS_DATA || CAMPS_DATA.length === 0) return;
         const camp = CAMPS_DATA[campIdx] || CAMPS_DATA[0];
         if (!camp) return;
+        pushStarRoute(`campamento-${campIdx}`);
 
         currentCampForUnlock = camp;
         const passInput = document.getElementById('czDrivePassInput');
@@ -2862,7 +2911,7 @@
                     const waUrl = `https://wa.me/${waPhone}?text=${encodeURIComponent(waText)}`;
                     if (banner) {
                         banner.style.display = 'block';
-                        banner.innerHTML = `<strong>Solicitud registrada para «${escapeAttr(itemName)}» (${escapeAttr(cajon.folderName)}):</strong> Hemos abierto WhatsApp para avisar a Coordinación. Pásate cualquier sábado de <strong>16:30 a 19:00 h</strong> por nuestra Base de <strong>Carretera de Rueda, 53</strong> para recogerlo.`;
+                        banner.innerHTML = `<strong>Solicitud registrada para «${escapeAttr(itemName)}» (${escapeAttr(cajon.folderName)}):</strong> Hemos abierto WhatsApp para avisar a Coordinación. Pásate cualquier sábado de <strong>16:30 a 18:30 h</strong> por nuestra Base de <strong>Carretera de Rueda, 53</strong> para recogerlo.`;
                     }
                     window.open(waUrl, '_blank', 'noopener');
                 });
@@ -2898,6 +2947,7 @@
     }
 
     function openLostSuperZoom(cajonIdx = 0) {
+        pushStarRoute(`baul-${cajonIdx}`);
         const wasAlreadyOpen = elLostZoomOverlay?.classList.contains('is-open');
         clearTimeout(diveTabTimer);
         isOverviewMode = false;
@@ -2951,6 +3001,7 @@
     let pendingDrawerScrollTarget = null;
 
     function openAcruxSuperZoom(focusTargetId = null) {
+        pushStarRoute('acrux');
         pendingDrawerScrollTarget = focusTargetId || null;
         const sec0 = SECTORS[0];
         const acrux = sec0.stars[0];
@@ -2991,7 +3042,44 @@
         }, 180);
     }
 
+    let isHandlingPopState = false;
+    function pushStarRoute(slug) {
+        if (isHandlingPopState) return;
+        try {
+            const targetHash = `#estrella=${encodeURIComponent(slug)}`;
+            if (window.location.hash !== targetHash) {
+                if (window.location.hash.startsWith('#estrella=')) {
+                    history.replaceState({ starView: slug }, '', targetHash);
+                } else {
+                    history.pushState({ starView: slug }, '', targetHash);
+                }
+            }
+        } catch (_) {}
+    }
+
+    function clearStarRoute() {
+        if (isHandlingPopState) return;
+        try {
+            if (window.location.hash.startsWith('#estrella=')) {
+                history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+        } catch (_) {}
+    }
+
+    window.addEventListener('popstate', () => {
+        if (!window.location.hash.startsWith('#estrella=')) {
+            isHandlingPopState = true;
+            try {
+                closeAllSuperZooms(true);
+                closeDrawerModal();
+            } finally {
+                isHandlingPopState = false;
+            }
+        }
+    });
+
     function closeAllSuperZooms(resetPan = true) {
+        clearStarRoute();
         clearTimeout(diveTabTimer);
         closeLightbox();
         closeCromoZoomModal();
@@ -3170,8 +3258,8 @@
                     </a>
                     <a class="doc-download-card" href="https://scoutacrux.com/wp-content/uploads/2023/10/Guia-Clan.pdf" target="_blank" rel="noopener">
                         <div class="doc-download-meta">
-                            <span class="doc-download-badge">CLAN · 17–21 AÑOS</span>
-                            <span class="doc-download-title">Clan (17–21 años)</span>
+                            <span class="doc-download-badge">CLAN · 17–20 AÑOS</span>
+                            <span class="doc-download-title">Clan (17–20 años)</span>
                         </div>
                         <span class="doc-download-icon">${docArrow}</span>
                     </a>
@@ -3275,7 +3363,7 @@
             <div class="calendar-hero">
                 <span class="calendar-hero-kicker">PLANIFICACIÓN ANUAL · RONDA SOLAR</span>
                 <h2 class="calendar-hero-title">Calendario de Ronda Solar Acrux 518</h2>
-                <p class="calendar-hero-desc">Nos reunimos todos los <strong>sábados de 16:30 a 19:00 h</strong> en nuestra base de Carretera de Rueda, 53 (Valladolid), además de salidas trimestrales y grandes campamentos.</p>
+                <p class="calendar-hero-desc">Nos reunimos todos los <strong>sábados de 16:30 a 18:30 h</strong> en nuestra base de Carretera de Rueda, 53 (Valladolid), además de salidas trimestrales y grandes campamentos.</p>
             </div>
 
             <div class="calendar-trimesters-grid">
@@ -3412,6 +3500,8 @@
 
     function openDrawerModal() {
         if (!drawerBackdrop) return;
+        const acruxTopNav = document.getElementById('acruxTopAnchorNav');
+        if (acruxTopNav) acruxTopNav.style.display = '';
 
         const defaultCoords = [
             {
@@ -3466,12 +3556,12 @@
                             <span class="sz-age-pill">ASDE Castilla y León</span>
                         </div>
                         <h2 class="acrux-giant-title">Grupo Scout <span class="ice-italic">Acrux 518</span></h2>
-                        <p class="acrux-floating-lead">Desde 1977 educando en valores, escultismo y contacto directo con la naturaleza en Valladolid. Formamos parte de ASDE Exploradores de Castilla y León con cinco ramas educativas de 6 a 21 años.</p>
+                        <p class="acrux-floating-lead">Desde 1977 educando en valores, escultismo y contacto directo con la naturaleza en Valladolid. Formamos parte de ASDE Exploradores de Castilla y León con cinco ramas educativas de 6 a 20 años.</p>
                     </div>
 
                     <div class="acrux-floating-base-dock">
                         <span class="acrux-dock-kicker">ACCESO RÁPIDO</span>
-                        <h3>Cinco Ramas Educativas · De 6 a 21 años</h3>
+                        <h3>Cinco Ramas Educativas · De 6 a 20 años</h3>
                         <p>Castores, Manada, Tropa, Escultas y Clan. Reuniones de sábado, acampadas trimestrales y campamentos en la naturaleza.</p>
                         <div class="acrux-dock-actions">
                             <button type="button" class="btn-cosmos-primary" id="btnIdentityToInscripciones" style="padding:0.55rem 1.15rem; font-size:0.82rem;">
@@ -3499,13 +3589,13 @@
                         <article class="identity-story-card" id="acrux-ramas">
                             <div class="story-card-icon">${SVG_ICONS.layers}</div>
                             <div class="story-card-body">
-                                <h4>Cinco Ramas Educativas de 6 a 21 Años</h4>
+                                <h4>Cinco Ramas Educativas de 6 a 20 Años</h4>
                                 <ul style="margin: 0.25rem 0 0 1.15rem; padding: 0; color: var(--ice-grey); font-size: 0.84rem; line-height: 1.65;">
                                     <li><strong>Castores · Colonia Ohiensis</strong> (6–8 años) · <em>Compartir</em></li>
                                     <li><strong>Manada · Khanhiwara</strong> (8–11 años) · <em>Haremos lo mejor</em></li>
                                     <li><strong>Tropa · Lohengrin</strong> (11–14 años) · <em>Siempre Listos</em></li>
                                     <li><strong>Unidad Esculta · Trea</strong> (14–17 años) · <em>Unidad</em></li>
-                                    <li><strong>Clan Rover · Ama Dablam</strong> (17–21 años) · <em>Servir</em></li>
+                                    <li><strong>Clan Rover · Ama Dablam</strong> (17–20 años) · <em>Servir</em></li>
                                 </ul>
                             </div>
                         </article>
@@ -3528,22 +3618,32 @@
                         <p>Punto de encuentro semanal para las 5 ramas scout, actividades de sábado, asambleas de familias e intendencia:</p>
                     </div>
 
-                    <div class="bases-locations-grid">
+                    <div class="bases-locations-grid bases-locations-with-map">
                         <article class="base-location-card" style="border-color: rgba(217, 56, 58, 0.45);">
                             <div>
                                 <span class="base-type-badge">SEDE OFICIAL · VALLADOLID</span>
-                                <h4>Carretera de Rueda, 53 · Sábados de 16:30 a 19:00 h</h4>
-                                <p class="base-schedule">${SVG_ICONS.clock} <strong>Sábados de 16:30 a 19:00 h</strong> (calendario escolar lectivo · CP 47008, Valladolid)</p>
+                                <h4>Carretera de Rueda, 53 · Sábados de 16:30 a 18:30 h</h4>
+                                <p class="base-schedule">${SVG_ICONS.clock} <strong>Sábados de 16:30 a 18:30 h</strong> (calendario escolar lectivo · CP 47008, Valladolid)</p>
                             </div>
                             <p class="base-desc">Aquí comienzan y terminan nuestras actividades de sábado, juegos de rama, reuniones de familias y preparación de acampadas.</p>
                             <div class="base-actions">
                                 <a href="https://maps.google.com/?q=Carretera+de+Rueda+53+Valladolid" target="_blank" rel="noopener" class="btn-cosmos-primary" style="padding:0.55rem 1.15rem; font-size:0.82rem; text-decoration:none;">
                                     ${SVG_ICONS.mapPin}
-                                    <span>Abrir en Google Maps</span>
+                                    <span>Cómo llegar en Google Maps</span>
                                     <span class="btn-arrow">↗</span>
                                 </a>
                             </div>
                         </article>
+
+                        <div class="base-map-embed-card">
+                            <iframe
+                                title="Ubicación Grupo Scout ACRUX 518 en Carretera de Rueda 53 Valladolid"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2982.7236511110756!2d-4.7368661!3d41.6185854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd476d05f3e494a5%3A0x6b1ec114ad2b8ebc!2sCarretera%20de%20Rueda%2C%2053%2C%2047008%20Valladolid!5e0!3m2!1ses!2ses!4v1680000000000!5m2!1ses!2ses"
+                                loading="lazy"
+                                allowfullscreen=""
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
                     </div>
                 </div>
 
@@ -3702,7 +3802,434 @@
         }
     }
 
+    const SECRET_ALBUM_STORAGE_KEY = 'acrux_secret_album_v1';
+
+    const SECRET_RARITY_META = {
+        comun: { rank: 1, label: 'Común' },
+        raro: { rank: 2, label: 'Rara' },
+        epico: { rank: 3, label: 'Épica' }
+    };
+
+    function loadSecretAlbumState() {
+        try {
+            const raw = localStorage.getItem(SECRET_ALBUM_STORAGE_KEY);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                const unlocked = parsed && typeof parsed.unlocked === 'object' ? parsed.unlocked : {};
+                const rarities = parsed && typeof parsed.rarities === 'object' ? parsed.rarities : {};
+                const legacyHolo = parsed && typeof parsed.holo === 'object' ? parsed.holo : {};
+                Object.keys(unlocked).forEach(id => {
+                    if (!rarities[id]) {
+                        rarities[id] = legacyHolo[id] ? 'epico' : 'comun';
+                    }
+                });
+                return {
+                    unlocked,
+                    rarities,
+                    packsOpened: Number(parsed?.packsOpened) || 0
+                };
+            }
+        } catch (_) {}
+        return { unlocked: {}, rarities: {}, packsOpened: 0 };
+    }
+
+    function saveSecretAlbumState(state) {
+        try {
+            localStorage.setItem(SECRET_ALBUM_STORAGE_KEY, JSON.stringify(state));
+        } catch (_) {}
+    }
+
+    function getSecretKraalCromosPool() {
+        const pool = [];
+        const seen = new Set();
+        UNITS_DATA.forEach(unit => {
+            const list = Array.isArray(unit.kraaletes) ? unit.kraaletes : [];
+            list.forEach((sc, idx) => {
+                const name = (sc.name || 'Scouter Acrux').trim();
+                const key = `${unit.id}_${name.toLowerCase()}`;
+                if (seen.has(key)) return;
+                seen.add(key);
+
+                const role = (sc.role || `Scouter · ${unit.shortName}`).trim();
+                const roleLower = role.toLowerCase();
+                let rarity = 'comun';
+                let rarityLabel = 'Común';
+                if (roleLower.includes('coord') || roleLower.includes('jefe') || roleLower.includes('responsable')) {
+                    rarity = 'legendario';
+                    rarityLabel = 'Legendario';
+                } else if (roleLower.includes('akela') || roleLower.includes('bagheera') || roleLower.includes('baloo') || idx === 0) {
+                    rarity = 'epico';
+                    rarityLabel = 'Épico';
+                } else if (idx % 2 === 1) {
+                    rarity = 'raro';
+                    rarityLabel = 'Raro';
+                }
+
+                pool.push({
+                    id: key,
+                    num: pool.length + 1,
+                    name,
+                    realName: stripHtmlTags(sc.realName || ''),
+                    role,
+                    photo: sc.cromoUrl || sc.fotoUrl || sc.photoUrl || sc.photo || '',
+                    bio: sc.bio || `Scouter de ${unit.fullName} en el Grupo Scout Acrux 518.`,
+                    unitId: unit.id,
+                    unitName: unit.shortName,
+                    unitColor: unit.accentColor || unit.color || '#F59E0B',
+                    glowColor: unit.glowColor || 'rgba(56, 189, 248, 0.35)',
+                    rarity,
+                    rarityLabel,
+                    rawScouter: sc,
+                    rawUnit: unit
+                });
+            });
+        });
+        return pool;
+    }
+
+    function openSecretAlbumModal(initialView = 'pack') {
+        if (!drawerBackdrop || !drawerBody) return;
+        const drawerModalEl = drawerBackdrop.querySelector('.cosmos-drawer-modal');
+        const acruxTopNav = document.getElementById('acruxTopAnchorNav');
+        if (acruxTopNav) acruxTopNav.style.display = 'none';
+
+        const pool = getSecretKraalCromosPool();
+        let activeTab = initialView === 'album' ? 'album' : 'pack';
+        let activeUnitFilter = 'all';
+        let lastPulled = [];
+
+        drawerBackdrop.classList.add('is-fullscreen-star-view');
+        if (drawerModalEl) drawerModalEl.classList.add('is-fullscreen-star-modal');
+
+        function renderCromoCard(cromo, badgeRightText = '', isNewPull = false, cardRarity = 'comun') {
+            const rarityKey = SECRET_RARITY_META[cardRarity] ? cardRarity : 'comun';
+            const rarityLabel = SECRET_RARITY_META[rarityKey].label;
+            const hasCromo = Boolean(cromo.photo);
+            const cleanName = stripHtmlTags(cromo.name || 'Scouter');
+            const cleanRole = stripHtmlTags(cromo.role || 'Kraalete');
+            const cleanRealName = stripHtmlTags(cromo.realName || '');
+            const effectHtml = rarityKey === 'epico'
+                ? '<div class="secret-holo-foil" aria-hidden="true"></div>'
+                : (rarityKey === 'raro' ? '<div class="secret-rare-sweep" aria-hidden="true"></div>' : '');
+
+            return `
+                <article class="kraalete-cromo-card secret-cromo-holo rarity-${rarityKey} ${hasCromo ? 'has-cromo-img' : 'no-cromo'}" data-cromo-id="${escapeAttr(cromo.id)}" data-rarity="${escapeAttr(rarityKey)}" style="--unit-accent:${escapeAttr(cromo.unitColor)}; --unit-glow:${escapeAttr(cromo.glowColor)};">
+                    <div class="cromo-inner">
+                        ${hasCromo ? `
+                            <img src="${escapeAttr(cromo.photo)}" alt="${escapeAttr(cleanName)}" class="kraalete-cromo-img" referrerpolicy="no-referrer" loading="lazy">
+                        ` : `
+                            <div class="cromo-fallback-content">
+                                <div class="cromo-scout-badge">${SVG_ICONS.compass}</div>
+                                <span class="cromo-unit-tag">#${String(cromo.num).padStart(2, '0')} · ${escapeAttr(cromo.unitName)}</span>
+                                <strong class="cromo-fallback-name">${escapeAttr(cleanName)}</strong>
+                                <span class="cromo-fallback-role">${escapeAttr(cleanRole)}</span>
+                            </div>
+                        `}
+                        <div class="secret-cromo-badge-top">
+                            <span class="secret-rarity-pill rarity-${rarityKey}">${escapeAttr(rarityLabel)}${rarityKey === 'epico' ? ' ✦' : ''}</span>
+                            ${badgeRightText ? `<span class="secret-state-pill ${isNewPull ? 'is-new' : ''}">${escapeAttr(badgeRightText)}</span>` : ''}
+                        </div>
+                        <div class="cromo-bottom-label">
+                            <strong class="cromo-label-name">${escapeAttr(cleanName)}</strong>
+                            <span class="cromo-label-role">${cleanRealName ? `«${escapeAttr(cleanRealName)}»` : escapeAttr(`${cromo.unitName} · ${cleanRole}`)}</span>
+                        </div>
+                        ${effectHtml}
+                        <div class="cromo-sheen" aria-hidden="true"></div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function buildBurstSparksHtml() {
+            const sparkColors = ['#FDE68A', '#F472B6', '#38BDF8', '#C084FC', '#34D399', '#FFFFFF'];
+            return Array.from({ length: 16 }, (_, idx) => {
+                const angle = (Math.PI * 2 * idx) / 16 + (idx % 2) * 0.15;
+                const dist = 120 + (idx % 4) * 55;
+                const tx = Math.round(Math.cos(angle) * dist);
+                const ty = Math.round(Math.sin(angle) * dist - 30);
+                const color = sparkColors[idx % sparkColors.length];
+                return `<span class="secret-spark-dot" style="--tx:${tx}px; --ty:${ty}px; --spark-color:${color}; animation-delay:${(idx % 3) * 0.04}s;"></span>`;
+            }).join('');
+        }
+
+        function renderSecretView() {
+            const state = loadSecretAlbumState();
+            const unlockedCount = pool.filter(c => (state.unlocked[c.id] || 0) > 0).length;
+            const totalCount = pool.length || 1;
+            const pct = Math.round((unlockedCount / totalCount) * 100);
+
+            let mainContentHtml = '';
+            if (activeTab === 'pack') {
+                const pullsHtml = lastPulled.length > 0
+                    ? `
+                        <div class="secret-pull-grid">
+                            ${lastPulled.map(p => renderCromoCard(p.cromo, p.badgeText, p.isHighlight, p.rarity)).join('')}
+                        </div>
+                    `
+                    : '';
+
+                mainContentHtml = `
+                    <div class="secret-pack-stage" id="secretPackStage">
+                        <div class="secret-light-pillar" id="secretLightPillar"></div>
+                        <div class="secret-shockwave-ring" id="secretShockwaveRing"></div>
+                        <div class="secret-burst-flare" id="secretBurstFlare"></div>
+                        <div class="secret-sparks-layer" id="secretSparksLayer">${buildBurstSparksHtml()}</div>
+                        <div class="secret-foil-pack" id="secretFoilPackBtn" role="button" tabindex="0" title="Pulsa para abrir un sobre secreto">
+                            <div class="secret-pack-zip-seam"></div>
+                            <div class="secret-pack-cap">
+                                <span class="secret-pack-crimp-label">ACRUX 518 · KRAAL</span>
+                            </div>
+                            <div class="secret-pack-body">
+                                <span class="secret-rarity-pill">BOOSTER SECRETO</span>
+                                <div class="secret-pack-emblem">⚜</div>
+                                <div>
+                                    <div class="secret-pack-title">Sobre del Kraal</div>
+                                    <div class="secret-pack-sub">3 cromos · Pulsa para abrir</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; justify-content:center;">
+                            <button type="button" class="btn-cosmos-primary" id="btnOpenSecretPack">
+                                <span>${lastPulled.length > 0 ? 'Abrir otro sobre (3 cromos)' : 'Abrir Sobre (3 cromos)'}</span>
+                                <span class="btn-arrow">✦</span>
+                            </button>
+                            <button type="button" class="star-tab-back-btn" id="btnGoToSecretAlbum">
+                                <span>Ver mi Álbum (${unlockedCount}/${pool.length}) →</span>
+                            </button>
+                        </div>
+                        ${pullsHtml}
+                    </div>
+                `;
+            } else {
+                const filteredPool = activeUnitFilter === 'all'
+                    ? pool
+                    : pool.filter(c => c.unitId === activeUnitFilter);
+
+                const filterButtons = [
+                    { id: 'all', label: `Todos (${pool.length})` },
+                    ...UNITS_DATA.map(u => ({ id: u.id, label: u.shortName }))
+                ];
+
+                mainContentHtml = `
+                    <div class="secret-album-filters">
+                        ${filterButtons.map(f => `
+                            <button type="button" class="star-node-chip ${activeUnitFilter === f.id ? 'active' : ''}" data-album-filter="${escapeAttr(f.id)}">${escapeAttr(f.label)}</button>
+                        `).join('')}
+                    </div>
+                    <div class="secret-album-grid">
+                        ${filteredPool.map(cromo => {
+                            const count = state.unlocked[cromo.id] || 0;
+                            if (count > 0) {
+                                const savedRarity = (state.rarities && state.rarities[cromo.id]) || 'comun';
+                                return renderCromoCard(cromo, count > 1 ? `x${count}` : 'Obtenido', false, savedRarity);
+                            }
+                            return `
+                                <div class="secret-cromo-locked">
+                                    <span class="secret-cromo-locked-q">?</span>
+                                    <strong style="font-size:0.82rem; color:rgba(255,255,255,0.75);">#${String(cromo.num).padStart(2, '0')} · ${escapeAttr(cromo.unitName)}</strong>
+                                    <span style="font-size:0.72rem;">Consíguelo abriendo sobres secretos</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div style="display:flex; justify-content:flex-end; margin-top:0.5rem;">
+                        <button type="button" class="star-tab-back-btn" id="btnResetSecretAlbum" style="opacity:0.75; font-size:0.74rem;">Reiniciar álbum</button>
+                    </div>
+                `;
+            }
+
+            drawerBody.innerHTML = `
+                <div class="secret-album-shell">
+                    <div style="display:flex; justify-content:center;">
+                        <div class="star-tab-switcher" role="tablist" aria-label="Secreto del Kraal">
+                            <button type="button" class="star-node-chip ${activeTab === 'pack' ? 'active' : ''}" data-secret-tab="pack">✦ Abrir Sobres</button>
+                            <button type="button" class="star-node-chip ${activeTab === 'album' ? 'active' : ''}" data-secret-tab="album">Álbum Secreto (${unlockedCount}/${pool.length})</button>
+                        </div>
+                    </div>
+                    <div class="secret-hero-banner">
+                        <div>
+                            <span class="secret-hero-kicker">✦ ESTRELLA OCULTA DEL COSMOS · SECRETO</span>
+                            <h2 class="secret-hero-title">Sobres &amp; Álbum del <span class="ice-italic">Kraal 518</span></h2>
+                            <p class="secret-hero-desc">Has encontrado la estrella escondida en mitad del espacio. Abre sobres secretos para coleccionar los cromos holográficos de todos los scouters del grupo y guarda tu progreso en este álbum.</p>
+                        </div>
+                        <div class="secret-progress-box">
+                            <div class="secret-progress-meta">
+                                <span>Colección: ${unlockedCount}/${pool.length}</span>
+                                <span>${pct}%</span>
+                            </div>
+                            <div class="secret-progress-track">
+                                <div class="secret-progress-fill" style="width:${pct}%"></div>
+                            </div>
+                            <span style="font-size:0.72rem; color:rgba(226,232,240,0.72);">Sobres abiertos: ${state.packsOpened}</span>
+                        </div>
+                    </div>
+                    ${mainContentHtml}
+                </div>
+            `;
+
+            let isOpeningPack = false;
+            const packBtn = document.getElementById('secretFoilPackBtn');
+            if (packBtn) {
+                packBtn.addEventListener('mousemove', (e) => {
+                    if (isOpeningPack) return;
+                    const rect = packBtn.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const rotX = ((y - rect.height / 2) / (rect.height / 2)) * -10;
+                    const rotY = ((x - rect.width / 2) / (rect.width / 2)) * 10;
+                    packBtn.style.transform = `perspective(900px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-6px) scale(1.03)`;
+                });
+                packBtn.addEventListener('mouseleave', () => {
+                    if (isOpeningPack) return;
+                    packBtn.style.transform = '';
+                });
+            }
+
+            const triggerOpenPack = () => {
+                if (pool.length === 0 || isOpeningPack) return;
+                isOpeningPack = true;
+                if (packBtn) packBtn.style.transform = '';
+
+                const current = loadSecretAlbumState();
+                current.packsOpened += 1;
+                if (!current.rarities) current.rarities = {};
+                const picks = [];
+                let bestRarity = 'comun';
+                for (let k = 0; k < 3; k++) {
+                    const chosen = pool[Math.floor(Math.random() * pool.length)];
+                    const prevCount = current.unlocked[chosen.id] || 0;
+                    const prevRarity = current.rarities[chosen.id] || 'comun';
+                    const roll = Math.random();
+                    const rolledRarity = roll < 0.18 ? 'epico' : (roll < 0.50 ? 'raro' : 'comun');
+
+                    const isUpgrade = prevCount > 0 && SECRET_RARITY_META[rolledRarity].rank > SECRET_RARITY_META[prevRarity].rank;
+                    const storedRarity = SECRET_RARITY_META[rolledRarity].rank > SECRET_RARITY_META[prevRarity].rank ? rolledRarity : prevRarity;
+
+                    current.unlocked[chosen.id] = prevCount + 1;
+                    current.rarities[chosen.id] = storedRarity;
+
+                    let badgeText = `REPE x${prevCount + 1}`;
+                    let isHighlight = false;
+                    if (prevCount === 0) {
+                        badgeText = '¡NUEVO!';
+                        isHighlight = true;
+                    } else if (isUpgrade) {
+                        badgeText = rolledRarity === 'epico' ? '¡MEJORA ÉPICA!' : '¡MEJORA RARA!';
+                        isHighlight = true;
+                    }
+
+                    picks.push({ cromo: chosen, badgeText, isHighlight, rarity: rolledRarity });
+                    if (SECRET_RARITY_META[rolledRarity].rank > SECRET_RARITY_META[bestRarity].rank) {
+                        bestRarity = rolledRarity;
+                    }
+                }
+                saveSecretAlbumState(current);
+
+                const stageEl = document.getElementById('secretPackStage');
+                const flareEl = document.getElementById('secretBurstFlare');
+                const pillarEl = document.getElementById('secretLightPillar');
+                const waveEl = document.getElementById('secretShockwaveRing');
+                const sparksEl = document.getElementById('secretSparksLayer');
+                if (stageEl) stageEl.classList.add(`rarity-${bestRarity}`);
+                if (packBtn) packBtn.classList.add('is-charging');
+
+                setTimeout(() => {
+                    if (packBtn) {
+                        packBtn.classList.remove('is-charging');
+                        packBtn.classList.add('is-opening');
+                    }
+                    if (pillarEl) pillarEl.classList.add('is-active');
+                    if (waveEl) waveEl.classList.add('is-active');
+                    if (flareEl) flareEl.classList.add('is-active');
+                    if (sparksEl) sparksEl.classList.add('is-active');
+
+                    setTimeout(() => {
+                        lastPulled = picks;
+                        renderSecretView();
+                    }, 520);
+                }, 850);
+            };
+
+            drawerBody.querySelectorAll('[data-secret-tab]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    activeTab = btn.getAttribute('data-secret-tab') || 'pack';
+                    renderSecretView();
+                });
+            });
+            packBtn?.addEventListener('click', triggerOpenPack);
+            document.getElementById('btnOpenSecretPack')?.addEventListener('click', triggerOpenPack);
+            document.getElementById('btnGoToSecretAlbum')?.addEventListener('click', () => {
+                activeTab = 'album';
+                renderSecretView();
+            });
+            drawerBody.querySelectorAll('[data-album-filter]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    activeUnitFilter = btn.getAttribute('data-album-filter') || 'all';
+                    renderSecretView();
+                });
+            });
+
+            // Efecto 3D Hover suave sin distorsión excesiva + Destello según rareza
+            drawerBody.querySelectorAll('.secret-cromo-holo').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotX = ((y - centerY) / centerY) * -6;
+                    const rotY = ((x - centerX) / centerX) * 6;
+                    const percentX = (x / rect.width) * 100;
+                    const percentY = (y / rect.height) * 100;
+                    const sheen = card.querySelector('.cromo-sheen');
+
+                    card.style.setProperty('--holo-x', `${percentX.toFixed(1)}%`);
+                    card.style.setProperty('--holo-y', `${percentY.toFixed(1)}%`);
+                    card.style.transform = `perspective(900px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
+                    if (sheen) {
+                        sheen.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255, 255, 255, 0.36) 0%, rgba(255, 255, 255, 0.08) 45%, transparent 70%)`;
+                        sheen.style.opacity = '1';
+                    }
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                    card.style.setProperty('--holo-x', '50%');
+                    card.style.setProperty('--holo-y', '50%');
+                    const sheen = card.querySelector('.cromo-sheen');
+                    if (sheen) sheen.style.opacity = '0';
+                });
+                card.addEventListener('click', () => {
+                    const id = card.getAttribute('data-cromo-id');
+                    const found = pool.find(c => c.id === id);
+                    if (!found) return;
+                    const cardRarity = card.getAttribute('data-rarity') || 'comun';
+                    const cardRarityLabel = (SECRET_RARITY_META[cardRarity] && SECRET_RARITY_META[cardRarity].label) || 'Común';
+                    if (typeof openCromoZoomModal === 'function' && found.rawScouter && found.rawUnit) {
+                        openCromoZoomModal(found.rawScouter, found.rawUnit, {
+                            rarity: cardRarity,
+                            rarityLabel: cardRarityLabel
+                        });
+                    } else if (found.photo) {
+                        openLightbox(found.photo, found.name, `${found.unitName} · ${found.role}`);
+                    }
+                });
+            });
+            document.getElementById('btnResetSecretAlbum')?.addEventListener('click', () => {
+                saveSecretAlbumState({ unlocked: {}, rarities: {}, packsOpened: 0 });
+                lastPulled = [];
+                renderSecretView();
+            });
+        }
+
+        renderSecretView();
+        drawerBackdrop.classList.add('is-open');
+        drawerBackdrop.setAttribute('aria-hidden', 'false');
+    }
+
     function closeDrawerModal() {
+        const acruxTopNav = document.getElementById('acruxTopAnchorNav');
+        if (acruxTopNav) acruxTopNav.style.display = '';
+        clearStarRoute();
         drawerBackdrop?.classList.remove('is-open');
         drawerBackdrop?.setAttribute('aria-hidden', 'true');
         if (superZoomState && superZoomState.type === 'acrux') {
@@ -3712,11 +4239,7 @@
 
     document.getElementById('btnCloseDrawer')?.addEventListener('click', closeDrawerModal);
     document.getElementById('btnQuickContactTop')?.addEventListener('click', () => {
-        if (INSCRIPCION_FORMS_DATA && INSCRIPCION_FORMS_DATA.length > 0 && typeof openInscripcionModal === 'function') {
-            openInscripcionModal(0);
-        } else {
-            openAcruxSuperZoom('acrux-coordinacion');
-        }
+        openAcruxSuperZoom('acrux-coordinacion');
     });
     drawerBackdrop?.addEventListener('click', (e) => {
         if (e.target === drawerBackdrop) closeDrawerModal();
@@ -3843,11 +4366,11 @@
         const submitLabelEl = elBtnSubmitMerchOrder?.querySelector('.merch-submit-label');
         if (elMerchTopbarBadge) elMerchTopbarBadge.textContent = isInsc ? 'ACRUX 518 · INSCRIPCIONES' : 'ACRUX 518 · MERCH OFICIAL';
         if (elMerchStageSeasonPill) elMerchStageSeasonPill.textContent = isInsc ? 'INSCRIPCIÓN OFICIAL ACRUX 518' : 'COLECCIÓN OFICIAL ACRUX 518';
-        if (elMerchStageSubPill) elMerchStageSubPill.textContent = isInsc ? 'SÁBADOS 16:30 – 19:00 · RUEDA 53' : 'ENTREGA EN BASE · RUEDA 53';
+        if (elMerchStageSubPill) elMerchStageSubPill.textContent = isInsc ? 'SÁBADOS 16:30 – 18:30 · RUEDA 53' : 'ENTREGA EN BASE · RUEDA 53';
         if (elMerchSpecLabel1) elMerchSpecLabel1.textContent = isInsc ? 'EDADES' : 'EDICIÓN';
-        if (elMerchSpecValue1) elMerchSpecValue1.textContent = isInsc ? '6 a 21 años · 5 Ramas' : 'Grupo Scout Acrux 518';
+        if (elMerchSpecValue1) elMerchSpecValue1.textContent = isInsc ? '6 a 20 años · 5 Ramas' : 'Grupo Scout Acrux 518';
         if (elMerchSpecLabel2) elMerchSpecLabel2.textContent = isInsc ? 'REUNIONES' : 'RECOGIDA';
-        if (elMerchSpecValue2) elMerchSpecValue2.textContent = 'Sábados 16:30 – 19:00 h';
+        if (elMerchSpecValue2) elMerchSpecValue2.textContent = 'Sábados 16:30 – 18:30 h';
         if (elMerchSpecLabel3) elMerchSpecLabel3.textContent = isInsc ? 'SEDE' : 'REGISTRO';
         if (elMerchSpecValue3) elMerchSpecValue3.textContent = isInsc ? 'Crtra. Rueda, 53 · Valladolid' : 'Directo en Hoja Oficial';
         if (submitLabelEl) submitLabelEl.textContent = isInsc ? 'Enviar Inscripción' : 'Realizar Pedido';
@@ -4604,6 +5127,7 @@
         const form = formsList[clampedIdx];
         if (!form) return;
 
+        pushStarRoute(isInsc ? `inscripciones-${clampedIdx}` : `merch-${clampedIdx}`);
         activeMerchPhotoIdx = 0;
         applyFormModalChrome(activeFormModalMode);
 
@@ -4720,6 +5244,7 @@
 
     function closeMerchModal() {
         if (!elMerchModal) return;
+        clearStarRoute();
         clearTimeout(diveTabTimer);
         if (superZoomState && (superZoomState.type === 'merch' || superZoomState.type === 'inscripcion')) {
             hyperspaceJump = {
@@ -5075,7 +5600,9 @@
                 }
             }
             if (hitNode) {
-                if (hitNode.isMerchStar) {
+                if (hitNode.isSecretStar) {
+                    openSecretAlbumModal('pack');
+                } else if (hitNode.isMerchStar) {
                     openMerchModal(typeof hitNode.merchIndex === 'number' ? hitNode.merchIndex : 0);
                 } else if (hitNode.isInscripcionStar || hitNode.id === 'mimosa') {
                     openInscripcionModal(typeof hitNode.inscripcionIndex === 'number' ? hitNode.inscripcionIndex : 0);
@@ -5591,7 +6118,7 @@
                 const f = Math.pow(1 - dM / 145, 2);
                 pullX = (dxM / Math.max(0.4, camera.zoom)) * f * 0.26;
                 pullY = (dyM / Math.max(0.4, camera.zoom)) * f * 0.26;
-                nd.hover += (f - nd.hover) * 0.18;
+                nd.hover = nd.isSecretStar ? 0 : (nd.hover + (f - nd.hover) * 0.18);
 
                 if (dM < 52 && dM < closestDist) {
                     // En el Sector I (Acrux 518), son interactivas las estrellas marcadas como isClickable (α Acrux, β Inscripciones) y las de Intendencia (isMerchStar)
@@ -5619,9 +6146,10 @@
         }
 
         pointer.hoveredNode = closestNode;
-        if (cursorRing) cursorRing.classList.toggle('is-star-hover', Boolean(closestNode));
+        const showHoverCue = Boolean(closestNode && !closestNode.isSecretStar);
+        if (cursorRing) cursorRing.classList.toggle('is-star-hover', showHoverCue);
         if (cursorLabel) {
-            if (closestNode) {
+            if (showHoverCue) {
                 cursorLabel.textContent = (closestNode.isMerchStar || closestNode.isClickable || closestNode.clusterType === 'unit' || closestNode.clusterType === 'camp' || closestNode.sectorIndex === 3 || closestNode.id === 'acrux')
                     ? `Abrir ${closestNode.symbol}`
                     : `${closestNode.symbol}`;
@@ -5927,8 +6455,8 @@
                 ctx.restore();
             }
 
-            // Anillo orbital: en Unidades usa el color sutil de cada rama; en «El Baúl» usa rojo Acrux sutil; en Inscripciones, Campamentos y Cajones blanco puro
-            if ((nd.isClusterHub || nd.isMerchStar || nd.isClickable || isHovered) && !superZoomState) {
+            // Anillo orbital: en Unidades usa el color sutil de cada rama; en «El Baúl» usa rojo Acrux sutil; la estrella secreta nunca muestra anillo
+            if (!nd.isSecretStar && (nd.isClusterHub || nd.isMerchStar || nd.isClickable || isHovered) && !superZoomState) {
                 const ringR = r * 1.95 + Math.sin(elapsed * 2.1 + i) * 0.85;
                 let ringStroke;
                 if (anniversaryLerp > 0.35) {
@@ -5962,8 +6490,8 @@
             ctx.arc(sx, sy, r * 0.5, 0, Math.PI * 2);
             ctx.fill();
 
-            // Etiqueta astronómica
-            if (!superZoomState && nd.symbol && (nd.sectorIndex === activeSectorIdx || isHovered || isOverviewMode)) {
+            // Etiqueta astronómica (la estrella secreta nunca muestra etiqueta)
+            if (!nd.isSecretStar && !superZoomState && nd.symbol && (nd.sectorIndex === activeSectorIdx || isHovered || isOverviewMode)) {
                 if (isOverviewMode && !nd.isClusterHub && !nd.isMainCross) continue;
                 ctx.save();
                 ctx.font = (nd.isBaulMain || nd.isClusterHub || nd.isMainCross || isHovered)
