@@ -1,8 +1,8 @@
 # Manual de la Web · Grupo Scout ACRUX 518 ⚜️
 
-¡Buenas, gente! Si estás leyendo esto es porque te toca gestionar, meter mano o actualizar la web de nuestro **Grupo Scout Acrux 518**.
+¡Buenas, gente! Si estás leyendo esto es porque te toca gestionar, meter mano o actualizar la web.
 
-Te dejo esta guía escrita directamente de tú a tú, clara y al grano, para que no te pierdas entre código. Aquí tienes **cómo funciona todo el bicho por dentro**, qué se gestiona automáticamente desde nuestro Google Drive (el 95% del día a día) y **dónde está exactamente cada cosa que está hardcodeada** (textos fijos, fotos locales, títulos, colores, etc.) por si necesitas cambiarlas cuando empiece una nueva Ronda Solar.
+Te dejo esta guía escrita directamente de tú a tú, clara y al grano, para que no te pierdas entre código. Aquí tienes **cómo funciona todo el bicho por dentro**, qué se gestiona automáticamente desde nuestro Google Drive (el 95% del día a día) y **dónde está exactamente cada cosa que está hardcodeada** (textos fijos, fotos locales, títulos, colores, etc.) por si necesitas cambiarlas cuando empiece una nueva Ronda.
 
 ---
 
@@ -41,11 +41,12 @@ GSA/
 Aunque la mayoría de datos vienen de Drive, hay elementos clave que están fijos en el código o en la carpeta `images/` para asegurar que carguen instantáneamente. Aquí tienes la chuleta exacta:
 
 ### A) Las Fotografías Locales (Carpeta `images/`)
-No dependas de la nube para las fotos de apertura. Si queréis renovar las fotos de portada de la web al empezar la ronda solar, simplemente sustituid estos archivos en la carpeta `images/` manteniendo el mismo nombre:
+No dependas de la nube para las fotos de apertura. Si queréis renovar las fotos de portada de la web al empezar la ronda, simplemente sustituid estos archivos en la carpeta `images/` manteniendo el mismo nombre:
 
 * **Foto de bienvenida de la portada (Sector I):**
   * Se muestra en la tarjeta flotante de la pantalla principal bajo el título "Grupo Scout Acrux 518".
-  * Usa por defecto `images/Tropa.jpg` (o la imagen de grupo que definas en el atributo `src` de `#stageWelcomePhotoImg` en `index.html` alrededor de la línea 75).
+  * Guarda tu foto en `images/Portada.jpg` (con "P" mayúscula).
+  * *Respaldo automático:* Si el archivo no existe o falla, la web cargará sola `images/Tropa.jpg` para no dejar el marco vacío.
 * **Fotos panorámicas de cabecera de las 5 Ramas (Sector II):**
   * `images/Castores.jpg` → Portada de Colonia Ohiensis.
   * `images/Manada.jpg` → Portada de Manada Khanhiwara.
@@ -257,4 +258,4 @@ Si alguna vez añades funciones nuevas a `Código.gs`:
 
 ---
 
-*Manual actualizado y verificado para la Ronda Solar 2026. ¡Buena caza y largas lunas!* ⚜️ Acrux 518
+*Manual actualizado y verificado para la Ronda 2026. ¡Buena caza y largas lunas!* ⚜️ Acrux 518
