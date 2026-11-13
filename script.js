@@ -687,7 +687,7 @@
                     color: '#FFFFFF',
                     halo: 'rgba(255, 255, 255, 0.22)',
                     isMainCross: true,
-                    isClickable: false
+                    isClickable: true
                 },
                 {
                     id: 'imai',
@@ -4929,6 +4929,12 @@
                     } else if (hitNode.sectorIndex === 0) {
                         if (hitNode.id === 'acrux') {
                             openAcruxSuperZoom();
+                        } else if (hitNode.id === 'mimosa') {
+                            openAcruxSuperZoom();
+                            setTimeout(() => {
+                                const targetEl = document.getElementById('acrux-prueba');
+                                if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 320);
                         }
                     } else {
                         goToSector(hitNode.sectorIndex, hitNode.starIdx);
@@ -5033,7 +5039,7 @@
     function worldToScreen(wx, wy) {
         const isMobile = vw <= 768;
         const cx = (vw > 900 && !isOverviewMode && !superZoomState) ? vw * 0.63 : vw * 0.5;
-        const cy = (isMobile && !isOverviewMode && !superZoomState) ? vh * 0.27 : vh * 0.5;
+        const cy = (isMobile && !isOverviewMode && !superZoomState) ? vh * 0.43 : vh * 0.5;
         return {
             x: (wx - camera.x) * camera.zoom + cx,
             y: (wy - camera.y) * camera.zoom + cy
@@ -5112,10 +5118,10 @@
             const travelWarp = Math.min(1, Math.abs(scrollDiff) * 0.8);
             if (isMobile) {
                 const mobileScaleBySector = [
-                    Math.min(0.82, (vw - 36) / 500),
-                    Math.min(0.55, (vw - 28) / 1450),
-                    Math.min(0.55, (vw - 28) / 1550),
-                    Math.min(0.75, (vw - 32) / 760)
+                    Math.min(0.92, (vw - 28) / 420),
+                    Math.min(0.62, (vw - 24) / 1380),
+                    Math.min(0.62, (vw - 24) / 1480),
+                    Math.min(0.84, (vw - 28) / 700)
                 ];
                 const mScale = lerp(
                     mobileScaleBySector[iFloor] ?? 0.65,

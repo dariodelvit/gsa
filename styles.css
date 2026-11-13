@@ -6184,9 +6184,9 @@ body.day-mode .calendar-trimester-tag {
         display: none;
     }
 
-    /* 2. PANEL INFERIOR COMPACTO (DEJA LIBRE EL CIELO ARRIBA PARA VER Y TOCAR ESTRELLAS) */
+    /* 2. PANEL FLOTANTE ULTRA-COMPACTO EN MÓVIL (OCULTA TEXTOS LARGOS Y LIBERA EL CIELO) */
     .cosmos-stage-viewport {
-        padding: 0 0.75rem calc(3.85rem + env(safe-area-inset-bottom, 0px)) 0.75rem;
+        padding: 0 0.75rem calc(3.65rem + env(safe-area-inset-bottom, 0px)) 0.75rem;
         align-items: flex-end;
         justify-content: center;
         pointer-events: none;
@@ -6194,87 +6194,74 @@ body.day-mode .calendar-trimester-tag {
     .constellation-stage-panel.is-floating-minimal {
         max-width: 100%;
         width: 100%;
-        max-height: 41dvh;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding: 0.9rem 1rem !important;
-        border-radius: 18px;
-        background: rgba(8, 12, 22, 0.76) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.16) !important;
-        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55) !important;
-        pointer-events: auto;
+        max-height: none;
+        overflow: visible;
+        padding: 0 !important;
+        border-radius: 0;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.45rem;
     }
     body.day-mode .constellation-stage-panel.is-floating-minimal {
-        background: rgba(16, 37, 72, 0.80) !important;
-        border-color: rgba(255, 255, 255, 0.24) !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
     }
-    .stage-meta-line {
-        margin-bottom: 0.35rem;
-    }
-    .stage-altitude-tag {
-        display: none;
-    }
-    .stage-index-tag {
-        font-size: 0.58rem;
-        padding: 0.2rem 0.58rem;
+    .constellation-stage-panel.is-floating-minimal::before,
+    .stage-meta-line,
+    .constellation-stage-panel.is-floating-minimal .stage-description,
+    .stage-welcome-photo-card {
+        display: none !important;
     }
     .stage-giant-heading {
-        font-size: clamp(1.3rem, 5.5vw, 1.7rem);
-        margin-bottom: 0.35rem;
+        font-size: 1.15rem;
+        margin: 0;
+        text-align: center;
+        line-height: 1.2;
+        pointer-events: none;
     }
-    .constellation-stage-panel.is-floating-minimal .stage-description {
-        font-size: 0.8rem;
-        line-height: 1.44;
-        margin-bottom: 0.65rem;
-    }
-    .stage-welcome-photo-card {
-        display: flex;
-        align-items: center;
-        gap: 0.65rem;
-        margin: 0.45rem 0 0.65rem 0;
-        padding: 0.38rem;
-        border-radius: 12px;
-    }
-    .stage-welcome-photo-frame {
-        width: 92px;
-        min-width: 92px;
-        height: 58px;
-        border-radius: 8px;
-    }
-    .stage-welcome-photo-zoom {
-        width: 22px;
-        height: 22px;
-        right: 4px;
-        bottom: 4px;
-    }
-    .stage-welcome-photo-caption {
-        margin-top: 0;
-        padding: 0;
-        text-align: left;
-        font-size: 0.72rem;
-        line-height: 1.35;
+    .stage-giant-heading .ice-italic {
+        border-bottom-width: 1.5px;
     }
     .stage-star-nodes {
+        width: 100%;
         flex-wrap: nowrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        padding-bottom: 0.25rem;
-        margin-bottom: 0.65rem;
+        padding: 0.1rem 0.25rem;
+        margin: 0;
+        justify-content: flex-start;
+        pointer-events: auto;
     }
     .stage-star-nodes::-webkit-scrollbar {
         display: none;
     }
     .star-node-chip {
         flex-shrink: 0;
+        font-size: 0.7rem;
+        padding: 0.34rem 0.68rem;
+    }
+    .stage-action-row {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        pointer-events: auto;
     }
     .constellation-stage-panel.is-floating-minimal #btnStagePrimaryAction {
-        width: 100%;
+        width: auto;
+        min-width: 210px;
+        max-width: 92vw;
         justify-content: center;
-        padding: 0.66rem 1rem;
-        font-size: 0.84rem;
+        padding: 0.58rem 1.25rem;
+        font-size: 0.82rem;
     }
 
     /* 3. BARRA INFERIOR COMPACTA */
