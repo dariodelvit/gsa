@@ -430,8 +430,8 @@
     // Formularios dinámicos de Intendencia / Merchandising (carpeta 06_INTENDENCIA en Google Drive)
     let MERCH_FORMS_DATA = [];
 
-    // Formulario dinámico de Inscripción (carpeta 07_INSCRIPCIONES en Google Drive)
-    let inscripcionFormsDrive = [];
+    // Formularios dinámicos de Inscripción (carpeta 07_INSCRIPCIONES en Google Drive)
+    let INSCRIPCION_FORMS_DATA = [];
 
     // =========================================================================
     // 2C. MODO 50 ANIVERSARIO (1976 - 2026) · ESPIRAL ÁUREA Y CONECTOR GOOGLE DRIVE
@@ -1485,6 +1485,49 @@
         return (cleaned.split('|')[0] || cleaned).trim();
     }
 
+    function parseDriveFormsList(formsFromDrive, options = {}) {
+        const { fallbackPrefix = 'Merch', replaceIntendencia = true } = options;
+        if (!Array.isArray(formsFromDrive)) return [];
+        return formsFromDrive
+            .map((item, idx) => {
+                const urls = normalizeGoogleFormEmbedUrl(item.embedUrl || item.url || item.formUrl, item.id);
+                if (!urls.embedUrl) return null;
+                // Prioridad: título interno real del formulario (fbLoadData) y, solo como respaldo, el nombre del archivo
+                const fbTitle = extractFbFormTitle(item.fbLoadData);
+                let rawName = (fbTitle || item.title || item.name || `${fallbackPrefix} ${idx + 1}`)
+                    .replace(/[\r\n]+/g, ' ');
+                if (!fbTitle) rawName = rawName.replace(/\.[^/.]+$/, '');
+                rawName = rawName.replace(/^(copia de|copy of)\s+/i, '');
+                if (replaceIntendencia) {
+                    rawName = rawName.replace(/intendencia/gi, 'Merch');
+                }
+                rawName = rawName.trim();
+                const parts = rawName.split('|').map(s => s.trim());
+                const cleanTitle = parts[0] || rawName;
+                const priceMatch = rawName.match(/(\d+(?:[.,]\d{1,2})?\s*€)/);
+                const photos = Array.isArray(item.photos)
+                    ? item.photos.slice()
+                    : (item.imageUrl || item.photoUrl ? [item.imageUrl || item.photoUrl] : []);
+
+                return {
+                    id: item.id || `${fallbackPrefix.toLowerCase()}-form-${idx}`,
+                    title: cleanTitle,
+                    price: item.price || (parts[1] && parts[1].includes('€') ? parts[1] : (priceMatch ? priceMatch[1] : '')),
+                    desc: item.desc || item.description || (parts[2] || (parts[1] && !parts[1].includes('€') ? parts[1] : '')),
+                    embedUrl: urls.embedUrl,
+                    externalUrl: urls.externalUrl || urls.embedUrl,
+                    actionUrl: item.actionUrl || '',
+                    date: item.date || '',
+                    photos: photos,
+                    questions: Array.isArray(item.questions) ? item.questions : null,
+                    fbLoadData: item.fbLoadData || null,
+                    rawHtml: item.rawHtml || '',
+                    _parsedSchema: null
+                };
+            })
+            .filter(Boolean);
+    }
+
     function rebuildMerchConstellation(merchFormsFromDrive) {
         // 1. Limpiar estrellas satélite previas de Merch (clusterType === 'merch')
         for (let i = worldNodes.length - 1; i >= 0; i--) {
@@ -1501,46 +1544,10 @@
         const intrometidaNode = worldNodes.find(nd => nd.id === 'intrometida');
 
         // 2. Validar y normalizar array de formularios recibidos desde Drive
-        const validForms = Array.isArray(merchFormsFromDrive)
-            ? merchFormsFromDrive
-                .map((item, idx) => {
-                    const urls = normalizeGoogleFormEmbedUrl(item.embedUrl || item.url || item.formUrl, item.id);
-                    if (!urls.embedUrl) return null;
-                    // Prioridad: título interno real del formulario (fbLoadData) y, solo como respaldo, el nombre del archivo
-                    const fbTitle = extractFbFormTitle(item.fbLoadData);
-                    let rawName = (fbTitle || item.title || item.name || `Merch ${idx + 1}`)
-                        .replace(/[\r\n]+/g, ' ');
-                    if (!fbTitle) rawName = rawName.replace(/\.[^/.]+$/, ''); // la "extensión" solo se quita del nombre de archivo
-                    rawName = rawName
-                        .replace(/^(copia de|copy of)\s+/i, '')
-                        .replace(/intendencia/gi, 'Merch')
-                        .trim();
-                    const parts = rawName.split('|').map(s => s.trim());
-                    const cleanTitle = parts[0] || rawName;
-                    const priceMatch = rawName.match(/(\d+(?:[.,]\d{1,2})?\s*€)/);
-                    const photos = Array.isArray(item.photos)
-                        ? item.photos.slice()
-                        : (item.imageUrl || item.photoUrl ? [item.imageUrl || item.photoUrl] : []);
-
-                    return {
-                        id: item.id || `merch-form-${idx}`,
-                        title: cleanTitle,
-                        price: item.price || (parts[1] && parts[1].includes('€') ? parts[1] : (priceMatch ? priceMatch[1] : '')),
-                        desc: item.desc || item.description || (parts[2] || (parts[1] && !parts[1].includes('€') ? parts[1] : '')),
-                        embedUrl: urls.embedUrl,
-                        externalUrl: urls.externalUrl || urls.embedUrl,
-                        actionUrl: item.actionUrl || '',
-                        date: item.date || '',
-                        photos: photos,
-                        questions: Array.isArray(item.questions) ? item.questions : null,
-                        // Datos nativos del servidor: evitan los proxies externos lentos (r.jina.ai) en preloadMerchFormSchema
-                        fbLoadData: item.fbLoadData || null,
-                        rawHtml: item.rawHtml || '',
-                        _parsedSchema: null
-                    };
-                })
-                .filter(Boolean)
-            : [];
+        const validForms = parseDriveFormsList(merchFormsFromDrive, {
+            fallbackPrefix: 'Merch',
+            replaceIntendencia: true
+        });
 
         MERCH_FORMS_DATA = validForms;
 
@@ -1640,6 +1647,89 @@
         }
     }
     window.rebuildMerchConstellation = rebuildMerchConstellation;
+
+    // Reconstruye dinámicamente la estrella β Inscripciones (mimosa) con los Google Forms de 07_INSCRIPCIONES
+    function rebuildInscripcionConstellation(inscripcionFormsFromDrive) {
+        for (let i = worldNodes.length - 1; i >= 0; i--) {
+            if (worldNodes[i].clusterType === 'inscripcion') {
+                worldNodes.splice(i, 1);
+            }
+        }
+        for (let i = worldEdges.length - 1; i >= 0; i--) {
+            if (worldEdges[i].clusterType === 'inscripcion') {
+                worldEdges.splice(i, 1);
+            }
+        }
+
+        const mimosaNode = worldNodes.find(nd => nd.id === 'mimosa');
+        const validForms = parseDriveFormsList(inscripcionFormsFromDrive, {
+            fallbackPrefix: 'Inscripción',
+            replaceIntendencia: false
+        });
+
+        INSCRIPCION_FORMS_DATA = validForms;
+        INSCRIPCION_FORMS_DATA.forEach(form => {
+            if (typeof preloadMerchFormSchema === 'function') {
+                preloadMerchFormSchema(form);
+            }
+        });
+
+        if (mimosaNode) {
+            mimosaNode.isInscripcionStar = true;
+            mimosaNode.isClickable = true;
+            mimosaNode.inscripcionIndex = 0;
+            mimosaNode.symbol = 'β Inscripciones';
+        }
+
+        if (INSCRIPCION_FORMS_DATA.length > 1 && mimosaNode) {
+            const extraOffsets = [
+                { dx: -178, dy: -46, lp: 'left' },
+                { dx: -168, dy: 64, lp: 'left' },
+                { dx: -195, dy: 12, lp: 'left' }
+            ];
+            const extraStars = INSCRIPCION_FORMS_DATA.slice(1).map((form, idx) => {
+                const off = extraOffsets[idx % extraOffsets.length];
+                const radiusMul = 1 + Math.floor(idx / extraOffsets.length) * 0.3;
+                return {
+                    id: `inscripcion-star-${form.id}`,
+                    symbol: `✦ ${form.title}`,
+                    dx: Math.round(off.dx * radiusMul),
+                    dy: Math.round(off.dy * radiusMul),
+                    r: 4.8,
+                    color: '#FFFFFF',
+                    halo: 'rgba(255, 255, 255, 0.18)',
+                    ringColor: 'rgba(255, 255, 255, 0.24)',
+                    hoverRingColor: 'rgba(255, 255, 255, 0.72)',
+                    isInscripcionStar: true,
+                    isClickable: true,
+                    isClusterHub: false,
+                    inscripcionIndex: idx + 1,
+                    labelPos: off.lp
+                };
+            });
+
+            const createdExtraNodes = registerStarCluster(extraStars, [], SECTORS[0].worldX, SECTORS[0].worldY, {
+                sectorIndex: 0,
+                clusterType: 'inscripcion'
+            });
+
+            createdExtraNodes.forEach((node, idx) => {
+                const prevNode = idx === 0 ? mimosaNode : createdExtraNodes[idx - 1];
+                worldEdges.push({
+                    sectorIndex: 0,
+                    clusterType: 'inscripcion',
+                    nodeA: prevNode,
+                    nodeB: node,
+                    ctrlX: 0,
+                    ctrlY: 0,
+                    vx: 0,
+                    vy: 0,
+                    glow: 0
+                });
+            });
+        }
+    }
+    window.rebuildInscripcionConstellation = rebuildInscripcionConstellation;
 
     // =========================================================================
     // 5. CAMPO PROFUNDO DE ESTRELLAS CON PARALLAX (SOLO BLANCO Y TOQUE ROJO SUTIL)
@@ -2858,7 +2948,10 @@
         }, diveTime);
     }
 
-    function openAcruxSuperZoom() {
+    let pendingDrawerScrollTarget = null;
+
+    function openAcruxSuperZoom(focusTargetId = null) {
+        pendingDrawerScrollTarget = focusTargetId || null;
         const sec0 = SECTORS[0];
         const acrux = sec0.stars[0];
         const targetWx = sec0.worldX + (acrux ? acrux.dx : 12);
@@ -3381,10 +3474,10 @@
                         <h3>Cinco Ramas Educativas · De 6 a 21 años</h3>
                         <p>Castores, Manada, Tropa, Escultas y Clan. Reuniones de sábado, acampadas trimestrales y campamentos en la naturaleza.</p>
                         <div class="acrux-dock-actions">
-                            <a href="#acrux-prueba" class="btn-cosmos-primary js-acrux-scroll" style="padding:0.55rem 1.15rem; font-size:0.82rem; text-decoration:none;">
-                                <span>Inscripciones y Contacto</span>
-                                <span class="btn-arrow">↓</span>
-                            </a>
+                            <button type="button" class="btn-cosmos-primary" id="btnIdentityToInscripciones" style="padding:0.55rem 1.15rem; font-size:0.82rem;">
+                                <span>Ir a β Inscripciones</span>
+                                <span class="btn-arrow">→</span>
+                            </button>
                             <button type="button" class="star-tab-back-btn" id="btnIdentityToUnitsTop">
                                 <span>Explorar las 5 Unidades →</span>
                             </button>
@@ -3497,74 +3590,10 @@
                     </div>
                 </div>
 
-                <!-- 4. INSCRIPCIONES Y CONTACTO (TARJETA LIMPIA A DOS COLUMNAS) -->
-                <div id="acrux-prueba" class="bases-modal-section" style="margin-top: 2.4rem;">
-                    <div class="inscripcion-split-card">
-                        <div class="inscripcion-info-col">
-                            <span class="bases-pill-badge">04 · INSCRIPCIONES Y SÁBADO DE PRUEBA</span>
-                            <h3>Inscripciones y Contacto</h3>
-                            <p>Si tienes entre 6 y 21 años —o buscas grupo para tus hijos— puedes escribirnos para consultar disponibilidad de plazas por rama o acercarte un sábado a conocernos en nuestra sede de Carretera de Rueda, 53 (16:30 a 19:00 h).</p>
-                            <div class="inscripcion-tags-row">
-                                <span class="inscripcion-meta-tag">${SVG_ICONS.clock} Sábados de 16:30 a 19:00 h</span>
-                                <span class="inscripcion-meta-tag">${SVG_ICONS.users} De 6 a 21 años · 5 ramas</span>
-                            </div>
-                        </div>
-
-                        <div class="inscripcion-form-col">
-                            ${(() => {
-                                const inscForm = Array.isArray(inscripcionFormsDrive) && inscripcionFormsDrive.length > 0 ? inscripcionFormsDrive[0] : null;
-                                const inscSchema = (inscForm && inscForm.fbLoadData) ? buildSchemaFromFbLoadData(inscForm.fbLoadData, inscForm.rawHtml || '', inscForm) : null;
-                                const hasNativeInsc = Boolean(inscSchema && ((inscSchema.pillFields && inscSchema.pillFields.length > 0) || (inscSchema.textFields && inscSchema.textFields.length > 0)));
-                                if (hasNativeInsc) {
-                                    const pillInputs = (inscSchema.pillFields || []).map(pf => `
-                                        <label class="dossier-field-label" style="display:block; font-size:0.75rem; font-weight:600; margin-bottom:0.25rem;">${stripHtmlTags(pf.title || 'Opción')}${pf.required ? ' *' : ''}</label>
-                                        <select class="dossier-form-input js-insc-drive-field" data-entry-id="${escapeAttr(pf.id)}" ${pf.required ? 'required' : ''}>
-                                            <option value="">Selecciona una opción...</option>
-                                            ${(pf.options || []).map(opt => `<option value="${escapeAttr(opt)}">${stripHtmlTags(opt)}</option>`).join('')}
-                                        </select>
-                                    `).join('');
-                                    const textInputs = (inscSchema.textFields || []).map(tf => `
-                                        <input type="${tf.type === 'email' ? 'email' : (tf.type === 'tel' ? 'tel' : 'text')}" class="dossier-form-input js-insc-drive-field" data-entry-id="${escapeAttr(tf.id)}" ${tf.required ? 'required' : ''} placeholder="${escapeAttr(stripHtmlTags(tf.title || 'Dato'))}${tf.required ? ' *' : ''}">
-                                    `).join('');
-                                    return `
-                                        <form id="acruxContactForm" data-drive-action="${escapeAttr(inscSchema.actionUrl)}" data-form-title="${escapeAttr(inscForm.title || 'Inscripción Acrux 518')}">
-                                            <div class="inscripcion-fields-stack">${textInputs}${pillInputs}</div>
-                                            <button type="submit" class="btn-cosmos-primary inscripcion-submit-btn">
-                                                <span>Enviar Inscripción</span>
-                                            </button>
-                                            <div id="acruxSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
-                                        </form>
-                                    `;
-                                }
-                                return `
-                                    <form id="acruxContactForm">
-                                        <div class="inscripcion-fields-stack">
-                                            <input type="text" id="acruxName" class="dossier-form-input" required placeholder="Nombre">
-                                            <input type="tel" id="acruxPhone" class="dossier-form-input" required placeholder="Teléfono">
-                                            <select id="acruxUnit" class="dossier-form-input">
-                                                <option value="Castores (6 a 8 años)">Castores · Colonia Ohiensis (6 a 8 años)</option>
-                                                <option value="Manada (8 a 11 años)">Manada · Khanhiwara (8 a 11 años)</option>
-                                                <option value="Tropa (11 a 14 años)">Tropa · Lohengrin (11 a 14 años)</option>
-                                                <option value="Escultas (14 a 17 años)">Unidad Esculta · Trea (14 a 17 años)</option>
-                                                <option value="Clan Rover (17 a 21 años)">Clan Rover · Ama Dablam (17 a 21 años)</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn-cosmos-primary inscripcion-submit-btn">
-                                            ${SVG_ICONS.whatsapp}
-                                            <span>Contactar con Coordinación</span>
-                                        </button>
-                                        <div id="acruxSuccessMsg" class="signup-success-feedback" style="display:none;"></div>
-                                    </form>
-                                `;
-                            })()}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5. REDES SOCIALES DEL GRUPO (BOTONES COMPACTOS HORIZONTALES CON LOGOS VECTORIALES) -->
+                <!-- 4. REDES SOCIALES DEL GRUPO (BOTONES COMPACTOS HORIZONTALES CON LOGOS VECTORIALES) -->
                 <div id="acrux-redes" class="bases-modal-section" style="margin-top: 2.4rem;">
                     <div class="bases-section-title-row">
-                        <span class="bases-pill-badge">05 · REDES SOCIALES</span>
+                        <span class="bases-pill-badge">04 · REDES SOCIALES</span>
                         <h3>Canales Oficiales de Acrux 518</h3>
                     </div>
 
@@ -3623,6 +3652,21 @@
             goToSector(1, 0);
         });
 
+        // Saltar dinámicamente desde Acrux a la estrella β Inscripciones (mimosa)
+        const jumpToInscripcionStar = () => {
+            drawerBackdrop?.classList.remove('is-open');
+            drawerBackdrop?.setAttribute('aria-hidden', 'true');
+            if (typeof openInscripcionModal === 'function') {
+                openInscripcionModal(0);
+            }
+        };
+        document.getElementById('btnIdentityToInscripciones')?.addEventListener('click', jumpToInscripcionStar);
+        const btnAcruxTopInsc = document.getElementById('btnAcruxTopToInscripciones');
+        if (btnAcruxTopInsc && !btnAcruxTopInsc.dataset.boundInsc) {
+            btnAcruxTopInsc.dataset.boundInsc = '1';
+            btnAcruxTopInsc.addEventListener('click', jumpToInscripcionStar);
+        }
+
         // Smooth scroll para las pestañas superiores de Acrux (#acruxTopAnchorNav) y botones internos
         const allAcruxLinks = document.querySelectorAll('#acruxTopAnchorNav a, .js-acrux-scroll');
         allAcruxLinks.forEach(a => {
@@ -3641,57 +3685,21 @@
             });
         });
 
-        // Formulario de contacto / inscripción de Acrux (Drive Google Form o respaldo WhatsApp)
-        document.getElementById('acruxContactForm')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formEl = e.currentTarget;
-            const driveAction = formEl.getAttribute('data-drive-action');
-            const msg = document.getElementById('acruxSuccessMsg');
-
-            if (driveAction) {
-                const urlParams = new URLSearchParams();
-                formEl.querySelectorAll('.js-insc-drive-field').forEach(inp => {
-                    const entryId = inp.getAttribute('data-entry-id');
-                    if (entryId) urlParams.append(entryId, inp.value || '');
-                });
-                urlParams.append('submit', 'Submit');
-                try {
-                    await fetch(driveAction, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: urlParams.toString()
-                    });
-                } catch (_) {}
-                formEl.reset();
-                if (msg) {
-                    msg.style.display = 'block';
-                    msg.innerHTML = '<strong>¡Inscripción registrada!</strong><br>Tus datos se han enviado directamente al formulario oficial del Grupo Scout Acrux 518 en Google Drive.';
-                }
-                return;
-            }
-
-            const name = document.getElementById('acruxName')?.value || '';
-            const phone = document.getElementById('acruxPhone')?.value || '';
-            const unit = document.getElementById('acruxUnit')?.value || '';
-            const targetCoord = coordsList.find(c => c.hasPhone) || defaultCoords[0];
-            const cleanTargetPhone = (targetCoord.phone || '616289119').replace(/\s+/g, '');
-
-            const waText = `Hola ${targetCoord.name}, me pongo en contacto desde la web del Grupo Scout Acrux 518.\n\nSoy ${name} (Tel: ${phone}). Me gustaría consultar información / disponibilidad en la rama: ${unit}. ¡Gracias!`;
-            const waUrl = `https://wa.me/34${cleanTargetPhone}?text=${encodeURIComponent(waText)}`;
-
-            if (msg) {
-                msg.style.display = 'block';
-                msg.innerHTML = `
-                    <strong>Solicitud preparada, ${name}.</strong><br>
-                    Abriendo WhatsApp para contactar con <strong>${targetCoord.name}</strong> (${targetCoord.displayPhone}). Si no se abre automáticamente, <a href="${waUrl}" target="_blank" rel="noopener" style="color:#FFF; text-decoration:underline; font-weight:600;">pulsa aquí para enviar el mensaje</a>.
-                `;
-            }
-            window.open(waUrl, '_blank', 'noopener');
-        });
-
         drawerBackdrop.classList.add('is-open');
         drawerBackdrop.setAttribute('aria-hidden', 'false');
+
+        if (pendingDrawerScrollTarget) {
+            const targetId = pendingDrawerScrollTarget;
+            pendingDrawerScrollTarget = null;
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    const targetEl = document.getElementById(targetId);
+                    if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 90);
+            });
+        }
     }
 
     function closeDrawerModal() {
@@ -3704,13 +3712,11 @@
 
     document.getElementById('btnCloseDrawer')?.addEventListener('click', closeDrawerModal);
     document.getElementById('btnQuickContactTop')?.addEventListener('click', () => {
-        openAcruxSuperZoom();
-        setTimeout(() => {
-            const targetEl = document.getElementById('acrux-prueba');
-            if (targetEl) {
-                targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }, 320);
+        if (INSCRIPCION_FORMS_DATA && INSCRIPCION_FORMS_DATA.length > 0 && typeof openInscripcionModal === 'function') {
+            openInscripcionModal(0);
+        } else {
+            openAcruxSuperZoom('acrux-coordinacion');
+        }
     });
     drawerBackdrop?.addEventListener('click', (e) => {
         if (e.target === drawerBackdrop) closeDrawerModal();
@@ -3813,10 +3819,47 @@
     const elBtnMerchFinishOrder = document.getElementById('btnMerchFinishOrder');
     const elBtnCloseMerchModal = document.getElementById('btnCloseMerchModal');
     const elMerchHiddenGoogleForm = document.getElementById('merchHiddenGoogleForm');
+    const elMerchTopbarBadge = document.getElementById('merchTopbarBadge');
+    const elMerchStageSeasonPill = document.getElementById('merchStageSeasonPill');
+    const elMerchStageSubPill = document.getElementById('merchStageSubPill');
+    const elMerchSpecLabel1 = document.getElementById('merchSpecLabel1');
+    const elMerchSpecValue1 = document.getElementById('merchSpecValue1');
+    const elMerchSpecLabel2 = document.getElementById('merchSpecLabel2');
+    const elMerchSpecValue2 = document.getElementById('merchSpecValue2');
+    const elMerchSpecLabel3 = document.getElementById('merchSpecLabel3');
+    const elMerchSpecValue3 = document.getElementById('merchSpecValue3');
+    const elMerchCtaSubnote = document.getElementById('merchCtaSubnote');
+    const elMerchSuccessKicker = document.getElementById('merchSuccessKicker');
+    const elMerchSuccessTitle = document.getElementById('merchSuccessTitle');
 
+    let activeFormModalMode = 'merch'; // 'merch' | 'inscripcion'
     let activeMerchFormIdx = 0;
+    let activeInscripcionFormIdx = 0;
     let activeMerchOrderState = {};
     let activeMerchPhotoIdx = 0;
+
+    function applyFormModalChrome(mode) {
+        const isInsc = (mode === 'inscripcion');
+        const submitLabelEl = elBtnSubmitMerchOrder?.querySelector('.merch-submit-label');
+        if (elMerchTopbarBadge) elMerchTopbarBadge.textContent = isInsc ? 'ACRUX 518 · INSCRIPCIONES' : 'ACRUX 518 · MERCH OFICIAL';
+        if (elMerchStageSeasonPill) elMerchStageSeasonPill.textContent = isInsc ? 'INSCRIPCIÓN OFICIAL ACRUX 518' : 'COLECCIÓN OFICIAL ACRUX 518';
+        if (elMerchStageSubPill) elMerchStageSubPill.textContent = isInsc ? 'SÁBADOS 16:30 – 19:00 · RUEDA 53' : 'ENTREGA EN BASE · RUEDA 53';
+        if (elMerchSpecLabel1) elMerchSpecLabel1.textContent = isInsc ? 'EDADES' : 'EDICIÓN';
+        if (elMerchSpecValue1) elMerchSpecValue1.textContent = isInsc ? '6 a 21 años · 5 Ramas' : 'Grupo Scout Acrux 518';
+        if (elMerchSpecLabel2) elMerchSpecLabel2.textContent = isInsc ? 'REUNIONES' : 'RECOGIDA';
+        if (elMerchSpecValue2) elMerchSpecValue2.textContent = 'Sábados 16:30 – 19:00 h';
+        if (elMerchSpecLabel3) elMerchSpecLabel3.textContent = isInsc ? 'SEDE' : 'REGISTRO';
+        if (elMerchSpecValue3) elMerchSpecValue3.textContent = isInsc ? 'Crtra. Rueda, 53 · Valladolid' : 'Directo en Hoja Oficial';
+        if (submitLabelEl) submitLabelEl.textContent = isInsc ? 'Enviar Inscripción' : 'Realizar Pedido';
+        if (elMerchCtaSubnote) {
+            elMerchCtaSubnote.textContent = isInsc
+                ? 'Tu solicitud quedará registrada al instante en el formulario oficial del grupo.'
+                : 'Tu pedido quedará registrado al instante en el formulario oficial del grupo.';
+        }
+        if (elMerchSuccessKicker) elMerchSuccessKicker.textContent = isInsc ? 'INSCRIPCIÓN REGISTRADA CORRECTAMENTE' : 'PEDIDO REGISTRADO CORRECTAMENTE';
+        if (elMerchSuccessTitle) elMerchSuccessTitle.textContent = isInsc ? '¡Solicitud enviada!' : '¡Gracias por tu pedido!';
+        if (elBtnMerchAnotherOrder) elBtnMerchAnotherOrder.textContent = isInsc ? 'Enviar otra inscripción' : 'Realizar otro pedido';
+    }
 
     // Mapa cromático para pastillas de color y vista previa de prenda en estudio
     function getColorInfoFromLabel(rawLabel) {
@@ -3893,8 +3936,10 @@
         const formMeta = fbData[1];
         const rawQuestions = Array.isArray(formMeta[1]) ? formMeta[1] : [];
         const formDesc = (formMeta[0] || '').replace(/<[^>]*>/g, '').trim();
+        const isInscForm = Array.isArray(INSCRIPCION_FORMS_DATA) && INSCRIPCION_FORMS_DATA.includes(form);
         // Título real del formulario (fbData[1][8]); fbData[3] es el nombre antiguo del archivo y solo se usa de respaldo
-        const liveTitle = normalizeMerchFormTitle(extractFbFormTitle(fbData));
+        const rawLiveTitle = extractFbFormTitle(fbData);
+        const liveTitle = isInscForm ? rawLiveTitle : normalizeMerchFormTitle(rawLiveTitle);
         const publicSlug = fbData[14] || '';
         const actionUrl = publicSlug
             ? `https://docs.google.com/forms/d/${publicSlug}/formResponse`
@@ -3902,12 +3947,16 @@
 
         // Solo usar liveTitle si el servidor no envió un título ya limpio, y nunca pisar el modal si el usuario está viendo otro artículo
         if (liveTitle && form) {
-            if (!form.title || /^merch\b/i.test(form.title)) {
+            if (!form.title || (!isInscForm && /^merch\b/i.test(form.title))) {
                 form.title = liveTitle;
             }
             const formIdx = MERCH_FORMS_DATA.indexOf(form);
-            if (formIdx === activeMerchFormIdx && elMerchModalTitle && elMerchModal?.classList.contains('is-open')) {
-                elMerchModalTitle.textContent = form.title;
+            const inscIdx = INSCRIPCION_FORMS_DATA.indexOf(form);
+            if (elMerchModalTitle && elMerchModal?.classList.contains('is-open')) {
+                if ((activeFormModalMode === 'merch' && formIdx === activeMerchFormIdx) ||
+                    (activeFormModalMode === 'inscripcion' && inscIdx === activeInscripcionFormIdx)) {
+                    elMerchModalTitle.textContent = form.title;
+                }
             }
             if (formIdx === 0) {
                 const intrometidaNode = worldNodes.find(nd => nd.id === 'intrometida');
@@ -4019,10 +4068,12 @@
 
             // CASO B: Pregunta con opciones (Radio, Desplegable, Casillas, Escala)
             if (rawOpts.length > 0) {
+                const isMulti = (qType === 4);
                 pillFields.push({
                     id: entryId,
                     entryId: entryId,
                     kind: 'pills',
+                    isMulti: isMulti,
                     title: title,
                     helpText: helpText,
                     required: isRequired,
@@ -4030,7 +4081,7 @@
                     isSizeField: isSizeQ,
                     isQtyField: isQtyQ,
                     options: rawOpts,
-                    defaultVal: isQtyQ ? '1' : rawOpts[0]
+                    defaultVal: isMulti ? (isRequired ? [rawOpts[0]] : []) : (isQtyQ ? '1' : rawOpts[0])
                 });
                 return;
             }
@@ -4068,15 +4119,16 @@
                 return;
             }
 
-            // CASO D: Campo de texto estilizado para las preguntas abiertas del formulario
+            // CASO D: Campo de texto estilizado o fecha para las preguntas abiertas del formulario
             let inputType = 'text';
-            if (lowerTitle.includes('email') || lowerTitle.includes('correo')) inputType = 'email';
+            if (qType === 9) inputType = 'date';
+            else if (lowerTitle.includes('email') || lowerTitle.includes('correo')) inputType = 'email';
             else if (lowerTitle.includes('phone') || lowerTitle.includes('teléfono') || lowerTitle.includes('telefono') || lowerTitle.includes('móvil')) inputType = 'tel';
 
             textFields.push({
                 id: entryId,
                 entryId: entryId,
-                kind: qType === 1 ? 'textarea' : 'text',
+                kind: qType === 1 ? 'textarea' : (qType === 9 ? 'date' : 'text'),
                 inputType: inputType,
                 title: title,
                 helpText: helpText,
@@ -4211,19 +4263,21 @@
             return (sizeField && activeMerchOrderState[sizeField.id]) ? activeMerchOrderState[sizeField.id] : 'M';
         })();
 
-        // Mostrar tira de miniaturas si hay fotos + vista de estudio
-        const hasPhotos = allPhotos.length > 0;
-        const showStudioView = !hasPhotos || activeMerchPhotoIdx >= allPhotos.length;
+        // Mostrar tira de miniaturas si hay fotos + vista de estudio (o foto de grupo en Inscripciones)
+        const isInscMode = (activeFormModalMode === 'inscripcion');
+        const effectivePhotos = (allPhotos.length === 0 && isInscMode) ? ['images/Tropa.jpg'] : allPhotos;
+        const hasPhotos = effectivePhotos.length > 0;
+        const showStudioView = !hasPhotos || activeMerchPhotoIdx >= effectivePhotos.length;
 
         if (!showStudioView) {
-            const currentPhoto = allPhotos[activeMerchPhotoIdx] || allPhotos[0];
+            const currentPhoto = effectivePhotos[activeMerchPhotoIdx] || effectivePhotos[0];
             elMerchShowcaseVisual.innerHTML = `
                 <img src="${currentPhoto}" alt="${form.title}" class="merch-showcase-img" id="merchMainShowcaseImg" referrerpolicy="no-referrer">
             `;
             const imgEl = document.getElementById('merchMainShowcaseImg');
             imgEl?.addEventListener('click', () => {
                 if (typeof openLightbox === 'function') {
-                    openLightbox(currentPhoto, `${form.title} · Merch Acrux 518`);
+                    openLightbox(currentPhoto, isInscMode ? `${form.title} · Acrux 518` : `${form.title} · Merch Acrux 518`);
                 }
             });
         } else {
@@ -4317,11 +4371,14 @@
         }
 
         if (elMerchModalDesc) {
-            elMerchModalDesc.textContent = schema.description || form.desc || 'Selecciona tu talla y color preferido y completa tus datos para registrar tu pedido.';
+            const fallbackDesc = activeFormModalMode === 'inscripcion'
+                ? 'Completa tus datos en el formulario oficial para solicitar plaza o acudir a un sábado de prueba con el Grupo Scout Acrux 518.'
+                : 'Selecciona tu talla y color preferido y completa tus datos para registrar tu pedido.';
+            elMerchModalDesc.textContent = schema.description || form.desc || fallbackDesc;
         }
 
         if (elMerchPriceTag) {
-            if (form.price) {
+            if (form.price && activeFormModalMode === 'merch') {
                 elMerchPriceTag.style.display = 'inline-flex';
                 elMerchPriceTag.textContent = form.price;
             } else {
@@ -4332,16 +4389,25 @@
         // Inicializar valores por defecto en activeMerchOrderState
         activeMerchOrderState = {};
         schema.pillFields.forEach(pf => {
-            activeMerchOrderState[pf.id] = pf.defaultVal || pf.options[0] || '';
+            if (pf.isMulti) {
+                activeMerchOrderState[pf.id] = Array.isArray(pf.defaultVal) ? pf.defaultVal.slice() : [];
+            } else {
+                activeMerchOrderState[pf.id] = pf.defaultVal || pf.options[0] || '';
+            }
         });
 
         const pillsHtml = schema.pillFields.map(pf => {
             const currentVal = activeMerchOrderState[pf.id];
-            const currentColorInfo = pf.isColorField ? getColorInfoFromLabel(currentVal) : null;
-            const displaySelected = currentColorInfo ? currentColorInfo.label : currentVal;
+            const isSelectedFn = opt => pf.isMulti
+                ? (Array.isArray(currentVal) && currentVal.includes(opt))
+                : (opt === currentVal);
+            const currentColorInfo = (!pf.isMulti && pf.isColorField) ? getColorInfoFromLabel(currentVal) : null;
+            const displaySelected = pf.isMulti
+                ? (Array.isArray(currentVal) && currentVal.length > 0 ? currentVal.join(', ') : 'Sin selección')
+                : (currentColorInfo ? currentColorInfo.label : currentVal);
 
             const buttonsHtml = pf.options.map(opt => {
-                const isSelected = opt === currentVal;
+                const isSelected = isSelectedFn(opt);
                 const cInfo = pf.isColorField ? getColorInfoFromLabel(opt) : null;
                 const dotHtml = cInfo
                     ? `<span class="merch-color-dot" style="background-color: ${cInfo.hex};"></span>`
@@ -4376,8 +4442,9 @@
             `;
         }).join('');
 
+        const buyerDividerLabel = activeFormModalMode === 'inscripcion' ? 'Datos de Inscripción' : 'Datos del Comprador';
         const buyerDividerHtml = schema.textFields.length > 0
-            ? `<div class="merch-section-divider">Datos del Comprador</div>`
+            ? `<div class="merch-section-divider">${buyerDividerLabel}</div>`
             : '';
 
         const textsHtml = schema.textFields.map(tf => {
@@ -4454,15 +4521,32 @@
                 if (btn.disabled || btn.classList.contains('is-unavailable')) return;
                 const fieldId = btn.getAttribute('data-pill-field');
                 const val = btn.getAttribute('data-pill-value');
+                const pf = schema.pillFields.find(f => f.id === fieldId);
+                const groupEl = btn.closest('.merch-field-group');
+
+                if (pf && pf.isMulti) {
+                    const arr = Array.isArray(activeMerchOrderState[fieldId]) ? activeMerchOrderState[fieldId].slice() : [];
+                    const idx = arr.indexOf(val);
+                    if (idx >= 0) arr.splice(idx, 1);
+                    else arr.push(val);
+                    activeMerchOrderState[fieldId] = arr;
+                    groupEl?.querySelectorAll('.merch-option-pill').forEach(b => {
+                        b.classList.toggle('is-selected', arr.includes(b.getAttribute('data-pill-value')));
+                    });
+                    const selLabelEl = document.getElementById(`selectedLabel-${fieldId}`);
+                    if (selLabelEl) {
+                        selLabelEl.textContent = arr.length > 0 ? arr.join(', ') : 'Sin selección';
+                    }
+                    return;
+                }
+
                 activeMerchOrderState[fieldId] = val;
 
                 // Actualizar estado visual de las pastillas del grupo
-                const groupEl = btn.closest('.merch-field-group');
                 groupEl?.querySelectorAll('.merch-option-pill').forEach(b => {
                     b.classList.toggle('is-selected', b === btn);
                 });
 
-                const pf = schema.pillFields.find(f => f.id === fieldId);
                 const selLabelEl = document.getElementById(`selectedLabel-${fieldId}`);
                 if (selLabelEl) {
                     const cInfo = pf && pf.isColorField ? getColorInfoFromLabel(val) : null;
@@ -4502,20 +4586,33 @@
         renderMerchLeftShowcase(form, schema);
     }
 
-    async function openMerchModal(formIdx = 0) {
-        if (!elMerchModal || !MERCH_FORMS_DATA || MERCH_FORMS_DATA.length === 0) return;
+    async function openFormModal(mode = 'merch', formIdx = 0) {
+        const isInsc = (mode === 'inscripcion');
+        const formsList = isInsc ? INSCRIPCION_FORMS_DATA : MERCH_FORMS_DATA;
+        if (!elMerchModal || !formsList || formsList.length === 0) {
+            if (isInsc) {
+                openAcruxSuperZoom('acrux-coordinacion');
+            }
+            return;
+        }
 
-        activeMerchFormIdx = clamp(formIdx, 0, MERCH_FORMS_DATA.length - 1);
-        const form = MERCH_FORMS_DATA[activeMerchFormIdx];
+        activeFormModalMode = isInsc ? 'inscripcion' : 'merch';
+        const clampedIdx = clamp(formIdx, 0, formsList.length - 1);
+        if (isInsc) activeInscripcionFormIdx = clampedIdx;
+        else activeMerchFormIdx = clampedIdx;
+
+        const form = formsList[clampedIdx];
         if (!form) return;
 
         activeMerchPhotoIdx = 0;
+        applyFormModalChrome(activeFormModalMode);
 
-        // Coordenadas estelares de la estrella de Merch para el Super-Zoom de Hiperespacio
-        const merchNode = worldNodes.find(nd => nd.isMerchStar && nd.merchIndex === activeMerchFormIdx)
-            || worldNodes.find(nd => nd.id === 'intrometida');
-        const targetWx = merchNode ? merchNode.wx : (SECTORS[0].worldX + 66);
-        const targetWy = merchNode ? merchNode.wy : (SECTORS[0].worldY + 42);
+        // Coordenadas estelares de la estrella para el Super-Zoom de Hiperespacio
+        const targetStarNode = isInsc
+            ? (worldNodes.find(nd => nd.isInscripcionStar && nd.inscripcionIndex === clampedIdx) || worldNodes.find(nd => nd.id === 'mimosa'))
+            : (worldNodes.find(nd => nd.isMerchStar && nd.merchIndex === clampedIdx) || worldNodes.find(nd => nd.id === 'intrometida'));
+        const targetWx = targetStarNode ? targetStarNode.wx : (SECTORS[0].worldX + (isInsc ? -92 : 66));
+        const targetWy = targetStarNode ? targetStarNode.wy : (SECTORS[0].worldY + (isInsc ? 8 : 42));
 
         const wasAlreadyOpen = elMerchModal.classList.contains('is-open');
         clearTimeout(diveTabTimer);
@@ -4526,8 +4623,8 @@
         activeSectorIdx = 0;
 
         superZoomState = {
-            type: 'merch',
-            index: activeMerchFormIdx,
+            type: activeFormModalMode,
+            index: clampedIdx,
             wx: targetWx,
             wy: targetWy,
             zoom: 24.0
@@ -4541,14 +4638,19 @@
         if (elMerchOrderSuccess) elMerchOrderSuccess.style.display = 'none';
         if (elMerchNativeForm) elMerchNativeForm.style.display = 'flex';
         if (elMerchFormError) elMerchFormError.style.display = 'none';
+        if (elMerchDynamicFields) elMerchDynamicFields.innerHTML = '';
 
         if (elMerchModalTitle) {
             elMerchModalTitle.textContent = form.title;
         }
         if (elMerchModalKicker) {
-            elMerchModalKicker.textContent = form.date
-                ? `MERCHANDISING DE GRUPO · ACRUX 518 · ${form.date}`
-                : 'MERCHANDISING DE GRUPO · ACRUX 518';
+            const kickerBase = isInsc ? 'NUEVAS INCORPORACIONES · ACRUX 518' : 'MERCHANDISING DE GRUPO · ACRUX 518';
+            elMerchModalKicker.textContent = form.date ? `${kickerBase} · ${form.date}` : kickerBase;
+        }
+        if (elMerchModalDesc) {
+            elMerchModalDesc.textContent = form.desc || (isInsc
+                ? 'Completa tus datos en el formulario oficial para solicitar plaza o acudir a un sábado de prueba con el Grupo Scout Acrux 518.'
+                : 'Selecciona tus opciones y completa tus datos para registrar tu pedido directamente en el listado oficial del grupo.');
         }
 
         const elDirectFormBtn = document.getElementById('merchDirectFormBtn');
@@ -4563,16 +4665,16 @@
         }
 
         if (elMerchFormsSwitcher) {
-            if (MERCH_FORMS_DATA.length > 1) {
+            if (formsList.length > 1) {
                 elMerchFormsSwitcher.style.display = 'flex';
-                elMerchFormsSwitcher.innerHTML = MERCH_FORMS_DATA.map((f, i) => `
-                    <button type="button" class="star-node-chip ${i === activeMerchFormIdx ? 'active' : ''}" data-merch-switch="${i}">
+                elMerchFormsSwitcher.innerHTML = formsList.map((f, i) => `
+                    <button type="button" class="star-node-chip ${i === clampedIdx ? 'active' : ''}" data-merch-switch="${i}">
                         <span>✦ ${f.title}</span>
                     </button>
                 `).join('');
                 elMerchFormsSwitcher.querySelectorAll('[data-merch-switch]').forEach(btn => {
                     btn.addEventListener('click', () => {
-                        openMerchModal(parseInt(btn.getAttribute('data-merch-switch'), 10));
+                        openFormModal(activeFormModalMode, parseInt(btn.getAttribute('data-merch-switch'), 10));
                     });
                 });
             } else {
@@ -4595,6 +4697,7 @@
             renderMerchDynamicForm(form, form._parsedSchema);
             if (elMerchIframeLoader) elMerchIframeLoader.style.display = 'none';
         } else if (elMerchIframeLoader) {
+            renderMerchLeftShowcase(form, { pillFields: [], textFields: [], images: [] });
             elMerchIframeLoader.style.display = 'flex';
         }
 
@@ -4607,10 +4710,18 @@
         }
     }
 
+    function openMerchModal(formIdx = 0) {
+        return openFormModal('merch', formIdx);
+    }
+
+    function openInscripcionModal(formIdx = 0) {
+        return openFormModal('inscripcion', formIdx);
+    }
+
     function closeMerchModal() {
         if (!elMerchModal) return;
         clearTimeout(diveTabTimer);
-        if (superZoomState && superZoomState.type === 'merch') {
+        if (superZoomState && (superZoomState.type === 'merch' || superZoomState.type === 'inscripcion')) {
             hyperspaceJump = {
                 start: performance.now(),
                 duration: 420,
@@ -4629,7 +4740,10 @@
     // Envío silencioso al Google Form (sin abrir jamás la interfaz blanca de Google)
     elMerchNativeForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const form = MERCH_FORMS_DATA[activeMerchFormIdx];
+        const isInsc = (activeFormModalMode === 'inscripcion');
+        const formsList = isInsc ? INSCRIPCION_FORMS_DATA : MERCH_FORMS_DATA;
+        const activeIdx = isInsc ? activeInscripcionFormIdx : activeMerchFormIdx;
+        const form = formsList[activeIdx];
         const schema = form?._parsedSchema;
         if (!form || !schema) return;
 
@@ -4650,8 +4764,22 @@
             }
         }
 
-        // 2. Construir el diccionario exacto de pares entry.xxxxx -> valor para Google Forms
-        const submissionEntries = {};
+        // Validar selectores múltiples obligatorios
+        for (const pf of schema.pillFields) {
+            if (pf.isMulti && pf.required) {
+                const chosenArr = activeMerchOrderState[pf.id];
+                if (!Array.isArray(chosenArr) || chosenArr.length === 0) {
+                    if (elMerchFormError) {
+                        elMerchFormError.textContent = `Por favor, selecciona al menos una opción en: «${pf.title}».`;
+                        elMerchFormError.style.display = 'block';
+                    }
+                    return;
+                }
+            }
+        }
+
+        // 2. Construir el diccionario exacto de pares entry.xxxxx -> valor (incluyendo arrays y fechas) para Google Forms
+        const submissionPairs = [];
         let invalidCombinationError = '';
 
         schema.pillFields.forEach(pf => {
@@ -4662,20 +4790,27 @@
                 if (pf.gridCellMap && chosenSize && chosenColor) {
                     const cellEntryId = pf.gridCellMap[`${chosenSize}|||${chosenColor}`];
                     if (cellEntryId) {
-                        submissionEntries[cellEntryId] = chosenColor;
+                        submissionPairs.push([cellEntryId, chosenColor]);
                     } else {
                         invalidCombinationError = `La talla «${chosenSize}» no está disponible en el color «${chosenColor}». Por favor, elige otra combinación.`;
                     }
                 } else if (Array.isArray(pf.rows)) {
                     const matchedRow = pf.rows.find(r => r.rowLabel === chosenSize);
                     if (matchedRow && chosenColor) {
-                        submissionEntries[matchedRow.entryId] = chosenColor;
+                        submissionPairs.push([matchedRow.entryId, chosenColor]);
                     }
                 }
             } else if (pf.kind === 'grid-color') {
                 // Ya fue procesado junto con su celda en grid-size
             } else if (pf.entryId) {
-                submissionEntries[pf.entryId] = activeMerchOrderState[pf.id] || '';
+                const v = activeMerchOrderState[pf.id];
+                if (Array.isArray(v)) {
+                    v.forEach(itemVal => {
+                        if (itemVal) submissionPairs.push([pf.entryId, itemVal]);
+                    });
+                } else if (v !== undefined && v !== '') {
+                    submissionPairs.push([pf.entryId, v]);
+                }
             }
         });
 
@@ -4692,25 +4827,32 @@
             const colorField = schema.pillFields.find(f => f.isColorField || f.kind === 'grid-color');
             const chosenColor = colorField ? (activeMerchOrderState[colorField.id] || 'Black') : 'Black';
             schema.autoSyncColorEntries.forEach(entryKey => {
-                submissionEntries[entryKey] = chosenColor;
+                submissionPairs.push([entryKey, chosenColor]);
             });
         }
 
         schema.textFields.forEach(tf => {
             const val = activeMerchOrderState[tf.id] || '';
             if (val !== '') {
-                submissionEntries[tf.entryId] = val;
+                if (tf.kind === 'date' && /^\d{4}-\d{2}-\d{2}$/.test(val)) {
+                    const [yr, mo, dy] = val.split('-');
+                    submissionPairs.push([`${tf.entryId}_year`, yr]);
+                    submissionPairs.push([`${tf.entryId}_month`, String(parseInt(mo, 10))]);
+                    submissionPairs.push([`${tf.entryId}_day`, String(parseInt(dy, 10))]);
+                } else {
+                    submissionPairs.push([tf.entryId, val]);
+                }
             }
         });
 
         // 3. Estado de carga en el botón principal
         const submitLabelEl = elBtnSubmitMerchOrder?.querySelector('.merch-submit-label');
         if (elBtnSubmitMerchOrder) elBtnSubmitMerchOrder.disabled = true;
-        if (submitLabelEl) submitLabelEl.textContent = 'Registrando Pedido...';
+        if (submitLabelEl) submitLabelEl.textContent = isInsc ? 'Enviando Inscripción...' : 'Registrando Pedido...';
 
         // 4. Envío silencioso mediante fetch (no-cors) + formulario oculto de respaldo hacia formResponse
         const urlParams = new URLSearchParams();
-        Object.entries(submissionEntries).forEach(([k, v]) => {
+        submissionPairs.forEach(([k, v]) => {
             urlParams.append(k, v);
         });
         urlParams.append('submit', 'Submit');
@@ -4729,7 +4871,7 @@
             if (elMerchHiddenGoogleForm) {
                 elMerchHiddenGoogleForm.action = schema.actionUrl;
                 elMerchHiddenGoogleForm.innerHTML = '';
-                Object.entries(submissionEntries).forEach(([k, v]) => {
+                submissionPairs.forEach(([k, v]) => {
                     const inp = document.createElement('input');
                     inp.type = 'hidden';
                     inp.name = k;
@@ -4743,25 +4885,32 @@
         }
 
         if (elBtnSubmitMerchOrder) elBtnSubmitMerchOrder.disabled = false;
-        if (submitLabelEl) submitLabelEl.textContent = 'Realizar Pedido';
+        if (submitLabelEl) submitLabelEl.textContent = isInsc ? 'Enviar Inscripción' : 'Realizar Pedido';
 
-        // 5. Mostrar confirmación de pedido estilo e-commerce
+        // 5. Mostrar confirmación estilo editorial
         const summaryParts = [];
         schema.pillFields.forEach(pf => {
             const val = activeMerchOrderState[pf.id];
-            if (val) summaryParts.push(`${pf.title.replace('Selecciona ', '')}: ${val}`);
+            const dispVal = Array.isArray(val) ? val.join(', ') : val;
+            if (dispVal) summaryParts.push(`${pf.title.replace('Selecciona ', '')}: ${dispVal}`);
         });
-        const buyerName = schema.textFields.length > 0 ? activeMerchOrderState[schema.textFields[0].id] : '';
+        const firstTextVal = schema.textFields.length > 0 ? activeMerchOrderState[schema.textFields[0].id] : '';
 
         if (elMerchSuccessSummary) {
-            elMerchSuccessSummary.textContent = `Hemos registrado tu pedido de «${form.title}» (${summaryParts.join(' · ')})${buyerName ? ` a nombre de ${buyerName}` : ''} directamente en el Google Sheet oficial del Grupo Scout Acrux 518.`;
+            if (isInsc) {
+                elMerchSuccessSummary.textContent = `Hemos registrado la solicitud en «${form.title}»${summaryParts.length ? ` (${summaryParts.join(' · ')})` : ''}${firstTextVal ? ` para ${firstTextVal}` : ''} directamente en el formulario oficial de inscripciones del Grupo Scout Acrux 518.`;
+            } else {
+                elMerchSuccessSummary.textContent = `Hemos registrado tu pedido de «${form.title}» (${summaryParts.join(' · ')})${firstTextVal ? ` a nombre de ${firstTextVal}` : ''} directamente en el Google Sheet oficial del Grupo Scout Acrux 518.`;
+            }
         }
         if (elMerchNativeForm) elMerchNativeForm.style.display = 'none';
         if (elMerchOrderSuccess) elMerchOrderSuccess.style.display = 'flex';
     });
 
     elBtnMerchAnotherOrder?.addEventListener('click', () => {
-        const form = MERCH_FORMS_DATA[activeMerchFormIdx];
+        const isInsc = (activeFormModalMode === 'inscripcion');
+        const formsList = isInsc ? INSCRIPCION_FORMS_DATA : MERCH_FORMS_DATA;
+        const form = formsList[isInsc ? activeInscripcionFormIdx : activeMerchFormIdx];
         if (elMerchOrderSuccess) elMerchOrderSuccess.style.display = 'none';
         if (elMerchNativeForm) {
             elMerchNativeForm.reset();
@@ -4776,6 +4925,7 @@
     elBtnCloseMerchModal?.addEventListener('click', closeMerchModal);
 
     window.openMerchModal = openMerchModal;
+    window.openInscripcionModal = openInscripcionModal;
     window.closeMerchModal = closeMerchModal;
     window.preloadMerchFormSchema = preloadMerchFormSchema;
 
@@ -4904,21 +5054,31 @@
                 }
             }
 
-            let hitNode = pointer.hoveredNode;
-            if (!hitNode) {
-                let bestD = 68;
-                for (let i = 0; i < worldNodes.length; i++) {
-                    const n = worldNodes[i];
-                    const d = Math.hypot(e.clientX - n.sx, e.clientY - n.sy);
-                    if (d < bestD) {
-                        bestD = d;
-                        hitNode = n;
-                    }
+            const isTouchTap = (e.pointerType === 'touch');
+            const maxHitRadius = isTouchTap ? 86 : 62;
+            let hitNode = null;
+            let bestD = maxHitRadius;
+            for (let i = 0; i < worldNodes.length; i++) {
+                const n = worldNodes[i];
+                if (n.sectorIndex === 0 && !n.isClickable && !n.isMerchStar && !n.isInscripcionStar) continue;
+                const d = Math.hypot(e.clientX - n.sx, e.clientY - n.sy);
+                if (d < bestD) {
+                    bestD = d;
+                    hitNode = n;
+                }
+            }
+            if (!hitNode && pointer.hoveredNode) {
+                const hn = pointer.hoveredNode;
+                const dH = Math.hypot(e.clientX - hn.sx, e.clientY - hn.sy);
+                if (dH < maxHitRadius) {
+                    hitNode = hn;
                 }
             }
             if (hitNode) {
                 if (hitNode.isMerchStar) {
                     openMerchModal(typeof hitNode.merchIndex === 'number' ? hitNode.merchIndex : 0);
+                } else if (hitNode.isInscripcionStar || hitNode.id === 'mimosa') {
+                    openInscripcionModal(typeof hitNode.inscripcionIndex === 'number' ? hitNode.inscripcionIndex : 0);
                 } else if (hitNode.clusterType === 'unit') {
                     openUnitSuperZoom(hitNode.unitIndex);
                 } else if (hitNode.clusterType === 'camp') {
@@ -4929,12 +5089,6 @@
                     } else if (hitNode.sectorIndex === 0) {
                         if (hitNode.id === 'acrux') {
                             openAcruxSuperZoom();
-                        } else if (hitNode.id === 'mimosa') {
-                            openAcruxSuperZoom();
-                            setTimeout(() => {
-                                const targetEl = document.getElementById('acrux-prueba');
-                                if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }, 320);
                         }
                     } else {
                         goToSector(hitNode.sectorIndex, hitNode.starIdx);
@@ -5440,8 +5594,8 @@
                 nd.hover += (f - nd.hover) * 0.18;
 
                 if (dM < 52 && dM < closestDist) {
-                    // En el Sector I (Acrux 518), son interactivas Acrux y las estrellas activas de Intendencia (isMerchStar)
-                    if (nd.sectorIndex === 0 && nd.id !== 'acrux' && !nd.isMerchStar) {
+                    // En el Sector I (Acrux 518), son interactivas las estrellas marcadas como isClickable (α Acrux, β Inscripciones) y las de Intendencia (isMerchStar)
+                    if (nd.sectorIndex === 0 && !nd.isClickable && !nd.isMerchStar) {
                         // Las demás estrellas de la constelación son puramente astronómicas decorativas
                     } else {
                         closestDist = dM;
@@ -5468,7 +5622,7 @@
         if (cursorRing) cursorRing.classList.toggle('is-star-hover', Boolean(closestNode));
         if (cursorLabel) {
             if (closestNode) {
-                cursorLabel.textContent = (closestNode.isMerchStar || closestNode.clusterType === 'unit' || closestNode.clusterType === 'camp' || closestNode.sectorIndex === 3 || closestNode.id === 'acrux')
+                cursorLabel.textContent = (closestNode.isMerchStar || closestNode.isClickable || closestNode.clusterType === 'unit' || closestNode.clusterType === 'camp' || closestNode.sectorIndex === 3 || closestNode.id === 'acrux')
                     ? `Abrir ${closestNode.symbol}`
                     : `${closestNode.symbol}`;
             } else {
@@ -5604,8 +5758,8 @@
                 (nd.clusterType === 'sector' && nd.starIdx === selectedSubIdx)
             );
 
-            // Campamentos (2) y las mini-estrellas de Cajones (sector 3 pero no El Baúl) van en blanco puro sin color, salvo la última estrella que es roja
-            const isPureWhiteStar = (nd.sectorIndex === 2 && !nd.isRedStar) || (nd.sectorIndex === 3 && !nd.isBaulMain);
+            // Campamentos (2), Cajones (sector 3 pero no El Baúl) y estrellas blancas de Acrux (distintas de α Acrux) van en blanco puro sin color
+            const isPureWhiteStar = (nd.sectorIndex === 2 && !nd.isRedStar) || (nd.sectorIndex === 3 && !nd.isBaulMain) || (nd.sectorIndex === 0 && nd.id !== 'acrux');
 
             const scale = superZoomState
                 ? clamp(camera.zoom * 0.72, 1.0, 22.0)
@@ -5773,8 +5927,8 @@
                 ctx.restore();
             }
 
-            // Anillo orbital: en Unidades usa el color sutil de cada rama; en «El Baúl» usa rojo Acrux sutil; en Campamentos y Cajones blanco puro
-            if ((nd.isClusterHub || nd.isMerchStar || isHovered) && !superZoomState) {
+            // Anillo orbital: en Unidades usa el color sutil de cada rama; en «El Baúl» usa rojo Acrux sutil; en Inscripciones, Campamentos y Cajones blanco puro
+            if ((nd.isClusterHub || nd.isMerchStar || nd.isClickable || isHovered) && !superZoomState) {
                 const ringR = r * 1.95 + Math.sin(elapsed * 2.1 + i) * 0.85;
                 let ringStroke;
                 if (anniversaryLerp > 0.35) {
@@ -6246,6 +6400,12 @@
         }
     }
 
+    function syncInscripcionFromDrive(inscData) {
+        if (typeof rebuildInscripcionConstellation === 'function') {
+            rebuildInscripcionConstellation(inscData);
+        }
+    }
+
     function syncAnniversaryFromDrive(annivData) {
         if (!annivData) return;
         const items = Array.isArray(annivData)
@@ -6326,7 +6486,7 @@
             safe('merch', () => syncMerchFromDrive(data.merchForms !== undefined ? data.merchForms : data.intendencia));
         }
         if (data.inscripcionForms !== undefined) {
-            inscripcionFormsDrive = Array.isArray(data.inscripcionForms) ? data.inscripcionForms : [];
+            safe('inscripciones', () => syncInscripcionFromDrive(data.inscripcionForms));
         }
         if (data.aniversario) safe('aniversario', () => syncAnniversaryFromDrive(data.aniversario));
     }

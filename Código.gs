@@ -494,12 +494,15 @@ function doGet(e) {
         }
       }
 
-      // 7. INSCRIPCIONES (Carpeta 07_INSCRIPCIONES): Google Form conectado a Drive
+      // 7. INSCRIPCIONES (Carpeta 07_INSCRIPCIONES): Google Form conectado a Drive + fotos opcionales
       if (name.includes("07_INSCRIPCION") || name.includes("INSCRIPCIONES")) {
+        const inscPhotos = [];
+        const inscRawForms = [];
         const inscFiles = folder.getFiles();
         while (inscFiles.hasNext()) {
           const f = inscFiles.next();
-          if (f.getMimeType() === MimeType.GOOGLE_FORMS) {
+          const mime = f.getMimeType();
+          if (mime === MimeType.GOOGLE_FORMS) {
             const fid = f.getId();
             const nativeForm = fetchGoogleFormNativeData(fid);
             let realTitle = nativeForm.realTitle || "";
@@ -509,15 +512,24 @@ function doGet(e) {
               } catch (eTitle) {}
             }
             const cleanTitle = (realTitle || f.getName()).replace(/^Copia de\s+/i, "").trim();
-            result.inscripcionForms.push({
+            let updatedIso = "";
+            try { updatedIso = f.getLastUpdated().toISOString().split("T")[0]; } catch (eD) {}
+            inscRawForms.push({
               id: fid,
               title: cleanTitle,
               desc: (f.getDescription() || "").trim(),
               embedUrl: "https://docs.google.com/forms/d/" + fid + "/viewform?embedded=true",
+              date: updatedIso,
               fbLoadData: nativeForm.fbLoadData,
               rawHtml: nativeForm.rawHtml
             });
+          } else if (mime.indexOf("image/") === 0) {
+            inscPhotos.push(buildOptimizedImgUrl(f.getId(), 1400));
           }
+        }
+        for (let ii = 0; ii < inscRawForms.length; ii++) {
+          inscRawForms[ii].photos = inscPhotos;
+          result.inscripcionForms.push(inscRawForms[ii]);
         }
       }
     }

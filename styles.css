@@ -6217,37 +6217,10 @@ body.day-mode .calendar-trimester-tag {
     .constellation-stage-panel.is-floating-minimal::before,
     .stage-meta-line,
     .constellation-stage-panel.is-floating-minimal .stage-description,
-    .stage-welcome-photo-card {
-        display: none !important;
-    }
-    .stage-giant-heading {
-        font-size: 1.15rem;
-        margin: 0;
-        text-align: center;
-        line-height: 1.2;
-        pointer-events: none;
-    }
-    .stage-giant-heading .ice-italic {
-        border-bottom-width: 1.5px;
-    }
+    .stage-welcome-photo-card,
+    .stage-giant-heading,
     .stage-star-nodes {
-        width: 100%;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        padding: 0.1rem 0.25rem;
-        margin: 0;
-        justify-content: flex-start;
-        pointer-events: auto;
-    }
-    .stage-star-nodes::-webkit-scrollbar {
-        display: none;
-    }
-    .star-node-chip {
-        flex-shrink: 0;
-        font-size: 0.7rem;
-        padding: 0.34rem 0.68rem;
+        display: none !important;
     }
     .stage-action-row {
         width: 100%;
@@ -6300,6 +6273,26 @@ body.day-mode .calendar-trimester-tag {
     .star-tab-coords,
     .merch-topbar-badge {
         display: none !important;
+    }
+    .star-tab-switcher {
+        order: 3;
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        justify-content: flex-start;
+        gap: 0.35rem;
+        padding-bottom: 0.15rem;
+    }
+    .star-tab-switcher::-webkit-scrollbar {
+        display: none;
+    }
+    .star-tab-switcher .star-node-chip {
+        flex-shrink: 0;
+        font-size: 0.72rem;
+        padding: 0.34rem 0.68rem;
     }
     .star-tab-scroll-container,
     .drawer-modal-body {
