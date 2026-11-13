@@ -6,7 +6,22 @@ Te dejo esta guía escrita directamente de tú a tú, clara y al grano, para que
 
 ---
 
-## 1. La filosofía: ¿Cómo está montada la web?
+## 1. Estado del Proyecto (Hoja de Ruta / Checklist)
+
+Aquí tenéis la lista de tareas del proyecto para ver de un vistazo qué está hecho y qué falta por rematar. Se puede actualizar directamente marcando `[x]` o `[ ]`:
+
+- [x] ~~**Versión móvil**~~ *(Adaptación de Canvas con 100dvh, toques táctiles con umbral anti-drag, ocultación de textos pesados y modales a pantalla completa)*
+- [x] ~~**Versión más clara (diurna)**~~ *(Modo Día estelar azul cobalto por defecto con toggle luminoso/noche en la cabecera)*
+- [x] ~~**Inscripción como estrella en la página principal**~~ *(Estrella `β Inscripciones` / `mimosa` conectada a Google Forms desde Drive)*
+- [x] ~~**Foto al principio para que sea más amigable**~~ *(Tarjeta de bienvenida en Sector I cargando `images/Portada.jpg` con zoom y fallback a `Tropa.jpg`)*
+- [ ] **Documentos** *(Estrella `γ Documentos` en Sector I para reglamentos, circulares y autorizaciones oficiales)*
+- [ ] **Estrella de Kraal** *(Estrella `δ El Kraal` en Sector I con organigrama y equipo global de scouters)*
+- [x] ~~**Cambiar el tipo de letra**~~ *(Fraunces en títulos serif editoriales, Montserrat en rótulos y Plus Jakarta Sans en textos de lectura)*
+- [ ] **Estrella de Calendario** *(Ronda solar, salidas trimestrales y fechas destacadas)*
+
+---
+
+## 2. La filosofía: ¿Cómo está montada la web?
 
 Nuestra web no es un WordPress pesado ni una plantilla genérica que se rompe sola. Es un **mapa estelar interactivo en Canvas a 60 fps** que tiene dos motores trabajando juntos:
 
@@ -20,7 +35,7 @@ Nuestra web no es un WordPress pesado ni una plantilla genérica que se rompe so
 
 ---
 
-## 2. Mapa del Repositorio: Dónde está cada archivo
+## 3. Mapa del Repositorio: Dónde está cada archivo
 
 El proyecto consta de estos archivos esenciales:
 
@@ -36,7 +51,7 @@ GSA/
 
 ---
 
-## 3. ¿Dónde y cómo se cambian las cosas hardcodeadas? (Textos, fotos y títulos fijos)
+## 4. ¿Dónde y cómo se cambian las cosas hardcodeadas? (Textos, fotos y títulos fijos)
 
 Aunque la mayoría de datos vienen de Drive, hay elementos clave que están fijos en el código o en la carpeta `images/` para asegurar que carguen instantáneamente. Aquí tienes la chuleta exacta:
 
@@ -111,7 +126,7 @@ Si Google Drive fallase o no tuviera conexión, la web recurre al listado de eme
 
 ---
 
-## 4. Cómo funciona la conexión con Google Drive (El día a día)
+## 5. Cómo funciona la conexión con Google Drive (El día a día)
 
 En el Drive oficial del grupo existe una carpeta raíz dedicada a la web. Dentro de ella tenemos **7 carpetas numeradas**. **¡OJO! No cambies nunca el nombre de estas carpetas principales**, porque el conector de Google Apps Script las busca exactamente así:
 
@@ -226,7 +241,7 @@ Para cambiar quién está en coordinación o sus teléfonos:
 
 ---
 
-## 5. El truco maestro de la caché (`?v=XX`)
+## 6. El truco maestro de la caché (`?v=XX`)
 
 Cuando hagas cambios en los archivos de la web (`index.html`, `styles.css` o `script.js`) y los subas a GitHub, **los navegadores y sobre todo los móviles guardan en memoria los archivos viejos**.
 
@@ -245,7 +260,7 @@ Para obligar a que todo el mundo vea los cambios al instante sin tener que vacia
 
 ---
 
-## 6. Si tocas el Google Apps Script (`Código.gs`)
+## 7. Si tocas el Google Apps Script (`Código.gs`)
 
 Si alguna vez añades funciones nuevas a `Código.gs`:
 1. Abre el proyecto en [script.google.com](https://script.google.com).
