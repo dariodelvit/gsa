@@ -7138,3 +7138,80 @@ body.day-mode .calendar-trimester-tag {
     flex-wrap: wrap;
     gap: 0.45rem;
 }
+
+.secret-code-gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+    max-width: 640px;
+}
+
+.secret-code-row {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.secret-code-input {
+    min-width: 210px;
+    padding: 0.72rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(253, 230, 138, 0.35);
+    background: rgba(10, 15, 30, 0.85);
+    color: #F8FAFC;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.secret-code-input::placeholder {
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 500;
+    color: rgba(203, 213, 225, 0.55);
+}
+
+.secret-code-input:focus {
+    border-color: rgba(253, 230, 138, 0.85);
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18);
+}
+
+.secret-code-input.is-shake {
+    animation: secretCodeShake 0.38s ease;
+    border-color: rgba(248, 113, 113, 0.85);
+}
+
+@keyframes secretCodeShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-7px); }
+    40% { transform: translateX(7px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+}
+
+.secret-code-status {
+    font-size: 0.8rem;
+    color: rgba(203, 213, 225, 0.78);
+    text-align: center;
+    min-height: 1.2em;
+}
+
+.secret-code-status.is-error {
+    color: #FCA5A5;
+    font-weight: 600;
+}
+
+.secret-code-status.is-ok {
+    color: #6EE7B7;
+    font-weight: 600;
+}

@@ -175,7 +175,8 @@ function doGet(e) {
       cajones: [],
       aniversario: [],
       merchForms: [],
-      inscripcionForms: []
+      inscripcionForms: [],
+      secretPack: syncWeeklyPackCodeTxt_(root)
     };
 
     while (subfolders.hasNext()) {
@@ -554,4 +555,135 @@ function doGet(e) {
 function responseJSON(data) {
   return ContentService.createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ============================================================================
+// 6. CÓDIGOS SEMANALES DE SOBRES SECRETOS (SÁBADOS 12:00 · COMISIÓN REDES)
+// ============================================================================
+const SECRET_PACK_MASTER_CODE = "ACRUX518KRAAL"; // Código constante que siempre funciona
+const SECRET_CODES_FILENAME = "codigos_kraal_redes.txt";
+const SECRET_PACK_WORDS = [
+  "ACRUX", "CASTOR", "LOBATO", "TROPA", "ESCULTA", "ROVER",
+  "FOGATA", "NUDOS", "BRUJULA", "SENDA", "PROMESA", "PANOLETA",
+  "TIENDA", "RUTA", "LOHENGRIN", "OHIENSIS", "KHANHIWARA",
+  "TREA", "AMADABLAM", "RUEDA", "ESTRELLA", "MONTE"
+];
+
+function hashPackCode_(raw) {
+  const norm = String(raw || "").trim().toUpperCase().replace(/\s+/g, "");
+  const input = norm + "|ACRUX518_PACK_SALT";
+  let h = 0x811c9dc5;
+  for (let i = 0; i < input.length; i++) {
+    h ^= input.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return (h >>> 0).toString(16).padStart(8, "0");
+}
+
+function getActiveSaturdaySlotMadrid_() {
+  const tz = "Europe/Madrid";
+  const now = new Date();
+  // 1=Lun .. 6=Sáb .. 7=Dom
+  const isoDay = parseInt(Utilities.formatDate(now, tz, "u"), 10);
+  const hour = parseInt(Utilities.formatDate(now, tz, "H"), 10);
+
+  let daysBack = 0;
+  if (isoDay === 6) {
+    daysBack = hour >= 12 ? 0 : 7;
+  } else if (isoDay === 7) {
+    daysBack = 1;
+  } else {
+    daysBack = isoDay + 1; // Lun(1)->2, Mar(2)->3 ... Vie(5)->6
+  }
+
+  const slotDate = new Date(now.getTime() - daysBack * 24 * 60 * 60 * 1000);
+  return Utilities.formatDate(slotDate, tz, "yyyy-MM-dd");
+}
+
+function generateWeeklyCodeForSlot_(slotDateStr) {
+  const hHex = hashPackCode_("WEEK|" + slotDateStr);
+  const num = parseInt(hHex, 16);
+  const word = SECRET_PACK_WORDS[num % SECRET_PACK_WORDS.length];
+  const digits = 10 + ((num >>> 5) % 90);
+  return word + String(digits);
+}
+
+function syncWeeklyPackCodeTxt_(rootFolder) {
+  const slotDateStr = getActiveSaturdaySlotMadrid_();
+  const weeklyCode = generateWeeklyCodeForSlot_(slotDateStr);
+  const payload = {
+    weekKey: slotDateStr,
+    codeHash: hashPackCode_(weeklyCode)
+  };
+
+  try {
+    const root = rootFolder || DriveApp.getFolderById(cleanFolderId(ROOT_FOLDER_ID));
+    const files = root.getFilesByName(SECRET_CODES_FILENAME);
+    let file = files.hasNext() ? files.next() : null;
+
+    const header = [
+      "================================================================",
+      "CÓDIGOS SEMANALES DE SOBRES · GRUPO SCOUT ACRUX 518 (COMISIÓN REDES)",
+      "================================================================",
+      "Se genera automáticamente cada sábado a las 12:00 (hora Madrid).",
+      "Código maestro permanente (siempre funciona): " + SECRET_PACK_MASTER_CODE,
+      "----------------------------------------------------------------"
+    ].join("\n");
+
+    let lines = [];
+    if (file) {
+      const existing = file.getBlob().getDataAsString("UTF-8") || "";
+      lines = existing
+        .split(/\r?\n/)
+        .filter(function(l) { return /^\d{4}-\d{2}-\d{2}\b/.test(l.trim()); })
+        .map(function(l) { return l.replace(/\s+\[ÚLTIMO CÓDIGO ACTIVO\]\s*$/, "").trim(); });
+    }
+
+    const alreadyHasSlot = lines.some(function(l) { return l.indexOf(slotDateStr) === 0; });
+    if (!alreadyHasSlot) {
+      lines.push(slotDateStr + " (Sábado 12:00)  ->  " + weeklyCode);
+    }
+
+    if (lines.length > 0) {
+      lines[lines.length - 1] = lines[lines.length - 1] + "   [ÚLTIMO CÓDIGO ACTIVO]";
+    }
+
+    const finalContent = header + "\n" + lines.join("\n") + "\n";
+    if (file) {
+      if (!alreadyHasSlot) {
+        file.setContent(finalContent);
+      }
+    } else {
+      root.createFile(SECRET_CODES_FILENAME, finalContent, MimeType.PLAIN_TEXT);
+    }
+  } catch (e) {
+    // No bloquea la web si hay límite temporal de escritura en Drive
+  }
+
+  return payload;
+}
+
+// Ejecutar manualmente desde Apps Script o automáticamente cada sábado a las 12:00
+function generarCodigoSemanalSabado() {
+  const root = DriveApp.getFolderById(cleanFolderId(ROOT_FOLDER_ID));
+  const res = syncWeeklyPackCodeTxt_(root);
+  try {
+    CacheService.getScriptCache().remove("ACRUX_DRIVE_PAYLOAD_V24");
+  } catch (e) {}
+  return res;
+}
+
+// Ejecutar UNA sola vez en el editor de Apps Script para activar el reloj de sábados a las 12:00
+function instalarDisparadorSabados12h() {
+  const existing = ScriptApp.getProjectTriggers();
+  for (let i = 0; i < existing.length; i++) {
+    if (existing[i].getHandlerFunction() === "generarCodigoSemanalSabado") {
+      ScriptApp.deleteTrigger(existing[i]);
+    }
+  }
+  ScriptApp.newTrigger("generarCodigoSemanalSabado")
+    .timeBased()
+    .onWeekDay(ScriptApp.WeekDay.SATURDAY)
+    .atHour(12)
+    .create();
 }

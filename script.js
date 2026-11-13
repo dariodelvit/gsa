@@ -3810,6 +3810,20 @@
         epico: { rank: 3, label: 'Épica' }
     };
 
+    const MASTER_PACK_CODE_HASH = '039c7c5f';
+    let driveSecretPack = null;
+
+    function hashPackCode_(raw) {
+        const norm = String(raw || '').trim().toUpperCase().replace(/\s+/g, '');
+        const input = norm + '|ACRUX518_PACK_SALT';
+        let h = 0x811c9dc5;
+        for (let i = 0; i < input.length; i++) {
+            h ^= input.charCodeAt(i);
+            h = Math.imul(h, 0x01000193);
+        }
+        return (h >>> 0).toString(16).padStart(8, '0');
+    }
+
     function loadSecretAlbumState() {
         try {
             const raw = localStorage.getItem(SECRET_ALBUM_STORAGE_KEY);
@@ -3817,6 +3831,7 @@
                 const parsed = JSON.parse(raw);
                 const unlocked = parsed && typeof parsed.unlocked === 'object' ? parsed.unlocked : {};
                 const rarities = parsed && typeof parsed.rarities === 'object' ? parsed.rarities : {};
+                const redeemedWeeks = parsed && typeof parsed.redeemedWeeks === 'object' ? parsed.redeemedWeeks : {};
                 const legacyHolo = parsed && typeof parsed.holo === 'object' ? parsed.holo : {};
                 Object.keys(unlocked).forEach(id => {
                     if (!rarities[id]) {
@@ -3826,11 +3841,12 @@
                 return {
                     unlocked,
                     rarities,
+                    redeemedWeeks,
                     packsOpened: Number(parsed?.packsOpened) || 0
                 };
             }
         } catch (_) {}
-        return { unlocked: {}, rarities: {}, packsOpened: 0 };
+        return { unlocked: {}, rarities: {}, redeemedWeeks: {}, packsOpened: 0 };
     }
 
     function saveSecretAlbumState(state) {
@@ -3968,13 +3984,21 @@
                     `
                     : '';
 
+                const activeWeekKey = driveSecretPack?.weekKey || null;
+                const alreadyRedeemedWeek = Boolean(activeWeekKey && state.redeemedWeeks && state.redeemedWeeks[activeWeekKey]);
+                const defaultCodeHint = alreadyRedeemedWeek
+                    ? `Ya canjeaste el sobre de esta semana (${activeWeekKey}). ¡Vuelve el sábado a las 12:00!`
+                    : (activeWeekKey
+                        ? `Código semanal activo (${activeWeekKey}) · Nuevo código cada sábado a las 12:00.`
+                        : 'Introduce el código semanal de las bases para abrir un sobre.');
+
                 mainContentHtml = `
                     <div class="secret-pack-stage" id="secretPackStage">
                         <div class="secret-light-pillar" id="secretLightPillar"></div>
                         <div class="secret-shockwave-ring" id="secretShockwaveRing"></div>
                         <div class="secret-burst-flare" id="secretBurstFlare"></div>
                         <div class="secret-sparks-layer" id="secretSparksLayer">${buildBurstSparksHtml()}</div>
-                        <div class="secret-foil-pack" id="secretFoilPackBtn" role="button" tabindex="0" title="Pulsa para abrir un sobre secreto">
+                        <div class="secret-foil-pack" id="secretFoilPackBtn" role="button" tabindex="0" title="Introduce el código y pulsa para abrir un sobre secreto">
                             <div class="secret-pack-zip-seam"></div>
                             <div class="secret-pack-cap">
                                 <span class="secret-pack-crimp-label">ACRUX 518 · KRAAL</span>
@@ -3984,18 +4008,22 @@
                                 <div class="secret-pack-emblem">⚜</div>
                                 <div>
                                     <div class="secret-pack-title">Sobre del Kraal</div>
-                                    <div class="secret-pack-sub">3 cromos · Pulsa para abrir</div>
+                                    <div class="secret-pack-sub">3 cromos · Canjea tu código</div>
                                 </div>
                             </div>
                         </div>
-                        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; justify-content:center;">
-                            <button type="button" class="btn-cosmos-primary" id="btnOpenSecretPack">
-                                <span>${lastPulled.length > 0 ? 'Abrir otro sobre (3 cromos)' : 'Abrir Sobre (3 cromos)'}</span>
-                                <span class="btn-arrow">✦</span>
-                            </button>
-                            <button type="button" class="star-tab-back-btn" id="btnGoToSecretAlbum">
-                                <span>Ver mi Álbum (${unlockedCount}/${pool.length}) →</span>
-                            </button>
+                        <div class="secret-code-gate">
+                            <div class="secret-code-row">
+                                <input type="text" id="secretPackCodeInput" class="secret-code-input" placeholder="Código semanal..." autocomplete="off" spellcheck="false" />
+                                <button type="button" class="btn-cosmos-primary" id="btnOpenSecretPack">
+                                    <span>Canjear y Abrir</span>
+                                    <span class="btn-arrow">✦</span>
+                                </button>
+                                <button type="button" class="star-tab-back-btn" id="btnGoToSecretAlbum">
+                                    <span>Ver mi Álbum (${unlockedCount}/${pool.length}) →</span>
+                                </button>
+                            </div>
+                            <div class="secret-code-status${alreadyRedeemedWeek ? ' is-ok' : ''}" id="secretPackCodeMsg">${defaultCodeHint}</div>
                         </div>
                         ${pullsHtml}
                     </div>
@@ -4085,12 +4113,53 @@
                 });
             }
 
+            const showCodeError = (msg) => {
+                const inputEl = document.getElementById('secretPackCodeInput');
+                const msgEl = document.getElementById('secretPackCodeMsg');
+                if (msgEl) {
+                    msgEl.textContent = msg;
+                    msgEl.classList.remove('is-ok');
+                    msgEl.classList.add('is-error');
+                }
+                if (inputEl) {
+                    inputEl.classList.remove('is-shake');
+                    void inputEl.offsetWidth;
+                    inputEl.classList.add('is-shake');
+                    inputEl.focus();
+                }
+            };
+
             const triggerOpenPack = () => {
                 if (pool.length === 0 || isOpeningPack) return;
+                const inputEl = document.getElementById('secretPackCodeInput');
+                const rawCode = inputEl ? inputEl.value : '';
+                if (!rawCode.trim()) {
+                    showCodeError('Introduce primero el código semanal para abrir el sobre.');
+                    return;
+                }
+
+                const enteredHash = hashPackCode_(rawCode);
+                const isMaster = enteredHash === MASTER_PACK_CODE_HASH;
+                const isWeekly = Boolean(driveSecretPack && driveSecretPack.codeHash && enteredHash === driveSecretPack.codeHash);
+
+                if (!isMaster && !isWeekly) {
+                    showCodeError('Código incorrecto. Pídeselo a los scouters en las bases.');
+                    return;
+                }
+
+                const current = loadSecretAlbumState();
+                if (!current.redeemedWeeks) current.redeemedWeeks = {};
+                if (isWeekly && !isMaster) {
+                    if (current.redeemedWeeks[driveSecretPack.weekKey]) {
+                        showCodeError('Ya canjeaste el sobre de esta semana. ¡Vuelve el sábado a las 12:00!');
+                        return;
+                    }
+                    current.redeemedWeeks[driveSecretPack.weekKey] = true;
+                }
+
                 isOpeningPack = true;
                 if (packBtn) packBtn.style.transform = '';
 
-                const current = loadSecretAlbumState();
                 current.packsOpened += 1;
                 if (!current.rarities) current.rarities = {};
                 const picks = [];
@@ -4156,7 +4225,20 @@
                     renderSecretView();
                 });
             });
-            packBtn?.addEventListener('click', triggerOpenPack);
+            packBtn?.addEventListener('click', () => {
+                const inputEl = document.getElementById('secretPackCodeInput');
+                if (inputEl && !inputEl.value.trim()) {
+                    showCodeError('Introduce el código de esta semana abajo para rasgar el sobre.');
+                    return;
+                }
+                triggerOpenPack();
+            });
+            document.getElementById('secretPackCodeInput')?.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    triggerOpenPack();
+                }
+            });
             document.getElementById('btnOpenSecretPack')?.addEventListener('click', triggerOpenPack);
             document.getElementById('btnGoToSecretAlbum')?.addEventListener('click', () => {
                 activeTab = 'album';
@@ -4215,7 +4297,7 @@
                 });
             });
             document.getElementById('btnResetSecretAlbum')?.addEventListener('click', () => {
-                saveSecretAlbumState({ unlocked: {}, rarities: {}, packsOpened: 0 });
+                saveSecretAlbumState({ unlocked: {}, rarities: {}, redeemedWeeks: {}, packsOpened: 0 });
                 lastPulled = [];
                 renderSecretView();
             });
@@ -7017,6 +7099,9 @@
             safe('inscripciones', () => syncInscripcionFromDrive(data.inscripcionForms));
         }
         if (data.aniversario) safe('aniversario', () => syncAnniversaryFromDrive(data.aniversario));
+        if (data.secretPack && data.secretPack.weekKey && data.secretPack.codeHash) {
+            driveSecretPack = data.secretPack;
+        }
     }
 
     async function fetchDriveData() {
